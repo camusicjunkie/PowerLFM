@@ -1,4 +1,4 @@
-function Request-LastFmSession {
+function Request-LFMSession {
     [CmdletBinding()]
     [OutputType('System.String')]
     param (

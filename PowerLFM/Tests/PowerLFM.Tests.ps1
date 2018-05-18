@@ -1,4 +1,4 @@
-$ModuleManifestName = 'PowerLastFm.psd1'
+$ModuleManifestName = 'PowerLFM.psd1'
 $ModuleManifestPath = "$PSScriptRoot\..\$ModuleManifestName"
 
 Describe 'Module Manifest Tests' {

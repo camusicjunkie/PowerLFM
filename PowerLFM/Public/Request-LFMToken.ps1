@@ -1,4 +1,4 @@
-function Request-LastFmToken {
+function Request-LFMToken {
     [CmdletBinding()]
     [OutputType('System.String')]
     param (
