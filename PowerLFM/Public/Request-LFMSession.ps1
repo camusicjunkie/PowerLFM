@@ -21,9 +21,6 @@ function Request-LFMSession {
         [string] $SharedSecret
     )
 
-    begin{
-        $baseUrl = 'https://ws.audioscrobbler.com/2.0'
-    }
     process {
         try {
             $apiSig = Get-Md5Hash -String "api_key$($ApiKey)methodauth.getSessiontoken$Token$SharedSecret"
@@ -33,8 +30,6 @@ function Request-LFMSession {
                 'Uri' = "$baseUrl/?method=auth.getSession&api_key=$ApiKey&token=$token&api_sig=$apiSig&format=json"
                 'ErrorAction' = 'Stop'
             }
-            Write-Verbose $params.Uri
-
             $sessionKey = Invoke-RestMethod @params
 
             $obj = [PSCustomObject] @{
