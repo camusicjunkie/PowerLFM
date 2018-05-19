@@ -23,6 +23,7 @@ function Get-LFMConfiguration {
             $ak = decrypt $keyValues.APIKey
             $sk = decrypt $keyValues.SessionKey
             $script:LFMConfig = [pscustomobject] @{
+                'APIKey' = $ak
                 'String' = "api_key=$ak&sk=$sk"	
             }
             $LFMConfig
