@@ -24,3 +24,13 @@ All the API documentation can be found [here](https://www.last.fm/api/intro).
     `Get-LFMConfiguration`
 
 6. Run a function from PowerLFM to test the configuration like `Get-LFMAlbumInfo -Album Believe -Artist Cher`
+
+## Currently supported methods
+
+album.getInfo
+artist.addTags
+artist.getCorrection
+artist.getInfo
+artist.getSimilar
+artist.getTags
+track.love
