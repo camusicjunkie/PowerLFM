@@ -22,9 +22,11 @@ function Get-LFMConfiguration {
             $keyValues = Get-ItemProperty -Path $RegistryKeyPath
             $ak = decrypt $keyValues.APIKey
             $sk = decrypt $keyValues.SessionKey
+            $ss = decrypt $keyValues.SharedSecret
             $script:LFMConfig = [pscustomobject] @{
                 'APIKey' = $ak
-                'SessionKey' = $sk	
+                'SessionKey' = $sk
+                'SharedSecret' = $ss
             }
             Write-Output $LFMConfig
         }
