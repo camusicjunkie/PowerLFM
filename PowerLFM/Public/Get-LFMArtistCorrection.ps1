@@ -1,4 +1,4 @@
-function Get-LFMAlbumInfo {
+function Get-LFMArtistCorrection {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory,
