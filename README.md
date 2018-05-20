@@ -27,10 +27,10 @@ All the API documentation can be found [here](https://www.last.fm/api/intro).
 
 ## Currently supported methods
 
-album.getInfo
-artist.addTags
-artist.getCorrection
-artist.getInfo
-artist.getSimilar
-artist.getTags
-track.love
+* album.getInfo
+* artist.addTags
+* artist.getCorrection
+* artist.getInfo
+* artist.getSimilar
+* artist.getTags
+* track.love
