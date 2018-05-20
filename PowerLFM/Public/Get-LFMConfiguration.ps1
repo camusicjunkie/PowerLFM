@@ -5,7 +5,7 @@ function Get-LFMConfiguration {
         [ValidateNotNullOrEmpty()]
         [string]$RegistryKeyPath = "HKCU:\Software\$projectName"
     )
-	
+	Write-Verbose $projectName
     $ErrorActionPreference = 'Stop'
     function decrypt([string]$TextToDecrypt) {
         $secure = ConvertTo-SecureString $TextToDecrypt

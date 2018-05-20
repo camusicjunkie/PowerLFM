@@ -1,12 +1,13 @@
 function Get-LFMArtistCorrection {
     [CmdletBinding()]
+    [OutputType('PowerLFM.Artist.Corrected')]
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
         [string] $Artist
     )
 
-    begin {
+    process {
         #Default hashtable
         $apiParams = [ordered] @{
             'method' = 'artist.getCorrection'
@@ -22,7 +23,7 @@ function Get-LFMArtistCorrection {
 
         $apiUrl = "$baseUrl/?$string"
     }
-    process {
+    end {
         $iwr = Invoke-WebRequest -Uri $apiUrl
         $jsonString = $iwr.AllElements[3].innerHTML
         $hash = $jsonString | ConvertFrom-Json | ConvertTo-HashTable
