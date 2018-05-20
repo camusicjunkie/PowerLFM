@@ -26,7 +26,7 @@ function Get-LFMConfiguration {
                 'APIKey' = $ak
                 'String' = "api_key=$ak&sk=$sk"	
             }
-            $LFMConfig
+            Write-Output $LFMConfig
         }
     }
     catch {
