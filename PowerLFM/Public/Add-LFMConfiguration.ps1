@@ -10,6 +10,11 @@ function Add-LFMConfiguration {
                    ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
         [string] $SessionKey,
+
+        [Parameter(Mandatory,
+        ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [string] $SharedSecret,
 	
         [Parameter()]
         [ValidateNotNullOrEmpty()]
@@ -30,7 +35,7 @@ function Add-LFMConfiguration {
         New-Item @niParams | Out-Null
     }
 	
-    $values = 'APIKey', 'SessionKey'
+    $values = 'APIKey', 'SessionKey', 'SharedSecret'
     foreach ($val in $values) {
         if ((Get-Item -Path $RegistryKeyPath).GetValue($val)) {
             Write-Verbose "'$RegistryKeyPath\$val' already exists. Skipping."
