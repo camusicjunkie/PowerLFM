@@ -1,4 +1,4 @@
-function New-LastFmSignature {
+function New-LFMAuthSignature {
     [CmdletBinding()]
     [OutputType('System.String')]
     param (
