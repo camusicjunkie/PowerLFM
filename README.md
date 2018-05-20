@@ -47,10 +47,10 @@ $album.Tags
 
 ## Currently supported methods
 
-* album.getInfo
-* artist.addTags
-* artist.getCorrection
-* artist.getInfo
-* artist.getSimilar
-* artist.getTags
-* track.love
+* [album.getInfo](https://www.last.fm/api/show/album.getInfo)
+* [artist.addTags](https://www.last.fm/api/show/artist.addTags)
+* [artist.getCorrection](https://www.last.fm/api/show/artist.getCorrection)
+* [artist.getInfo](https://www.last.fm/api/show/artist.getInfo)
+* [artist.getSimilar](https://www.last.fm/api/show/artist.getSimilar)
+* [artist.getTags](https://www.last.fm/api/show/artist.getTags)
+* [track.love](https://www.last.fm/api/show/track.love)
