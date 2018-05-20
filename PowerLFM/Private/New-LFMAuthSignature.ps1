@@ -34,9 +34,9 @@ function New-LFMAuthSignature {
         }
 
         $string = $keyValues -join ''
-        Write-Verbose $string
 
         Get-Md5Hash -String "$string$SharedSecret"
+        Write-Verbose "$string$SharedSecret"
     }
     catch {
         Write-Error $_.Exception.Message

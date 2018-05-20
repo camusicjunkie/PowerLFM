@@ -31,7 +31,6 @@ function New-LFMTrackSignature {
         }
     
         $string = $keyValues -join ''
-        Write-Verbose $string
     
         Get-Md5Hash -String "$string$($LFMConfig.SharedSecret)"
         Write-Verbose "$string$($LFMConfig.SharedSecret)"

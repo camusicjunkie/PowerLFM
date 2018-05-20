@@ -31,10 +31,9 @@ function New-LFMArtistSignature {
         }
     
         $string = $keyValues -join ''
-        Write-Verbose $string
     
-        Get-Md5Hash -String "$string"
-        #Write-Verbose "$string$($LFMConfig.SharedSecret)"
+        Get-Md5Hash -String "$string$($LFMConfig.SharedSecret)"
+        Write-Verbose "$string$($LFMConfig.SharedSecret)"
     }
     catch {
         Write-Error $_.Exception.Message
