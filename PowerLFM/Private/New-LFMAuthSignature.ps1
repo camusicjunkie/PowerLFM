@@ -23,19 +23,22 @@ function New-LastFmSignature {
         [string] $SharedSecret
     )
 
-    $sigParams = @{
-        'api_key' = $ApiKey
-        'method' = $Method
+    try {
+        $sigParams = @{
+            'api_key' = $ApiKey
+            'method' = $Method
+        }
+
+        $keyValues = $sigParams.GetEnumerator() | Sort-Object Name | ForEach-Object {
+            "$($_.Key)$($_.Value)"
+        }
+
+        $string = $keyValues -join ''
+        Write-Verbose $string
+
+        Get-Md5Hash -String "$string$SharedSecret"
     }
-
-    $keyValues = @()
-	$sigParams.GetEnumerator() | Sort-Object Name | ForEach-Object {
-        $keyValues += "$($_.Key)$($_.Value)"
-        Write-Verbose "$keyValues"
+    catch {
+        Write-Error $_.Exception.Message
     }
-
-    $string = $keyValues -join ''
-    Write-Verbose $string
-
-    Get-Md5Hash -String "$string$SharedSecret"
 }

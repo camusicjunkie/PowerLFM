@@ -23,6 +23,7 @@ function Request-LFMSession {
 
     process {
         try {
+            #Need to fix. Add signature function here
             $apiSig = Get-Md5Hash -String "api_key$($ApiKey)methodauth.getSessiontoken$Token$SharedSecret"
             Write-Verbose "Signature MD5 Hash: $apiSig"
 

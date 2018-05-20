@@ -14,9 +14,10 @@ function Request-LFMToken {
     )
 
     try {
-        $apiSig = New-LastFMSignature -ApiKey $ApiKey -Method auth.getToken -SharedSecret $SharedSecret
+        $apiSig = New-LFMAuthSignature -ApiKey $ApiKey -Method auth.getToken -SharedSecret $SharedSecret
         Write-Verbose "Signature MD5 Hash: $apiSig"
 
+        #Need to fix. Dynamically build string with .GetEnumerator()
         $irmParams = @{
             'Uri' = "$baseUrl/?method=auth.getToken&api_key=$ApiKey&api_sig=$apiSig&format=json"
             'ErrorAction' = 'Stop'

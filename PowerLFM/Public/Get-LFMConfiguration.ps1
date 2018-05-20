@@ -24,7 +24,7 @@ function Get-LFMConfiguration {
             $sk = decrypt $keyValues.SessionKey
             $script:LFMConfig = [pscustomobject] @{
                 'APIKey' = $ak
-                'String' = "api_key=$ak&sk=$sk"	
+                'SessionKey' = $sk	
             }
             Write-Output $LFMConfig
         }
