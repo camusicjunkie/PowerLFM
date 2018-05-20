@@ -12,7 +12,7 @@ function Add-LFMArtistTag {
     )
 
     begin {
-        $apiSig = New-LFMArtistSignature -Method artist.addTags
+        $apiSig = New-LFMArtistSignature -Method artist.addTags -Artist $Artist -Tag $Tag
         
         #Default hashtable
         $apiParams = [ordered] @{
@@ -38,7 +38,7 @@ function Add-LFMArtistTag {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $iwr = Invoke-WebRequest -Uri $apiUrl
+        $iwr = Invoke-WebRequest -Uri $apiUrl -Method Post -Body "$string$($LFMConfig.SharedSecret)"
         $jsonString = $iwr.AllElements[3].innerHTML
         $hash = $jsonString | ConvertFrom-Json | ConvertTo-HashTable
 
