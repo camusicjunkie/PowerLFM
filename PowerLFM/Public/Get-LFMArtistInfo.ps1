@@ -5,12 +5,16 @@ function Get-LFMArtistInfo {
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'artist')]
+        [ValidateNotNullOrEmpty()]
         [string] $Artist,
 
-        [Parameter(ValueFromPipelineByPropertyName,
+        [Parameter(Mandatory,
+                   ValueFromPipelineByPropertyName,
                    ParameterSetName = 'id')]
+        [ValidateNotNullOrEmpty()]
         [string] $Id,
-        [string] $UserName
+        [string] $UserName,
+        [switch] $AutoCorrect
     )
 
     begin {
@@ -20,6 +24,11 @@ function Get-LFMArtistInfo {
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
         }
+        #Adding key/value to hashtable based off optional parameters
+        switch ($PSBoundParameters.Keys) {
+            'UserName' {$apiParams.add('username', $UserName)}
+            'AutoCorrect' {$apiParams.add('autocorrect', 1)}
+        }
     }
     process {
         #Adding key/value to hashtable based off ParameterSetName
@@ -28,10 +37,6 @@ function Get-LFMArtistInfo {
         }
         if ($PSCmdlet.ParameterSetName -eq 'id') {
             $apiParams.add('mbid', $Id)
-        }
-        #Adding key/value to hashtable based off optional parameters
-        switch ($PSBoundParameters.Keys) {
-            'UserName' {$apiParams.add('username', $UserName)}
         }
         
         #Building string to append to base url
