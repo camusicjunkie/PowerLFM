@@ -9,7 +9,7 @@ function Get-LFMArtistCorrection {
     begin {
         #Default hashtable
         $apiParams = [ordered] @{
-            'method' = 'album.getCorrection'
+            'method' = 'artist.getCorrection'
             'api_key' = $LFMConfig.APIKey
             'artist' = $Artist
             'format' = 'json'
