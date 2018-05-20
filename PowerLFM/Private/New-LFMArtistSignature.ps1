@@ -6,13 +6,24 @@ function New-LFMArtistSignature {
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
         [ValidateSet('artist.addTags','artist.removeTag')]
-        [string] $Method
+        [string] $Method,
+
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
+        [string] $Artist,
+
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
+        [ValidateCount(1,10)]
+        [string[]] $Tag
     )
     try {
         $sigParams = @{
             'method' = $Method
             'api_key' = $LFMConfig.ApiKey
             'sk' = $LFMConfig.SessionKey
+            'artist' = $Artist
+            'tags' = $Tag
         }
     
         $keyValues = $sigParams.GetEnumerator() | Sort-Object Name | ForEach-Object {
@@ -22,7 +33,8 @@ function New-LFMArtistSignature {
         $string = $keyValues -join ''
         Write-Verbose $string
     
-        Get-Md5Hash -String $string
+        Get-Md5Hash -String "$string"
+        #Write-Verbose "$string$($LFMConfig.SharedSecret)"
     }
     catch {
         Write-Error $_.Exception.Message
