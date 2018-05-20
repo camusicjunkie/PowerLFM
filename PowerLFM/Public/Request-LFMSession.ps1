@@ -36,6 +36,7 @@ function Request-LFMSession {
             $obj = [PSCustomObject] @{
                 'ApiKey' = $ApiKey
                 'SessionKey' = $sessionKey.session.key
+                'SharedSecret' = $SharedSecret
             }
             Write-Output $obj
         }
