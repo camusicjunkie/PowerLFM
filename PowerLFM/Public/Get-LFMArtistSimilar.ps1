@@ -10,7 +10,8 @@ function Get-LFMArtistSimilar {
         [Parameter(ValueFromPipelineByPropertyName,
                    ParameterSetName = 'id')]
         [string] $Id,
-        [string] $Limit = '5'
+        [string] $Limit = '5',
+        [switch] $AutoCorrect
     )
 
     begin {
@@ -18,6 +19,7 @@ function Get-LFMArtistSimilar {
         $apiParams = [ordered] @{
             'method' = 'artist.getSimilar'
             'api_key' = $LFMConfig.APIKey
+            'limit' = $Limit
             'format' = 'json'
         }
     }
@@ -31,7 +33,7 @@ function Get-LFMArtistSimilar {
         }
         #Adding key/value to hashtable based off optional parameters
         switch ($PSBoundParameters.Keys) {
-            'Limit' {$apiParams.add('limit', $Limit)}
+            'AutoCorrect' {$apiParams.add('autocorrect', 1)}
         }
         
         #Building string to append to base url
