@@ -24,6 +24,7 @@ function Get-LFMArtistInfo {
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
         }
+        
         #Adding key/value to hashtable based off optional parameters
         switch ($PSBoundParameters.Keys) {
             'UserName' {$apiParams.add('username', $UserName)}
