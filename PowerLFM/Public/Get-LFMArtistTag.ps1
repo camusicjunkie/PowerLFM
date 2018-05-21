@@ -10,7 +10,8 @@ function Get-LFMArtistTag {
         [Parameter(ValueFromPipelineByPropertyName,
                    ParameterSetName = 'id')]
         [string] $Id,
-        [string] $UserName
+        [string] $UserName,
+        [switch] $AutoCorrect
     )
 
     begin {
@@ -22,12 +23,11 @@ function Get-LFMArtistTag {
     }
     process {
         #Adding key/value to hashtable based off ParameterSetName
-        if ($PSCmdlet.ParameterSetName -eq 'artist') {
-            $apiParams.add('artist', $Artist)
+        switch ($PSCmdlet.ParameterSetName) {
+            'artist' {$apiParams.add('artist', $Artist)}
+            'id' {$apiParams.add('mbid', $Id)}
         }
-        if ($PSCmdlet.ParameterSetName -eq 'id') {
-            $apiParams.add('mbid', $Id)
-        }
+
         #Adding key/value to hashtable based off optional parameters
         if ($PSBoundParameters.ContainsKey('UserName')) {
             $apiParams.add('user', $UserName)
@@ -36,6 +36,10 @@ function Get-LFMArtistTag {
         else {
             $apiParams.add('api_key', $LFMConfig.APIKey)
             $apiParams.add('sk', $LFMConfig.SessionKey)
+        }
+
+        switch ($PSBoundParameters.Keys) {
+            'AutoCorrect' {$apiParams.add('autocorrect', 1)}
         }
         
         #Building string to append to base url
