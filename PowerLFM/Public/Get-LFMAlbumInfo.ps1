@@ -14,7 +14,8 @@ function Get-LFMAlbumInfo {
         [Parameter(ValueFromPipelineByPropertyName,
                    ParameterSetName = 'id')]
         [string] $Id,
-        [string] $UserName
+        [string] $UserName,
+        [switch] $AutoCorrect
     )
 
     begin {
@@ -23,6 +24,12 @@ function Get-LFMAlbumInfo {
             'method' = 'album.getInfo'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
+        }
+
+        #Adding key/value to hashtable based off optional parameters
+        switch ($PSBoundParameters.Keys) {
+            'UserName' {$apiParams.add('username', $UserName)}
+            'AutoCorrect' {$apiParams.add('autocorrect', 1)}
         }
     }
     process {
@@ -33,10 +40,6 @@ function Get-LFMAlbumInfo {
         }
         if ($PSCmdlet.ParameterSetName -eq 'id') {
             $apiParams.add('mbid', $Id)
-        }
-        #Adding key/value to hashtable based off optional parameters
-        switch ($PSBoundParameters.Keys) {
-            'UserName' {$apiParams.add('username', $UserName)}
         }
         
         #Building string to append to base url
