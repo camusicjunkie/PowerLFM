@@ -10,7 +10,11 @@ function Get-LFMArtistTopAlbum {
         [Parameter(ValueFromPipelineByPropertyName,
                    ParameterSetName = 'id')]
         [string] $Id,
-        [string] $Limit = '5',
+        
+        [Parameter()]
+        [ValidateRange(1,50)]
+        [string] $Limit,
+
         [string] $Page,
         [switch] $AutoCorrect
     )
@@ -20,7 +24,6 @@ function Get-LFMArtistTopAlbum {
         $apiParams = [ordered] @{
             'method' = 'artist.getTopAlbums'
             'api_key' = $LFMConfig.APIKey
-            'limit' = $Limit
             'format' = 'json'
         }
     }
@@ -34,6 +37,7 @@ function Get-LFMArtistTopAlbum {
         #Adding key/value to hashtable based off optional parameters
         switch ($PSBoundParameters.Keys) {
             'AutoCorrect' {$apiParams.add('autocorrect', 1)}
+            'Limit' {$apiParams.add('limit', $Limit)}
             'Page' {$apiParams.add('page', $Page)}
         }
         
@@ -52,21 +56,21 @@ function Get-LFMArtistTopAlbum {
         
         $albums = foreach ($album in $hash.TopAlbums.Album) {
             $albumInfo = [pscustomobject] @{
-                'Album' = $album.TopAlbums.Album.Name
-                'Id' = $album.TopAlbums.Album.Mbid
-                'Url' = $album.TopAlbums.Album.Url
-                'PlayCount' = $album.TopAlbums.Album.PlayCount
+                'Album' = $album.Name
+                'Id' = $album.Mbid
+                'Url' = $album.Url
+                'PlayCount' = $album.PlayCount
             }
             $albumInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Artist.Album')
             Write-Output $albumInfo
         }
 
         $topAlbumInfo = [pscustomobject] @{
-            'Artist' = $album.TopAlbums.'@attr'.Artist
-            'AlbumsPerPage' = $album.TopAlbums.'@attr'.PerPage
-            'Page' = $album.TopAlbums.'@attr'.Page
-            'TotalPages' = $album.TopAlbums.'@attr'.TotalPages
-            'TotalAlbums' = $album.TopAlbums.'@attr'.Total
+            'Artist' = $hash.TopAlbums.'@attr'.Artist
+            'AlbumsPerPage' = $hash.TopAlbums.'@attr'.PerPage
+            'Page' = $hash.TopAlbums.'@attr'.Page
+            'TotalPages' = $hash.TopAlbums.'@attr'.TotalPages
+            'TotalAlbums' = $hash.TopAlbums.'@attr'.Total
             'Albums' = $albums
         }
 
