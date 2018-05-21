@@ -1,6 +1,6 @@
 function Get-LFMArtistCorrection {
     [CmdletBinding()]
-    [OutputType('PowerLFM.Artist.Corrected')]
+    [OutputType('PowerLFM.Artist.Correction')]
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
@@ -34,7 +34,7 @@ function Get-LFMArtistCorrection {
             'Url' = $hash.Corrections.Correction.Artist.Url
         }
 
-        $correctedArtistInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Artist.Corrected')
+        $correctedArtistInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Artist.Correction')
         Write-Output $correctedArtistInfo
     }
 }
