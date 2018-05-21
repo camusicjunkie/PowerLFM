@@ -1,12 +1,12 @@
 function Add-LFMArtistTag {
     [CmdletBinding()]
-    [OutputType('PowerLFM.Artist.Tag')]
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
         [string] $Artist,
 
-        [Parameter(ValueFromPipelineByPropertyName)]
+        [Parameter(Mandatory,
+                   ValueFromPipelineByPropertyName)]
         [ValidateCount(1,10)]
         [string[]] $Tag
     )
