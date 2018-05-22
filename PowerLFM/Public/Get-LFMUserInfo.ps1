@@ -7,14 +7,20 @@ function Get-LFMUserInfo {
         [string] $UserName
     )
 
-    process {
+    begin {
         #Default hashtable
         $apiParams = [ordered] @{
             'method' = 'user.GetInfo'
             'api_key' = $LFMConfig.APIKey
-            'user' = $UserName
             'format' = 'json'
         }
+    }
+    process {
+        #Adding key/value to hashtable based off optional parameters
+        switch ($PSBoundParameters.Keys) {
+            'UserName' {$apiParams.add('user', $UserName)}
+        }
+
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
             "$($_.Name)=$($_.Value)"
