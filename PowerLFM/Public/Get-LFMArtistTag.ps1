@@ -20,6 +20,10 @@ function Get-LFMArtistTag {
             'method' = 'artist.getTags'
             'format' = 'json'
         }
+
+        switch ($PSBoundParameters.Keys) {
+            'AutoCorrect' {$apiParams.add('autocorrect', 1)}
+        }
     }
     process {
         #Adding key/value to hashtable based off ParameterSetName
@@ -36,10 +40,6 @@ function Get-LFMArtistTag {
         else {
             $apiParams.add('api_key', $LFMConfig.APIKey)
             $apiParams.add('sk', $LFMConfig.SessionKey)
-        }
-
-        switch ($PSBoundParameters.Keys) {
-            'AutoCorrect' {$apiParams.add('autocorrect', 1)}
         }
         
         #Building string to append to base url
