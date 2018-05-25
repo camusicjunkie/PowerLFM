@@ -16,7 +16,6 @@ function Get-LFMUserInfo {
         }
     }
     process {
-        #Adding key/value to hashtable based off optional parameters
         switch ($PSBoundParameters.Keys) {
             'UserName' {$apiParams.add('user', $UserName)}
         }
@@ -34,7 +33,7 @@ function Get-LFMUserInfo {
         $jsonString = $iwr.AllElements[3].innerHTML
         $hash = $jsonString | ConvertFrom-Json | ConvertTo-HashTable
         
-        $registered = Convert-UnixTime($hash.User.Registered.UnixTime)
+        $registered = ConvertFrom-UnixTime -UnixTime $hash.User.Registered.UnixTime -Local
         $imageUrl = $hash.User.Image | Where-Object Size -eq ExtraLarge
         $userInfo = [pscustomobject] @{
             'UserName' = $hash.User.Name
@@ -45,9 +44,6 @@ function Get-LFMUserInfo {
             'PlayCount' = $hash.User.PlayCount
             'PlayLists' = $hash.User.PlayLists
             'ImageUrl' = $imageUrl.'#text'
-            'Type' = $hash.User.Type
-            'Age' = $hash.User.Age
-            'Gender' = $hash.User.Gender
         }
 
         $userInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.User.Info')
