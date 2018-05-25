@@ -20,13 +20,16 @@ function Search-LFMArtist {
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
         }
+        
+        switch ($PSBoundParameters.Keys) {
+            'Limit' {$apiParams.add('limit', $Limit)}
+            'Page' {$apiParams.add('page', $Page)}
+        }
     }
     process {
         #Adding key/value to hashtable based off optional parameters
         switch ($PSBoundParameters.Keys) {
             'Artist' {$apiParams.add('artist', $Artist)}
-            'Limit' {$apiParams.add('limit', $Limit)}
-            'Page' {$apiParams.add('page', $Page)}
         }
         
         #Building string to append to base url
