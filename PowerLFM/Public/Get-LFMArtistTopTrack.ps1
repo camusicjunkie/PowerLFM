@@ -26,19 +26,19 @@ function Get-LFMArtistTopTrack {
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
         }
-    }
-    process {
-        #Adding key/value to hashtable based off ParameterSetName
-        switch ($PSCmdlet.ParameterSetName) {
-            'artist' {$apiParams.add('artist', $Artist)}
-            'id' {$apiParams.add('mbid', $Id)}
-        }
 
         #Adding key/value to hashtable based off optional parameters
         switch ($PSBoundParameters.Keys) {
             'AutoCorrect' {$apiParams.add('autocorrect', 1)}
             'Limit' {$apiParams.add('limit', $Limit)}
             'Page' {$apiParams.add('page', $Page)}
+        }
+    }
+    process {
+        #Adding key/value to hashtable based off ParameterSetName
+        switch ($PSCmdlet.ParameterSetName) {
+            'artist' {$apiParams.add('artist', $Artist)}
+            'id' {$apiParams.add('mbid', $Id)}
         }
         
         #Building string to append to base url
