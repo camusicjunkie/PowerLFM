@@ -7,14 +7,19 @@ function Get-LFMArtistCorrection {
         [string] $Artist
     )
 
-    process {
+    begin {
         #Default hashtable
         $apiParams = [ordered] @{
             'method' = 'artist.getCorrection'
             'api_key' = $LFMConfig.APIKey
-            'artist' = $Artist
             'format' = 'json'
         }
+    }
+    process {
+        switch ($PSBoundParameters.Keys) {
+            'Artist' {$apiParams.add('artist', $Artist)}
+        }
+        
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
             "$($_.Name)=$($_.Value)"
