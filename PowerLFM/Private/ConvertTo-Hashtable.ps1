@@ -1,6 +1,6 @@
 function ConvertTo-Hashtable {
     [CmdletBinding()]
-    [OutputType('hashtable')]
+    [OutputType('Hashtable')]
     param (
         [Parameter(ValueFromPipeline)]
         $InputObject
