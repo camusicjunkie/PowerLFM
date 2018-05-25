@@ -22,6 +22,11 @@ function Get-LFMArtistSimilar {
             'limit' = $Limit
             'format' = 'json'
         }
+        
+        #Adding key/value to hashtable based off optional parameters
+        switch ($PSBoundParameters.Keys) {
+            'AutoCorrect' {$apiParams.add('autocorrect', 1)}
+        }
     }
     process {
         #Adding key/value to hashtable based off ParameterSetName
@@ -30,10 +35,6 @@ function Get-LFMArtistSimilar {
         }
         if ($PSCmdlet.ParameterSetName -eq 'id') {
             $apiParams.add('mbid', $Id)
-        }
-        #Adding key/value to hashtable based off optional parameters
-        switch ($PSBoundParameters.Keys) {
-            'AutoCorrect' {$apiParams.add('autocorrect', 1)}
         }
         
         #Building string to append to base url
