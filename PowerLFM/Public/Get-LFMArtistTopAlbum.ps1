@@ -26,6 +26,13 @@ function Get-LFMArtistTopAlbum {
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
         }
+
+        #Adding key/value to hashtable based off optional parameters
+        switch ($PSBoundParameters.Keys) {
+            'AutoCorrect' {$apiParams.add('autocorrect', 1)}
+            'Limit' {$apiParams.add('limit', $Limit)}
+            'Page' {$apiParams.add('page', $Page)}
+        }
     }
     process {
         #Adding key/value to hashtable based off ParameterSetName
@@ -34,13 +41,6 @@ function Get-LFMArtistTopAlbum {
             'id' {$apiParams.add('mbid', $Id)}
         }
 
-        #Adding key/value to hashtable based off optional parameters
-        switch ($PSBoundParameters.Keys) {
-            'AutoCorrect' {$apiParams.add('autocorrect', 1)}
-            'Limit' {$apiParams.add('limit', $Limit)}
-            'Page' {$apiParams.add('page', $Page)}
-        }
-        
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
             "$($_.Name)=$($_.Value)"
