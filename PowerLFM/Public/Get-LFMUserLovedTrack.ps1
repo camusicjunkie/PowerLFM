@@ -48,10 +48,10 @@ function Get-LFMUserLovedTrack {
         $lovedTracks = foreach ($track in $hash.LovedTracks.Track) {
             $trackInfo = [pscustomobject] @{
                 'Track' = $track.Name
-                'Artist' = $track.Artist.Name
                 'TrackUrl' = $track.Url
-                'ArtistUrl' = $track.Artist.url
                 'Trackid' = $track.Mbid
+                'Artist' = $track.Artist.Name
+                'ArtistUrl' = $track.Artist.url
                 'ArtistId' = $track.Artist.Mbid
                 'Date' = ConvertFrom-UnixTime -UnixTime $track.Date.Uts -Local
                 'ImageUrl' = $track.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
