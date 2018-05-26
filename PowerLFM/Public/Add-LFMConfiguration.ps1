@@ -12,7 +12,7 @@ function Add-LFMConfiguration {
         [string] $SessionKey,
 
         [Parameter(Mandatory,
-        ValueFromPipelineByPropertyName)]
+                   ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
         [string] $SharedSecret,
 	

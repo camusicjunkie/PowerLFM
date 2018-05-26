@@ -1,5 +1,6 @@
 function ConvertFrom-UnixTime {
     [CmdletBinding()]
+    [OutputType('System.DateTime')]
     param (
         [Parameter(Mandatory,
                    ValueFromPipeline)]
