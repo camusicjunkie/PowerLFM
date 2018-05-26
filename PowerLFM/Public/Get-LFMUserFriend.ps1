@@ -68,7 +68,7 @@ function Get-LFMUserFriend {
             'FriendsPerPage' = $hash.Friends.'@attr'.PerPage
             'Page' = $hash.Friends.'@attr'.Page
             'TotalPages' = $hash.Friends.'@attr'.TotalPages
-            'TotaFriends' = $hash.Friends.'@attr'.Total
+            'TotalFriends' = $hash.Friends.'@attr'.Total
             'Friends' = $users
         }
 
