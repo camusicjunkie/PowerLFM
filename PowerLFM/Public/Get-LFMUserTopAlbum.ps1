@@ -1,6 +1,6 @@
 function Get-LFMUserTopAlbum {
     [CmdletBinding()]
-    [OutputType('PowerLFM.User.topAlbum')]
+    [OutputType('PowerLFM.User.TopAlbum')]
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
@@ -12,7 +12,7 @@ function Get-LFMUserTopAlbum {
         [string] $TimePeriod,
         
         [Parameter()]
-        [ValidateRange(1,50)]
+        #[ValidateRange(1,50)]
         [string] $Limit,
 
         [string] $Page
@@ -51,7 +51,7 @@ function Get-LFMUserTopAlbum {
         $jsonString = $iwr.AllElements[3].innerHTML
         $hash = $jsonString | ConvertFrom-Json | ConvertTo-HashTable
          
-        $topAlbums = foreach ($album in $hash.TopAlbums.Album) {
+        <#$topAlbums = #>foreach ($album in $hash.TopAlbums.Album) {
             $albumInfo = [pscustomobject] @{
                 'Album' = $album.Name
                 'PlayCount' = $album.PlayCount
@@ -67,16 +67,16 @@ function Get-LFMUserTopAlbum {
             Write-Output $albumInfo
         }
 
-        $topAlbumInfo = [pscustomobject] @{
-            'UserName' = $hash.TopAlbums.'@attr'.User
-            'AlbumsPerPage' = $hash.TopAlbums.'@attr'.PerPage
-            'Page' = $hash.TopAlbums.'@attr'.Page
-            'TotalPages' = $hash.TopAlbums.'@attr'.TotalPages
-            'TotalAlbums' = $hash.TopAlbums.'@attr'.Total
-            'TopAlbums' = $topAlbums
-        }
-
-        $topAlbumInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.User.TopAlbum')
-        Write-Output $topAlbumInfo
+        #$topAlbumInfo = [pscustomobject] @{
+        #    'UserName' = $hash.TopAlbums.'@attr'.User
+        #    'AlbumsPerPage' = $hash.TopAlbums.'@attr'.PerPage
+        #    'Page' = $hash.TopAlbums.'@attr'.Page
+        #    'TotalPages' = $hash.TopAlbums.'@attr'.TotalPages
+        #    'TotalAlbums' = $hash.TopAlbums.'@attr'.Total
+        #    'TopAlbums' = $topAlbums
+        #}
+#
+        #$topAlbumInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.User.TopAlbum')
+        #Write-Output $topAlbumInfo
     }
 }
