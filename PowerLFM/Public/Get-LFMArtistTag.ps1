@@ -1,6 +1,6 @@
 function Get-LFMArtistTag {
     [CmdletBinding(DefaultParameterSetName = 'artist')]
-    [OutputType('PowerLFM.Artist.Tag')]
+    [OutputType('PowerLFM.Artist.UserTag')]
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
