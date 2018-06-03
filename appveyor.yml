@@ -1,0 +1,4 @@
+
+environment:
+    NuGetApiKey:
+        secure: 3BHyJdLSWsV+oTEApA674BGFBj2nhOED/WIAfLI2d1fDvo+6UatQzar6f36CAh05
