@@ -47,7 +47,10 @@ $album.Tags
 
 ## Currently supported methods
 
+* [album.addTags](https://www.last.fm/api/show/album.addTags)
 * [album.getInfo](https://www.last.fm/api/show/album.getInfo)
+* [album.getTags](https;//www.last.fm/api/show/album.getTags)
+* [album.getTopTags](https;//www.last.fm/api/show/album.getTopTags)
 * [artist.addTags](https://www.last.fm/api/show/artist.addTags)
 * [artist.getCorrection](https://www.last.fm/api/show/artist.getCorrection)
 * [artist.getInfo](https://www.last.fm/api/show/artist.getInfo)
