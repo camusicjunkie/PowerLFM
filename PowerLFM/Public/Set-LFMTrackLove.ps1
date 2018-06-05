@@ -24,8 +24,6 @@ function Set-LFMTrackLove {
         }
     }
     process {
-        #Adding key/value to hashtable. Added in the process block
-        #to allow for pipeline input
         $apiParams.add('artist', $Artist)
         $apiParams.add('track', $Track)
         
