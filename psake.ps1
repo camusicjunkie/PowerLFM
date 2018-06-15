@@ -5,7 +5,6 @@ properties {
 task default -depends Analyze, Test
 
 task Analyze {
-    Import-Module -Name PSScriptAnalyzer
     $saResults = Invoke-ScriptAnalyzer -Path $scriptPath -Severity @('Error', 'Warning') -Recurse -Verbose:$false
     if ($saResults) {
         $saResults | Format-Table  
