@@ -6,8 +6,6 @@ environment:
 
 # Allow WMF5 (i.e. PowerShellGallery functionality)
 os: WMF 5
-install:
-  - ps: Get-PackageProvider -Name NuGet -Force
 
 # Skip on updates to the readme.
 # We can force this by adding [skip ci] or [ci skip] anywhere in commit message 
