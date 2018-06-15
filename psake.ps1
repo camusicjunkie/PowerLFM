@@ -20,6 +20,6 @@ task Test {
     }
 }
 
-#task Deploy -depends Analyze, Test {
-#    Invoke-PSDeploy -Path '.\ServerInfo.psdeploy.ps1' -Force -Verbose:$VerbosePreference
-#}
+task Deploy -depends Analyze, Test {
+    Invoke-PSDeploy -Path '.\ServerInfo.psdeploy.ps1' -Force -Verbose:$VerbosePreference
+}
