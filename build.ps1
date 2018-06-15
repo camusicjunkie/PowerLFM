@@ -6,6 +6,7 @@ param(
 Get-PackageProvider -Name NuGet -ForceBootstrap | Out-Null
 
 if (-not (Get-Module -Name Pester -ListAvailable)) { Install-Module -Name Pester -Scope CurrentUser -Force }
+Get-Module -Name Pester -ListAvailable
 if (-not (Get-Module -Name psake -ListAvailable)) { Install-Module -Name psake -Scope CurrentUser -Force}
 if (-not (Get-Module -Name PSDeploy -ListAvailable)) { Install-Module -Name PSDeploy -Scope CurrentUser -Force}
 
