@@ -11,3 +11,4 @@ if (-not (Get-Module -Name PSDeploy -ListAvailable)) { Install-Module -Name PSDe
 if (-not (Get-Module -Name PSScriptAnalyzer -ListAvailable)) { Install-Module -Name PSScriptAnalyzer -Scope CurrentUser -Force}
 
 Invoke-Psake -buildFile "$PSScriptRoot\psake.ps1" -taskList $Task -Verbose:$VerbosePreference
+exit ([int] (-not $psake.build_success))
