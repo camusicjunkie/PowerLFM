@@ -1,4 +1,5 @@
 properties {
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignment", "")]
     $scriptPath = "$PSScriptRoot\"
 }
 
