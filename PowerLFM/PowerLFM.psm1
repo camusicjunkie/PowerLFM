@@ -14,5 +14,3 @@ Foreach ($import in @($Public + $Private)) {
 
 New-Variable -Name projectName -Value 'PowerLFM' -Visibility Private
 New-Variable -Name baseUrl -Value 'https://ws.audioscrobbler.com/2.0' -Visibility Private
-
-Export-ModuleMember -Function $Public.BaseName
