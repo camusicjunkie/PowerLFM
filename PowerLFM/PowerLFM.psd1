@@ -73,7 +73,7 @@ FunctionsToExport = 'Add-LFMAlbumTag', 'Add-LFMArtistTag', 'Add-LFMConfiguration
                'Get-LFMAlbumInfo', 'Get-LFMAlbumTag', 'Get-LFMAlbumTopTag', 
                'Get-LFMArtistCorrection', 'Get-LFMArtistInfo', 
                'Get-LFMArtistSimilar', 'Get-LFMArtistTag', 'Get-LFMArtistTopAlbum', 
-               'Get-LFMArtistTopTag', 'Get-LFMArtistTopTrack', 
+               'Get-LFMArtistTopTag', 'Get-LFMArtistTopTrack', 'Get-LFMChartTopTrack',
                'Get-LFMChartTopArtist', 'Get-LFMChartTopTag', 'Get-LFMConfiguration', 
                'Get-LFMUserArtistTrack', 'Get-LFMUserFriend', 'Get-LFMUserInfo', 
                'Get-LFMUserLovedTrack', 'Get-LFMUserTopAlbum', 
