@@ -64,6 +64,7 @@ $album.Tags
 * [chart.getTopArtists](https://www.last.fm/api/show/chart.getTopArtists)
 * [chart.getTopTags](https://www.last.fm/api/show/chart.getTopTags)
 * [chart.getTopTracks](https://www.last.fm/api/show/chart.getTopTracks)
+* [geo.getTopArtists](https://www.last.fm/api/show/geo.getTopArtists)
 * [track.love](https://www.last.fm/api/show/track.love)
 * [user.getArtistTracks](https://www.last.fm/api/show/user.getArtistTracks)
 * [user.getFriends](https://www.last.fm/api/show/user.getFriends)
