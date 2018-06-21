@@ -42,8 +42,8 @@ function Get-LFMChartTopTrack {
             'ArtistId' = $track.Artist.Mbid
             'ArtistUrl' = $track.Artist.Url
             'Duration' = $track.Duration
-            'Listeners' = $track.Listeners
-            'PlayCount' = $track.PlayCount
+            'Listeners' = [int] $track.Listeners
+            'PlayCount' = [int] $track.PlayCount
             'ImageUrl' = $track.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
         }
 
