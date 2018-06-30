@@ -44,33 +44,20 @@ function Get-LFMUserTopArtist {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $iwr = Invoke-WebRequest -Uri $apiUrl
-        $jsonString = $iwr.AllElements[3].innerHTML
-        $hash = $jsonString | ConvertFrom-Json | ConvertTo-HashTable
+        $irm = Invoke-RestMethod -Uri $apiUrl
+        $hash = $irm | ConvertTo-Hashtable
         
-        <#$topAlbums = #>foreach ($artist in $hash.TopArtists.Artist) {
+        foreach ($artist in $hash.TopArtists.Artist) {
             $artistInfo = [pscustomobject] @{
                 'Artist' = $artist.Name
                 'PlayCount' = $artist.PlayCount
-                'ArtistUrl' = $artist.url
-                'ArtistId' = $artist.Mbid
+                'Url' = $artist.url
+                'Id' = $artist.Mbid
                 'ImageUrl' = $artist.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 
             $artistInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.User.Artist')
             Write-Output $artistInfo
         }
-
-        #$topAlbumInfo = [pscustomobject] @{
-        #    'UserName' = $hash.TopAlbums.'@attr'.User
-        #    'AlbumsPerPage' = $hash.TopAlbums.'@attr'.PerPage
-        #    'Page' = $hash.TopAlbums.'@attr'.Page
-        #    'TotalPages' = $hash.TopAlbums.'@attr'.TotalPages
-        #    'TotalAlbums' = $hash.TopAlbums.'@attr'.Total
-        #    'TopAlbums' = $topAlbums
-        #}
-#
-        #$topAlbumInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.User.TopAlbum')
-        #Write-Output $topAlbumInfo
     }
 }
