@@ -41,9 +41,8 @@ function Get-LFMUserLovedTrack {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $iwr = Invoke-WebRequest -Uri $apiUrl
-        $jsonString = $iwr.AllElements[3].innerHTML
-        $hash = $jsonString | ConvertFrom-Json | ConvertTo-HashTable
+        $irm = Invoke-RestMethod -Uri $apiUrl
+        $hash = $irm | ConvertTo-Hashtable
          
         $lovedTracks = foreach ($track in $hash.LovedTracks.Track) {
             $trackInfo = [pscustomobject] @{

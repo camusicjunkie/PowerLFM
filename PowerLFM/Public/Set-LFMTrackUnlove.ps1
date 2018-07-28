@@ -36,7 +36,7 @@ function Set-LFMTrackUnlove {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $iwr = Invoke-WebRequest -Uri $apiUrl -Method Post
+        $iwr = Invoke-RestMethod -Uri $apiUrl -Method Post
         if ($iwr.StatusCode -eq 200) {
             Write-Output "You unloved $Track by $Artist!"
         }

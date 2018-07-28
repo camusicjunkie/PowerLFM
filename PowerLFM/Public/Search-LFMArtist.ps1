@@ -41,9 +41,8 @@ function Search-LFMArtist {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $iwr = Invoke-WebRequest -Uri $apiUrl
-        $jsonString = $iwr.AllElements[3].innerHTML
-        $hash = $jsonString | ConvertFrom-Json | ConvertTo-HashTable
+        $irm = Invoke-RestMethod -Uri $apiUrl
+        $hash = $irm | ConvertTo-Hashtable
         
         $artistMatches = foreach ($match in $hash.Results.ArtistMatches.Artist) {
             $matchInfo = [pscustomobject] @{

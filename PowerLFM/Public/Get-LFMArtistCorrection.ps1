@@ -29,9 +29,8 @@ function Get-LFMArtistCorrection {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $iwr = Invoke-WebRequest -Uri $apiUrl
-        $jsonString = $iwr.AllElements[3].innerHTML
-        $hash = $jsonString | ConvertFrom-Json | ConvertTo-HashTable
+        $irm = Invoke-RestMethod -Uri $apiUrl
+        $hash = $irm | ConvertTo-Hashtable
         
         $correctedArtistInfo = [pscustomobject] @{
             'Artist' = $hash.Corrections.Correction.Artist.Name

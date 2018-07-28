@@ -29,9 +29,8 @@ function Get-LFMUserWeeklyChartList {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $iwr = Invoke-WebRequest -Uri $apiUrl
-        $jsonString = $iwr.AllElements[3].innerHTML
-        $hash = $jsonString | ConvertFrom-Json | ConvertTo-HashTable
+        $irm = Invoke-RestMethod -Uri $apiUrl
+        $hash = $irm | ConvertTo-Hashtable
          
         foreach ($chart in ($hash.WeeklyChartList.Chart | Sort-Object From -Descending)) {
             $chartInfo = [pscustomobject] @{
