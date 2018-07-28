@@ -39,12 +39,13 @@ function Set-LFMTrackUnlove {
     end {
         if ($PSCmdlet.ShouldProcess("Track: $Track", "Removing love")) {
             Invoke-RestMethod -Uri $apiUrl -Method Post | Out-Null
-        }
-        if ($iwr.StatusCode -eq 200) {
-            Write-Output "You unloved $Track by $Artist!"
-        }
-        else {
-            Write-Warning "We know you still love it. Try again later."
+
+            if ($iwr.StatusCode -eq 200) {
+                Write-Output "You unloved $Track by $Artist!"
+            }
+            else {
+                Write-Warning "We know you still love it. Try again later."
+            }
         }
     }
 }

@@ -39,12 +39,13 @@ function Set-LFMTrackLove {
     end {
         if ($PSCmdlet.ShouldProcess("Track: $Track", "Adding love")) {
             Invoke-RestMethod -Uri $apiUrl -Method Post | Out-Null
-        }
-        if ($iwr.StatusCode -eq 200) {
-            Write-Output "You loved $Track by $Artist!"
-        }
-        else {
-            Write-Warning "Your love got lost. Try again later."
+        
+            if ($iwr.StatusCode -eq 200) {
+                Write-Output "You loved $Track by $Artist!"
+            }
+            else {
+                Write-Warning "Your love got lost. Try again later."
+            }
         }
     }
 }
