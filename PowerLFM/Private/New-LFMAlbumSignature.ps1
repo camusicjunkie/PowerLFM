@@ -17,7 +17,8 @@ function New-LFMAlbumSignature {
 
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
-        [string] $Tag
+        [ValidateCount(1,10)]
+        [string[]] $Tag
     )
     try {
         $sigParams = @{
