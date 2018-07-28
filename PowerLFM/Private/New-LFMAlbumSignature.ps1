@@ -1,5 +1,6 @@
 function New-LFMAlbumSignature {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess,
+                   ConfirmImpact = 'Medium')]
     [OutputType('System.String')]
     param (
         [Parameter(Mandatory)]
@@ -35,8 +36,10 @@ function New-LFMAlbumSignature {
         }
     
         $string = $keyValues -join ''
-    
-        Get-Md5Hash -String "$string$($LFMConfig.SharedSecret)"
+        
+        if ($PSCmdlet.ShouldProcess('Shared secret', 'Creating album signature')) {
+            Get-Md5Hash -String "$string$($LFMConfig.SharedSecret)"
+        }
         Write-Verbose "$string$($LFMConfig.SharedSecret)"
     }
     catch {

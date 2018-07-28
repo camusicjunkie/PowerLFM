@@ -1,5 +1,6 @@
 function New-LFMAuthSignature {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess,
+                   ConfirmImpact = 'Medium')]
     [OutputType('System.String')]
     param (
         # Parameter help description
@@ -10,11 +11,7 @@ function New-LFMAuthSignature {
         # Parameter help description
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
-        [ValidateSet('auth.getToken','auth.getSession',
-                     'album.addtags','album.removetag',
-                     'artist.addtags','artist.removetag',
-                     'track.addtags','track.removetag',
-                     'track.love','track.unlove')]
+        [ValidateSet('auth.getToken','auth.getSession')]
         [string] $Method,
 
         # Parameter help description
@@ -35,7 +32,9 @@ function New-LFMAuthSignature {
 
         $string = $keyValues -join ''
 
-        Get-Md5Hash -String "$string$SharedSecret"
+        if ($PSCmdlet.ShouldProcess('Shared secret', 'Creating artist signature')) {
+            Get-Md5Hash -String "$string$SharedSecret"
+        }
         Write-Verbose "$string$SharedSecret"
     }
     catch {

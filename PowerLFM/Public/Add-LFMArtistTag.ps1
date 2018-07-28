@@ -1,5 +1,6 @@
 function Add-LFMArtistTag {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess,
+                   ConfirmImpact = 'Medium')]
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
@@ -38,6 +39,8 @@ function Add-LFMArtistTag {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        Invoke-RestMethod -Uri $apiUrl -Method Post | Out-Null
+        if ($PSCmdlet.ShouldProcess("Artist: $Artist", "Adding artist tag")) {
+            Invoke-RestMethod -Uri $apiUrl -Method Post | Out-Null
+        }
     }
 }

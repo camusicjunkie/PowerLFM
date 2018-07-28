@@ -1,5 +1,6 @@
 function Add-LFMConfiguration {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess,
+                   ConfirmImpact = 'Medium')]
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
@@ -27,28 +28,31 @@ function Add-LFMConfiguration {
         return $encrypted
     }
 
-    if (-not (Test-Path -Path $RegistryKeyPath)) {
-        $niParams = @{
-            'Path' = ($RegistryKeyPath | Split-Path -Parent)
-            'Name' = ($RegistryKeyPath | Split-Path -Leaf)
-        }
-        New-Item @niParams | Out-Null
-    }
-	
-    $values = 'APIKey', 'SessionKey', 'SharedSecret'
-    foreach ($val in $values) {
-        if ((Get-Item -Path $RegistryKeyPath).GetValue($val)) {
-            Write-Verbose "'$RegistryKeyPath\$val' already exists. Skipping."
-        }
-        else {
-            Write-Verbose "Creating $RegistryKeyPath\$val"
-            $nipParams = @{
-                'Path'  = $RegistryKeyPath
-                'Name'  = $val
-                'Value' = $(encrypt $((Get-Variable $val).Value))
-                'Force' = $true
+    if ($PSCmdlet.ShouldProcess("Registry key path: $RegistryKeyPath",
+                                "Adding configuration")) {
+        if (-not (Test-Path -Path $RegistryKeyPath)) {
+            $niParams = @{
+                'Path' = ($RegistryKeyPath | Split-Path -Parent)
+                'Name' = ($RegistryKeyPath | Split-Path -Leaf)
             }
-            New-ItemProperty @nipParams | Out-Null
+            New-Item @niParams | Out-Null
+        }
+        
+        $values = 'APIKey', 'SessionKey', 'SharedSecret'
+        foreach ($value in $values) {
+            if ((Get-Item -Path $RegistryKeyPath).GetValue($value)) {
+                Write-Verbose "'$RegistryKeyPath\$value' already exists. Skipping."
+            }
+            else {
+                Write-Verbose "Creating $RegistryKeyPath\$value"
+                $nipParams = @{
+                    'Path'  = $RegistryKeyPath
+                    'Name'  = $value
+                    'Value' = $(encrypt $((Get-Variable $value).Value))
+                    'Force' = $true
+                }
+                New-ItemProperty @nipParams | Out-Null
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 function Set-LFMTrackUnlove {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess,
+                   ConfirmImpact = 'High')]
     [OutputType('PowerLFM.Track.Unlove')]
     param (
         [Parameter(Mandatory,
@@ -36,7 +37,9 @@ function Set-LFMTrackUnlove {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $iwr = Invoke-RestMethod -Uri $apiUrl -Method Post
+        if ($PSCmdlet.ShouldProcess("Track: $Track", "Removing love")) {
+            Invoke-RestMethod -Uri $apiUrl -Method Post | Out-Null
+        }
         if ($iwr.StatusCode -eq 200) {
             Write-Output "You unloved $Track by $Artist!"
         }

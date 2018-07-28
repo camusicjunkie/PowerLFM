@@ -1,5 +1,6 @@
 function Set-LFMTrackLove {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess,
+                   ConfirmImpact = 'High')]
     [OutputType('PowerLFM.Track.Love')]
     param (
         [Parameter(Mandatory,
@@ -36,7 +37,9 @@ function Set-LFMTrackLove {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $iwr = Invoke-RestMethod -Uri $apiUrl -Method Post
+        if ($PSCmdlet.ShouldProcess("Track: $Track", "Adding love")) {
+            Invoke-RestMethod -Uri $apiUrl -Method Post | Out-Null
+        }
         if ($iwr.StatusCode -eq 200) {
             Write-Output "You loved $Track by $Artist!"
         }

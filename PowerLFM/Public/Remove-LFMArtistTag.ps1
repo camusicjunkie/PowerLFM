@@ -1,5 +1,6 @@
 function Remove-LFMArtistTag {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess,
+                   ConfirmImpact = 'High')]
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
@@ -37,6 +38,8 @@ function Remove-LFMArtistTag {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        Invoke-RestMethod -Uri $apiUrl -Method Post | Out-Null
+        if ($PSCmdlet.ShouldProcess("Artist: $Artist", "Removing artist tag")) {
+            Invoke-RestMethod -Uri $apiUrl -Method Post | Out-Null
+        }
     }
 }
