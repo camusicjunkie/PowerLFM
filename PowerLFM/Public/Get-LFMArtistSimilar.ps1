@@ -46,9 +46,8 @@ function Get-LFMArtistSimilar {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $iwr = Invoke-WebRequest -Uri $apiUrl
-        $jsonString = $iwr.AllElements[3].innerHTML
-        $hash = $jsonString | ConvertFrom-Json | ConvertTo-HashTable
+        $irm = Invoke-RestMethod -Uri $apiUrl
+        $hash = $irm | ConvertTo-Hashtable
 
         foreach ($similar in $hash.SimilarArtists.Artist) {
             $similarInfo = [pscustomobject] @{

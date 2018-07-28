@@ -43,9 +43,8 @@ function Get-LFMUserFriend {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $iwr = Invoke-WebRequest -Uri $apiUrl
-        $jsonString = $iwr.AllElements[3].innerHTML
-        $hash = $jsonString | ConvertFrom-Json | ConvertTo-HashTable
+        $irm = Invoke-RestMethod -Uri $apiUrl
+        $hash = $irm | ConvertTo-Hashtable
          
         $users = foreach ($friend in $hash.Friends.User) {
             $userInfo = [pscustomobject] @{

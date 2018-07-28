@@ -50,9 +50,8 @@ function Get-LFMUserArtistTrack {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $iwr = Invoke-WebRequest -Uri $apiUrl
-        $jsonString = $iwr.AllElements[3].innerHTML
-        $hash = $jsonString | ConvertFrom-Json | ConvertTo-HashTable
+        $irm = Invoke-RestMethod -Uri $apiUrl
+        $hash = $irm | ConvertTo-Hashtable
 
         $tracks = foreach ($track in $hash.ArtistTracks.Track) {
             $trackInfo = [pscustomobject] @{
@@ -67,7 +66,7 @@ function Get-LFMUserArtistTrack {
             Write-Output $trackInfo
         }
 
-        if ($tracks -eq $null) {
+        if ($null -eq $tracks) {
             Write-Warning 'Something went wrong with the Last.fm API'
             Write-Warning 'The artist tracks were not populated.'
             Write-Warning 'Please try again.'

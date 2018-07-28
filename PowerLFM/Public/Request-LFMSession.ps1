@@ -27,6 +27,7 @@ function Request-LFMSession {
             $apiSig = Get-Md5Hash -String "api_key$($ApiKey)methodauth.getSessiontoken$Token$SharedSecret"
             Write-Verbose "Signature MD5 Hash: $apiSig"
 
+            #Need to fix. Dynamically build string with .GetEnumerator()
             $params = @{
                 'Uri' = "$baseUrl/?method=auth.getSession&api_key=$ApiKey&token=$token&api_sig=$apiSig&format=json"
                 'ErrorAction' = 'Stop'
