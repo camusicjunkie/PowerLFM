@@ -52,6 +52,6 @@ function Add-LFMAlbumTag {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        Invoke-WebRequest -Uri $apiUrl -Method Post | Out-Null
+        Invoke-RestMethod -Uri $apiUrl -Method Post | Out-Null
     }
 }
