@@ -1,5 +1,6 @@
 function New-LFMTrackSignature {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess,
+                   ConfirmImpact = 'Medium')]
     [OutputType('System.String')]
     param (
         # Parameter help description
@@ -32,7 +33,9 @@ function New-LFMTrackSignature {
     
         $string = $keyValues -join ''
     
-        Get-Md5Hash -String "$string$($LFMConfig.SharedSecret)"
+        if ($PSCmdlet.ShouldProcess('Shared secret', 'Creating track signature')) {
+            Get-Md5Hash -String "$string$($LFMConfig.SharedSecret)"
+        }
         Write-Verbose "$string$($LFMConfig.SharedSecret)"
     }
     catch {

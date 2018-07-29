@@ -1,5 +1,6 @@
 function Add-LFMAlbumTag {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess,
+                   ConfirmImpact = 'Medium')]
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
@@ -52,6 +53,8 @@ function Add-LFMAlbumTag {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        Invoke-RestMethod -Uri $apiUrl -Method Post | Out-Null
+        if ($PSCmdlet.ShouldProcess("Album: $Album", "Adding album tag")) {
+            Invoke-RestMethod -Uri $apiUrl -Method Post | Out-Null
+        }
     }
 }

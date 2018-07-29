@@ -1,5 +1,6 @@
 function Remove-LFMAlbumTag {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess,
+                   ConfirmImpact = 'High')]
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
@@ -51,6 +52,8 @@ function Remove-LFMAlbumTag {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        Invoke-RestMethod -Uri $apiUrl -Method Post | Out-Null
+        if ($PSCmdlet.ShouldProcess("Album: $Album", "Removing album tag")) {
+            Invoke-RestMethod -Uri $apiUrl -Method Post | Out-Null
+        }
     }
 }
