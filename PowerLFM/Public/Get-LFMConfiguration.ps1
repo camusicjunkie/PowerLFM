@@ -1,4 +1,4 @@
-function Get-LFMConfig {
+function Get-LFMConfiguration {
     [CmdletBinding()]
     param ()
 

@@ -1,4 +1,4 @@
-function Add-LFMConfig {
+function Add-LFMConfiguration {
     [CmdletBinding(SupportsShouldProcess,
                    ConfirmImpact = 'Medium')]
     param (
