@@ -1,37 +1,23 @@
-function Get-LFMConfiguration {
+function Get-LFMConfig {
     [CmdletBinding()]
-    param (
-        [Parameter()]
-        [ValidateNotNullOrEmpty()]
-        [string]$RegistryKeyPath = "HKCU:\Software\$projectName"
-    )
-	Write-Verbose $projectName
-    $ErrorActionPreference = 'Stop'
-    function decrypt([string]$TextToDecrypt) {
-        $secure = ConvertTo-SecureString $TextToDecrypt
-        $hook = New-Object system.Management.Automation.PSCredential("test", $secure)
-        $plain = $hook.GetNetworkCredential().Password
-        return $plain
-    }
+    param ()
+
+    $module = (Get-Command -Name $MyInvocation.MyCommand.Name).ModuleName
 
     try {
-        if (-not (Test-Path -Path $RegistryKeyPath)) {
-            Write-Verbose "No $projectName configuration found in registry"
+        [Void][Windows.Security.Credentials.PasswordVault,Windows.Security.Credentials,ContentType=WindowsRuntime]
+        $vault = New-Object -TypeName Windows.Security.Credentials.PasswordVault -ErrorAction Stop
+        
+        $ak = $vault.Retrieve($module, 'APIKey').Password
+        $sk = $vault.Retrieve($module, 'SessionKey').Password
+        $ss = $vault.Retrieve($module, 'SharedSecret').Password
+        $script:LFMConfig = [pscustomobject] @{
+            'APIKey' = $ak
+            'SessionKey' = $sk
+            'SharedSecret' = $ss
         }
-        else {
-            $keyValues = Get-ItemProperty -Path $RegistryKeyPath
-            $ak = decrypt $keyValues.APIKey
-            $sk = decrypt $keyValues.SessionKey
-            $ss = decrypt $keyValues.SharedSecret
-            $script:LFMConfig = [pscustomobject] @{
-                'APIKey' = $ak
-                'SessionKey' = $sk
-                'SharedSecret' = $ss
-            }
-            Write-Output $LFMConfig
-        }
-    }
-    catch {
+        Write-Verbose 'LFMConfig is loaded in to the session'
+    } catch {
         Write-Error $_.Exception.Message
     }
 }
