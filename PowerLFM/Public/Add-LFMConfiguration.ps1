@@ -15,43 +15,14 @@ function Add-LFMConfiguration {
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
-        [string] $SharedSecret,
-	
-        [Parameter()]
-        [ValidateNotNullOrEmpty()]
-        [string] $RegistryKeyPath = "HKCU:\Software\$ProjectName"
+        [string] $SharedSecret
     )
 
-    function encrypt([string]$TextToEncrypt) {
-        $secure = ConvertTo-SecureString $TextToEncrypt -AsPlainText -Force
-        $encrypted = $secure | ConvertFrom-SecureString
-        return $encrypted
-    }
+    process {
+        if ($PSCmdlet.ShouldProcess('Add key to vault', 'Adding configuration')) {
 
-    if ($PSCmdlet.ShouldProcess("Registry key path: $RegistryKeyPath",
-                                "Adding configuration")) {
-        if (-not (Test-Path -Path $RegistryKeyPath)) {
-            $niParams = @{
-                'Path' = ($RegistryKeyPath | Split-Path -Parent)
-                'Name' = ($RegistryKeyPath | Split-Path -Leaf)
-            }
-            New-Item @niParams | Out-Null
-        }
-        
-        $values = 'APIKey', 'SessionKey', 'SharedSecret'
-        foreach ($value in $values) {
-            if ((Get-Item -Path $RegistryKeyPath).GetValue($value)) {
-                Write-Verbose "'$RegistryKeyPath\$value' already exists. Skipping."
-            }
-            else {
-                Write-Verbose "Creating $RegistryKeyPath\$value"
-                $nipParams = @{
-                    'Path'  = $RegistryKeyPath
-                    'Name'  = $value
-                    'Value' = $(encrypt $((Get-Variable $value).Value))
-                    'Force' = $true
-                }
-                New-ItemProperty @nipParams | Out-Null
+            foreach ($param in $PSBoundParameters) {
+                Add-LFMVaultPass -UserName $param.Key -Pass $param.Value -Confirm
             }
         }
     }

@@ -83,7 +83,7 @@ FunctionsToExport = 'Add-LFMAlbumTag', 'Add-LFMArtistTag', 'Add-LFMConfiguration
                     'Get-LFMUserWeeklyChartList', 'Get-LFMUserWeeklyTrackChart', 
                     'Remove-LFMAlbumTag', 'Remove-LFMArtistTag', 'Request-LFMSession', 
                     'Request-LFMToken', 'Search-LFMAlbum', 'Search-LFMArtist', 
-                    'Set-LFMTrackLove', 'Set-LFMTrackUnlove'
+                    'Set-LFMTrackLove', 'Set-LFMTrackUnlove', 'Add-LFMVaultPass'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
