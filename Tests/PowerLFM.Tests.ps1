@@ -1,8 +1,8 @@
 $projectRoot = Resolve-Path "$PSScriptRoot\.."
-$moduleRoot = Split-Path (Resolve-Path "$projectRoot\*\*.psm1")
+$moduleRoot = Split-Path (Resolve-Path "$projectRoot\*.psm1")
 $moduleName = Split-Path $moduleRoot -Leaf
 $ModuleManifestName = "$moduleName.psd1"
-$ModuleManifestPath = "$PSScriptRoot\..\$moduleName\$ModuleManifestName"
+$ModuleManifestPath = "$PSScriptRoot\..\$ModuleManifestName"
 
 
 Describe 'Module Tests' {
