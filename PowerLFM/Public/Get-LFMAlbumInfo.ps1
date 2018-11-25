@@ -69,10 +69,11 @@ function Get-LFMAlbumInfo {
 
         $tags = foreach ($tag in $hash.Album.Tags.Tag) {
             $tagInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.Album.Tag'
                 'Tag' = $tag.Name
                 'Url' = $tag.Url
             }
-            $tagInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Album.Tag')
+            #$tagInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Album.Tag')
             Write-Output $tagInfo
         }
 
