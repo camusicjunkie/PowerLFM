@@ -27,7 +27,7 @@ function Add-LFMVaultPass {
 
     process {
         $noParams = @{
-            'TypeName' = Windows.Security.Credentials.PasswordCredential
+            'TypeName' = [Windows.Security.Credentials.PasswordCredential]
             'ArgumentList' = $module, $UserName, $Pass
         }
         $pwCred = New-Object @noParams
@@ -35,7 +35,7 @@ function Add-LFMVaultPass {
         try {
             if ($vault.FindAllByUserName("$UserName").Count -ne 0) {
                 $message = "There is already a value present for $UserName, do you wish to update the value?"
-                if ($PSCmdlet.ShouldProcess($vault, $message)) {
+                if ($PSCmdlet.ShouldProcess($($vault.GetType().Name), $message)) {
                     $vault.Add($pwCred)
                 }
             }
