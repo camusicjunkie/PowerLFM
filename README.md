@@ -19,7 +19,7 @@ $session = Request-LFMToken -ApiKey $ApiKey -SharedSecret $SharedSecret | Reques
 $session | Add-LFMConfiguration
 ```
 
-* Alternatively, just string all the commands together
+* Alternatively, just pipe all the commands together
 
 ```powershell
 Request-LFMToken -ApiKey $ApiKey -SharedSecret $SharedSecret | Request-LFMSession | Add-LFMConfiguration
