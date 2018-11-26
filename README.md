@@ -31,7 +31,7 @@ Request-LFMToken -ApiKey $ApiKey -SharedSecret $SharedSecret | Request-LFMSessio
 Get-LFMConfiguration
 ```
 
-* Run a function from PowerLFM to test the configuration like.
+* Run a function from PowerLFM to test the configuration.
 
 ```powershell
 Get-LFMAlbumInfo -Artist Cher -Album Believe
