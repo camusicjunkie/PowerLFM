@@ -19,7 +19,7 @@ $session = Request-LFMToken -ApiKey $ApiKey -SharedSecret $SharedSecret | Reques
 $session | Add-LFMConfiguration
 ```
 
-* Alternatively, just string all the commands together
+* Alternatively, just pipe all the commands together
 
 ```powershell
 Request-LFMToken -ApiKey $ApiKey -SharedSecret $SharedSecret | Request-LFMSession | Add-LFMConfiguration
@@ -31,7 +31,7 @@ Request-LFMToken -ApiKey $ApiKey -SharedSecret $SharedSecret | Request-LFMSessio
 Get-LFMConfiguration
 ```
 
-* Run a function from PowerLFM to test the configuration like.
+* Run a function from PowerLFM to test the configuration.
 
 ```powershell
 Get-LFMAlbumInfo -Artist Cher -Album Believe
