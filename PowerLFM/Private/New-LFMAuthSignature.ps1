@@ -3,27 +3,32 @@ function New-LFMAuthSignature {
                    ConfirmImpact = 'Medium')]
     [OutputType('System.String')]
     param (
-        # Parameter help description
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
         [string] $ApiKey,
 
-        # Parameter help description
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
         [ValidateSet('auth.getToken','auth.getSession')]
         [string] $Method,
 
-        # Parameter help description
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
-        [string] $SharedSecret
+        [string] $SharedSecret,
+
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        [string] $Token
     )
 
     try {
         $sigParams = @{
             'api_key' = $ApiKey
             'method' = $Method
+        }
+
+        if ($PSBoundParameters.ContainsKey('Token')) {
+            $sigParams.Add('token', $Token)
         }
 
         $keyValues = $sigParams.GetEnumerator() | Sort-Object Name | ForEach-Object {

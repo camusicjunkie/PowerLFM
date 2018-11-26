@@ -3,7 +3,6 @@ function New-LFMArtistSignature {
                    ConfirmImpact = 'Medium')]
     [OutputType('System.String')]
     param (
-        # Parameter help description
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
         [ValidateSet('artist.addTags','artist.removeTag')]

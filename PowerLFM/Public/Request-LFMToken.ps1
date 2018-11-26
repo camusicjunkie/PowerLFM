@@ -2,29 +2,41 @@ function Request-LFMToken {
     [CmdletBinding()]
     [OutputType('System.String')]
     param (
-        # Parameter help description
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
         [string] $ApiKey,
 
-        # Parameter help description
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
         [string] $SharedSecret
     )
 
     try {
-        $apiSig = New-LFMAuthSignature -ApiKey $ApiKey -Method auth.getToken -SharedSecret $SharedSecret
+        $sigParams = @{
+            'ApiKey' = $ApiKey
+            'Method' = 'auth.getToken'
+            'SharedSecret' = $SharedSecret
+        }
+        $apiSig = New-LFMAuthSignature @sigParams
         Write-Verbose "Signature MD5 Hash: $apiSig"
-
-        #Need to fix. Dynamically build string with .GetEnumerator()
-        $irmParams = @{
-            'Uri' = "$baseUrl/?method=auth.getToken&api_key=$ApiKey&api_sig=$apiSig&format=json"
-            'ErrorAction' = 'Stop'
+        
+        #Default hashtable
+        $apiParams = [ordered] @{
+            'method' = 'auth.getToken'
+            'api_key' = $APIKey
+            'api_sig' = $apiSig
+            'format' = 'json'
         }
         
+        #Building string to append to base url
+        $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
+            "$($_.Name)=$($_.Value)"
+        }
+        $string = $keyValues -join '&'
+        $apiUrl = "$baseUrl/?$string"
+
         Write-Verbose "Requesting token from $baseUrl"
-        $token = Invoke-RestMethod @irmParams
+        $token = Invoke-RestMethod -Uri $apiUrl
 
         Write-Verbose "Authorizing application with requested token on account"
         $authUrl = "http://www.last.fm/api/auth/?api_key=$ApiKey&token=$($token.token)"

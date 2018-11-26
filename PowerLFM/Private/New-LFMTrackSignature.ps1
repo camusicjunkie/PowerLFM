@@ -3,7 +3,6 @@ function New-LFMTrackSignature {
                    ConfirmImpact = 'Medium')]
     [OutputType('System.String')]
     param (
-        # Parameter help description
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
         [ValidateSet('track.addTags','track.removeTag',

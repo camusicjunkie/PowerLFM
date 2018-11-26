@@ -23,11 +23,13 @@ function Add-LFMConfiguration {
 
             $i = 1
             foreach ($param in $PSBoundParameters.Keys) {
-                do {
-                    Add-LFMVaultPass -UserName $param -Pass $PSBoundParameters[$param]
-                    $i++
+                if ($param -in @('ApiKey', 'SessionKey', 'SharedSecret')) {
+                    do {
+                        Add-LFMVaultPass -UserName $param -Pass $PSBoundParameters[$param]
+                        $i++
+                    }
+                    until ($i = 3)
                 }
-                until ($i = 3)
             }
         }
     }
