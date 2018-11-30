@@ -40,7 +40,7 @@ function Get-LFMUserWeeklyChartList {
             }
 
             $chartInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.User.WeeklyChartList')
-            Write-Output $chartInfo | Sort-Object -Property From -Descending
+            Write-Output $chartInfo
         }
     }
 }
