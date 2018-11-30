@@ -32,7 +32,7 @@ function Get-LFMUserWeeklyChartList {
         $irm = Invoke-RestMethod -Uri $apiUrl
         $hash = $irm | ConvertTo-Hashtable
          
-        foreach ($chart in ($hash.WeeklyChartList.Chart | Sort-Object From -Descending)) {
+        foreach ($chart in ($hash.WeeklyChartList.Chart)) {
             $chartInfo = [pscustomobject] @{
                 'UserName' = $hash.WeeklyChartList.'@attr'.User
                 'From' = $chart.From
