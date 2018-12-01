@@ -1,0 +1,45 @@
+site_name: LastFM Docs
+repo_url: https://github.com/camusicjunkie/PowerLFM
+theme: readthedocs
+pages:
+  - Home: PowerLFM.md
+  - Commands:
+    - Add-LFMAlbumTag: Add-LFMAlbumTag.md
+    - Add-LFMArtistTag: Add-LFMArtistTag.md
+    - Add-LFMConfiguration: Add-LFMConfiguration.md
+    - Get-LFMAlbumInfo: Get-LFMAlbumInfo.md
+    - Get-LFMAlbumTag: Get-LFMAlbumTag.md
+    - Get-LFMAlbumTopTag: Get-LFMAlbumTopTag.md
+    - Get-LFMArtistCorrection: Get-LFMArtistCorrection.md
+    - Get-LFMArtistInfo: Get-LFMArtistInfo.md
+    - Get-LFMArtistSimilar: Get-LFMArtistSimilar.md
+    - Get-LFMArtistTag: Get-LFMArtistTag.md
+    - Get-LFMArtistTopAlbum: Get-LFMArtistTopAlbum.md
+    - Get-LFMArtistTopTag: Get-LFMArtistTopTag.md
+    - Get-LFMArtistTopTrack: Get-LFMArtistTopTrack.md
+    - Get-LFMChartTopArtist: Get-LFMChartTopArtist.md
+    - Get-LFMChartTopTag: Get-LFMChartTopTag.md
+    - Get-LFMChartTopTrack: Get-LFMChartTopTrack.md
+    - Get-LFMConfiguration: Get-LFMConfiguration.md
+    - Get-LFMGeoTopArtist: Get-LFMGeoTopArtist.md
+    - Get-LFMGeoTopTrack: Get-LFMGeoTopTrack.md
+    - Get-LFMUserArtistTrack: Get-LFMUserArtistTrack.md
+    - Get-LFMUserFriend: Get-LFMUserFriend.md
+    - Get-LFMUserInfo: Get-LFMUserInfo.md
+    - Get-LFMUserLovedTrack: Get-LFMUserLovedTrack.md
+    - Get-LFMUserTopAlbum: Get-LFMUserTopAlbum.md
+    - Get-LFMUserTopArtist: Get-LFMUserTopArtist.md
+    - Get-LFMUserTopTag: Get-LFMUserTopTag.md
+    - Get-LFMUserTopTrack: Get-LFMUserTopTrack.md
+    - Get-LFMUserWeeklyAlbumChart: Get-LFMUserWeeklyAlbumChart.md
+    - Get-LFMUserWeeklyArtistChart: Get-LFMUserWeeklyArtistChart.md
+    - Get-LFMUserWeeklyChartList: Get-LFMUserWeeklyChartList.md
+    - Get-LFMUserWeeklyTrackChart: Get-LFMUserWeeklyTrackChart.md
+    - Remove-LFMAlbumTag: Remove-LFMAlbumTag.md
+    - Remove-LFMArtistTag: Remove-LFMArtistTag.md
+    - Request-LFMSession: Request-LFMSession.md
+    - Request-LFMToken: Request-LFMToken.md
+    - Search-LFMAlbum: Search-LFMAlbum.md
+    - Search-LFMArtist: Search-LFMArtist.md
+    - Set-LFMTrackLove: Set-LFMTrackLove.md
+    - Set-LFMTrackUnlove: Set-LFMTrackUnlove.md
