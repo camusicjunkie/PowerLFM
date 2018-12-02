@@ -13,7 +13,7 @@ All the API documentation can be found [here](https://www.last.fm/api/intro).
 $session = Request-LFMToken -ApiKey $ApiKey -SharedSecret $SharedSecret | Request-LFMSession
 ```
 
-* The contents of the $session variable are the session key and API key. Save this to the registry to use later.
+* The contents of the $session variable are the session key and API key. Save this to the credential manager to use later.
 
 ```powershell
 $session | Add-LFMConfiguration
