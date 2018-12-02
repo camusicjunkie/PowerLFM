@@ -33,7 +33,7 @@ function Add-LFMVaultPass {
         $pwCred = New-Object @noParams
 
         try {
-            if ($vault.FindAllByUserName("$UserName").Count -ne 0) {
+            if (($vault.RetrieveAll() | Where-Object {$_.UserName -eq $UserName}).Count -ne 0) {
                 $message = "There is already a value present for $UserName, do you wish to update the value?"
                 if ($PSCmdlet.ShouldProcess($($vault.GetType().Name), $message)) {
                     $vault.Add($pwCred)
