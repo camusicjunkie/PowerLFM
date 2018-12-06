@@ -6,7 +6,7 @@ function New-LFMTrackSignature {
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
         [ValidateSet('track.addTags','track.removeTag',
-                     'track.love','track.unlove')]
+                     'track.love','track.unlove', 'track.scrobble')]
         [string] $Method,
 
         [Parameter(Mandatory)]
@@ -15,7 +15,13 @@ function New-LFMTrackSignature {
 
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
-        [string] $Track
+        [string] $Track,
+
+        [Parameter()]
+        [string] $Album,
+
+        [Parameter()]
+        [string] $TimeStamp
     )
     try {
         $sigParams = @{
@@ -24,9 +30,20 @@ function New-LFMTrackSignature {
             'sk' = $LFMConfig.SessionKey
             'artist' = $Artist
             'track' = $Track
+            'timestamp' = $(if($Method -eq 'track.scrobble'){
+                                $TimeStamp
+                            }else{
+                                $null
+                            })
+            'album' = $(if($Album -ne $null){
+                            $Album
+                        }else{
+                            $null
+                        })
+                
         }
     
-        $keyValues = $sigParams.GetEnumerator() | Sort-Object Name | ForEach-Object {
+        $keyValues = $sigParams.GetEnumerator() | Where-Object {$_.Value -ne $null} | Sort-Object Name | ForEach-Object {
             "$($_.Key)$($_.Value)"
         }
     
