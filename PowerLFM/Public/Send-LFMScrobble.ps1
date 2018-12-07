@@ -18,7 +18,7 @@ function Send-LFMScrobble {
     begin {
         $TimeStamp = [Math]::Floor([decimal](Get-Date(Get-Date).ToUniversalTime() -uformat "%s"))
 
-        if($Album -ne $null){
+        if($null -ne $Album){
             $apiSig = New-LFMTrackSignature -Method track.scrobble -Artist $Artist -Track $Track -Album $Album -TimeStamp $TimeStamp
         }else{
             $apiSig = New-LFMTrackSignature -Method track.scrobble -Artist $Artist -Track $Track -TimeStamp $TimeStamp
@@ -38,7 +38,7 @@ function Send-LFMScrobble {
         $apiParams.add('artist', $Artist)
         $apiParams.add('track', $Track)
         $apiParams.add('timestamp', $TimeStamp)
-        if($Album -ne $null){
+        if($null -ne $Album){
             $apiParams.add('album', $Album)
         }
         

@@ -35,7 +35,7 @@ function New-LFMTrackSignature {
                             }else{
                                 $null
                             })
-            'album' = $(if($Album -ne $null){
+            'album' = $(if($null -ne $Album){
                             $Album
                         }else{
                             $null
@@ -43,7 +43,7 @@ function New-LFMTrackSignature {
                 
         }
     
-        $keyValues = $sigParams.GetEnumerator() | Where-Object {$_.Value -ne $null} | Sort-Object Name | ForEach-Object {
+        $keyValues = $sigParams.GetEnumerator() | Where-Object {$null -ne $_.Value} | Sort-Object Name | ForEach-Object {
             "$($_.Key)$($_.Value)"
         }
     
