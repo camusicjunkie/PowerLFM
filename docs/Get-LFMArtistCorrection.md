@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-LFMArtistCorrection
 
 ## SYNOPSIS
-{{Fill in the Synopsis}}
+Check to see if there is a correction.
 
 ## SYNTAX
 
@@ -17,24 +17,24 @@ Get-LFMArtistCorrection [-Artist] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{Fill in the Description}}
+Checks the Last.fm database to see if a correction can be made. This uses the artist.getCorrection method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-LFMArtistCorrection -Artist Deftone
 ```
 
-{{ Add example description here }}
+Transforms Deftone in to the correct artist name Deftones.
 
 ## PARAMETERS
 
 ### -Artist
-{{Fill Artist Description}}
+Name of the artist.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -60,3 +60,5 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## NOTES
 
 ## RELATED LINKS
+
+https://www.last.fm/api/show/artist.getCorrection

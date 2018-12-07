@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-LFMChartTopTrack
 
 ## SYNOPSIS
-{{Fill in the Synopsis}}
+Get the top tracks chart.
 
 ## SYNTAX
 
@@ -17,24 +17,24 @@ Get-LFMChartTopTrack [[-Limit] <String>] [[-Page] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{Fill in the Description}}
+Get the top tracks chart. This uses the chart.getTopTracks method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-LFMChartTopTrack
 ```
 
-{{ Add example description here }}
+This will get the top tracks chart.
 
 ## PARAMETERS
 
 ### -Limit
-{{Fill Limit Description}}
+Limit the number of results per page.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -46,10 +46,10 @@ Accept wildcard characters: False
 ```
 
 ### -Page
-{{Fill Page Description}}
+Page number to return. Defaults to the first page.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -75,3 +75,5 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## NOTES
 
 ## RELATED LINKS
+
+https://www.last.fm/api/show/chart.getTopTracks

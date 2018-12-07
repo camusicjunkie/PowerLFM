@@ -8,7 +8,7 @@ schema: 2.0.0
 # Remove-LFMAlbumTag
 
 ## SYNOPSIS
-{{Fill in the Synopsis}}
+Untag an album using a user supplied tag.
 
 ## SYNTAX
 
@@ -18,24 +18,24 @@ Remove-LFMAlbumTag [-Album] <String> [-Artist] <String> [-Tag] <String> [-WhatIf
 ```
 
 ## DESCRIPTION
-{{Fill in the Description}}
+Untag an album using a user supplied tag. This uses the album.removeTag method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Remove-LFMAlbumTag -Album Gore -Artist Deftones -Tag Rock
 ```
 
-{{ Add example description here }}
+This will remove the rock tag from the album Gore by Deftones.
 
 ## PARAMETERS
 
 ### -Album
-{{Fill Album Description}}
+Name of the album.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -47,10 +47,10 @@ Accept wildcard characters: False
 ```
 
 ### -Artist
-{{Fill Artist Description}}
+Name of the artist.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -62,10 +62,10 @@ Accept wildcard characters: False
 ```
 
 ### -Tag
-{{Fill Tag Description}}
+Name of the tag.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -80,7 +80,7 @@ Accept wildcard characters: False
 Prompts you for confirmation before running the cmdlet.
 
 ```yaml
-Type: System.Management.Automation.SwitchParameter
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases: cf
 
@@ -96,7 +96,7 @@ Shows what would happen if the cmdlet runs.
 The cmdlet is not run.
 
 ```yaml
-Type: System.Management.Automation.SwitchParameter
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases: wi
 
@@ -121,3 +121,5 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## NOTES
 
 ## RELATED LINKS
+
+https://www.last.fm/api/show/album.removeTag

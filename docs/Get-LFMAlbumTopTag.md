@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-LFMAlbumTopTag
 
 ## SYNOPSIS
-{{Fill in the Synopsis}}
+Get the top tags for an album.
 
 ## SYNTAX
 
@@ -19,28 +19,28 @@ Get-LFMAlbumTopTag -Album <String> -Artist <String> [-AutoCorrect] [<CommonParam
 
 ### id
 ```
-Get-LFMAlbumTopTag [-Id <String>] [-AutoCorrect] [<CommonParameters>]
+Get-LFMAlbumTopTag -Id <String> [-AutoCorrect] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{Fill in the Description}}
+Get the top tags for an album, ordered by popularity. This uses the album.getTopTags method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-LFMAlbumTopTag -Album Gore -Artist Deftones
 ```
 
-{{ Add example description here }}
+This will get top tags for the album Gore by Deftones
 
 ## PARAMETERS
 
 ### -Album
-{{Fill Album Description}}
+Name of the album.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: album
 Aliases:
 
@@ -52,10 +52,10 @@ Accept wildcard characters: False
 ```
 
 ### -Artist
-{{Fill Artist Description}}
+Name of the artist.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: album
 Aliases:
 
@@ -67,10 +67,10 @@ Accept wildcard characters: False
 ```
 
 ### -AutoCorrect
-{{Fill AutoCorrect Description}}
+Transform misspelled artist names into correct artist names.
 
 ```yaml
-Type: System.Management.Automation.SwitchParameter
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases:
 
@@ -82,14 +82,14 @@ Accept wildcard characters: False
 ```
 
 ### -Id
-{{Fill Id Description}}
+Musicbrainz id for the album.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: id
 Aliases:
 
-Required: False
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
@@ -111,3 +111,5 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## NOTES
 
 ## RELATED LINKS
+
+https://www.last.fm/api/show/album.getTopTags

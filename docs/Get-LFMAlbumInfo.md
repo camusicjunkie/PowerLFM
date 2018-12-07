@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-LFMAlbumInfo
 
 ## SYNOPSIS
-{{Fill in the Synopsis}}
+Get the metadata and tracklist for an album.
 
 ## SYNTAX
 
@@ -19,28 +19,28 @@ Get-LFMAlbumInfo -Artist <String> -Album <String> [-UserName <String>] [-AutoCor
 
 ### id
 ```
-Get-LFMAlbumInfo [-Id <String>] [-UserName <String>] [-AutoCorrect] [<CommonParameters>]
+Get-LFMAlbumInfo -Id <String> [-UserName <String>] [-AutoCorrect] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{Fill in the Description}}
+Get the metadata and tracklist for an album using the album name or a musicbrainz id. This uses the album.getInfo method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-LFMAlbumInfo -Artist Deftones -Album Gore
 ```
 
-{{ Add example description here }}
+This will get info for the album Gore by Deftones
 
 ## PARAMETERS
 
 ### -Album
-{{Fill Album Description}}
+Name of the album.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: album
 Aliases:
 
@@ -52,10 +52,10 @@ Accept wildcard characters: False
 ```
 
 ### -Artist
-{{Fill Artist Description}}
+Name of the artist.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: album
 Aliases:
 
@@ -67,10 +67,10 @@ Accept wildcard characters: False
 ```
 
 ### -AutoCorrect
-{{Fill AutoCorrect Description}}
+Transform misspelled artist names into correct artist names.
 
 ```yaml
-Type: System.Management.Automation.SwitchParameter
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases:
 
@@ -82,14 +82,14 @@ Accept wildcard characters: False
 ```
 
 ### -Id
-{{Fill Id Description}}
+Musicbrainz id for the album.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: id
 Aliases:
 
-Required: False
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
@@ -97,10 +97,10 @@ Accept wildcard characters: False
 ```
 
 ### -UserName
-{{Fill UserName Description}}
+Username for the context of the request. If used, the user's playcount for this album is included in the response.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -126,3 +126,5 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## NOTES
 
 ## RELATED LINKS
+
+https://www.last.fm/api/show/album.getInfo

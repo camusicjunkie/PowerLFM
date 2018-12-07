@@ -8,7 +8,7 @@ schema: 2.0.0
 # Add-LFMConfiguration
 
 ## SYNOPSIS
-{{Fill in the Synopsis}}
+Adds the token and keys to the credential manager.
 
 ## SYNTAX
 
@@ -18,24 +18,32 @@ Add-LFMConfiguration [-ApiKey] <String> [-SessionKey] <String> [-SharedSecret] <
 ```
 
 ## DESCRIPTION
-{{Fill in the Description}}
+Takes the API key and shared secret received from Last.fm and adds them to the credential manager. This will also add the session key after it has been requested.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> $session = Request-LFMToken -ApiKey $ApiKey -SharedSecret $SharedSecret | Request-LFMSession
+PS C:\> $session | Add-LFMConfiguration
 ```
 
-{{ Add example description here }}
+This will take the session key requested from Last.fm and add it to the $session variable. The $session will then be added to the credential manager.
+
+### Example 2
+```powershell
+PS C:\> Request-LFMToken -ApiKey $ApiKey -SharedSecret $SharedSecret | Request-LFMSession | Add-LFMConfiguration
+```
+
+This will take the session key requested from Last.fm and add it to the credential manager using a single piped command.
 
 ## PARAMETERS
 
 ### -ApiKey
-{{Fill ApiKey Description}}
+API key requested from Last.fm.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -47,10 +55,10 @@ Accept wildcard characters: False
 ```
 
 ### -SessionKey
-{{Fill SessionKey Description}}
+Session key requested from Last.fm using Request-LFMSession.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -62,10 +70,10 @@ Accept wildcard characters: False
 ```
 
 ### -SharedSecret
-{{Fill SharedSecret Description}}
+Shared secret that is received with the API key.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -80,7 +88,7 @@ Accept wildcard characters: False
 Prompts you for confirmation before running the cmdlet.
 
 ```yaml
-Type: System.Management.Automation.SwitchParameter
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases: cf
 
@@ -96,7 +104,7 @@ Shows what would happen if the cmdlet runs.
 The cmdlet is not run.
 
 ```yaml
-Type: System.Management.Automation.SwitchParameter
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases: wi
 
@@ -108,8 +116,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable.
-For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 

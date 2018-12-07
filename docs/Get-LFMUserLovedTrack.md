@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-LFMUserLovedTrack
 
 ## SYNOPSIS
-{{Fill in the Synopsis}}
+Get the tracks loved by a user.
 
 ## SYNTAX
 
@@ -17,24 +17,24 @@ Get-LFMUserLovedTrack [-UserName] <String> [[-Limit] <String>] [[-Page] <String>
 ```
 
 ## DESCRIPTION
-{{Fill in the Description}}
+Get the tracks loved by a user. This uses the user.getLovedTracks method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-LFMUserLovedTrack -UserName camusicjunkie
 ```
 
-{{ Add example description here }}
+This will get all the loved tracks for camusicjunkie.
 
 ## PARAMETERS
 
 ### -Limit
-{{Fill Limit Description}}
+Limit the number of results per page.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -46,10 +46,10 @@ Accept wildcard characters: False
 ```
 
 ### -Page
-{{Fill Page Description}}
+Page number to return. Defaults to the first page.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -61,10 +61,10 @@ Accept wildcard characters: False
 ```
 
 ### -UserName
-{{Fill UserName Description}}
+Username for the context of the request. The loved tracks of this user are included in the response.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -90,3 +90,5 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## NOTES
 
 ## RELATED LINKS
+
+https://www.last.fm/api/show/user.getLovedTracks

@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-LFMConfiguration
 
 ## SYNOPSIS
-{{Fill in the Synopsis}}
+Get the current configuration.
 
 ## SYNTAX
 
@@ -17,16 +17,16 @@ Get-LFMConfiguration [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{Fill in the Description}}
+Get the configuration from the Windows credential manager. This will add the ApiKey, SharedSecret, and SessionKey to the current session.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-LFMConfiguration
 ```
 
-{{ Add example description here }}
+This will get the current configuration.
 
 ## PARAMETERS
 

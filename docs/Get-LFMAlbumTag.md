@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-LFMAlbumTag
 
 ## SYNOPSIS
-{{Fill in the Synopsis}}
+Get the tags applied to an album.
 
 ## SYNTAX
 
@@ -19,28 +19,28 @@ Get-LFMAlbumTag -Album <String> -Artist <String> [-UserName <String>] [-AutoCorr
 
 ### id
 ```
-Get-LFMAlbumTag [-Id <String>] [-UserName <String>] [-AutoCorrect] [<CommonParameters>]
+Get-LFMAlbumTag -Id <String> [-UserName <String>] [-AutoCorrect] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{Fill in the Description}}
+Get the tags applied to an album. This uses the album.getTags method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-LFMAlbumTag -Album Gore -Artist Deftones
 ```
 
-{{ Add example description here }}
+This will get tags for the album Gore by Deftones
 
 ## PARAMETERS
 
 ### -Album
-{{Fill Album Description}}
+Name of the album.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: album
 Aliases:
 
@@ -52,10 +52,10 @@ Accept wildcard characters: False
 ```
 
 ### -Artist
-{{Fill Artist Description}}
+Name of the artist.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: album
 Aliases:
 
@@ -67,10 +67,10 @@ Accept wildcard characters: False
 ```
 
 ### -AutoCorrect
-{{Fill AutoCorrect Description}}
+Transform misspelled artist names into correct artist names.
 
 ```yaml
-Type: System.Management.Automation.SwitchParameter
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases:
 
@@ -82,14 +82,14 @@ Accept wildcard characters: False
 ```
 
 ### -Id
-{{Fill Id Description}}
+Musicbrainz id for the album.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: id
 Aliases:
 
-Required: False
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
@@ -97,10 +97,10 @@ Accept wildcard characters: False
 ```
 
 ### -UserName
-{{Fill UserName Description}}
+Username for the context of the request. If used, the user's tags for this album are included in the response.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -126,3 +126,5 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## NOTES
 
 ## RELATED LINKS
+
+https://www.last.fm/api/show/album.getTags

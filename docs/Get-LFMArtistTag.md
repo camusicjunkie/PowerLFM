@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-LFMArtistTag
 
 ## SYNOPSIS
-{{Fill in the Synopsis}}
+Get the tags applied to an artist.
 
 ## SYNTAX
 
@@ -19,28 +19,28 @@ Get-LFMArtistTag -Artist <String> [-UserName <String>] [-AutoCorrect] [<CommonPa
 
 ### id
 ```
-Get-LFMArtistTag [-Id <String>] [-UserName <String>] [-AutoCorrect] [<CommonParameters>]
+Get-LFMArtistTag -Id <String> [-UserName <String>] [-AutoCorrect] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{Fill in the Description}}
+Get the tags applied to an artist. This uses the artist.getTags method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-LFMArtistTag -Artist Deftones
 ```
 
-{{ Add example description here }}
+This will get the tags for the artist Deftones.
 
 ## PARAMETERS
 
 ### -Artist
-{{Fill Artist Description}}
+Name of the artist.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: artist
 Aliases:
 
@@ -52,10 +52,10 @@ Accept wildcard characters: False
 ```
 
 ### -AutoCorrect
-{{Fill AutoCorrect Description}}
+Transform misspelled artist names into correct artist names.
 
 ```yaml
-Type: System.Management.Automation.SwitchParameter
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases:
 
@@ -67,14 +67,14 @@ Accept wildcard characters: False
 ```
 
 ### -Id
-{{Fill Id Description}}
+Musicbrainz id for the artist.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: id
 Aliases:
 
-Required: False
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
@@ -82,10 +82,10 @@ Accept wildcard characters: False
 ```
 
 ### -UserName
-{{Fill UserName Description}}
+Username for the context of the request. If used, the user's tags for this album are included in the response.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -111,3 +111,5 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## NOTES
 
 ## RELATED LINKS
+
+https://www.last.fm/api/show/artist.getTags

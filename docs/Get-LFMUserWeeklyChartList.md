@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-LFMUserWeeklyChartList
 
 ## SYNOPSIS
-{{Fill in the Synopsis}}
+Get a list of available charts for a user.
 
 ## SYNTAX
 
@@ -17,24 +17,24 @@ Get-LFMUserWeeklyChartList [-UserName] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{Fill in the Description}}
+Get a list of available charts for a user. These charts are expressed as date ranges that can be sent to the other chart services. This uses the user.getWeeklyChartList method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-LFMUserWeeklyChartList -UserName camusicjunkie
 ```
 
-{{ Add example description here }}
+This will get the chart lists for camusicjunkie.
 
 ## PARAMETERS
 
 ### -UserName
-{{Fill UserName Description}}
+Username for the context of the request. The chart list of this user is included in the response.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -46,8 +46,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable.
-For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
@@ -60,3 +59,5 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## NOTES
 
 ## RELATED LINKS
+
+https://www.last.fm/api/show/user.getWeeklyChartList

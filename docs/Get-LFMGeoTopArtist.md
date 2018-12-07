@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-LFMGeoTopArtist
 
 ## SYNOPSIS
-{{Fill in the Synopsis}}
+Get the most popular artists by country.
 
 ## SYNTAX
 
@@ -17,24 +17,24 @@ Get-LFMGeoTopArtist [-Country] <String> [[-Limit] <String>] [[-Page] <String>] [
 ```
 
 ## DESCRIPTION
-{{Fill in the Description}}
+Get the most popular artists by country. This uses the geo.getTopArtists method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-LFMGeoTopArtist -Country Netherlands
 ```
 
-{{ Add example description here }}
+This will get the top artists in the Netherlands.
 
 ## PARAMETERS
 
 ### -Country
-{{Fill Country Description}}
+Name of the country as defined by the ISO 3166-1 standard.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -46,10 +46,10 @@ Accept wildcard characters: False
 ```
 
 ### -Limit
-{{Fill Limit Description}}
+Limit the number of results per page.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -61,10 +61,10 @@ Accept wildcard characters: False
 ```
 
 ### -Page
-{{Fill Page Description}}
+Page number to return. Defaults to the first page.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -90,3 +90,5 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## NOTES
 
 ## RELATED LINKS
+
+https://www.last.fm/api/show/geo.getTopArtists

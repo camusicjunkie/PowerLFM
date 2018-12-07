@@ -8,7 +8,7 @@ schema: 2.0.0
 # Set-LFMTrackUnlove
 
 ## SYNOPSIS
-{{Fill in the Synopsis}}
+Unlove a track for a user.
 
 ## SYNTAX
 
@@ -17,24 +17,24 @@ Set-LFMTrackUnlove [-Artist] <String> [-Track] <String> [-WhatIf] [-Confirm] [<C
 ```
 
 ## DESCRIPTION
-{{Fill in the Description}}
+Unlove a track for a user. This uses the track.unlove method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Set-LFMTrackUnlove -Artist Deftones -Track Gore -Verbose
 ```
 
-{{ Add example description here }}
+This will unlove the track Gore by Deftones.
 
 ## PARAMETERS
 
 ### -Artist
-{{Fill Artist Description}}
+Name of the artist.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -46,10 +46,10 @@ Accept wildcard characters: False
 ```
 
 ### -Track
-{{Fill Track Description}}
+Name of the track.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -64,7 +64,7 @@ Accept wildcard characters: False
 Prompts you for confirmation before running the cmdlet.
 
 ```yaml
-Type: System.Management.Automation.SwitchParameter
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases: cf
 
@@ -80,7 +80,7 @@ Shows what would happen if the cmdlet runs.
 The cmdlet is not run.
 
 ```yaml
-Type: System.Management.Automation.SwitchParameter
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases: wi
 
@@ -106,3 +106,5 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## NOTES
 
 ## RELATED LINKS
+
+https://www.last.fm/api/show/track.unlove

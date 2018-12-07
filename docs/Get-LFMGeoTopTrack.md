@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-LFMGeoTopTrack
 
 ## SYNOPSIS
-{{Fill in the Synopsis}}
+Get the most popular tracks by country and city.
 
 ## SYNTAX
 
@@ -18,24 +18,24 @@ Get-LFMGeoTopTrack [-Country] <String> [[-City] <String>] [[-Limit] <String>] [[
 ```
 
 ## DESCRIPTION
-{{Fill in the Description}}
+Get the most popular tracks by country and city. This uses the geo.getTopTracks method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-LFMGeoTopTrack -Country Netherlands -City Amsterdam
 ```
 
-{{ Add example description here }}
+This will get the top tracks in Amsterdam.
 
 ## PARAMETERS
 
 ### -City
-{{Fill City Description}}
+Name of the city. This must be within the country specified.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -47,10 +47,10 @@ Accept wildcard characters: False
 ```
 
 ### -Country
-{{Fill Country Description}}
+Name of the country as defined by the ISO 3166-1 standard.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -62,10 +62,10 @@ Accept wildcard characters: False
 ```
 
 ### -Limit
-{{Fill Limit Description}}
+Limit the number of results per page.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -77,10 +77,10 @@ Accept wildcard characters: False
 ```
 
 ### -Page
-{{Fill Page Description}}
+Page number to return. Defaults to the first page.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -106,3 +106,5 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## NOTES
 
 ## RELATED LINKS
+
+https://www.last.fm/api/show/geo.getTopTracks

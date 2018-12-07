@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-LFMUserTopTag
 
 ## SYNOPSIS
-{{Fill in the Synopsis}}
+Get the top tags set by a user.
 
 ## SYNTAX
 
@@ -17,24 +17,24 @@ Get-LFMUserTopTag [-UserName] <String> [[-Limit] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{Fill in the Description}}
+Get the top tags set by a user. This uses the user.getTopTags method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-LFMUserTopTag -UserName camusicjunkie
 ```
 
-{{ Add example description here }}
+This will get the top tags set by camusicjunkie.
 
 ## PARAMETERS
 
 ### -Limit
-{{Fill Limit Description}}
+Limit the number of results per page.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -46,10 +46,10 @@ Accept wildcard characters: False
 ```
 
 ### -UserName
-{{Fill UserName Description}}
+Username for the context of the request. The top tags of this user are included in the response.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -75,3 +75,5 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## NOTES
 
 ## RELATED LINKS
+
+https://www.last.fm/api/show/user.getTopTags

@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-LFMUserArtistTrack
 
 ## SYNOPSIS
-{{Fill in the Synopsis}}
+Get a list of tracks by a given artist scrobbled by a user.
 
 ## SYNTAX
 
@@ -18,24 +18,31 @@ Get-LFMUserArtistTrack -UserName <String> -Artist <String> [-StartDate <DateTime
 ```
 
 ## DESCRIPTION
-{{Fill in the Description}}
+Get a list of tracks by a given artist scrobbled by a user. Include time ranges to limit tracks to those dates. This uses the user.getArtistTracks method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-LFMUserArtistTrack -UserName camusicjunkie -Artist Deftones
 ```
 
-{{ Add example description here }}
+This will get all Deftones tracks scrobbled by camusicjunkie.
+
+### Example 2
+```powershell
+PS C:\> Get-LFMUserArtistTrack -UserName camusicjunkie -Artist Deftones -StartDate 1/1/2018 -EndDate 6/30/2018
+```
+
+This will get all Deftones tracks scrobbled by camusicjunkie between the given dates. If no tracks were scrobbled during these dates this will return null.
 
 ## PARAMETERS
 
 ### -Artist
-{{Fill Artist Description}}
+Name of the artist.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -47,10 +54,10 @@ Accept wildcard characters: False
 ```
 
 ### -EndDate
-{{Fill EndDate Description}}
+Date to end the search.
 
 ```yaml
-Type: System.DateTime
+Type: DateTime
 Parameter Sets: (All)
 Aliases:
 
@@ -62,10 +69,10 @@ Accept wildcard characters: False
 ```
 
 ### -Page
-{{Fill Page Description}}
+Page number to return. Defaults to the first page.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -77,10 +84,10 @@ Accept wildcard characters: False
 ```
 
 ### -StartDate
-{{Fill StartDate Description}}
+Date to start the search.
 
 ```yaml
-Type: System.DateTime
+Type: DateTime
 Parameter Sets: (All)
 Aliases:
 
@@ -92,10 +99,10 @@ Accept wildcard characters: False
 ```
 
 ### -UserName
-{{Fill UserName Description}}
+Username for the context of the request. The tracks scrobbled by this user are included in the response.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -121,3 +128,5 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## NOTES
 
 ## RELATED LINKS
+
+https://www.last.fm/api/show/user.getArtistTracks

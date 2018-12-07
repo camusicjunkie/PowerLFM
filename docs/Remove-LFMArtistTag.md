@@ -8,7 +8,7 @@ schema: 2.0.0
 # Remove-LFMArtistTag
 
 ## SYNOPSIS
-{{Fill in the Synopsis}}
+Untag an artist using a user supplied tag.
 
 ## SYNTAX
 
@@ -17,24 +17,24 @@ Remove-LFMArtistTag [-Artist] <String> [-Tag] <String> [-WhatIf] [-Confirm] [<Co
 ```
 
 ## DESCRIPTION
-{{Fill in the Description}}
+Untag an artist using a user supplied tag. This uses the artist.removeTag method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Remove-LFMArtistTag -Artist Deftones -Tag Rock
 ```
 
-{{ Add example description here }}
+This will remove the rock tag from the artist Deftones
 
 ## PARAMETERS
 
 ### -Artist
-{{Fill Artist Description}}
+Name of the artist.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -46,10 +46,10 @@ Accept wildcard characters: False
 ```
 
 ### -Tag
-{{Fill Tag Description}}
+Name of the tag.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -64,7 +64,7 @@ Accept wildcard characters: False
 Prompts you for confirmation before running the cmdlet.
 
 ```yaml
-Type: System.Management.Automation.SwitchParameter
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases: cf
 
@@ -80,7 +80,7 @@ Shows what would happen if the cmdlet runs.
 The cmdlet is not run.
 
 ```yaml
-Type: System.Management.Automation.SwitchParameter
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases: wi
 
@@ -105,3 +105,5 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## NOTES
 
 ## RELATED LINKS
+
+https://www.last.fm/api/show/artist.removeTag

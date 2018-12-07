@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-LFMUserFriend
 
 ## SYNOPSIS
-{{Fill in the Synopsis}}
+Get a list of friends for a user.
 
 ## SYNTAX
 
@@ -18,24 +18,31 @@ Get-LFMUserFriend [-UserName] <String> [[-Limit] <String>] [[-Page] <String>] [-
 ```
 
 ## DESCRIPTION
-{{Fill in the Description}}
+Get a list of friends for a user. This uses the user.getFriends method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-LFMUserFriend -UserName camusicjunkie
 ```
 
-{{ Add example description here }}
+This will get the friends for camusicjunkie
+
+### Example 2
+```powershell
+PS C:\> Get-LFMUserFriend -UserName camusicjunkie -RecentTracks
+```
+
+This will get the friends for camusicjunkie and their recent tracks.
 
 ## PARAMETERS
 
 ### -Limit
-{{Fill Limit Description}}
+Limit the number of results per page.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -47,10 +54,10 @@ Accept wildcard characters: False
 ```
 
 ### -Page
-{{Fill Page Description}}
+Page number to return. Defaults to the first page.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -62,10 +69,10 @@ Accept wildcard characters: False
 ```
 
 ### -RecentTracks
-{{Fill RecentTracks Description}}
+Show recent tracks scrobbled by user's friends.
 
 ```yaml
-Type: System.Management.Automation.SwitchParameter
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases:
 
@@ -77,10 +84,10 @@ Accept wildcard characters: False
 ```
 
 ### -UserName
-{{Fill UserName Description}}
+Username for the context of the request. The friends of this user are included in the response.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -106,3 +113,5 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## NOTES
 
 ## RELATED LINKS
+
+https://www.last.fm/api/show/user.getFriends

@@ -8,7 +8,7 @@ schema: 2.0.0
 # Request-LFMSession
 
 ## SYNOPSIS
-{{Fill in the Synopsis}}
+Request a session key from Last.fm.
 
 ## SYNTAX
 
@@ -17,24 +17,31 @@ Request-LFMSession [-ApiKey] <String> [-Token] <String> [-SharedSecret] <String>
 ```
 
 ## DESCRIPTION
-{{Fill in the Description}}
+Request a session key by sending the API key, an API signature, and the authentication token as arguments to the auth.getSession method call.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Request-LFMToken -ApiKey $apiKey -SharedSecret $sharedSecret | Request-LFMSession
 ```
 
-{{ Add example description here }}
+This will request a token and send all three properties down the pipeline to request a session.
+
+### Example 2
+```powershell
+PS C:\> Request-LFMSession -ApiKey $apiKey -Token $token -SharedSecret $sharedSecret
+```
+
+This will request a session key after the token has already been requested and stored in a variable.
 
 ## PARAMETERS
 
 ### -ApiKey
-{{Fill ApiKey Description}}
+API key that was created on Last.fm for a user and application. This is required for all API calls.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -46,10 +53,10 @@ Accept wildcard characters: False
 ```
 
 ### -SharedSecret
-{{Fill SharedSecret Description}}
+Shared secret that was created on Last.fm for a user and application. This is required for API calls that need to be signed.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -61,10 +68,10 @@ Accept wildcard characters: False
 ```
 
 ### -Token
-{{Fill Token Description}}
+Token used to generate a session key. It is valid for only 60 minutes from the moment it is granted to a user.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -90,3 +97,7 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## NOTES
 
 ## RELATED LINKS
+
+https://www.last.fm/api/show/auth.getSession
+
+https://www.last.fm/api/desktopauth

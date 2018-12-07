@@ -8,7 +8,7 @@ schema: 2.0.0
 # Search-LFMArtist
 
 ## SYNOPSIS
-{{Fill in the Synopsis}}
+Search for an artist by name.
 
 ## SYNTAX
 
@@ -17,24 +17,24 @@ Search-LFMArtist [-Artist] <String> [[-Limit] <String>] [[-Page] <String>] [<Com
 ```
 
 ## DESCRIPTION
-{{Fill in the Description}}
+Search for an artist by name. The results will be sorted by relevance. This uses the artist.search method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Search-LFMArtist -Artist Deftones
 ```
 
-{{ Add example description here }}
+This will search for artists that match Deftones.
 
 ## PARAMETERS
 
 ### -Artist
-{{Fill Artist Description}}
+Name of the artist.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -46,10 +46,10 @@ Accept wildcard characters: False
 ```
 
 ### -Limit
-{{Fill Limit Description}}
+Limit the number of results per page.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -61,10 +61,10 @@ Accept wildcard characters: False
 ```
 
 ### -Page
-{{Fill Page Description}}
+Page number to return. Defaults to the first page.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -90,3 +90,5 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## NOTES
 
 ## RELATED LINKS
+
+https://www.last.fm/api/show/artist.search

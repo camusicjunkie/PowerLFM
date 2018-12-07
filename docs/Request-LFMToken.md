@@ -8,7 +8,7 @@ schema: 2.0.0
 # Request-LFMToken
 
 ## SYNOPSIS
-{{Fill in the Synopsis}}
+Requests a token from Last.fm.
 
 ## SYNTAX
 
@@ -17,24 +17,24 @@ Request-LFMToken [-ApiKey] <String> [-SharedSecret] <String> [<CommonParameters>
 ```
 
 ## DESCRIPTION
-{{Fill in the Description}}
+Requests a token by sending the API key and API signature as arguments to the auth.getToken method call.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Request-LFMToken -ApiKey $apiKey -SharedSecret $sharedSecret
 ```
 
-{{ Add example description here }}
+This will request a token using the API key and shared secret.
 
 ## PARAMETERS
 
 ### -ApiKey
-{{Fill ApiKey Description}}
+API key that was created on Last.fm for a user and application. This is required for all API calls.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -46,10 +46,10 @@ Accept wildcard characters: False
 ```
 
 ### -SharedSecret
-{{Fill SharedSecret Description}}
+Shared secret that was created on Last.fm for a user and application. This is required for API calls that need to be signed.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -75,3 +75,7 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## NOTES
 
 ## RELATED LINKS
+
+https://www.last.fm/api/show/auth.getToken
+
+https://www.last.fm/api/desktopauth

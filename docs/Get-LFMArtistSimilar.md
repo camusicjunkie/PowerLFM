@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-LFMArtistSimilar
 
 ## SYNOPSIS
-{{Fill in the Synopsis}}
+Get artists similar to another artist.
 
 ## SYNTAX
 
@@ -19,28 +19,28 @@ Get-LFMArtistSimilar -Artist <String> [-Limit <String>] [-AutoCorrect] [<CommonP
 
 ### id
 ```
-Get-LFMArtistSimilar [-Id <String>] [-Limit <String>] [-AutoCorrect] [<CommonParameters>]
+Get-LFMArtistSimilar -Id <String> [-Limit <String>] [-AutoCorrect] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{Fill in the Description}}
+Get artists similar to another artist. This uses the artist.getSimilar method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-LFMArtistSimilar -Artist Deftones -Limit 10
 ```
 
-{{ Add example description here }}
+Gets ten artists similar to the Deftones.
 
 ## PARAMETERS
 
 ### -Artist
-{{Fill Artist Description}}
+Name of the artist.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: artist
 Aliases:
 
@@ -52,10 +52,10 @@ Accept wildcard characters: False
 ```
 
 ### -AutoCorrect
-{{Fill AutoCorrect Description}}
+Transform misspelled artist names into correct artist names.
 
 ```yaml
-Type: System.Management.Automation.SwitchParameter
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases:
 
@@ -67,14 +67,14 @@ Accept wildcard characters: False
 ```
 
 ### -Id
-{{Fill Id Description}}
+Musicbrainz id for the artist.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: id
 Aliases:
 
-Required: False
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
@@ -82,10 +82,10 @@ Accept wildcard characters: False
 ```
 
 ### -Limit
-{{Fill Limit Description}}
+Limit the number of similar artists.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -111,3 +111,5 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## NOTES
 
 ## RELATED LINKS
+
+https://www.last.fm/api/show/artist.getSimilar

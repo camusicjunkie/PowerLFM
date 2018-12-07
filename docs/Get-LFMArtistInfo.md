@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-LFMArtistInfo
 
 ## SYNOPSIS
-{{Fill in the Synopsis}}
+Get the metadata and biography for an artist.
 
 ## SYNTAX
 
@@ -23,24 +23,24 @@ Get-LFMArtistInfo -Id <String> [-UserName <String>] [-AutoCorrect] [<CommonParam
 ```
 
 ## DESCRIPTION
-{{Fill in the Description}}
+Get the metadata and biography for an artist using the artist name or a musicbrainz id. This uses the artist.getInfo method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-LFMArtistInfo -Artist Deftones
 ```
 
-{{ Add example description here }}
+Get info for the artist Deftones.
 
 ## PARAMETERS
 
 ### -Artist
-{{Fill Artist Description}}
+Name of the artist.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: artist
 Aliases:
 
@@ -52,10 +52,10 @@ Accept wildcard characters: False
 ```
 
 ### -AutoCorrect
-{{Fill AutoCorrect Description}}
+Transform misspelled artist names into correct artist names.
 
 ```yaml
-Type: System.Management.Automation.SwitchParameter
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases:
 
@@ -67,10 +67,10 @@ Accept wildcard characters: False
 ```
 
 ### -Id
-{{Fill Id Description}}
+Musicbrainz id for the artist.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: id
 Aliases:
 
@@ -82,10 +82,10 @@ Accept wildcard characters: False
 ```
 
 ### -UserName
-{{Fill UserName Description}}
+Username for the context of the request. If used, the user's playcount for this album is included in the response.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -111,3 +111,5 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## NOTES
 
 ## RELATED LINKS
+
+https://www.last.fm/api/show/artist.getInfo

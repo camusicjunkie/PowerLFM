@@ -1,130 +1,129 @@
 ---
 Module Name: PowerLFM
 Module Guid: c8d0461c-325b-4b14-bd9c-dd5fa57fafeb
-Download Help Link: {{Please enter FwLink manually}}
-Help Version: {{Please enter version of help manually (X.X.X.X) format}}
+Download Help Link:
+Help Version: 1.1.0.0
 Locale: en-US
 ---
 
 # PowerLFM Module
 ## Description
-{{Manually Enter Description Here}}
+PowerShell module to leverage the Last.fm API.
 
 ## PowerLFM Cmdlets
 ### [Add-LFMAlbumTag](Add-LFMAlbumTag.md)
-{{Manually Enter Add-LFMAlbumTag Description Here}}
+Tag an album using a list of user supplied tags.
 
 ### [Add-LFMArtistTag](Add-LFMArtistTag.md)
-{{Manually Enter Add-LFMArtistTag Description Here}}
+Tag an artist using a list of user supplied tags.
 
 ### [Add-LFMConfiguration](Add-LFMConfiguration.md)
-{{Manually Enter Add-LFMConfiguration Description Here}}
+Adds the token and keys to the credential manager.
 
 ### [Get-LFMAlbumInfo](Get-LFMAlbumInfo.md)
-{{Manually Enter Get-LFMAlbumInfo Description Here}}
+Get the metadata and tracklist for an album.
 
 ### [Get-LFMAlbumTag](Get-LFMAlbumTag.md)
-{{Manually Enter Get-LFMAlbumTag Description Here}}
+Get the tags applied to an album.
 
 ### [Get-LFMAlbumTopTag](Get-LFMAlbumTopTag.md)
-{{Manually Enter Get-LFMAlbumTopTag Description Here}}
+Get the top tags for an album.
 
 ### [Get-LFMArtistCorrection](Get-LFMArtistCorrection.md)
-{{Manually Enter Get-LFMArtistCorrection Description Here}}
+Check to see if there is a correction.
 
 ### [Get-LFMArtistInfo](Get-LFMArtistInfo.md)
-{{Manually Enter Get-LFMArtistInfo Description Here}}
+Get the metadata and biography for an artist.
 
 ### [Get-LFMArtistSimilar](Get-LFMArtistSimilar.md)
-{{Manually Enter Get-LFMArtistSimilar Description Here}}
+Get artists similar to another artist.
 
 ### [Get-LFMArtistTag](Get-LFMArtistTag.md)
-{{Manually Enter Get-LFMArtistTag Description Here}}
+Get the tags applied to an artist.
 
 ### [Get-LFMArtistTopAlbum](Get-LFMArtistTopAlbum.md)
-{{Manually Enter Get-LFMArtistTopAlbum Description Here}}
+Get the top albums for an artist.
 
 ### [Get-LFMArtistTopTag](Get-LFMArtistTopTag.md)
-{{Manually Enter Get-LFMArtistTopTag Description Here}}
+Get the top tags for an artist.
 
 ### [Get-LFMArtistTopTrack](Get-LFMArtistTopTrack.md)
-{{Manually Enter Get-LFMArtistTopTrack Description Here}}
+Get the top tracks for an artist.
 
 ### [Get-LFMChartTopArtist](Get-LFMChartTopArtist.md)
-{{Manually Enter Get-LFMChartTopArtist Description Here}}
+Get the top artists chart.
 
 ### [Get-LFMChartTopTag](Get-LFMChartTopTag.md)
-{{Manually Enter Get-LFMChartTopTag Description Here}}
+Get the top tags chart.
 
 ### [Get-LFMChartTopTrack](Get-LFMChartTopTrack.md)
-{{Manually Enter Get-LFMChartTopTrack Description Here}}
+Get the top tracks chart.
 
 ### [Get-LFMConfiguration](Get-LFMConfiguration.md)
-{{Manually Enter Get-LFMConfiguration Description Here}}
+Get the current configuration.
 
 ### [Get-LFMGeoTopArtist](Get-LFMGeoTopArtist.md)
-{{Manually Enter Get-LFMGeoTopArtist Description Here}}
+Get the most popular artists by country.
 
 ### [Get-LFMGeoTopTrack](Get-LFMGeoTopTrack.md)
-{{Manually Enter Get-LFMGeoTopTrack Description Here}}
+Get the most popular tracks by country and city.
 
 ### [Get-LFMUserArtistTrack](Get-LFMUserArtistTrack.md)
-{{Manually Enter Get-LFMUserArtistTrack Description Here}}
+Get a list of tracks by a given artist scrobbled by a user.
 
 ### [Get-LFMUserFriend](Get-LFMUserFriend.md)
-{{Manually Enter Get-LFMUserFriend Description Here}}
+Get a list of friends for a user.
 
 ### [Get-LFMUserInfo](Get-LFMUserInfo.md)
-{{Manually Enter Get-LFMUserInfo Description Here}}
+Get information about a user.
 
 ### [Get-LFMUserLovedTrack](Get-LFMUserLovedTrack.md)
-{{Manually Enter Get-LFMUserLovedTrack Description Here}}
+Get the tracks loved by a user.
 
 ### [Get-LFMUserTopAlbum](Get-LFMUserTopAlbum.md)
-{{Manually Enter Get-LFMUserTopAlbum Description Here}}
+Get the top albums scrobbled by a user.
 
 ### [Get-LFMUserTopArtist](Get-LFMUserTopArtist.md)
-{{Manually Enter Get-LFMUserTopArtist Description Here}}
+Get the top artists scrobbled by a user.
 
 ### [Get-LFMUserTopTag](Get-LFMUserTopTag.md)
-{{Manually Enter Get-LFMUserTopTag Description Here}}
+Get the top tags set by a user.
 
 ### [Get-LFMUserTopTrack](Get-LFMUserTopTrack.md)
-{{Manually Enter Get-LFMUserTopTrack Description Here}}
+Get the top tracks scrobbled by a user.
 
 ### [Get-LFMUserWeeklyAlbumChart](Get-LFMUserWeeklyAlbumChart.md)
-{{Manually Enter Get-LFMUserWeeklyAlbumChart Description Here}}
+Get an album chart for a user.
 
 ### [Get-LFMUserWeeklyArtistChart](Get-LFMUserWeeklyArtistChart.md)
-{{Manually Enter Get-LFMUserWeeklyArtistChart Description Here}}
+Get an artist chart for a user.
 
 ### [Get-LFMUserWeeklyChartList](Get-LFMUserWeeklyChartList.md)
-{{Manually Enter Get-LFMUserWeeklyChartList Description Here}}
+Get a list of available charts for a user.
 
 ### [Get-LFMUserWeeklyTrackChart](Get-LFMUserWeeklyTrackChart.md)
-{{Manually Enter Get-LFMUserWeeklyTrackChart Description Here}}
+Get a track chart for a user.
 
 ### [Remove-LFMAlbumTag](Remove-LFMAlbumTag.md)
-{{Manually Enter Remove-LFMAlbumTag Description Here}}
+Untag an album using a user supplied tag.
 
 ### [Remove-LFMArtistTag](Remove-LFMArtistTag.md)
-{{Manually Enter Remove-LFMArtistTag Description Here}}
+Untag an artist using a user supplied tag.
 
 ### [Request-LFMSession](Request-LFMSession.md)
-{{Manually Enter Request-LFMSession Description Here}}
+Request a session key from Last.fm.
 
 ### [Request-LFMToken](Request-LFMToken.md)
-{{Manually Enter Request-LFMToken Description Here}}
+Requests a token from Last.fm.
 
 ### [Search-LFMAlbum](Search-LFMAlbum.md)
-{{Manually Enter Search-LFMAlbum Description Here}}
+Search for an album by name.
 
 ### [Search-LFMArtist](Search-LFMArtist.md)
-{{Manually Enter Search-LFMArtist Description Here}}
+Search for an artist by name.
 
 ### [Set-LFMTrackLove](Set-LFMTrackLove.md)
-{{Manually Enter Set-LFMTrackLove Description Here}}
+Love a track for a user.
 
 ### [Set-LFMTrackUnlove](Set-LFMTrackUnlove.md)
-{{Manually Enter Set-LFMTrackUnlove Description Here}}
-
+Unlove a track for a user.

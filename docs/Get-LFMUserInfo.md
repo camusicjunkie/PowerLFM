@@ -8,33 +8,40 @@ schema: 2.0.0
 # Get-LFMUserInfo
 
 ## SYNOPSIS
-{{Fill in the Synopsis}}
+Get information about a user.
 
 ## SYNTAX
 
 ```
-Get-LFMUserInfo [-UserName] <String> [<CommonParameters>]
+Get-LFMUserInfo [[-UserName] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{Fill in the Description}}
+Get information about a user. This uses the user.getInfo method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-LFMUserInfo
 ```
 
-{{ Add example description here }}
+This will get the user information for the authenticated user.
+
+### Example 2
+```powershell
+PS C:\> Get-LFMUserInfo -UserName camusicjunkie
+```
+
+This will get the user information for camusicjunkie.
 
 ## PARAMETERS
 
 ### -UserName
-{{Fill UserName Description}}
+Username for the context of the request. The information for this user is included in the response.
 
 ```yaml
-Type: System.String
+Type: String
 Parameter Sets: (All)
 Aliases:
 
@@ -60,3 +67,5 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 ## NOTES
 
 ## RELATED LINKS
+
+https://www.last.fm/api/show/user.getInfo
