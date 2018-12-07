@@ -40,7 +40,7 @@ This will take the session key requested from Last.fm and add it to the credenti
 ## PARAMETERS
 
 ### -ApiKey
-API key requested from Last.fm.
+API key that was created on Last.fm for a user and application. This is required for all API calls.
 
 ```yaml
 Type: String
@@ -55,7 +55,7 @@ Accept wildcard characters: False
 ```
 
 ### -SessionKey
-Session key requested from Last.fm using Request-LFMSession.
+Session key that was created on Last.fm for a user and application. This is required for all authenticated API calls.
 
 ```yaml
 Type: String
@@ -70,7 +70,7 @@ Accept wildcard characters: False
 ```
 
 ### -SharedSecret
-Shared secret that is received with the API key.
+Shared secret that was created on Last.fm for a user and application. This is required for API calls that need to be signed.
 
 ```yaml
 Type: String
