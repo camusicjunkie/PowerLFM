@@ -60,4 +60,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-https://www.last.fm/api/show/user.getWeeklyChartList
+[https://www.last.fm/api/show/user.getWeeklyChartList](https://www.last.fm/api/show/user.getWeeklyChartList)

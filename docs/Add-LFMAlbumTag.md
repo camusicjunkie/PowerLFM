@@ -123,4 +123,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-https://www.last.fm/api/show/album.addTags
+[https://www.last.fm/api/show/album.addTags](https://www.last.fm/api/show/album.addTags)

@@ -107,4 +107,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-https://www.last.fm/api/show/artist.addTags
+[https://www.last.fm/api/show/artist.addTags](https://www.last.fm/api/show/artist.addTags)

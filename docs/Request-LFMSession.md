@@ -98,6 +98,6 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 
 ## RELATED LINKS
 
-https://www.last.fm/api/show/auth.getSession
+[https://www.last.fm/api/show/auth.getSession](https://www.last.fm/api/show/auth.getSession)
 
-https://www.last.fm/api/desktopauth
+[https://www.last.fm/api/desktopauth](https://www.last.fm/api/desktopauth)

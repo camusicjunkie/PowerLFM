@@ -91,4 +91,4 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 
 ## RELATED LINKS
 
-https://www.last.fm/api/show/album.search
+[https://www.last.fm/api/show/album.search](https://www.last.fm/api/show/album.search)

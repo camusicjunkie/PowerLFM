@@ -105,4 +105,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-https://www.last.fm/api/show/user.getWeeklyTrackChart
+[https://www.last.fm/api/show/user.getWeeklyTrackChart](https://www.last.fm/api/show/user.getWeeklyTrackChart)
