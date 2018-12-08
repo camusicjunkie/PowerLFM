@@ -32,14 +32,14 @@ function Get-LFMChartTopArtist {
 
     $irm = Invoke-RestMethod -Uri $apiUrl
     $hash = $irm | ConvertTo-Hashtable
-    
+
     foreach ($artist in $hash.Artists.Artist) {
         $artistInfo = [pscustomobject] @{
             'Artist' = $artist.Name
             'Id' = $artist.Mbid
             'Url' = $artist.Url
-            'Listeners' = $artist.Listeners
-            'PlayCount' = $artist.PlayCount
+            'Listeners' = [int] $artist.Listeners
+            'PlayCount' = [int] $artist.PlayCount
             'ImageUrl' = $artist.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
         }
 

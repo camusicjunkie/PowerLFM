@@ -11,7 +11,8 @@ function Get-LFMAlbumInfo {
                    ParameterSetName = 'album')]
         [string] $Album,
 
-        [Parameter(ValueFromPipelineByPropertyName,
+        [Parameter(Mandatory,
+                   ValueFromPipelineByPropertyName,
                    ParameterSetName = 'id')]
         [string] $Id,
         [string] $UserName,
@@ -41,7 +42,7 @@ function Get-LFMAlbumInfo {
         if ($PSCmdlet.ParameterSetName -eq 'id') {
             $apiParams.add('mbid', $Id)
         }
-        
+
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
             "$($_.Name)=$($_.Value)"
@@ -81,8 +82,8 @@ function Get-LFMAlbumInfo {
             'Artist' = $hash.Album.Artist
             'Album' = $hash.Album.Name
             'Id' = $hash.Album.Mbid
-            'Listeners' = $hash.Album.Listeners
-            'PlayCount' = $hash.Album.PlayCount
+            'Listeners' = [int] $hash.Album.Listeners
+            'PlayCount' = [int] $hash.Album.PlayCount
             'Summary' = $hash.Album.Wiki.Summary
             'Tracks' = $tracks
             'Tags' = $tags

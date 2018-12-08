@@ -7,10 +7,10 @@ function Get-LFMUserTopTrack {
         [string] $UserName,
 
         [Parameter()]
-        [ValidateSet('Overall', '7day', '1month', 
+        [ValidateSet('Overall', '7day', '1month',
                      '3month', '6month', '12month')]
         [string] $TimePeriod,
-        
+
         [string] $Limit,
         [string] $Page
     )
@@ -46,11 +46,11 @@ function Get-LFMUserTopTrack {
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
         $hash = $irm | ConvertTo-Hashtable
-        
+
         foreach ($track in $hash.TopTracks.Track) {
             $trackInfo = [pscustomobject] @{
                 'Track' = $track.Name
-                'PlayCount' = $track.PlayCount
+                'PlayCount' = [int] $track.PlayCount
                 'TrackUrl' = $track.url
                 'TrackId' = $track.Mbid
                 'Artist' = $track.Artist.Name

@@ -7,10 +7,10 @@ function Get-LFMUserTopAlbum {
         [string] $UserName,
 
         [Parameter()]
-        [ValidateSet('Overall', '7day', '1month', 
+        [ValidateSet('Overall', '7day', '1month',
                      '3month', '6month', '12month')]
         [string] $TimePeriod,
-        
+
         [Parameter()]
         #[ValidateRange(1,50)]
         [string] $Limit,
@@ -49,11 +49,11 @@ function Get-LFMUserTopAlbum {
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
         $hash = $irm | ConvertTo-Hashtable
-         
+
         <#$topAlbums = #>foreach ($album in $hash.TopAlbums.Album) {
             $albumInfo = [pscustomobject] @{
                 'Album' = $album.Name
-                'PlayCount' = $album.PlayCount
+                'PlayCount' = [int] $album.PlayCount
                 'AlbumUrl' = $album.Url
                 'Albumid' = $album.Mbid
                 'Artist' = $album.Artist.Name

@@ -7,7 +7,8 @@ function Get-LFMArtistTopAlbum {
                    ParameterSetName = 'artist')]
         [string] $Artist,
 
-        [Parameter(ValueFromPipelineByPropertyName,
+        [Parameter(Mandatory,
+                   ValueFromPipelineByPropertyName,
                    ParameterSetName = 'id')]
         [string] $Id,
         
@@ -58,7 +59,7 @@ function Get-LFMArtistTopAlbum {
                 'Album' = $album.Name
                 'Id' = $album.Mbid
                 'Url' = $album.Url
-                'PlayCount' = $album.PlayCount
+                'PlayCount' = [int] $album.PlayCount
             }
             $albumInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Artist.Album')
             Write-Output $albumInfo
@@ -70,7 +71,7 @@ function Get-LFMArtistTopAlbum {
             'Page' = $hash.TopAlbums.'@attr'.Page
             'TotalPages' = $hash.TopAlbums.'@attr'.TotalPages
             'TotalAlbums' = $hash.TopAlbums.'@attr'.Total
-            'Albums' = $albums
+            'Albums' = $albums | Sort-Object PlayCount -Descending
         }
 
         $topAlbumInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Artist.TopAlbum')

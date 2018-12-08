@@ -7,10 +7,10 @@ function Get-LFMUserTopArtist {
         [string] $UserName,
 
         [Parameter()]
-        [ValidateSet('Overall', '7day', '1month', 
+        [ValidateSet('Overall', '7day', '1month',
                      '3month', '6month', '12month')]
         [string] $TimePeriod,
-        
+
         [string] $Limit,
         [string] $Page
     )
@@ -46,11 +46,11 @@ function Get-LFMUserTopArtist {
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
         $hash = $irm | ConvertTo-Hashtable
-        
+
         foreach ($artist in $hash.TopArtists.Artist) {
             $artistInfo = [pscustomobject] @{
                 'Artist' = $artist.Name
-                'PlayCount' = $artist.PlayCount
+                'PlayCount' = [int] $artist.PlayCount
                 'Url' = $artist.url
                 'Id' = $artist.Mbid
                 'ImageUrl' = $artist.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'

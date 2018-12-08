@@ -7,7 +7,8 @@ function Get-LFMArtistTopTrack {
                    ParameterSetName = 'artist')]
         [string] $Artist,
 
-        [Parameter(ValueFromPipelineByPropertyName,
+        [Parameter(Mandatory,
+                   ValueFromPipelineByPropertyName,
                    ParameterSetName = 'id')]
         [string] $Id,
         
@@ -58,8 +59,8 @@ function Get-LFMArtistTopTrack {
                 'Track' = $track.Name
                 'Id' = $track.Mbid
                 'Url' = $track.Url
-                'Listeners' = $track.Listeners
-                'PlayCount' = $track.PlayCount
+                'Listeners' = [int] $track.Listeners
+                'PlayCount' = [int] $track.PlayCount
             }
             $trackInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Artist.Track')
             Write-Output $trackInfo
@@ -71,7 +72,7 @@ function Get-LFMArtistTopTrack {
             'Page' = $hash.TopTracks.'@attr'.Page
             'TotalPages' = $hash.TopTracks.'@attr'.TotalPages
             'TotalAlbums' = $hash.TopTracks.'@attr'.Total
-            'Tracks' = $tracks
+            'Tracks' = $tracks | Sort-Object PlayCount -Descending
         }
 
         $topTrackInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Artist.TopTrack')
