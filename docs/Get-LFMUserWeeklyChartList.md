@@ -31,7 +31,7 @@ This will get the chart lists for camusicjunkie.
 ## PARAMETERS
 
 ### -UserName
-Username for the context of the request. The chart list of this user is included in the response.
+Username for the context of the request. The chart list of this user is included in the response. The API docs say the user field is mandatory but testing shows that it isn't actually required. Will keep implemented for now.
 
 ```yaml
 Type: String
