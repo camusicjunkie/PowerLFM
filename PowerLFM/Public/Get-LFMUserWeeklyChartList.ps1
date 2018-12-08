@@ -31,12 +31,15 @@ function Get-LFMUserWeeklyChartList {
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
         $hash = $irm | ConvertTo-Hashtable
-         
-        foreach ($chart in ($hash.WeeklyChartList.Chart)) {
+
+        $chartList = $hash.WeeklyChartList.Chart.GetEnumerator() |
+            Sort-Object {$_.From} -Descending
+
+        foreach ($chart in ($chartList)) {
             $chartInfo = [pscustomobject] @{
                 'UserName' = $hash.WeeklyChartList.'@attr'.User
-                'From' = $chart.From
-                'To' = $chart.To
+                'StartDate' = $chart.From | ConvertFrom-UnixTime -Local
+                'EndDate' = $chart.To | ConvertFrom-UnixTime -Local
             }
 
             $chartInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.User.WeeklyChartList')

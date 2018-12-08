@@ -7,10 +7,10 @@ function Get-LFMUserWeeklyTrackChart {
         [string] $UserName,
 
         [Parameter(ValueFromPipelineByPropertyName)]
-        [string] $From,
+        [string] $StartDate,
 
         [Parameter(ValueFromPipelineByPropertyName)]
-        [string] $To
+        [string] $EndDate
     )
 
     begin {
@@ -24,8 +24,8 @@ function Get-LFMUserWeeklyTrackChart {
     process {
         switch ($PSBoundParameters.Keys) {
             'UserName' {$apiParams.add('user', $UserName)}
-            'From' {$apiParams.add('from', $From)}
-            'To' {$apiParams.add('to', $To)}
+            'StartDate' {$apiParams.add('from', (ConvertTo-UnixTime -Date $StartDate))}
+            'EndDate' {$apiParams.add('to', (ConvertTo-UnixTime -Date $EndDate))}
         }
 
         #Building string to append to base url
@@ -39,7 +39,7 @@ function Get-LFMUserWeeklyTrackChart {
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
         $hash = $irm | ConvertTo-Hashtable
-         
+
         foreach ($track in $hash.WeeklyTrackChart.Track) {
             $trackInfo = [pscustomobject] @{
                 'Track' = $track.Name
@@ -47,10 +47,10 @@ function Get-LFMUserWeeklyTrackChart {
                 'Id' = $track.Mbid
                 'Artist' = $track.Artist.'#text'
                 'ArtistId' = $track.Artist.Mbid
-                'PlayCount' = $track.PlayCount
+                'PlayCount' = [int] $track.PlayCount
                 'ImageUrl' = $track.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
-                'From' = ConvertFrom-UnixTime -UnixTime $hash.WeeklyTrackChart.'@attr'.From -Local
-                'To' = ConvertFrom-UnixTime -UnixTime $hash.WeeklyTrackChart.'@attr'.To -Local
+                'StartDate' = ConvertFrom-UnixTime -UnixTime $hash.WeeklyTrackChart.'@attr'.From -Local
+                'EndDate' = ConvertFrom-UnixTime -UnixTime $hash.WeeklyTrackChart.'@attr'.To -Local
             }
 
             $trackInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.User.WeeklyTrackChart')
