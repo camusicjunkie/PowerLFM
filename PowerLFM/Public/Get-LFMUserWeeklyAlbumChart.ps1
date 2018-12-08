@@ -7,10 +7,10 @@ function Get-LFMUserWeeklyAlbumChart {
         [string] $UserName,
 
         [Parameter(ValueFromPipelineByPropertyName)]
-        [string] $From,
+        [string] $StartDate,
 
         [Parameter(ValueFromPipelineByPropertyName)]
-        [string] $To
+        [string] $EndDate
     )
 
     begin {
@@ -24,8 +24,8 @@ function Get-LFMUserWeeklyAlbumChart {
     process {
         switch ($PSBoundParameters.Keys) {
             'UserName' {$apiParams.add('user', $UserName)}
-            'From' {$apiParams.add('from', $From)}
-            'To' {$apiParams.add('to', $To)}
+            'StartDate' {$apiParams.add('from', (ConvertTo-UnixTime -Date $StartDate))}
+            'EndDate' {$apiParams.add('to', (ConvertTo-UnixTime -Date $EndDate))}
         }
 
         #Building string to append to base url
@@ -39,7 +39,7 @@ function Get-LFMUserWeeklyAlbumChart {
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
         $hash = $irm | ConvertTo-Hashtable
-         
+
         foreach ($album in $hash.WeeklyAlbumChart.Album) {
             $albumInfo = [pscustomobject] @{
                 'Album' = $album.Name
@@ -47,9 +47,9 @@ function Get-LFMUserWeeklyAlbumChart {
                 'Id' = $album.Mbid
                 'Artist' = $album.Artist.'#text'
                 'ArtistId' = $album.Artist.Mbid
-                'PlayCount' = $album.PlayCount
-                'From' = ConvertFrom-UnixTime -UnixTime $hash.WeeklyAlbumChart.'@attr'.From -Local
-                'To' = ConvertFrom-UnixTime -UnixTime $hash.WeeklyAlbumChart.'@attr'.To -Local
+                'PlayCount' =[int] $album.PlayCount
+                'StartDate' = ConvertFrom-UnixTime -UnixTime $hash.WeeklyAlbumChart.'@attr'.From -Local
+                'EndDate' = ConvertFrom-UnixTime -UnixTime $hash.WeeklyAlbumChart.'@attr'.To -Local
             }
 
             $albumInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.User.WeeklyChartList')
