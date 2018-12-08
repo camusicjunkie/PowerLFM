@@ -2,8 +2,7 @@ function Get-LFMUserInfo {
     [CmdletBinding()]
     [OutputType('PowerLFM.User.Info')]
     param (
-        [Parameter(Mandatory,
-                   ValueFromPipelineByPropertyName)]
+        [Parameter(ValueFromPipelineByPropertyName)]
         [string] $UserName
     )
 
@@ -12,12 +11,14 @@ function Get-LFMUserInfo {
         $apiParams = [ordered] @{
             'method' = 'user.GetInfo'
             'api_key' = $LFMConfig.APIKey
+            'sk' = $LFMConfig.SessionKey
             'format' = 'json'
         }
     }
     process {
-        switch ($PSBoundParameters.Keys) {
-            'UserName' {$apiParams.add('user', $UserName)}
+        if ($PSBoundParameters.ContainsKey('UserName')) {
+            $apiParams.remove('sk')
+            $apiParams.add('user', $UserName)
         }
 
         #Building string to append to base url
@@ -31,7 +32,7 @@ function Get-LFMUserInfo {
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
         $hash = $irm | ConvertTo-Hashtable
-        
+
         $registered = ConvertFrom-UnixTime -UnixTime $hash.User.Registered.UnixTime -Local
         $imageUrl = $hash.User.Image | Where-Object Size -eq ExtraLarge
         $userInfo = [pscustomobject] @{
@@ -40,7 +41,7 @@ function Get-LFMUserInfo {
             'Url' = $hash.User.Url
             'Country' = $hash.User.Country
             'Registered' = $registered
-            'PlayCount' = $hash.User.PlayCount
+            'PlayCount' = [int] $hash.User.PlayCount
             'PlayLists' = $hash.User.PlayLists
             'ImageUrl' = $imageUrl.'#text'
         }
