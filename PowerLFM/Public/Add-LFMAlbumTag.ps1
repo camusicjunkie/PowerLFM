@@ -25,16 +25,15 @@ function Add-LFMAlbumTag {
             'Tag' = $Tag
             'Method' = 'album.addTags'
         }
-        
+
         $apiSig = New-LFMAlbumSignature @apiSigProps
-        
+
         #Default hashtable
         $apiParams = [ordered] @{
             'method' = 'album.addTags'
             'api_key' = $LFMConfig.APIKey
             'sk' = $LFMConfig.SessionKey
             'api_sig' = $apiSig
-            'format' = 'json'
         }
     }
     process {
@@ -43,7 +42,7 @@ function Add-LFMAlbumTag {
         $apiParams.add('album', $Album)
         $apiParams.add('artist', $Artist)
         $apiParams.add('tags', $Tag)
-        
+
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
             "$($_.Name)=$($_.Value)"
@@ -54,7 +53,8 @@ function Add-LFMAlbumTag {
     }
     end {
         if ($PSCmdlet.ShouldProcess("Album: $Album", "Adding album tag")) {
-            Invoke-RestMethod -Uri $apiUrl -Method Post | Out-Null
+            $iwr = Invoke-WebRequest -Uri $apiUrl -Method Post
+            Write-Verbose "$($iwr.StatusCode) $($iwr.StatusDescription)"
         }
     }
 }
