@@ -5,7 +5,7 @@ function Get-LFMUserFriend {
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
         [string] $UserName,
-        
+
         [Parameter()]
         [ValidateRange(1,50)]
         [string] $Limit,
@@ -26,7 +26,7 @@ function Get-LFMUserFriend {
         switch ($PSBoundParameters.Keys) {
             'Limit' {$apiParams.add('limit', $Limit)}
             'Page' {$apiParams.add('page', $Page)}
-            'RecentTracks' {$apiParams.add('recenttracks', $true)}
+            'RecentTracks' {$apiParams.add('recenttracks', 1)}
         }
     }
     process {
@@ -45,7 +45,7 @@ function Get-LFMUserFriend {
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
         $hash = $irm | ConvertTo-Hashtable
-         
+
         $users = foreach ($friend in $hash.Friends.User) {
             $userInfo = [pscustomobject] @{
                 'UserName' = $friend.Name
@@ -53,9 +53,31 @@ function Get-LFMUserFriend {
                 'Url' = $friend.Url
                 'Country' = $friend.Country
                 'Registered' = ConvertFrom-UnixTime -UnixTime $friend.Registered.UnixTime -Local
-                'PlayCount' = $friend.PlayCount
+                'PlayCount' = [int] $friend.PlayCount
                 'PlayLists' = $friend.PlayLists
                 'ImageUrl' = $friend.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
+            }
+
+            if ($RecentTracks) {
+                $tracks = foreach ($track in $hash.Friends.User.RecentTrack) {
+                    $trackInfo = [pscustomobject] @{
+                        'Track' = $track.Name
+                        'TrackId' = $track.Mbid
+                        'TrackUrl' = $track.Url
+                        'Artist' = $track.Artist.Name
+                        'ArtistId' = $track.Artist.Mbid
+                        'ArtistUrl' = $track.Artist.Url
+                        'Album' = $track.Album.Name
+                        'AlbumId' = $track.Album.Mbid
+                        'AlbumUrl' = $track.Album.Url
+                        'ScrobbleTime' = ConvertFrom-UnixTime -UnixTime ($track.'@attr'.Uts) -Local
+                    }
+
+                    $trackInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.User.RecentTracks')
+                    Write-Output $trackInfo
+                }
+
+                $userInfo | Add-Member -MemberType NoteProperty -Name 'RecentTracks' -Value $tracks
             }
 
             $userInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.User.Info')
