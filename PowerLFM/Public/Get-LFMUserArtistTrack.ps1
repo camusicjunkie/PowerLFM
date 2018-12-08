@@ -10,10 +10,10 @@ function Get-LFMUserArtistTrack {
                    ValueFromPipelineByPropertyName)]
         [string] $Artist,
 
-        [Parameter(ParameterSetName = 'date')]
+        [Parameter(ValueFromPipelineByPropertyName)]
         [datetime] $StartDate,
 
-        [Parameter(ParameterSetName = 'date')]
+        [Parameter(ValueFromPipelineByPropertyName)]
         [datetime] $EndDate,
         [string] $Page
     )
@@ -25,16 +25,16 @@ function Get-LFMUserArtistTrack {
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
         }
-
-        if ($PSCmdlet.ParameterSetName -eq 'date') {
+    }
+    process {
+        if ($PSBoundParameters.Keys -clike '*Date') {
             $unixStartTime = ConvertTo-UnixTime -Date $StartDate
             $unixEndTime = ConvertTo-UnixTime -Date $EndDate
 
             $apiParams.add('startTimestamp', $unixStartTime)
             $apiParams.add('endTimestamp', $unixEndTime)
         }
-    }
-    process {
+
         switch ($PSBoundParameters.Keys) {
             'UserName' {$apiParams.add('user', $UserName)}
             'Artist' {$apiParams.add('artist', $Artist)}
@@ -67,10 +67,7 @@ function Get-LFMUserArtistTrack {
         }
 
         if ($null -eq $tracks) {
-            Write-Warning 'Something went wrong with the Last.fm API'
-            Write-Warning 'The artist tracks were not populated.'
-            Write-Warning 'Please try again.'
-            break
+            Write-Verbose 'No tracks were scrobbled during this time'
         }
 
         $trackArtist = $hash.ArtistTracks.'@attr'.Artist
