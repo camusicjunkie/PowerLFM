@@ -24,16 +24,15 @@ function Remove-LFMAlbumTag {
             'Tag' = $Tag
             'Method' = 'album.removeTag'
         }
-        
+
         $apiSig = New-LFMAlbumSignature @apiSigProps
-        
+
         #Default hashtable
         $apiParams = [ordered] @{
             'method' = 'album.removeTag'
             'api_key' = $LFMConfig.APIKey
             'sk' = $LFMConfig.SessionKey
             'api_sig' = $apiSig
-            'format' = 'json'
         }
     }
     process {
@@ -42,7 +41,7 @@ function Remove-LFMAlbumTag {
         $apiParams.add('album', $Album)
         $apiParams.add('artist', $Artist)
         $apiParams.add('tags', $Tag)
-        
+
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
             "$($_.Name)=$($_.Value)"
@@ -53,7 +52,8 @@ function Remove-LFMAlbumTag {
     }
     end {
         if ($PSCmdlet.ShouldProcess("Album: $Album", "Removing album tag")) {
-            Invoke-RestMethod -Uri $apiUrl -Method Post | Out-Null
+            $iwr = Invoke-WebRequest -Uri $apiUrl -Method Post
+            Write-Verbose "$($iwr.StatusCode) $($iwr.StatusDescription)"
         }
     }
 }
