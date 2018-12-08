@@ -5,7 +5,7 @@ function Search-LFMAlbum {
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
         [string] $Album,
-        
+
         [ValidateRange(1,50)]
         [string] $Limit,
 
@@ -19,7 +19,7 @@ function Search-LFMAlbum {
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
         }
-        
+
         switch ($PSBoundParameters.Keys) {
             'Limit' {$apiParams.add('limit', $Limit)}
             'Page' {$apiParams.add('page', $Page)}
@@ -30,7 +30,7 @@ function Search-LFMAlbum {
         switch ($PSBoundParameters.Keys) {
             'Album' {$apiParams.add('album', $Album)}
         }
-        
+
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
             "$($_.Name)=$($_.Value)"
@@ -42,13 +42,13 @@ function Search-LFMAlbum {
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
         $hash = $irm | ConvertTo-Hashtable
-        
+
         $albumMatches = foreach ($match in $hash.Results.AlbumMatches.Album) {
             $matchInfo = [pscustomobject] @{
                 'Album' = $match.Name
+                'Artist' = $match.Artist
                 'Id' = $match.Mbid
                 'Url' = $match.Url
-                'Listeners' = $match.Listeners
             }
             $matchInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Album.Match')
             Write-Output $matchInfo
