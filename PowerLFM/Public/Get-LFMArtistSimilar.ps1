@@ -7,7 +7,8 @@ function Get-LFMArtistSimilar {
                    ParameterSetName = 'artist')]
         [string] $Artist,
 
-        [Parameter(ValueFromPipelineByPropertyName,
+        [Parameter(Mandatory,
+                   ValueFromPipelineByPropertyName,
                    ParameterSetName = 'id')]
         [string] $Id,
         [string] $Limit = '5',

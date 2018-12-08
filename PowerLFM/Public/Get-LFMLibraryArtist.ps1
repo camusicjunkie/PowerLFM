@@ -5,7 +5,7 @@ function Get-LFMLibraryArtist {
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
         [string] $UserName,
-        
+
         [string] $Limit,
         [string] $Page
     )
@@ -40,11 +40,11 @@ function Get-LFMLibraryArtist {
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
         $hash = $irm | ConvertTo-Hashtable
-        
+
         foreach ($artist in $hash.Artists.Artist) {
             $artistInfo = [pscustomobject] @{
                 'Artist' = $artist.Name
-                'PlayCount' = $artist.PlayCount
+                'PlayCount' = [int] $artist.PlayCount
                 'Url' = $artist.url
                 'Id' = $artist.Mbid
                 'ImageUrl' = $artist.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'

@@ -24,7 +24,7 @@ function Get-LFMArtistInfo {
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
         }
-        
+
         #Adding key/value to hashtable based off optional parameters
         switch ($PSBoundParameters.Keys) {
             'UserName' {$apiParams.add('username', $UserName)}
@@ -39,7 +39,7 @@ function Get-LFMArtistInfo {
         if ($PSCmdlet.ParameterSetName -eq 'id') {
             $apiParams.add('mbid', $Id)
         }
-        
+
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
             "$($_.Name)=$($_.Value)"
@@ -78,8 +78,8 @@ function Get-LFMArtistInfo {
         $artistInfo = [pscustomobject] @{
             'Artist' = $hash.Artist.Name
             'Id' = $hash.Artist.Mbid
-            'Listeners' = $hash.Artist.Stats.Listeners
-            'PlayCount' = $hash.Artist.Stats.PlayCount
+            'Listeners' = [int] $hash.Artist.Stats.Listeners
+            'PlayCount' = [int] $hash.Artist.Stats.PlayCount
             'OnTour' = $tour
             'Url' = $hash.Artist.Url
             'Summary' = $hash.Artist.Bio.Summary

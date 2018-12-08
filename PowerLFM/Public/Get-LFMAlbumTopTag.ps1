@@ -12,7 +12,8 @@ function Get-LFMAlbumTopTag {
                    ParameterSetName = 'album')]
         [string] $Artist,
 
-        [Parameter(ValueFromPipelineByPropertyName,
+        [Parameter(Mandatory,
+                   ValueFromPipelineByPropertyName,
                    ParameterSetName = 'id')]
         [string] $Id,
         [switch] $AutoCorrect
