@@ -1,4 +1,6 @@
 function Set-LFMTrackLove {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding(SupportsShouldProcess,
                    ConfirmImpact = 'High')]
     [OutputType('PowerLFM.Track.Love')]

@@ -1,4 +1,6 @@
 function Search-LFMAlbum {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding()]
     [OutputType('PowerLFM.Album.Search')]
     param (

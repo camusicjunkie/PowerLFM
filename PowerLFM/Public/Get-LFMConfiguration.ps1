@@ -1,4 +1,6 @@
 function Get-LFMConfiguration {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding()]
     param ()
 
@@ -7,7 +9,7 @@ function Get-LFMConfiguration {
     try {
         [Void][Windows.Security.Credentials.PasswordVault,Windows.Security.Credentials,ContentType=WindowsRuntime]
         $vault = New-Object -TypeName Windows.Security.Credentials.PasswordVault -ErrorAction Stop
-        
+
         $ak = $vault.Retrieve($module, 'APIKey').Password
         $sk = $vault.Retrieve($module, 'SessionKey').Password
         $ss = $vault.Retrieve($module, 'SharedSecret').Password

@@ -1,4 +1,6 @@
 function Get-LFMArtistCorrection {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding()]
     [OutputType('PowerLFM.Artist.Correction')]
     param (
@@ -19,7 +21,7 @@ function Get-LFMArtistCorrection {
         switch ($PSBoundParameters.Keys) {
             'Artist' {$apiParams.add('artist', $Artist)}
         }
-        
+
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
             "$($_.Name)=$($_.Value)"
@@ -31,7 +33,7 @@ function Get-LFMArtistCorrection {
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
         $hash = $irm | ConvertTo-Hashtable
-        
+
         $correctedArtistInfo = [pscustomobject] @{
             'Artist' = $hash.Corrections.Correction.Artist.Name
             'Id' = $hash.Corrections.Correction.Artist.Mbid

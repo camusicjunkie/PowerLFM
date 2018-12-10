@@ -1,4 +1,6 @@
 function Get-LFMUserWeeklyArtistChart {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding()]
     [OutputType('PowerLFM.User.WeeklyArtistChart')]
     param (

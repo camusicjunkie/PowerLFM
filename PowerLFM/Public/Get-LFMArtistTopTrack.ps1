@@ -1,4 +1,6 @@
 function Get-LFMArtistTopTrack {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding(DefaultParameterSetName = 'artist')]
     [OutputType('PowerLFM.Artist.TopTrack')]
     param (
@@ -11,7 +13,7 @@ function Get-LFMArtistTopTrack {
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'id')]
         [string] $Id,
-        
+
         [Parameter()]
         [ValidateRange(1,50)]
         [string] $Limit,
@@ -41,7 +43,7 @@ function Get-LFMArtistTopTrack {
             'artist' {$apiParams.add('artist', $Artist)}
             'id' {$apiParams.add('mbid', $Id)}
         }
-        
+
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
             "$($_.Name)=$($_.Value)"
@@ -53,7 +55,7 @@ function Get-LFMArtistTopTrack {
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
         $hash = $irm | ConvertTo-Hashtable
-        
+
         $tracks = foreach ($track in $hash.TopTracks.Track) {
             $trackInfo = [pscustomobject] @{
                 'Track' = $track.Name

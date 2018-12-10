@@ -1,4 +1,6 @@
 function Get-LFMArtistSimilar {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding(DefaultParameterSetName = 'artist')]
     [OutputType('PowerLFM.Artist.Similar')]
     param (
@@ -23,7 +25,7 @@ function Get-LFMArtistSimilar {
             'limit' = $Limit
             'format' = 'json'
         }
-        
+
         #Adding key/value to hashtable based off optional parameters
         switch ($PSBoundParameters.Keys) {
             'AutoCorrect' {$apiParams.add('autocorrect', 1)}
@@ -37,7 +39,7 @@ function Get-LFMArtistSimilar {
         if ($PSCmdlet.ParameterSetName -eq 'id') {
             $apiParams.add('mbid', $Id)
         }
-        
+
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
             "$($_.Name)=$($_.Value)"

@@ -1,4 +1,6 @@
 function Remove-LFMAlbumTag {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding(SupportsShouldProcess,
                    ConfirmImpact = 'High')]
     param (

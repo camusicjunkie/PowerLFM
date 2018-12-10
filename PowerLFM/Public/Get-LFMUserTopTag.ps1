@@ -1,4 +1,6 @@
 function Get-LFMUserTopTag {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding()]
     [OutputType('PowerLFM.User.TopTag')]
     param (
@@ -38,7 +40,7 @@ function Get-LFMUserTopTag {
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
         $hash = $irm | ConvertTo-Hashtable
-         
+
         foreach ($tag in $hash.TopTags.Tag) {
             $tagInfo = [pscustomobject] @{
                 'Tag' = $tag.Name

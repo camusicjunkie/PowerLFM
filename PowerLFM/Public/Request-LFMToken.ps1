@@ -1,4 +1,6 @@
 function Request-LFMToken {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding()]
     [OutputType('System.String')]
     param (
@@ -19,7 +21,7 @@ function Request-LFMToken {
         }
         $apiSig = New-LFMAuthSignature @sigParams
         Write-Verbose "Signature MD5 Hash: $apiSig"
-        
+
         #Default hashtable
         $apiParams = [ordered] @{
             'method' = 'auth.getToken'
@@ -27,7 +29,7 @@ function Request-LFMToken {
             'api_sig' = $apiSig
             'format' = 'json'
         }
-        
+
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
             "$($_.Name)=$($_.Value)"

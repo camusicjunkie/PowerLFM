@@ -1,4 +1,6 @@
 function Get-LFMArtistInfo {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding(DefaultParameterSetName = 'artist')]
     [OutputType('PowerLFM.Artist.Info')]
     param (
