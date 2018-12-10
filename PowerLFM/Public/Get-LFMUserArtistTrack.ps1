@@ -1,4 +1,6 @@
 function Get-LFMUserArtistTrack {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding()]
     [OutputType('PowerLFM.User.ArtistTrack')]
     param (

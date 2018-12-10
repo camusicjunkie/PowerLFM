@@ -1,4 +1,6 @@
 function Get-LFMUserWeeklyChartList {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding()]
     [OutputType('PowerLFM.User.WeeklyChartList')]
     param (
@@ -35,7 +37,7 @@ function Get-LFMUserWeeklyChartList {
         $chartList = $hash.WeeklyChartList.Chart.GetEnumerator() |
             Sort-Object {$_.From} -Descending
 
-        foreach ($chart in ($chartList)) {
+        foreach ($chart in $chartList) {
             $chartInfo = [pscustomobject] @{
                 'UserName' = $hash.WeeklyChartList.'@attr'.User
                 'StartDate' = $chart.From | ConvertFrom-UnixTime -Local

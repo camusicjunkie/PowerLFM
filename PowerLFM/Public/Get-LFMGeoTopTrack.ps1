@@ -1,4 +1,6 @@
 function Get-LFMGeoTopTrack {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding()]
     [OutputType('PowerLFM.Geo.TopTracks')]
     param (
@@ -47,7 +49,7 @@ function Get-LFMGeoTopTrack {
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
         $hash = $irm | ConvertTo-Hashtable
-        
+
         foreach ($track in $hash.Tracks.Track) {
             $trackInfo = [pscustomobject] @{
                 'Track' = $track.Name
@@ -60,7 +62,7 @@ function Get-LFMGeoTopTrack {
                 'Listeners' = [int] $track.Listeners
                 'ImageUrl' = $track.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
-    
+
             $trackInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Get.TopTracks')
             Write-Output $trackInfo
         }

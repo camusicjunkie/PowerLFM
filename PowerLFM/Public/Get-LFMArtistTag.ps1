@@ -1,4 +1,6 @@
 function Get-LFMArtistTag {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding(DefaultParameterSetName = 'artist')]
     [OutputType('PowerLFM.Artist.UserTag')]
     param (
@@ -42,7 +44,7 @@ function Get-LFMArtistTag {
             $apiParams.add('api_key', $LFMConfig.APIKey)
             $apiParams.add('sk', $LFMConfig.SessionKey)
         }
-        
+
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
             "$($_.Name)=$($_.Value)"

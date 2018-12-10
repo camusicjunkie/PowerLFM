@@ -1,4 +1,6 @@
 function Get-LFMUserWeeklyAlbumChart {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding()]
     [OutputType('PowerLFM.User.WeeklyAlbumChart')]
     param (
@@ -47,7 +49,7 @@ function Get-LFMUserWeeklyAlbumChart {
                 'Id' = $album.Mbid
                 'Artist' = $album.Artist.'#text'
                 'ArtistId' = $album.Artist.Mbid
-                'PlayCount' =[int] $album.PlayCount
+                'PlayCount' = [int] $album.PlayCount
                 'StartDate' = ConvertFrom-UnixTime -UnixTime $hash.WeeklyAlbumChart.'@attr'.From -Local
                 'EndDate' = ConvertFrom-UnixTime -UnixTime $hash.WeeklyAlbumChart.'@attr'.To -Local
             }

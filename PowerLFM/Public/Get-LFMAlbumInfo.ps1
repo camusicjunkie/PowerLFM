@@ -1,4 +1,6 @@
 function Get-LFMAlbumInfo {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding(DefaultParameterSetName = 'album')]
     [OutputType('PowerLFM.Album.Info')]
     param (

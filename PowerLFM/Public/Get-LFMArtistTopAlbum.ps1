@@ -1,4 +1,6 @@
 function Get-LFMArtistTopAlbum {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding(DefaultParameterSetName = 'artist')]
     [OutputType('PowerLFM.Artist.TopAlbum')]
     param (
@@ -11,7 +13,7 @@ function Get-LFMArtistTopAlbum {
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'id')]
         [string] $Id,
-        
+
         [Parameter()]
         [ValidateRange(1,50)]
         [string] $Limit,
@@ -53,7 +55,7 @@ function Get-LFMArtistTopAlbum {
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
         $hash = $irm | ConvertTo-Hashtable
-        
+
         $albums = foreach ($album in $hash.TopAlbums.Album) {
             $albumInfo = [pscustomobject] @{
                 'Album' = $album.Name

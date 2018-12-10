@@ -1,4 +1,6 @@
 function Get-LFMChartTopArtist {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding()]
     [OutputType('PowerLFM.Chart.TopArtists')]
     param (

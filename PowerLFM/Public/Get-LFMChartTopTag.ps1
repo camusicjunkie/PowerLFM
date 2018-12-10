@@ -1,4 +1,6 @@
 function Get-LFMChartTopTag {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding()]
     [OutputType('PowerLFM.Chart.TopTags')]
     param (
@@ -32,7 +34,7 @@ function Get-LFMChartTopTag {
 
     $irm = Invoke-RestMethod -Uri $apiUrl
     $hash = $irm | ConvertTo-Hashtable
-    
+
     foreach ($tag in $hash.Tags.Tag) {
         $tagInfo = [pscustomobject] @{
             'Tag' = ConvertTo-TitleCase -String $tag.Name

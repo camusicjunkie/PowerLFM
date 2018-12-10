@@ -1,4 +1,6 @@
 function Search-LFMArtist {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding()]
     [OutputType('PowerLFM.Artist.Search')]
     param (

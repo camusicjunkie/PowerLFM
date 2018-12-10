@@ -1,4 +1,6 @@
 function Get-LFMArtistTopTag {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding(DefaultParameterSetName = 'artist')]
     [OutputType('PowerLFM.Artist.TopTag')]
     param (
@@ -36,7 +38,7 @@ function Get-LFMArtistTopTag {
             'artist' {$apiParams.add('artist', $Artist)}
             'id' {$apiParams.add('mbid', $Id)}
         }
-        
+
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
             "$($_.Name)=$($_.Value)"
@@ -48,7 +50,7 @@ function Get-LFMArtistTopTag {
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
         $hash = $irm | ConvertTo-Hashtable
-        
+
         $tags = foreach ($tag in $hash.TopTags.Tag) {
             $tagInfo = [pscustomobject] @{
                 'Tag' = $tag.Name

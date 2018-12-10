@@ -1,4 +1,6 @@
 function Get-LFMChartTopTrack {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding()]
     [OutputType('PowerLFM.Chart.TopTracks')]
     param (
@@ -32,7 +34,7 @@ function Get-LFMChartTopTrack {
 
     $irm = Invoke-RestMethod -Uri $apiUrl
     $hash = $irm | ConvertTo-Hashtable
-    
+
     foreach ($track in $hash.Tracks.Track) {
         $trackInfo = [pscustomobject] @{
             'Track' = $track.Name

@@ -1,4 +1,6 @@
 function Add-LFMConfiguration {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding(SupportsShouldProcess,
                    ConfirmImpact = 'Medium')]
     param (
@@ -6,7 +8,7 @@ function Add-LFMConfiguration {
                    ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
         [string] $ApiKey,
-	
+
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]

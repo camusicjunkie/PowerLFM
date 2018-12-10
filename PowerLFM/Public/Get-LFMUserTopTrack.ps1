@@ -1,4 +1,6 @@
 function Get-LFMUserTopTrack {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding()]
     [OutputType('PowerLFM.User.TopTrack')]
     param (

@@ -1,4 +1,6 @@
 function Add-LFMArtistTag {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding(SupportsShouldProcess,
                    ConfirmImpact = 'Medium')]
     param (

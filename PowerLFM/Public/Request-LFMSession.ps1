@@ -1,4 +1,6 @@
 function Request-LFMSession {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding()]
     [OutputType('System.String')]
     param (
@@ -37,7 +39,7 @@ function Request-LFMSession {
                 'api_sig' = $apiSig
                 'format' = 'json'
             }
-            
+
             #Building string to append to base url
             $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
                 "$($_.Name)=$($_.Value)"

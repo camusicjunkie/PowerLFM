@@ -1,4 +1,6 @@
 function Get-LFMUserFriend {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding()]
     [OutputType('PowerLFM.User.Friend')]
     param (

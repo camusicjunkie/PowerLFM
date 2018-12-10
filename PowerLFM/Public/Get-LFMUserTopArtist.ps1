@@ -1,4 +1,6 @@
 function Get-LFMUserTopArtist {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding()]
     [OutputType('PowerLFM.User.TopArtist')]
     param (

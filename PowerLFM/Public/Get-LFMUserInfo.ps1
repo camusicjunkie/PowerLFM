@@ -1,4 +1,6 @@
 function Get-LFMUserInfo {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding()]
     [OutputType('PowerLFM.User.Info')]
     param (

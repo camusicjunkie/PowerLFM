@@ -1,11 +1,13 @@
 function Get-LFMUserLovedTrack {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding()]
     [OutputType('PowerLFM.User.LovedTrack')]
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
         [string] $UserName,
-        
+
         [Parameter()]
         [ValidateRange(1,50)]
         [string] $Limit,
@@ -43,7 +45,7 @@ function Get-LFMUserLovedTrack {
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
         $hash = $irm | ConvertTo-Hashtable
-         
+
         $lovedTracks = foreach ($track in $hash.LovedTracks.Track) {
             $trackInfo = [pscustomobject] @{
                 'Track' = $track.Name

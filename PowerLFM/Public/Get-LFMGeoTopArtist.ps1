@@ -1,4 +1,6 @@
 function Get-LFMGeoTopArtist {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding()]
     [OutputType('PowerLFM.Geo.TopArtists')]
     param (
@@ -43,7 +45,7 @@ function Get-LFMGeoTopArtist {
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
         $hash = $irm | ConvertTo-Hashtable
-        
+
         foreach ($artist in $hash.TopArtists.Artist) {
             $artistInfo = [pscustomobject] @{
                 'Artist' = $artist.Name
@@ -52,7 +54,7 @@ function Get-LFMGeoTopArtist {
                 'Listeners' = [int] $artist.Listeners
                 'ImageUrl' = $artist.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
-    
+
             $artistInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Get.TopArtists')
             Write-Output $artistInfo
         }

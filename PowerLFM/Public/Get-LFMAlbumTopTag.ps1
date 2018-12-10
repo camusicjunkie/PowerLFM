@@ -1,4 +1,6 @@
 function Get-LFMAlbumTopTag {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding(DefaultParameterSetName = 'album')]
     [OutputType('PowerLFM.Album.TopTag')]
     param (
@@ -38,7 +40,7 @@ function Get-LFMAlbumTopTag {
                      $apiParams.add('artist', $Artist)}
             'id'    {$apiParams.add('mbid', $Id)}
         }
-        
+
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
             "$($_.Name)=$($_.Value)"

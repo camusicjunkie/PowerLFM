@@ -1,4 +1,6 @@
 function Get-LFMUserTopAlbum {
+    # .ExternalHelp PowerLFM.psm1-help.xml
+
     [CmdletBinding()]
     [OutputType('PowerLFM.User.TopAlbum')]
     param (
