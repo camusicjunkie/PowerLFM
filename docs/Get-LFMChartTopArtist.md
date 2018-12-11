@@ -1,10 +1,3 @@
----
-external help file: PowerLFM-help.xml
-Module Name: PowerLFM
-online version:
-schema: 2.0.0
----
-
 # Get-LFMChartTopArtist
 
 ## SYNOPSIS

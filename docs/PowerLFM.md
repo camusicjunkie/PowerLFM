@@ -1,11 +1,3 @@
----
-Module Name: PowerLFM
-Module Guid: c8d0461c-325b-4b14-bd9c-dd5fa57fafeb
-Download Help Link:
-Help Version: 1.1.0.0
-Locale: en-US
----
-
 # PowerLFM Module
 ## Description
 PowerShell module to leverage the Last.fm API.
