@@ -16,7 +16,6 @@ function Search-LFMArtist {
     )
 
     begin {
-        #Default hashtable
         $apiParams = [ordered] @{
             'method' = 'artist.search'
             'api_key' = $LFMConfig.APIKey
@@ -29,7 +28,6 @@ function Search-LFMArtist {
         }
     }
     process {
-        #Adding key/value to hashtable based off optional parameters
         switch ($PSBoundParameters.Keys) {
             'Artist' {$apiParams.add('artist', $Artist)}
         }

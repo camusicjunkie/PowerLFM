@@ -20,21 +20,18 @@ function Get-LFMArtistInfo {
     )
 
     begin {
-        #Default hashtable
         $apiParams = [ordered] @{
             'method' = 'artist.getInfo'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
         }
 
-        #Adding key/value to hashtable based off optional parameters
         switch ($PSBoundParameters.Keys) {
             'UserName' {$apiParams.add('username', $UserName)}
             'AutoCorrect' {$apiParams.add('autocorrect', 1)}
         }
     }
     process {
-        #Adding key/value to hashtable based off ParameterSetName
         if ($PSCmdlet.ParameterSetName -eq 'artist') {
             $apiParams.add('artist', $Artist)
         }

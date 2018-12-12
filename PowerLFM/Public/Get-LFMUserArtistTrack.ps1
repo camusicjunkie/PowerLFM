@@ -21,7 +21,6 @@ function Get-LFMUserArtistTrack {
     )
 
     begin {
-        #Default hashtable
         $apiParams = [ordered] @{
             'method' = 'user.getArtistTracks'
             'api_key' = $LFMConfig.APIKey

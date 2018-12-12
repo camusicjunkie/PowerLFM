@@ -31,7 +31,6 @@ function Request-LFMSession {
             $apiSig = New-LFMAuthSignature @sigParams
             Write-Verbose "Signature MD5 Hash: $apiSig"
 
-            #Default hashtable
             $apiParams = [ordered] @{
                 'method' = 'auth.getSession'
                 'api_key' = $APIKey

@@ -20,20 +20,17 @@ function Get-LFMArtistTopTag {
     )
 
     begin {
-        #Default hashtable
         $apiParams = [ordered] @{
             'method' = 'artist.getTopTags'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
         }
 
-        #Adding key/value to hashtable based off optional parameters
         switch ($PSBoundParameters.Keys) {
             'AutoCorrect' {$apiParams.add('autocorrect', 1)}
         }
     }
     process {
-        #Adding key/value to hashtable based off ParameterSetName
         switch ($PSCmdlet.ParameterSetName) {
             'artist' {$apiParams.add('artist', $Artist)}
             'id' {$apiParams.add('mbid', $Id)}

@@ -17,7 +17,6 @@ function Set-LFMTrackUnlove {
     begin {
         $apiSig = New-LFMTrackSignature -Method track.unlove -Artist $Artist -Track $Track
 
-        #Default hashtable
         $apiParams = [ordered] @{
             'method' = 'track.unlove'
             'api_key' = $LFMConfig.APIKey

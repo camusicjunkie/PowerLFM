@@ -22,21 +22,18 @@ function Get-LFMAlbumInfo {
     )
 
     begin {
-        #Default hashtable
         $apiParams = [ordered] @{
             'method' = 'album.getInfo'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
         }
 
-        #Adding key/value to hashtable based off optional parameters
         switch ($PSBoundParameters.Keys) {
             'UserName' {$apiParams.add('username', $UserName)}
             'AutoCorrect' {$apiParams.add('autocorrect', 1)}
         }
     }
     process {
-        #Adding key/value to hashtable based off ParameterSetName
         if ($PSCmdlet.ParameterSetName -eq 'album') {
             $apiParams.add('artist', $Artist)
             $apiParams.add('album', $Album)

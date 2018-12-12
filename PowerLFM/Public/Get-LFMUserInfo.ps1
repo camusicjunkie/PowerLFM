@@ -9,7 +9,6 @@ function Get-LFMUserInfo {
     )
 
     begin {
-        #Default hashtable
         $apiParams = [ordered] @{
             'method' = 'user.GetInfo'
             'api_key' = $LFMConfig.APIKey

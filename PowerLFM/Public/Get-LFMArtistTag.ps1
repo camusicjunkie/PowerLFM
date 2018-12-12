@@ -18,7 +18,6 @@ function Get-LFMArtistTag {
     )
 
     begin {
-        #Default hashtable
         $apiParams = [ordered] @{
             'method' = 'artist.getTags'
             'format' = 'json'
@@ -29,13 +28,11 @@ function Get-LFMArtistTag {
         }
     }
     process {
-        #Adding key/value to hashtable based off ParameterSetName
         switch ($PSCmdlet.ParameterSetName) {
             'artist' {$apiParams.add('artist', $Artist)}
             'id' {$apiParams.add('mbid', $Id)}
         }
 
-        #Adding key/value to hashtable based off optional parameters
         if ($PSBoundParameters.ContainsKey('UserName')) {
             $apiParams.add('user', $UserName)
             $apiParams.add('api_key', $LFMConfig.APIKey)

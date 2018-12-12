@@ -17,7 +17,6 @@ function Add-LFMArtistTag {
     begin {
         $apiSig = New-LFMArtistSignature -Method artist.addTags -Artist $Artist -Tag $Tag
 
-        #Default hashtable
         $apiParams = [ordered] @{
             'method' = 'artist.addTags'
             'api_key' = $LFMConfig.APIKey
@@ -26,8 +25,6 @@ function Add-LFMArtistTag {
         }
     }
     process {
-        #Adding key/value to hashtable. Added in the process block
-        #to allow for pipeline input
         $apiParams.add('artist', $Artist)
         $apiParams.add('tags', $Tag)
 

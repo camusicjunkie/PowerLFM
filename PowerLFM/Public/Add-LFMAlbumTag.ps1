@@ -30,7 +30,6 @@ function Add-LFMAlbumTag {
 
         $apiSig = New-LFMAlbumSignature @apiSigProps
 
-        #Default hashtable
         $apiParams = [ordered] @{
             'method' = 'album.addTags'
             'api_key' = $LFMConfig.APIKey
@@ -39,8 +38,6 @@ function Add-LFMAlbumTag {
         }
     }
     process {
-        #Adding key/value to hashtable. Added in the process block
-        #to allow for pipeline input
         $apiParams.add('album', $Album)
         $apiParams.add('artist', $Artist)
         $apiParams.add('tags', $Tag)

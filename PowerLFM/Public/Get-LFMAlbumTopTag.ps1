@@ -22,7 +22,6 @@ function Get-LFMAlbumTopTag {
     )
 
     begin {
-        #Default hashtable
         $apiParams = [ordered] @{
             'method' = 'album.getTopTags'
             'api_key' = $LFMConfig.APIKey
@@ -34,7 +33,6 @@ function Get-LFMAlbumTopTag {
         }
     }
     process {
-        #Adding key/value to hashtable based off ParameterSetName
         switch ($PSCmdlet.ParameterSetName) {
             'album' {$apiParams.add('album', $Album);
                      $apiParams.add('artist', $Artist)}

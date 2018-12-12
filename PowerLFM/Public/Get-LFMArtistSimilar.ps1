@@ -18,7 +18,6 @@ function Get-LFMArtistSimilar {
     )
 
     begin {
-        #Default hashtable
         $apiParams = [ordered] @{
             'method' = 'artist.getSimilar'
             'api_key' = $LFMConfig.APIKey
@@ -26,13 +25,11 @@ function Get-LFMArtistSimilar {
             'format' = 'json'
         }
 
-        #Adding key/value to hashtable based off optional parameters
         switch ($PSBoundParameters.Keys) {
             'AutoCorrect' {$apiParams.add('autocorrect', 1)}
         }
     }
     process {
-        #Adding key/value to hashtable based off ParameterSetName
         if ($PSCmdlet.ParameterSetName -eq 'artist') {
             $apiParams.add('artist', $Artist)
         }
