@@ -21,14 +21,12 @@ function Get-LFMUserTopAlbum {
     )
 
     begin {
-        #Default hashtable
         $apiParams = [ordered] @{
             'method' = 'user.getTopAlbums'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
         }
 
-        #Adding key/value to hashtable based off optional parameters
         switch ($PSBoundParameters.Keys) {
             'Limit' {$apiParams.add('limit', $Limit)}
             'Page' {$apiParams.add('page', $Page)}

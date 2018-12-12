@@ -15,7 +15,6 @@ function Search-LFMAlbum {
     )
 
     begin {
-        #Default hashtable
         $apiParams = [ordered] @{
             'method' = 'album.search'
             'api_key' = $LFMConfig.APIKey
@@ -28,7 +27,6 @@ function Search-LFMAlbum {
         }
     }
     process {
-        #Adding key/value to hashtable based off optional parameters
         switch ($PSBoundParameters.Keys) {
             'Album' {$apiParams.add('album', $Album)}
         }

@@ -17,7 +17,6 @@ function Set-LFMTrackLove {
     begin {
         $apiSig = New-LFMTrackSignature -Method track.love -Artist $Artist -Track $Track
 
-        #Default hashtable
         $apiParams = [ordered] @{
             'method' = 'track.love'
             'api_key' = $LFMConfig.APIKey

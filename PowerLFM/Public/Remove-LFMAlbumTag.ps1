@@ -29,7 +29,6 @@ function Remove-LFMAlbumTag {
 
         $apiSig = New-LFMAlbumSignature @apiSigProps
 
-        #Default hashtable
         $apiParams = [ordered] @{
             'method' = 'album.removeTag'
             'api_key' = $LFMConfig.APIKey
@@ -38,11 +37,9 @@ function Remove-LFMAlbumTag {
         }
     }
     process {
-        #Adding key/value to hashtable. Added in the process block
-        #to allow for pipeline input
         $apiParams.add('album', $Album)
         $apiParams.add('artist', $Artist)
-        $apiParams.add('tags', $Tag)
+        $apiParams.add('tag', $Tag)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {

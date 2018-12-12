@@ -10,7 +10,6 @@ function Get-LFMArtistCorrection {
     )
 
     begin {
-        #Default hashtable
         $apiParams = [ordered] @{
             'method' = 'artist.getCorrection'
             'api_key' = $LFMConfig.APIKey

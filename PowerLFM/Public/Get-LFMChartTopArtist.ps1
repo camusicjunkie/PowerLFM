@@ -11,14 +11,12 @@ function Get-LFMChartTopArtist {
         [string] $Page
     )
 
-    #Default hashtable
     $apiParams = [ordered] @{
         'method' = 'chart.getTopArtists'
         'api_key' = $LFMConfig.APIKey
         'format' = 'json'
     }
 
-    #Adding key/value to hashtable based off optional parameters
     switch ($PSBoundParameters.Keys) {
         'Limit' {$apiParams.add('limit', $Limit)}
         'Page' {$apiParams.add('page', $Page)}

@@ -22,7 +22,6 @@ function Request-LFMToken {
         $apiSig = New-LFMAuthSignature @sigParams
         Write-Verbose "Signature MD5 Hash: $apiSig"
 
-        #Default hashtable
         $apiParams = [ordered] @{
             'method' = 'auth.getToken'
             'api_key' = $APIKey

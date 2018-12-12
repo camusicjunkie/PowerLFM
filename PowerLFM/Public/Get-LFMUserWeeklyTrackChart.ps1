@@ -16,7 +16,6 @@ function Get-LFMUserWeeklyTrackChart {
     )
 
     begin {
-        #Default hashtable
         $apiParams = [ordered] @{
             'method' = 'user.getWeeklyTrackChart'
             'api_key' = $LFMConfig.APIKey

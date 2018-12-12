@@ -16,7 +16,6 @@ function Get-LFMUserWeeklyAlbumChart {
     )
 
     begin {
-        #Default hashtable
         $apiParams = [ordered] @{
             'method' = 'user.getWeeklyAlbumChart'
             'api_key' = $LFMConfig.APIKey
