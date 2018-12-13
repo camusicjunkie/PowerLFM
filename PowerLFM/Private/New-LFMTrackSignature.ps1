@@ -15,7 +15,11 @@ function New-LFMTrackSignature {
 
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
-        [string] $Track
+        [string] $Track,
+
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        [string[]] $Tag
     )
     try {
         $sigParams = @{
@@ -25,13 +29,22 @@ function New-LFMTrackSignature {
             'artist' = $Artist
             'track' = $Track
         }
-    
+
+        if ($PSBoundParameters.ContainsKey('Tag')) {
+            if ($Method -eq 'track.removeTag') {
+                $sigParams.add('tag', $Tag)
+            }
+            else {
+                $sigParams.add('tags', $Tag)
+            }
+        }
+
         $keyValues = $sigParams.GetEnumerator() | Sort-Object Name | ForEach-Object {
             "$($_.Key)$($_.Value)"
         }
-    
+
         $string = $keyValues -join ''
-    
+
         if ($PSCmdlet.ShouldProcess('Shared secret', 'Creating track signature')) {
             Get-Md5Hash -String "$string$($LFMConfig.SharedSecret)"
         }
