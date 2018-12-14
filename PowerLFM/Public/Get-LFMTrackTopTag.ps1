@@ -61,13 +61,13 @@ function Get-LFMTrackTopTag {
             Write-Output $tagInfo
         }
 
-        $TrackTagInfo = [pscustomobject] @{
+        $trackTagInfo = [pscustomobject] @{
             'Track' = $hash.TopTags.'@attr'.Track
             'Artist' = $hash.TopTags.'@attr'.Artist
             'Tags' = $tags
         }
 
-        $TrackTagInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Track.TopTag')
-        Write-Output $TrackTagInfo
+        $trackTagInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Track.TopTag')
+        Write-Output $trackTagInfo
     }
 }
