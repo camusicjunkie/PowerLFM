@@ -75,7 +75,7 @@ $album.Tags
 * [track.getTopTags](https://www.last.fm/api/show/track.getTopTags)
 * [track.love](https://www.last.fm/api/show/track.love)
 * [track.removeTag](https://www.last.fm/api/show/track.removeTag)
-* [track.search](https://www.last.fm/api/show/)
+* [track.search](https://www.last.fm/api/show/track.search)
 * [track.unlove](https://www.last.fm/api/show/track.unlove)
 * [user.getArtistTracks](https://www.last.fm/api/show/user.getArtistTracks)
 * [user.getFriends](https://www.last.fm/api/show/user.getFriends)
