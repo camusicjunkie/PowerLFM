@@ -25,13 +25,18 @@ function New-LFMArtistSignature {
             'artist' = $Artist
             'tags' = $Tag
         }
-    
+
+        if ($Method -eq 'artist.removeTag') {
+            $sigParams.remove('tags')
+            $sigParams.add('tag', $Tag)
+        }
+
         $keyValues = $sigParams.GetEnumerator() | Sort-Object Name | ForEach-Object {
             "$($_.Key)$($_.Value)"
         }
-    
+
         $string = $keyValues -join ''
-    
+
         if ($PSCmdlet.ShouldProcess('Shared secret', 'Creating artist signature')) {
             Get-Md5Hash -String "$string$($LFMConfig.SharedSecret)"
         }

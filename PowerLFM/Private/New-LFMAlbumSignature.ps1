@@ -30,13 +30,18 @@ function New-LFMAlbumSignature {
             'artist' = $Artist
             'tags' = $Tag
         }
-    
+
+        if ($Method -eq 'album.removeTag') {
+            $sigParams.Remove('tags')
+            $sigParams.add('tag', $Tag)
+        }
+
         $keyValues = $sigParams.GetEnumerator() | Sort-Object Name | ForEach-Object {
             "$($_.Key)$($_.Value)"
         }
-    
+
         $string = $keyValues -join ''
-        
+
         if ($PSCmdlet.ShouldProcess('Shared secret', 'Creating album signature')) {
             Get-Md5Hash -String "$string$($LFMConfig.SharedSecret)"
         }

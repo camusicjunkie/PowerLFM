@@ -32,11 +32,9 @@ function Get-LFMArtistInfo {
         }
     }
     process {
-        if ($PSCmdlet.ParameterSetName -eq 'artist') {
-            $apiParams.add('artist', $Artist)
-        }
-        if ($PSCmdlet.ParameterSetName -eq 'id') {
-            $apiParams.add('mbid', $Id)
+        switch ($PSCmdlet.ParameterSetName) {
+            'artist' {$apiParams.add('artist', $Artist)}
+            'id'     {$apiParams.add('mbid', $Id)}
         }
 
         #Building string to append to base url
