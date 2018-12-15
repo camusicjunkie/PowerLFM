@@ -34,12 +34,10 @@ function Get-LFMAlbumInfo {
         }
     }
     process {
-        if ($PSCmdlet.ParameterSetName -eq 'album') {
-            $apiParams.add('artist', $Artist)
-            $apiParams.add('album', $Album)
-        }
-        if ($PSCmdlet.ParameterSetName -eq 'id') {
-            $apiParams.add('mbid', $Id)
+        switch ($PSCmdlet.ParameterSetName) {
+            'album' {$apiParams.add('artist', $Artist);
+                     $apiParams.add('album', $Album)}
+            'id'    {$apiParams.add('mbid', $Id)}
         }
 
         #Building string to append to base url
@@ -73,7 +71,6 @@ function Get-LFMAlbumInfo {
                 'Tag' = $tag.Name
                 'Url' = $tag.Url
             }
-            #$tagInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Album.Tag')
             Write-Output $tagInfo
         }
 
@@ -83,6 +80,7 @@ function Get-LFMAlbumInfo {
             'Id' = $hash.Album.Mbid
             'Listeners' = [int] $hash.Album.Listeners
             'PlayCount' = [int] $hash.Album.PlayCount
+            'Url' = $hash.Album.Url
             'Summary' = $hash.Album.Wiki.Summary
             'Tracks' = $tracks
             'Tags' = $tags
