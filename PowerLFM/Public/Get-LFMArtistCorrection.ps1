@@ -33,10 +33,11 @@ function Get-LFMArtistCorrection {
         $irm = Invoke-RestMethod -Uri $apiUrl
         $hash = $irm | ConvertTo-Hashtable
 
+        $correction = $hash.Corrections.Correction.Artist
         $correctedArtistInfo = [pscustomobject] @{
-            'Artist' = $hash.Corrections.Correction.Artist.Name
-            'Id' = $hash.Corrections.Correction.Artist.Mbid
-            'Url' = $hash.Corrections.Correction.Artist.Url
+            'Artist' = $correction.Name
+            'Id' = $correction.Mbid
+            'Url' = $correction.Url
         }
 
         $correctedArtistInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Artist.Correction')
