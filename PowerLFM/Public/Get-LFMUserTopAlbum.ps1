@@ -9,12 +9,12 @@ function Get-LFMUserTopAlbum {
         [string] $UserName,
 
         [Parameter()]
-        [ValidateSet('Overall', '7day', '1month',
-                     '3month', '6month', '12month')]
+        [ValidateSet('Overall', '7 Days', '1 Month',
+                     '3 Months', '6 Months', '1 Year')]
         [string] $TimePeriod,
 
         [Parameter()]
-        #[ValidateRange(1,50)]
+        [ValidateRange(1,50)]
         [string] $Limit,
 
         [string] $Page
@@ -27,10 +27,19 @@ function Get-LFMUserTopAlbum {
             'format' = 'json'
         }
 
+        $period = @{
+            'Overall' = 'Overall'
+            '7 Days' = '7days'
+            '1 Month' = '1month'
+            '3 Months' = '3month'
+            '6 Months' = '6month'
+            '1 Year' = '12month'
+        }
+
         switch ($PSBoundParameters.Keys) {
             'Limit' {$apiParams.add('limit', $Limit)}
             'Page' {$apiParams.add('page', $Page)}
-            'TimePeriod' {$apiParams.add('period', $TimePeriod)}
+            'TimePeriod' {$apiParams.add('period', $period[$TimePeriod].ToLower())}
         }
     }
     process {
@@ -50,7 +59,7 @@ function Get-LFMUserTopAlbum {
         $irm = Invoke-RestMethod -Uri $apiUrl
         $hash = $irm | ConvertTo-Hashtable
 
-        <#$topAlbums = #>foreach ($album in $hash.TopAlbums.Album) {
+        foreach ($album in $hash.TopAlbums.Album) {
             $albumInfo = [pscustomobject] @{
                 'Album' = $album.Name
                 'PlayCount' = [int] $album.PlayCount
@@ -65,17 +74,5 @@ function Get-LFMUserTopAlbum {
             $albumInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.User.Album')
             Write-Output $albumInfo
         }
-
-        #$topAlbumInfo = [pscustomobject] @{
-        #    'UserName' = $hash.TopAlbums.'@attr'.User
-        #    'AlbumsPerPage' = $hash.TopAlbums.'@attr'.PerPage
-        #    'Page' = $hash.TopAlbums.'@attr'.Page
-        #    'TotalPages' = $hash.TopAlbums.'@attr'.TotalPages
-        #    'TotalAlbums' = $hash.TopAlbums.'@attr'.Total
-        #    'TopAlbums' = $topAlbums
-        #}
-#
-        #$topAlbumInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.User.TopAlbum')
-        #Write-Output $topAlbumInfo
     }
 }
