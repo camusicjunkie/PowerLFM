@@ -62,17 +62,5 @@ function Get-LFMUserTopTrack {
             $trackInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.User.TopTrack')
             Write-Output $trackInfo
         }
-
-        #$topAlbumInfo = [pscustomobject] @{
-        #    'UserName' = $hash.TopAlbums.'@attr'.User
-        #    'AlbumsPerPage' = $hash.TopAlbums.'@attr'.PerPage
-        #    'Page' = $hash.TopAlbums.'@attr'.Page
-        #    'TotalPages' = $hash.TopAlbums.'@attr'.TotalPages
-        #    'TotalAlbums' = $hash.TopAlbums.'@attr'.Total
-        #    'TopAlbums' = $topAlbums
-        #}
-#
-        #$topAlbumInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.User.TopAlbum')
-        #Write-Output $topAlbumInfo
     }
 }
