@@ -12,7 +12,7 @@
 RootModule = 'PowerLFM.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.2.1'
+ModuleVersion = '0.2.3'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -69,24 +69,24 @@ Description = 'Module to leverage the Last.fm API'
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = 'Add-LFMAlbumTag', 'Add-LFMArtistTag', 'Add-LFMConfiguration', 
-               'Add-LFMTrackTag', 'Get-LFMAlbumInfo', 'Get-LFMAlbumTag', 
-               'Get-LFMAlbumTopTag', 'Get-LFMArtistCorrection', 'Get-LFMArtistInfo', 
-               'Get-LFMArtistSimilar', 'Get-LFMArtistTag', 'Get-LFMArtistTopAlbum', 
-               'Get-LFMArtistTopTag', 'Get-LFMArtistTopTrack', 
-               'Get-LFMChartTopArtist', 'Get-LFMChartTopTag', 'Get-LFMChartTopTrack', 
-               'Get-LFMConfiguration', 'Get-LFMGeoTopArtist', 'Get-LFMGeoTopTrack', 
-               'Get-LFMLibraryArtist', 'Get-LFMTrackCorrection', 'Get-LFMTrackInfo', 
-               'Get-LFMTrackSimilar', 'Get-LFMTrackTag', 'Get-LFMTrackTopTag', 
-               'Get-LFMUserArtistTrack', 'Get-LFMUserFriend', 'Get-LFMUserInfo', 
-               'Get-LFMUserLovedTrack', 'Get-LFMUserTopAlbum', 
-               'Get-LFMUserTopArtist', 'Get-LFMUserTopTag', 'Get-LFMUserTopTrack', 
-               'Get-LFMUserWeeklyAlbumChart', 'Get-LFMUserWeeklyArtistChart', 
-               'Get-LFMUserWeeklyChartList', 'Get-LFMUserWeeklyTrackChart', 
-               'Remove-LFMAlbumTag', 'Remove-LFMArtistTag', 'Remove-LFMTrackTag', 
-               'Request-LFMSession', 'Request-LFMToken', 'Search-LFMAlbum', 
-               'Search-LFMArtist', 'Search-LFMTrack', 'Set-LFMTrackLove', 
-               'Set-LFMTrackUnlove'
+FunctionsToExport = 'Add-LFMAlbumTag', 'Add-LFMArtistTag', 'Add-LFMConfiguration',
+               'Add-LFMTrackTag', 'Get-LFMAlbumInfo', 'Get-LFMAlbumTag',
+               'Get-LFMAlbumTopTag', 'Get-LFMArtistCorrection', 'Get-LFMArtistInfo',
+               'Get-LFMArtistSimilar', 'Get-LFMArtistTag', 'Get-LFMArtistTopAlbum',
+               'Get-LFMArtistTopTag', 'Get-LFMArtistTopTrack',
+               'Get-LFMChartTopArtist', 'Get-LFMChartTopTag', 'Get-LFMChartTopTrack',
+               'Get-LFMConfiguration', 'Get-LFMGeoTopArtist', 'Get-LFMGeoTopTrack',
+               'Get-LFMLibraryArtist', 'Get-LFMTrackCorrection', 'Get-LFMTrackInfo',
+               'Get-LFMTrackSimilar', 'Get-LFMTrackTag', 'Get-LFMTrackTopTag',
+               'Get-LFMUserArtistTrack', 'Get-LFMUserFriend', 'Get-LFMUserInfo',
+               'Get-LFMUserLovedTrack', 'Get-LFMUserTopAlbum',
+               'Get-LFMUserTopArtist', 'Get-LFMUserTopTag', 'Get-LFMUserTopTrack',
+               'Get-LFMUserWeeklyAlbumChart', 'Get-LFMUserWeeklyArtistChart',
+               'Get-LFMUserWeeklyChartList', 'Get-LFMUserWeeklyTrackChart',
+               'Remove-LFMAlbumTag', 'Remove-LFMArtistTag', 'Remove-LFMTrackTag',
+               'Request-LFMSession', 'Request-LFMToken', 'Search-LFMAlbum',
+               'Search-LFMArtist', 'Search-LFMTrack', 'Set-LFMTrackLove',
+               'Set-LFMTrackUnlove', 'Get-LFMUserPersonalTag', 'Get-LFMUserRecentTrack'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
@@ -146,4 +146,3 @@ PrivateData = @{
 # DefaultCommandPrefix = ''
 
 }
-
