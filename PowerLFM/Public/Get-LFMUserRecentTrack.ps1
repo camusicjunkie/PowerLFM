@@ -63,8 +63,10 @@ function Get-LFMUserRecentTrack {
 
             $scrobbleTime = ConvertFrom-UnixTime -UnixTime $track.Date.Uts -Local
             switch ($track.'@attr'.NowPlaying) {
-                $true {$trackInfo.add('NowPlaying', $true)}
-                $null {$trackInfo.add('ScrobbleTime', $scrobbleTime)}
+                $true {$trackInfo.add('NowPlaying', $true);
+                       $trackInfo.add('ScrobbleTime', $null)}
+                $null {$trackInfo.add('NowPlaying', $null);
+                       $trackInfo.add('ScrobbleTime', $scrobbleTime)}
             }
 
             if ($Extended) {
