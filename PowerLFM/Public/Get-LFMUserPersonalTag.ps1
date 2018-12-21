@@ -2,7 +2,7 @@ function Get-LFMUserPersonalTag {
     # .ExternalHelp PowerLFM.psm1-help.xml
 
     [CmdletBinding()]
-    #[OutputType('PowerLFM.User.PersonalTag')]
+    [OutputType('PowerLFM.User.PersonalTag')]
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
