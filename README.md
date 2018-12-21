@@ -45,6 +45,20 @@ $album.Tracks
 $album.Tags
 ```
 
+## Currently unsupported methods
+
+* Tag
+  * [tag.getInfo](https://www.last.fm/api/show/tag.getInfo)
+  * [tag.getSimilar](https://www.last.fm/api/show/tag.getSimilar)
+  * [tag.getTopAlbums](https://www.last.fm/api/show/tag.getTopAlbums)
+  * [tag.getTopArtists](https://www.last.fm/api/show/tag.getTopArtists)
+  * [tag.getTopTags](https://www.last.fm/api/show/tag.getTopTags)
+  * [tag.getTopTracks](https://www.last.fm/api/show/tag.getTopTracks)
+  * [tag.getWeeklyChartList](https://www.last.fm/api/show/tag.getWeeklyChartList)
+* Track
+  * [track.scrobble](https://www.last.fm/api/show/track.scrobble)
+  * [track.updateNowPlaying](https://www.last.fm/api/show/track.updateNowPlaying)
+
 ## Currently supported methods
 
 * Album
@@ -52,6 +66,8 @@ $album.Tags
   * [album.getInfo](https://www.last.fm/api/show/album.getInfo)
   * [album.getTags](https;//www.last.fm/api/show/album.getTags)
   * [album.getTopTags](https;//www.last.fm/api/show/album.getTopTags)
+  * [album.removeTag](https://www.last.fm/api/show/album.removeTag)
+  * [album.search](https://www.last.fm/api/show/album.search)
 * Artist
   * [artist.addTags](https://www.last.fm/api/show/artist.addTags)
   * [artist.getCorrection](https://www.last.fm/api/show/artist.getCorrection)
@@ -75,8 +91,6 @@ $album.Tags
   * [geo.getTopTracks](https://www.last.fm/api/show/geo.getTopTracks)
 * Library
   * [library.getArtists](https://www.last.fm/api/show/library.getArtists)
-* Tag
-
 * Track
   * [track.addTags](https://www.last.fm/api/show/track.addTags)
   * [track.getCorrection](https://www.last.fm/api/show/track.getCorrection)
@@ -93,6 +107,8 @@ $album.Tags
   * [user.getFriends](https://www.last.fm/api/show/user.getFriends)
   * [user.getInfo](https://www.last.fm/api/show/user.getInfo)
   * [user.getLovedTracks](https://www.last.fm/api/show/user.getLovedTracks)
+  * [user.getPersonalTags](https://www.last.fm/api/show/user.getPersonalTags)
+  * [user.getRecentTracks](https://www.last.fm/api/show/user.getRecentTracks)
   * [user.getTopAlbums](https://www.last.fm/api/show/user.getTopAlbums)
   * [user.getTopArtists](https://www.last.fm/api/show/user.getTopArtists)
   * [user.getTopTags](https://www.last.fm/api/show/user.getTopTags)
