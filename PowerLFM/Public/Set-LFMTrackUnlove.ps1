@@ -14,7 +14,7 @@ function Set-LFMTrackUnlove {
         [string] $Track
     )
 
-    begin {
+    process {
         $apiSig = New-LFMTrackSignature -Method track.unlove -Artist $Artist -Track $Track
 
         $apiParams = [ordered] @{
@@ -23,8 +23,7 @@ function Set-LFMTrackUnlove {
             'sk' = $LFMConfig.SessionKey
             'api_sig' = $apiSig
         }
-    }
-    process {
+
         $apiParams.add('artist', $Artist)
         $apiParams.add('track', $Track)
 
