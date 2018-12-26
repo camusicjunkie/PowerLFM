@@ -61,7 +61,7 @@ function Get-LFMGeoTopTrack {
                 'ImageUrl' = $track.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 
-            $trackInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Get.TopTracks')
+            $trackInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Geo.TopTracks')
             Write-Output $trackInfo
         }
     }

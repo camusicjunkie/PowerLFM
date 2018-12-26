@@ -53,7 +53,7 @@ function Get-LFMGeoTopArtist {
                 'ImageUrl' = $artist.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 
-            $artistInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Get.TopArtists')
+            $artistInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Geo.TopArtists')
             Write-Output $artistInfo
         }
     }
