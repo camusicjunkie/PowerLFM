@@ -18,11 +18,12 @@ function Get-LFMAlbumTopTag {
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'id')]
         [string] $Id,
+
         [switch] $AutoCorrect
     )
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'album.getTopTags'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
@@ -49,25 +50,16 @@ function Get-LFMAlbumTopTag {
     }
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
-        $hash = $irm | ConvertTo-Hashtable
 
-        $tags = foreach ($tag in $hash.TopTags.Tag) {
+        foreach ($tag in $irm.TopTags.Tag) {
             $tagInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.Album.Tag'
                 'Tag' = $tag.Name
                 'Url' = $tag.Url
                 'Match' = $tag.Count
             }
-            $tagInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Album.Tag')
+
             Write-Output $tagInfo
         }
-
-        $albumTagInfo = [pscustomobject] @{
-            'Album' = $hash.TopTags.'@attr'.Album
-            'Artist' = $hash.TopTags.'@attr'.Artist
-            'Tags' = $tags
-        }
-
-        $albumTagInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Album.TopTag')
-        Write-Output $albumTagInfo
     }
 }
