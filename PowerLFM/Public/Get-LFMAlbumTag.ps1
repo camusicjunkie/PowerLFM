@@ -18,14 +18,17 @@ function Get-LFMAlbumTag {
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'id')]
         [string] $Id,
+
         [string] $UserName,
+
         [switch] $AutoCorrect
     )
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'album.getTags'
             'format' = 'json'
+            'api_key' = $LFMConfig.APIKey
         }
 
         switch ($PSBoundParameters.Keys) {
@@ -41,10 +44,8 @@ function Get-LFMAlbumTag {
 
         if ($PSBoundParameters.ContainsKey('UserName')) {
             $apiParams.add('user', $UserName)
-            $apiParams.add('api_key', $LFMConfig.APIKey)
         }
         else {
-            $apiParams.add('api_key', $LFMConfig.APIKey)
             $apiParams.add('sk', $LFMConfig.SessionKey)
         }
 
@@ -58,27 +59,15 @@ function Get-LFMAlbumTag {
     }
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
-        $hash = $irm | ConvertTo-Hashtable
 
-        $tags = foreach ($tag in $hash.Tags.Tag) {
+        foreach ($tag in $irm.Tags.Tag) {
             $tagInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.Album.Tag'
                 'Tag' = $tag.Name
                 'Url' = $tag.Url
             }
-            $tagInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Album.Tag')
+
             Write-Output $tagInfo
         }
-
-        $artistTagInfo = [pscustomobject] @{
-            'Artist' = $hash.Tags.'@attr'.Artist
-            'Tags' = $tags
-        }
-
-        if ($PSBoundParameters.ContainsKey('UserName')) {
-            $artistTagInfo | Add-Member -MemberType NoteProperty -Name 'UserName' -Value $UserName
-        }
-
-        $artistTagInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Album.UserTag')
-        Write-Output $artistTagInfo
     }
 }
