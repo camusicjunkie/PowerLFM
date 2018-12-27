@@ -15,7 +15,12 @@ function Add-LFMArtistTag {
     )
 
     begin {
-        $apiSig = New-LFMArtistSignature -Method artist.addTags -Artist $Artist -Tag $Tag
+        $apiSigParams = @{
+            'Artist' = $Artist
+            'Tag' = $Tag
+            'Method' = 'artist.addTags'
+        }
+        $apiSig = New-LFMArtistSignature @apiSigParams
 
         $apiParams = [ordered] @{
             'method' = 'artist.addTags'
