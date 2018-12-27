@@ -1,6 +1,7 @@
 # PowerLFM
 
-PowerShell module to leverage the Last.fm API. This module is still a work in progress.
+PowerShell module to leverage the Last.fm API. This module is still a work in progress. Breaking changes may be implemented without any prior notice.
+
 All the API documentation can be found [here](https://www.last.fm/api/intro).
 
 ## How to use PowerLFM
