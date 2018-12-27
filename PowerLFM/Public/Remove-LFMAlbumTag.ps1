@@ -20,14 +20,13 @@ function Remove-LFMAlbumTag {
     )
 
     begin {
-        $apiSigProps = @{
+        $apiSigParams = @{
             'Album' = $Album
             'Artist' = $Artist
             'Tag' = $Tag
             'Method' = 'album.removeTag'
         }
-
-        $apiSig = New-LFMAlbumSignature @apiSigProps
+        $apiSig = New-LFMAlbumSignature @apiSigParams
 
         $apiParams = [ordered] @{
             'method' = 'album.removeTag'

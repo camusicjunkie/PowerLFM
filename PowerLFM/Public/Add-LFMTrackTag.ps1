@@ -21,14 +21,13 @@ function Add-LFMTrackTag {
     )
 
     begin {
-        $apiSigProps = @{
+        $apiSigParams = @{
             'Track' = $Track
             'Artist' = $Artist
             'Tag' = $Tag
             'Method' = 'track.addTags'
         }
-
-        $apiSig = New-LFMTrackSignature @apiSigProps
+        $apiSig = New-LFMTrackSignature @apiSigParams
 
         $apiParams = [ordered] @{
             'method' = 'track.addTags'
