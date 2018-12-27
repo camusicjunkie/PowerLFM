@@ -47,14 +47,6 @@ $album.Tags
 
 ## Currently unsupported methods
 
-* Tag
-  * [tag.getInfo](https://www.last.fm/api/show/tag.getInfo)
-  * [tag.getSimilar](https://www.last.fm/api/show/tag.getSimilar)
-  * [tag.getTopAlbums](https://www.last.fm/api/show/tag.getTopAlbums)
-  * [tag.getTopArtists](https://www.last.fm/api/show/tag.getTopArtists)
-  * [tag.getTopTags](https://www.last.fm/api/show/tag.getTopTags)
-  * [tag.getTopTracks](https://www.last.fm/api/show/tag.getTopTracks)
-  * [tag.getWeeklyChartList](https://www.last.fm/api/show/tag.getWeeklyChartList)
 * Track
   * [track.scrobble](https://www.last.fm/api/show/track.scrobble)
   * [track.updateNowPlaying](https://www.last.fm/api/show/track.updateNowPlaying)
@@ -91,6 +83,14 @@ $album.Tags
   * [geo.getTopTracks](https://www.last.fm/api/show/geo.getTopTracks)
 * Library
   * [library.getArtists](https://www.last.fm/api/show/library.getArtists)
+* Tag
+  * [tag.getInfo](https://www.last.fm/api/show/tag.getInfo)
+  * [tag.getSimilar](https://www.last.fm/api/show/tag.getSimilar)
+  * [tag.getTopAlbums](https://www.last.fm/api/show/tag.getTopAlbums)
+  * [tag.getTopArtists](https://www.last.fm/api/show/tag.getTopArtists)
+  * [tag.getTopTags](https://www.last.fm/api/show/tag.getTopTags)
+  * [tag.getTopTracks](https://www.last.fm/api/show/tag.getTopTracks)
+  * [tag.getWeeklyChartList](https://www.last.fm/api/show/tag.getWeeklyChartList)
 * Track
   * [track.addTags](https://www.last.fm/api/show/track.addTags)
   * [track.getCorrection](https://www.last.fm/api/show/track.getCorrection)
