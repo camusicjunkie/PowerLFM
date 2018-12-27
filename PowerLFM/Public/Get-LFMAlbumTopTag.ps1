@@ -2,7 +2,7 @@ function Get-LFMAlbumTopTag {
     # .ExternalHelp PowerLFM.psm1-help.xml
 
     [CmdletBinding(DefaultParameterSetName = 'album')]
-    [OutputType('PowerLFM.Album.TopTag')]
+    [OutputType('PowerLFM.Album.Tag')]
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,

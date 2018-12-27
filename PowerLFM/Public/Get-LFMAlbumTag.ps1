@@ -2,7 +2,7 @@ function Get-LFMAlbumTag {
     # .ExternalHelp PowerLFM.psm1-help.xml
 
     [CmdletBinding(DefaultParameterSetName = 'album')]
-    [OutputType('PowerLFM.Album.UserTag')]
+    [OutputType('PowerLFM.Album.Tag')]
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
