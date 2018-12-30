@@ -6,11 +6,12 @@ function Get-LFMTagWeeklyChartList {
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [string] $Tag
     )
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'tag.getWeeklyChartList'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'

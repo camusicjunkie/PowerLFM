@@ -2,10 +2,11 @@ function Get-LFMUserLovedTrack {
     # .ExternalHelp PowerLFM.psm1-help.xml
 
     [CmdletBinding()]
-    [OutputType('PowerLFM.User.LovedTrack')]
+    [OutputType('PowerLFM.User.Track')]
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [string] $UserName,
 
         [Parameter()]
@@ -16,7 +17,7 @@ function Get-LFMUserLovedTrack {
     )
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'user.getLovedTracks'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
@@ -28,9 +29,7 @@ function Get-LFMUserLovedTrack {
         }
     }
     process {
-        switch ($PSBoundParameters.Keys) {
-            'UserName' {$apiParams.add('user', $UserName)}
-        }
+        $apiParams.add('user', $UserName)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
@@ -42,10 +41,10 @@ function Get-LFMUserLovedTrack {
     }
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
-        $hash = $irm | ConvertTo-Hashtable
 
-        $lovedTracks = foreach ($track in $hash.LovedTracks.Track) {
+        foreach ($track in $irm.LovedTracks.Track) {
             $trackInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.User.Track'
                 'Track' = $track.Name
                 'TrackUrl' = $track.Url
                 'Trackid' = $track.Mbid
@@ -56,20 +55,7 @@ function Get-LFMUserLovedTrack {
                 'ImageUrl' = $track.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 
-            $trackInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.User.Track')
             Write-Output $trackInfo
         }
-
-        $lovedTrackInfo = [pscustomobject] @{
-            'UserName' = $hash.LovedTracks.'@attr'.User
-            'TracksPerPage' = $hash.LovedTracks.'@attr'.PerPage
-            'Page' = $hash.LovedTracks.'@attr'.Page
-            'TotalPages' = $hash.LovedTracks.'@attr'.TotalPages
-            'TotalTracks' = $hash.LovedTracks.'@attr'.Total
-            'LovedTracks' = $lovedTracks
-        }
-
-        $lovedTrackInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.User.LovedTrack')
-        Write-Output $lovedTrackInfo
     }
 }

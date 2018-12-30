@@ -22,7 +22,7 @@ function Request-LFMToken {
         $apiSig = New-LFMAuthSignature @sigParams
         Write-Verbose "Signature MD5 Hash: $apiSig"
 
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'auth.getToken'
             'api_key' = $APIKey
             'api_sig' = $apiSig
@@ -34,6 +34,7 @@ function Request-LFMToken {
             "$($_.Name)=$($_.Value)"
         }
         $string = $keyValues -join '&'
+
         $apiUrl = "$baseUrl/?$string"
 
         Write-Verbose "Requesting token from $baseUrl"

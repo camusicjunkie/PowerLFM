@@ -6,6 +6,7 @@ function Get-LFMUserWeeklyArtistChart {
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [string] $UserName,
 
         [Parameter(ValueFromPipelineByPropertyName)]
@@ -16,15 +17,16 @@ function Get-LFMUserWeeklyArtistChart {
     )
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'user.getWeeklyArtistChart'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
         }
     }
     process {
+        $apiParams.add('user', $UserName)
+
         switch ($PSBoundParameters.Keys) {
-            'UserName' {$apiParams.add('user', $UserName)}
             'StartDate' {$apiParams.add('from', (ConvertTo-UnixTime -Date $StartDate))}
             'EndDate' {$apiParams.add('to', (ConvertTo-UnixTime -Date $EndDate))}
         }
@@ -39,19 +41,18 @@ function Get-LFMUserWeeklyArtistChart {
     }
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
-        $hash = $irm | ConvertTo-Hashtable
 
-        foreach ($artist in $hash.WeeklyArtistChart.Artist) {
+        foreach ($artist in $irm.WeeklyArtistChart.Artist) {
             $artistInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.User.WeeklyArtistChart'
                 'Artist' = $artist.Name
                 'Url' = $artist.Url
                 'Id' = $artist.Mbid
                 'PlayCount' = [int] $artist.PlayCount
-                'StartDate' = ConvertFrom-UnixTime -UnixTime $hash.WeeklyArtistChart.'@attr'.From -Local
-                'EndDate' = ConvertFrom-UnixTime -UnixTime $hash.WeeklyArtistChart.'@attr'.To -Local
+                'StartDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyArtistChart.'@attr'.From -Local
+                'EndDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyArtistChart.'@attr'.To -Local
             }
 
-            $artistInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.User.WeeklyArtistChart')
             Write-Output $artistInfo
         }
     }

@@ -2,7 +2,7 @@ function Get-LFMArtistTopTag {
     # .ExternalHelp PowerLFM.psm1-help.xml
 
     [CmdletBinding(DefaultParameterSetName = 'artist')]
-    [OutputType('PowerLFM.Artist.TopTag')]
+    [OutputType('PowerLFM.Artist.Tag')]
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
@@ -20,7 +20,7 @@ function Get-LFMArtistTopTag {
     )
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'artist.getTopTags'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
@@ -46,24 +46,16 @@ function Get-LFMArtistTopTag {
     }
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
-        $hash = $irm | ConvertTo-Hashtable
 
-        $tags = foreach ($tag in $hash.TopTags.Tag) {
+        foreach ($tag in $irm.TopTags.Tag) {
             $tagInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.Artist.Tag'
                 'Tag' = $tag.Name
                 'Url' = $tag.Url
                 'Match' = $tag.Count
             }
-            $tagInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Artist.Tag')
+
             Write-Output $tagInfo
         }
-
-        $topTagInfo = [pscustomobject] @{
-            'Artist' = $hash.TopTags.'@attr'.Artist
-            'Tags' = $tags
-        }
-
-        $topTagInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Artist.TopTag')
-        Write-Output $topTagInfo
     }
 }

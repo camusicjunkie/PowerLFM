@@ -9,7 +9,7 @@ function Get-LFMUserInfo {
     )
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'user.GetInfo'
             'api_key' = $LFMConfig.APIKey
             'sk' = $LFMConfig.SessionKey
@@ -32,22 +32,19 @@ function Get-LFMUserInfo {
     }
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
-        $hash = $irm | ConvertTo-Hashtable
 
-        $registered = ConvertFrom-UnixTime -UnixTime $hash.User.Registered.UnixTime -Local
-        $imageUrl = $hash.User.Image | Where-Object Size -eq ExtraLarge
         $userInfo = [pscustomobject] @{
-            'UserName' = $hash.User.Name
-            'RealName' = $hash.User.RealName
-            'Url' = $hash.User.Url
-            'Country' = $hash.User.Country
-            'Registered' = $registered
-            'PlayCount' = [int] $hash.User.PlayCount
-            'PlayLists' = $hash.User.PlayLists
-            'ImageUrl' = $imageUrl.'#text'
+            'PSTypeName' = 'PowerLFM.User.Info'
+            'UserName' = $irm.User.Name
+            'RealName' = $irm.User.RealName
+            'Url' = $irm.User.Url
+            'Country' = $irm.User.Country
+            'Registered' = ConvertFrom-UnixTime -UnixTime $irm.User.Registered.UnixTime -Local
+            'PlayCount' = [int] $irm.User.PlayCount
+            'PlayLists' = $irm.User.PlayLists
+            'ImageUrl' = $irm.User.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
         }
 
-        $userInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.User.Info')
         Write-Output $userInfo
     }
 }

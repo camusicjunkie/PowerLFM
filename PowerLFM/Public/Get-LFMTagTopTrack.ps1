@@ -6,6 +6,7 @@ function Get-LFMTagTopTrack {
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [string] $Tag,
 
         [string] $Limit,
@@ -14,7 +15,7 @@ function Get-LFMTagTopTrack {
     )
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'tag.getTopTracks'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'

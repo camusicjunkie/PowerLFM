@@ -7,18 +7,22 @@ function Get-LFMArtistSimilar {
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'artist')]
+        [ValidateNotNullOrEmpty()]
         [string] $Artist,
 
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'id')]
+        [ValidateNotNullOrEmpty()]
         [string] $Id,
+
         [string] $Limit = '5',
+
         [switch] $AutoCorrect
     )
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'artist.getSimilar'
             'api_key' = $LFMConfig.APIKey
             'limit' = $Limit
@@ -45,16 +49,16 @@ function Get-LFMArtistSimilar {
     }
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
-        $hash = $irm | ConvertTo-Hashtable
 
-        foreach ($similar in $hash.SimilarArtists.Artist) {
+        foreach ($similar in $irm.SimilarArtists.Artist) {
             $similarInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.Artist.Similar'
                 'Artist' = $similar.Name
                 'Id' = $similar.Mbid
                 'Url' = $similar.Url
                 'Match' = $similar.Match
             }
-            $similarInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Artist.Similar')
+
             Write-Output $similarInfo
         }
     }

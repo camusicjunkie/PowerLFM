@@ -6,14 +6,16 @@ function Get-LFMLibraryArtist {
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [string] $UserName,
 
         [string] $Limit,
+
         [string] $Page
     )
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'library.getArtists'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
@@ -25,9 +27,7 @@ function Get-LFMLibraryArtist {
         }
     }
     process {
-        switch ($PSBoundParameters.Keys) {
-            'UserName' {$apiParams.add('user', $UserName)}
-        }
+        $apiParams.add('user', $UserName)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
@@ -39,10 +39,10 @@ function Get-LFMLibraryArtist {
     }
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
-        $hash = $irm | ConvertTo-Hashtable
 
-        foreach ($artist in $hash.Artists.Artist) {
+        foreach ($artist in $irm.Artists.Artist) {
             $artistInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.Library.Artist'
                 'Artist' = $artist.Name
                 'PlayCount' = [int] $artist.PlayCount
                 'Url' = $artist.url
@@ -50,7 +50,6 @@ function Get-LFMLibraryArtist {
                 'ImageUrl' = $artist.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 
-            $artistInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Library.Artist')
             Write-Output $artistInfo
         }
     }

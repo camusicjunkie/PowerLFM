@@ -7,15 +7,18 @@ function Get-LFMAlbumInfo {
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'album')]
+        [ValidateNotNullOrEmpty()]
         [string] $Artist,
 
         [Parameter(Mandatory,
                    ParameterSetName = 'album')]
+        [ValidateNotNullOrEmpty()]
         [string] $Album,
 
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'id')]
+        [ValidateNotNullOrEmpty()]
         [string] $Id,
 
         [string] $UserName,
@@ -90,7 +93,7 @@ function Get-LFMAlbumInfo {
             $albumInfo.add('UserPlayCount', $userPlayCount)
         }
 
-        $obj = [pscustomobject] $albumInfo
-        Write-Output $obj
+        $albumInfo = [pscustomobject] $albumInfo
+        Write-Output $albumInfo
     }
 }

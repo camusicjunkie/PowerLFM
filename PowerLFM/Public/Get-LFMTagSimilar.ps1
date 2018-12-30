@@ -10,7 +10,7 @@ function Get-LFMTagSimilar {
 
     begin {
         #Default hashtable
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'tag.getSimilar'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'

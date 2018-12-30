@@ -6,6 +6,7 @@ function Search-LFMTrack {
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [string] $Track,
 
         [ValidateRange(1,50)]
@@ -15,7 +16,7 @@ function Search-LFMTrack {
     )
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'track.search'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
@@ -27,9 +28,7 @@ function Search-LFMTrack {
         }
     }
     process {
-        switch ($PSBoundParameters.Keys) {
-            'Track' {$apiParams.add('track', $Track)}
-        }
+        $apiParams.add('track', $Track)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
@@ -41,28 +40,18 @@ function Search-LFMTrack {
     }
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
-        $hash = $irm | ConvertTo-Hashtable
 
-        $trackMatches = foreach ($match in $hash.Results.TrackMatches.Track) {
+        foreach ($match in $irm.Results.TrackMatches.Track) {
             $matchInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.Track.Search'
                 'Track' = $match.Name
                 'Artist' = $match.Artist
                 'Id' = $match.Mbid
                 'Listeners' = [int] $match.Listeners
                 'Url' = $match.Url
             }
-            $matchInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Track.Match')
+
             Write-Output $matchInfo
         }
-
-        $trackSearchInfo = [pscustomobject] @{
-            'SearchTerm' = $Track
-            'MatchesPerPage' = $hash.Results.'OpenSearch:ItemsPerPage'
-            'TotalMatches' = $hash.Results.'OpenSearch:TotalResults'
-            'TrackMatches' = $TrackMatches
-        }
-
-        $trackSearchInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Track.Search')
-        Write-Output $trackSearchInfo
     }
 }

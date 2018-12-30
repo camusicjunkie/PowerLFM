@@ -14,7 +14,7 @@ function Add-LFMArtistTag {
         [string[]] $Tag
     )
 
-    begin {
+    process {
         $apiSigParams = @{
             'Artist' = $Artist
             'Tag' = $Tag
@@ -22,14 +22,13 @@ function Add-LFMArtistTag {
         }
         $apiSig = New-LFMArtistSignature @apiSigParams
 
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'artist.addTags'
             'api_key' = $LFMConfig.APIKey
             'sk' = $LFMConfig.SessionKey
             'api_sig' = $apiSig
         }
-    }
-    process {
+
         $apiParams.add('artist', $Artist)
         $apiParams.add('tags', $Tag)
 

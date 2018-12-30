@@ -6,6 +6,7 @@ function Get-LFMUserWeeklyTrackChart {
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [string] $UserName,
 
         [Parameter(ValueFromPipelineByPropertyName)]
@@ -16,15 +17,16 @@ function Get-LFMUserWeeklyTrackChart {
     )
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'user.getWeeklyTrackChart'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
         }
     }
     process {
+        $apiParams.add('user', $UserName)
+
         switch ($PSBoundParameters.Keys) {
-            'UserName' {$apiParams.add('user', $UserName)}
             'StartDate' {$apiParams.add('from', (ConvertTo-UnixTime -Date $StartDate))}
             'EndDate' {$apiParams.add('to', (ConvertTo-UnixTime -Date $EndDate))}
         }
@@ -39,10 +41,10 @@ function Get-LFMUserWeeklyTrackChart {
     }
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
-        $hash = $irm | ConvertTo-Hashtable
 
-        foreach ($track in $hash.WeeklyTrackChart.Track) {
+        foreach ($track in $irm.WeeklyTrackChart.Track) {
             $trackInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.User.WeeklyTrackChart'
                 'Track' = $track.Name
                 'Url' = $track.Url
                 'Id' = $track.Mbid
@@ -50,11 +52,10 @@ function Get-LFMUserWeeklyTrackChart {
                 'ArtistId' = $track.Artist.Mbid
                 'PlayCount' = [int] $track.PlayCount
                 'ImageUrl' = $track.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
-                'StartDate' = ConvertFrom-UnixTime -UnixTime $hash.WeeklyTrackChart.'@attr'.From -Local
-                'EndDate' = ConvertFrom-UnixTime -UnixTime $hash.WeeklyTrackChart.'@attr'.To -Local
+                'StartDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyTrackChart.'@attr'.From -Local
+                'EndDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyTrackChart.'@attr'.To -Local
             }
 
-            $trackInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.User.WeeklyTrackChart')
             Write-Output $trackInfo
         }
     }

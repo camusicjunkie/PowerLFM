@@ -7,10 +7,12 @@ function Set-LFMTrackUnlove {
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [string] $Artist,
 
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [string] $Track
     )
 
@@ -22,7 +24,7 @@ function Set-LFMTrackUnlove {
         }
         $apiSig = New-LFMTrackSignature @apiSigParams
 
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'track.unlove'
             'api_key' = $LFMConfig.APIKey
             'sk' = $LFMConfig.SessionKey

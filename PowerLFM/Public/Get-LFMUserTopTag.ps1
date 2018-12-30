@@ -6,13 +6,14 @@ function Get-LFMUserTopTag {
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [string] $UserName,
 
         [string] $Limit
     )
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'user.getTopTags'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
@@ -23,9 +24,7 @@ function Get-LFMUserTopTag {
         }
     }
     process {
-        switch ($PSBoundParameters.Keys) {
-            'UserName' {$apiParams.add('user', $UserName)}
-        }
+        $apiParams.add('user', $UserName)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
@@ -37,16 +36,15 @@ function Get-LFMUserTopTag {
     }
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
-        $hash = $irm | ConvertTo-Hashtable
 
-        foreach ($tag in $hash.TopTags.Tag) {
+        foreach ($tag in $irm.TopTags.Tag) {
             $tagInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.User.TopTag'
                 'Tag' = $tag.Name
                 'TagUrl' = $tag.url
                 'Count' = $tag.Count
             }
 
-            $tagInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.User.TopTag')
             Write-Output $tagInfo
         }
     }

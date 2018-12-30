@@ -16,10 +16,11 @@ function Remove-LFMAlbumTag {
 
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [string] $Tag
     )
 
-    begin {
+    process {
         $apiSigParams = @{
             'Album' = $Album
             'Artist' = $Artist
@@ -28,14 +29,13 @@ function Remove-LFMAlbumTag {
         }
         $apiSig = New-LFMAlbumSignature @apiSigParams
 
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'album.removeTag'
             'api_key' = $LFMConfig.APIKey
             'sk' = $LFMConfig.SessionKey
             'api_sig' = $apiSig
         }
-    }
-    process {
+
         $apiParams.add('album', $Album)
         $apiParams.add('artist', $Artist)
         $apiParams.add('tag', $Tag)

@@ -2,16 +2,18 @@ function Get-LFMArtistTopAlbum {
     # .ExternalHelp PowerLFM.psm1-help.xml
 
     [CmdletBinding(DefaultParameterSetName = 'artist')]
-    [OutputType('PowerLFM.Artist.TopAlbum')]
+    [OutputType('PowerLFM.Artist.Album')]
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'artist')]
+        [ValidateNotNullOrEmpty()]
         [string] $Artist,
 
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'id')]
+        [ValidateNotNullOrEmpty()]
         [string] $Id,
 
         [Parameter()]
@@ -19,11 +21,12 @@ function Get-LFMArtistTopAlbum {
         [string] $Limit,
 
         [string] $Page,
+
         [switch] $AutoCorrect
     )
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'artist.getTopAlbums'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
@@ -51,29 +54,17 @@ function Get-LFMArtistTopAlbum {
     }
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
-        $hash = $irm | ConvertTo-Hashtable
 
-        $albums = foreach ($album in $hash.TopAlbums.Album) {
+        foreach ($album in $irm.TopAlbums.Album) {
             $albumInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.Artist.Album'
                 'Album' = $album.Name
                 'Id' = $album.Mbid
                 'Url' = $album.Url
                 'PlayCount' = [int] $album.PlayCount
             }
-            $albumInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Artist.Album')
+
             Write-Output $albumInfo
         }
-
-        $topAlbumInfo = [pscustomobject] @{
-            'Artist' = $hash.TopAlbums.'@attr'.Artist
-            'AlbumsPerPage' = $hash.TopAlbums.'@attr'.PerPage
-            'Page' = $hash.TopAlbums.'@attr'.Page
-            'TotalPages' = $hash.TopAlbums.'@attr'.TotalPages
-            'TotalAlbums' = $hash.TopAlbums.'@attr'.Total
-            'Albums' = $albums | Sort-Object PlayCount -Descending
-        }
-
-        $topAlbumInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Artist.TopAlbum')
-        Write-Output $topAlbumInfo
     }
 }

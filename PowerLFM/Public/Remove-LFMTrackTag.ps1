@@ -16,28 +16,27 @@ function Remove-LFMTrackTag {
 
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [ValidateCount(1,10)]
         [string[]] $Tag
     )
 
-    begin {
+    process {
         $apiSigProps = @{
             'Track' = $Track
             'Artist' = $Artist
             'Tag' = $Tag
             'Method' = 'track.removeTag'
         }
-
         $apiSig = New-LFMTrackSignature @apiSigProps
 
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'track.removeTag'
             'api_key' = $LFMConfig.APIKey
             'sk' = $LFMConfig.SessionKey
             'api_sig' = $apiSig
         }
-    }
-    process {
+
         $apiParams.add('track', $Track)
         $apiParams.add('artist', $Artist)
         $apiParams.add('tag', $Tag)

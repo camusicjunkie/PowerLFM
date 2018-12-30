@@ -6,6 +6,7 @@ function Get-LFMTagTopAlbum {
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [string] $Tag,
 
         [string] $Limit,
@@ -14,7 +15,7 @@ function Get-LFMTagTopAlbum {
     )
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'tag.getTopAlbums'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'

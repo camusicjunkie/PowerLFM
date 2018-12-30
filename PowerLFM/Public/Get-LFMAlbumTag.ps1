@@ -7,16 +7,19 @@ function Get-LFMAlbumTag {
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'album')]
+        [ValidateNotNullOrEmpty()]
         [string] $Album,
 
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'album')]
+        [ValidateNotNullOrEmpty()]
         [string] $Artist,
 
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'id')]
+        [ValidateNotNullOrEmpty()]
         [string] $Id,
 
         [string] $UserName,
@@ -27,8 +30,9 @@ function Get-LFMAlbumTag {
     begin {
         $apiParams = @{
             'method' = 'album.getTags'
-            'format' = 'json'
             'api_key' = $LFMConfig.APIKey
+            'sk' = $LFMConfig.SessionKey
+            'format' = 'json'
         }
 
         switch ($PSBoundParameters.Keys) {
@@ -43,10 +47,8 @@ function Get-LFMAlbumTag {
         }
 
         if ($PSBoundParameters.ContainsKey('UserName')) {
+            $apiParams.remove('sk')
             $apiParams.add('user', $UserName)
-        }
-        else {
-            $apiParams.add('sk', $LFMConfig.SessionKey)
         }
 
         #Building string to append to base url

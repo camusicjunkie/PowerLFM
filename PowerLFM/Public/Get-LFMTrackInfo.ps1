@@ -7,22 +7,27 @@ function Get-LFMTrackInfo {
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'track')]
+        [ValidateNotNullOrEmpty()]
         [string] $Track,
 
         [Parameter(Mandatory,
                    ParameterSetName = 'track')]
+        [ValidateNotNullOrEmpty()]
         [string] $Artist,
 
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'id')]
+        [ValidateNotNullOrEmpty()]
         [string] $Id,
+
         [string] $UserName,
+
         [switch] $AutoCorrect
     )
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'track.getInfo'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
@@ -50,9 +55,8 @@ function Get-LFMTrackInfo {
     }
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
-        $hash = $irm | ConvertTo-Hashtable
 
-        $tags = foreach ($tag in $hash.Track.TopTags.Tag) {
+        $tags = foreach ($tag in $irm.Track.TopTags.Tag) {
             $tagInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.Album.Tag'
                 'Tag' = $tag.Name
@@ -61,30 +65,30 @@ function Get-LFMTrackInfo {
             Write-Output $tagInfo
         }
 
-        switch ($hash.Track.UserLoved) {
+        switch ($irm.Track.UserLoved) {
             '0' {$loved = 'No'}
             '1' {$loved = 'Yes'}
         }
 
-        $trackInfo = [pscustomobject] @{
-            'Track' = $hash.Track.Name
-            'Artist' = $hash.Track.Artist.Name
-            'Album' = $hash.Track.Album.Title
-            'Id' = $hash.Track.Mbid
-            'Listeners' = [int] $hash.Track.Listeners
-            'PlayCount' = [int] $hash.Track.PlayCount
-            'Url' = $hash.Track.Url
+        $trackInfo = @{
+            'PSTypeName' = 'PowerLFM.Album.Info'
+            'Track' = $irm.Track.Name
+            'Artist' = $irm.Track.Artist.Name
+            'Album' = $irm.Track.Album.Title
+            'Id' = $irm.Track.Mbid
+            'Listeners' = [int] $irm.Track.Listeners
+            'PlayCount' = [int] $irm.Track.PlayCount
+            'Url' = $irm.Track.Url
             'Tags' = $tags
         }
 
-        $userPlayCount = $hash.Track.UserPlayCount
+        $userPlayCount = $irm.Track.UserPlayCount
         if ($PSBoundParameters.ContainsKey('UserName')) {
-            $trackInfo | Add-Member -MemberType NoteProperty -Name 'UserName' -Value $UserName
-            $trackInfo | Add-Member -MemberType NoteProperty -Name 'UserPlayCount' -Value $userPlayCount
-            $trackInfo | Add-Member -MemberType NoteProperty -Name 'Loved' -Value $loved
+            $trackInfo.add('UserPlayCount', $userPlayCount)
+            $trackInfo.add('Loved', $loved)
         }
 
-        $trackInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Album.Info')
+        $trackInfo = [pscustomobject] $trackInfo
         Write-Output $trackInfo
     }
 }

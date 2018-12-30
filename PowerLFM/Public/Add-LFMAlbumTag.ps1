@@ -20,7 +20,7 @@ function Add-LFMAlbumTag {
         [string[]] $Tag
     )
 
-    begin {
+    process {
         $apiSigParams = @{
             'Album' = $Album
             'Artist' = $Artist
@@ -29,14 +29,13 @@ function Add-LFMAlbumTag {
         }
         $apiSig = New-LFMAlbumSignature @apiSigParams
 
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'album.addTags'
             'api_key' = $LFMConfig.APIKey
             'sk' = $LFMConfig.SessionKey
             'api_sig' = $apiSig
         }
-    }
-    process {
+
         $apiParams.add('album', $Album)
         $apiParams.add('artist', $Artist)
         $apiParams.add('tags', $Tag)
