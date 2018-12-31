@@ -7,6 +7,7 @@ function Get-LFMGeoTopArtist {
         [Parameter(Mandatory,
                    ValueFromPipeline,
                    ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [string] $Country,
 
         [Parameter()]
@@ -17,7 +18,7 @@ function Get-LFMGeoTopArtist {
     )
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'geo.getTopArtists'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
@@ -29,9 +30,8 @@ function Get-LFMGeoTopArtist {
         }
     }
     process {
-        switch ($PSBoundParameters.Keys) {
-            'Country' {$apiParams.add('country', $Country)}
-        }
+        $apiParams.add('country', $Country)
+
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
             "$($_.Name)=$($_.Value)"
@@ -42,10 +42,10 @@ function Get-LFMGeoTopArtist {
     }
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
-        $hash = $irm | ConvertTo-Hashtable
 
-        foreach ($artist in $hash.TopArtists.Artist) {
+        foreach ($artist in $irm.TopArtists.Artist) {
             $artistInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.Geo.TopArtists'
                 'Artist' = $artist.Name
                 'Id' = $artist.Mbid
                 'Url' = $artist.Url
@@ -53,7 +53,6 @@ function Get-LFMGeoTopArtist {
                 'ImageUrl' = $artist.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 
-            $artistInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Geo.TopArtists')
             Write-Output $artistInfo
         }
     }

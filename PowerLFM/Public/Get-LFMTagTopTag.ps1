@@ -3,11 +3,10 @@ function Get-LFMTagTopTag {
 
     [CmdletBinding()]
     [OutputType('PowerLFM.Tag.TopTags')]
-    param (
-    )
+    param ()
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'tag.getTopTags'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'

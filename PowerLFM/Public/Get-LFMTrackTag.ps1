@@ -7,24 +7,31 @@ function Get-LFMTrackTag {
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'track')]
+        [ValidateNotNullOrEmpty()]
         [string] $Track,
 
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'track')]
+        [ValidateNotNullOrEmpty()]
         [string] $Artist,
 
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'id')]
+        [ValidateNotNullOrEmpty()]
         [string] $Id,
+
         [string] $UserName,
+
         [switch] $AutoCorrect
     )
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'track.getTags'
+            'api_key' = $LFMConfig.APIKey
+            'sk' = $LFMConfig.SessionKey
             'format' = 'json'
         }
 
@@ -36,16 +43,12 @@ function Get-LFMTrackTag {
         switch ($PSCmdlet.ParameterSetName) {
             'track' {$apiParams.add('track', $Track);
                      $apiParams.add('artist', $Artist)}
-            'id' {$apiParams.add('mbid', $Id)}
+            'id'    {$apiParams.add('mbid', $Id)}
         }
 
         if ($PSBoundParameters.ContainsKey('UserName')) {
+            $apiParams.remove('sk')
             $apiParams.add('user', $UserName)
-            $apiParams.add('api_key', $LFMConfig.APIKey)
-        }
-        else {
-            $apiParams.add('api_key', $LFMConfig.APIKey)
-            $apiParams.add('sk', $LFMConfig.SessionKey)
         }
 
         #Building string to append to base url
@@ -58,28 +61,15 @@ function Get-LFMTrackTag {
     }
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
-        $hash = $irm | ConvertTo-Hashtable
 
-        $tags = foreach ($tag in $hash.Tags.Tag) {
+        foreach ($tag in $irm.Tags.Tag) {
             $tagInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.Track.Tag'
                 'Tag' = $tag.Name
                 'Url' = $tag.Url
             }
-            $tagInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Track.Tag')
+
             Write-Output $tagInfo
         }
-
-        $trackTagInfo = [pscustomobject] @{
-            'Artist' = $hash.Tags.'@attr'.Artist
-            'Track' = $hash.Tags.'@attr'.Track
-            'Tags' = $tags
-        }
-
-        if ($PSBoundParameters.ContainsKey('UserName')) {
-            $trackTagInfo | Add-Member -MemberType NoteProperty -Name 'UserName' -Value $UserName
-        }
-
-        $trackTagInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Track.UserTag')
-        Write-Output $trackTagInfo
     }
 }

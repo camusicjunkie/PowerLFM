@@ -7,22 +7,26 @@ function Get-LFMTrackTopTag {
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'track')]
+        [ValidateNotNullOrEmpty()]
         [string] $Track,
 
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'track')]
+        [ValidateNotNullOrEmpty()]
         [string] $Artist,
 
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'id')]
+        [ValidateNotNullOrEmpty()]
         [string] $Id,
+
         [switch] $AutoCorrect
     )
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'track.getTopTags'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
@@ -49,25 +53,16 @@ function Get-LFMTrackTopTag {
     }
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
-        $hash = $irm | ConvertTo-Hashtable
 
-        $tags = foreach ($tag in $hash.TopTags.Tag) {
+        foreach ($tag in $irm.TopTags.Tag) {
             $tagInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.Track.Tag'
                 'Tag' = $tag.Name
                 'Url' = $tag.Url
                 'Match' = $tag.Count
             }
-            $tagInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Track.Tag')
+
             Write-Output $tagInfo
         }
-
-        $trackTagInfo = [pscustomobject] @{
-            'Track' = $hash.TopTags.'@attr'.Track
-            'Artist' = $hash.TopTags.'@attr'.Artist
-            'Tags' = $tags
-        }
-
-        $trackTagInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Track.TopTag')
-        Write-Output $trackTagInfo
     }
 }

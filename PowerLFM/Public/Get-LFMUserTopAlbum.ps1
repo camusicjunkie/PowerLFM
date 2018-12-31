@@ -6,6 +6,7 @@ function Get-LFMUserTopAlbum {
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [string] $UserName,
 
         [Parameter()]
@@ -21,14 +22,14 @@ function Get-LFMUserTopAlbum {
     )
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'user.getTopAlbums'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
         }
 
         $period = @{
-            'Overall' = 'Overall'
+            'Overall' = 'overall'
             '7 Days' = '7days'
             '1 Month' = '1month'
             '3 Months' = '3month'
@@ -39,13 +40,11 @@ function Get-LFMUserTopAlbum {
         switch ($PSBoundParameters.Keys) {
             'Limit' {$apiParams.add('limit', $Limit)}
             'Page' {$apiParams.add('page', $Page)}
-            'TimePeriod' {$apiParams.add('period', $period[$TimePeriod].ToLower())}
+            'TimePeriod' {$apiParams.add('period', $period[$TimePeriod])}
         }
     }
     process {
-        switch ($PSBoundParameters.Keys) {
-            'UserName' {$apiParams.add('user', $UserName)}
-        }
+        $apiParams.add('user', $UserName)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
@@ -57,10 +56,10 @@ function Get-LFMUserTopAlbum {
     }
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
-        $hash = $irm | ConvertTo-Hashtable
 
-        foreach ($album in $hash.TopAlbums.Album) {
+        foreach ($album in $irm.TopAlbums.Album) {
             $albumInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.User.Album'
                 'Album' = $album.Name
                 'PlayCount' = [int] $album.PlayCount
                 'AlbumUrl' = $album.Url
@@ -71,7 +70,6 @@ function Get-LFMUserTopAlbum {
                 'ImageUrl' = $album.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 
-            $albumInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.User.Album')
             Write-Output $albumInfo
         }
     }

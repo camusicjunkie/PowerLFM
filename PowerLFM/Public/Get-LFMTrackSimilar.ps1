@@ -7,23 +7,28 @@ function Get-LFMTrackSimilar {
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'track')]
+        [ValidateNotNullOrEmpty()]
         [string] $Track,
 
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'track')]
+        [ValidateNotNullOrEmpty()]
         [string] $Artist,
 
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'id')]
+        [ValidateNotNullOrEmpty()]
         [string] $Id,
+
         [string] $Limit = '5',
+
         [switch] $AutoCorrect
     )
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'track.getSimilar'
             'api_key' = $LFMConfig.APIKey
             'limit' = $Limit
@@ -51,10 +56,10 @@ function Get-LFMTrackSimilar {
     }
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
-        $hash = $irm | ConvertTo-Hashtable
 
-        foreach ($similar in $hash.SimilarTracks.Track) {
+        foreach ($similar in $irm.SimilarTracks.Track) {
             $similarInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.Track.Similar'
                 'Track' = $similar.Name
                 'Artist' = $similar.Artist.Name
                 'Id' = $similar.Mbid
@@ -62,7 +67,7 @@ function Get-LFMTrackSimilar {
                 'Url' = $similar.Url
                 'Match' = $similar.Match
             }
-            $similarInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Track.Similar')
+
             Write-Output $similarInfo
         }
     }

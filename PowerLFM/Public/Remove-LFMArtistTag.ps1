@@ -6,14 +6,16 @@ function Remove-LFMArtistTag {
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [string] $Artist,
 
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [string] $Tag
     )
 
-    begin {
+    process {
         $apiSigParams = @{
             'Artist' = $Artist
             'Tag' = $Tag
@@ -21,14 +23,13 @@ function Remove-LFMArtistTag {
         }
         $apiSig = New-LFMArtistSignature @apiSigParams
 
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'artist.removeTag'
             'api_key' = $LFMConfig.APIKey
             'sk' = $LFMConfig.SessionKey
             'api_sig' = $apiSig
         }
-    }
-    process {
+
         $apiParams.add('artist', $Artist)
         $apiParams.add('tag', $Tag)
 

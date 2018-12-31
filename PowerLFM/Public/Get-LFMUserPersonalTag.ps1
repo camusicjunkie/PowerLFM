@@ -6,14 +6,17 @@ function Get-LFMUserPersonalTag {
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [string] $UserName,
 
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [string] $Tag,
 
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [ValidateSet('Artist', 'Album', 'Track')]
         [string] $TagType,
 
@@ -25,7 +28,7 @@ function Get-LFMUserPersonalTag {
     )
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'user.getPersonalTags'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
@@ -54,12 +57,12 @@ function Get-LFMUserPersonalTag {
 
         foreach ($userTag in $irm.Taggings.Artists.Artist) {
             $userTagInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.User.PersonalTag'
                 'Artist' = $userTag.name
                 'Id' = $userTag.mbid
                 'Url' = $userTag.url
             }
 
-            $userTagInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.User.PersonalTag')
             Write-Output $userTagInfo
         }
     }

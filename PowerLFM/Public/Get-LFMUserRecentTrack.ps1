@@ -4,6 +4,7 @@ function Get-LFMUserRecentTrack {
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [string] $UserName,
 
         [Parameter(ValueFromPipelineByPropertyName)]
@@ -23,7 +24,7 @@ function Get-LFMUserRecentTrack {
     )
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'user.getRecentTracks'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
@@ -56,6 +57,7 @@ function Get-LFMUserRecentTrack {
 
         foreach ($track in $irm.RecentTracks.Track) {
             $trackInfo = @{
+                'PSTypeName' = 'PowerLFM.User.RecentTrack'
                 'Track' = $track.Name
                 'Artist' = $track.Artist.'#text'
                 'Album' = $track.Album.'#text'
@@ -81,7 +83,6 @@ function Get-LFMUserRecentTrack {
             }
 
             $trackInfo = [pscustomobject] $trackInfo
-            $trackInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.User.RecentTrack')
             Write-Output $trackInfo
         }
     }

@@ -2,29 +2,36 @@ function Get-LFMAlbumTag {
     # .ExternalHelp PowerLFM.psm1-help.xml
 
     [CmdletBinding(DefaultParameterSetName = 'album')]
-    [OutputType('PowerLFM.Album.UserTag')]
+    [OutputType('PowerLFM.Album.Tag')]
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'album')]
+        [ValidateNotNullOrEmpty()]
         [string] $Album,
 
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'album')]
+        [ValidateNotNullOrEmpty()]
         [string] $Artist,
 
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'id')]
+        [ValidateNotNullOrEmpty()]
         [string] $Id,
+
         [string] $UserName,
+
         [switch] $AutoCorrect
     )
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'album.getTags'
+            'api_key' = $LFMConfig.APIKey
+            'sk' = $LFMConfig.SessionKey
             'format' = 'json'
         }
 
@@ -40,12 +47,8 @@ function Get-LFMAlbumTag {
         }
 
         if ($PSBoundParameters.ContainsKey('UserName')) {
+            $apiParams.remove('sk')
             $apiParams.add('user', $UserName)
-            $apiParams.add('api_key', $LFMConfig.APIKey)
-        }
-        else {
-            $apiParams.add('api_key', $LFMConfig.APIKey)
-            $apiParams.add('sk', $LFMConfig.SessionKey)
         }
 
         #Building string to append to base url
@@ -58,27 +61,15 @@ function Get-LFMAlbumTag {
     }
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
-        $hash = $irm | ConvertTo-Hashtable
 
-        $tags = foreach ($tag in $hash.Tags.Tag) {
+        foreach ($tag in $irm.Tags.Tag) {
             $tagInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.Album.Tag'
                 'Tag' = $tag.Name
                 'Url' = $tag.Url
             }
-            $tagInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Album.Tag')
+
             Write-Output $tagInfo
         }
-
-        $artistTagInfo = [pscustomobject] @{
-            'Artist' = $hash.Tags.'@attr'.Artist
-            'Tags' = $tags
-        }
-
-        if ($PSBoundParameters.ContainsKey('UserName')) {
-            $artistTagInfo | Add-Member -MemberType NoteProperty -Name 'UserName' -Value $UserName
-        }
-
-        $artistTagInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Album.UserTag')
-        Write-Output $artistTagInfo
     }
 }

@@ -6,20 +6,19 @@ function Get-LFMArtistCorrection {
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [string] $Artist
     )
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'artist.getCorrection'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
         }
     }
     process {
-        switch ($PSBoundParameters.Keys) {
-            'Artist' {$apiParams.add('artist', $Artist)}
-        }
+        $apiParams.add('artist', $Artist)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
@@ -31,16 +30,15 @@ function Get-LFMArtistCorrection {
     }
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
-        $hash = $irm | ConvertTo-Hashtable
 
-        $correction = $hash.Corrections.Correction.Artist
+        $correction = $irm.Corrections.Correction.Artist
         $correctedArtistInfo = [pscustomobject] @{
+            'PSTypeName' = 'PowerLFM.Artist.Correction'
             'Artist' = $correction.Name
             'Id' = $correction.Mbid
             'Url' = $correction.Url
         }
 
-        $correctedArtistInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Artist.Correction')
         Write-Output $correctedArtistInfo
     }
 }

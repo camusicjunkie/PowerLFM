@@ -11,7 +11,7 @@ function Get-LFMChartTopTrack {
         [string] $Page
     )
 
-    $apiParams = [ordered] @{
+    $apiParams = @{
         'method' = 'chart.getTopTracks'
         'api_key' = $LFMConfig.APIKey
         'format' = 'json'
@@ -31,10 +31,10 @@ function Get-LFMChartTopTrack {
     $apiUrl = "$baseUrl/?$string"
 
     $irm = Invoke-RestMethod -Uri $apiUrl
-    $hash = $irm | ConvertTo-Hashtable
 
-    foreach ($track in $hash.Tracks.Track) {
+    foreach ($track in $irm.Tracks.Track) {
         $trackInfo = [pscustomobject] @{
+            'PSTypeName' = 'PowerLFM.Chart.TopArtists'
             'Track' = $track.Name
             'TrackId' = $track.Mbid
             'TrackUrl' = $track.Url
@@ -47,7 +47,6 @@ function Get-LFMChartTopTrack {
             'ImageUrl' = $track.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
         }
 
-        $trackInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Chart.TopArtists')
         Write-Output $trackInfo
     }
 }

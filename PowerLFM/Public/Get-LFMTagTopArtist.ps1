@@ -6,6 +6,7 @@ function Get-LFMTagTopArtist {
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [string] $Tag,
 
         [string] $Limit,
@@ -14,7 +15,7 @@ function Get-LFMTagTopArtist {
     )
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'tag.getTopArtists'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'

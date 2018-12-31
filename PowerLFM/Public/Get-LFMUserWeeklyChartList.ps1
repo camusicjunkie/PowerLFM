@@ -6,20 +6,19 @@ function Get-LFMUserWeeklyChartList {
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [string] $UserName
     )
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'user.getWeeklyChartList'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
         }
     }
     process {
-        switch ($PSBoundParameters.Keys) {
-            'UserName' {$apiParams.add('user', $UserName)}
-        }
+        $apiParams.add('user', $UserName)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
@@ -31,19 +30,17 @@ function Get-LFMUserWeeklyChartList {
     }
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
-        $hash = $irm | ConvertTo-Hashtable
 
-        $chartList = $hash.WeeklyChartList.Chart.GetEnumerator() |
+        $chartList = $irm.WeeklyChartList.Chart.GetEnumerator() |
             Sort-Object {$_.From} -Descending
 
         foreach ($chart in $chartList) {
             $chartInfo = [pscustomobject] @{
-                'UserName' = $hash.WeeklyChartList.'@attr'.User
+                'PSTypeName' = 'PowerLFM.User.WeeklyChartList'
                 'StartDate' = $chart.From | ConvertFrom-UnixTime -Local
                 'EndDate' = $chart.To | ConvertFrom-UnixTime -Local
             }
 
-            $chartInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.User.WeeklyChartList')
             Write-Output $chartInfo
         }
     }

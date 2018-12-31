@@ -7,6 +7,7 @@ function Get-LFMGeoTopTrack {
         [Parameter(Mandatory,
                    ValueFromPipeline,
                    ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [string] $Country,
 
         [Parameter(ValueFromPipelineByPropertyName)]
@@ -20,7 +21,7 @@ function Get-LFMGeoTopTrack {
     )
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'geo.getTopTracks'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
@@ -32,10 +33,12 @@ function Get-LFMGeoTopTrack {
         }
     }
     process {
+        $apiParams.add('country', $Country)
+
         switch ($PSBoundParameters.Keys) {
-            'Country' {$apiParams.add('country', $Country)}
             'City' {$apiParams.add('location', $City)}
         }
+
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
             "$($_.Name)=$($_.Value)"
@@ -46,10 +49,10 @@ function Get-LFMGeoTopTrack {
     }
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
-        $hash = $irm | ConvertTo-Hashtable
 
-        foreach ($track in $hash.Tracks.Track) {
+        foreach ($track in $irm.Tracks.Track) {
             $trackInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.Geo.TopTracks'
                 'Track' = $track.Name
                 'TrackId' = $track.Mbid
                 'TrackUrl' = $track.Url
@@ -61,7 +64,6 @@ function Get-LFMGeoTopTrack {
                 'ImageUrl' = $track.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 
-            $trackInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Geo.TopTracks')
             Write-Output $trackInfo
         }
     }

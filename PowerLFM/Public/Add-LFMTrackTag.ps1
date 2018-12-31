@@ -20,7 +20,7 @@ function Add-LFMTrackTag {
         [string[]] $Tag
     )
 
-    begin {
+    process {
         $apiSigParams = @{
             'Track' = $Track
             'Artist' = $Artist
@@ -29,14 +29,13 @@ function Add-LFMTrackTag {
         }
         $apiSig = New-LFMTrackSignature @apiSigParams
 
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'track.addTags'
             'api_key' = $LFMConfig.APIKey
             'sk' = $LFMConfig.SessionKey
             'api_sig' = $apiSig
         }
-    }
-    process {
+
         $apiParams.add('track', $Track)
         $apiParams.add('artist', $Artist)
         $apiParams.add('tags', $Tag)

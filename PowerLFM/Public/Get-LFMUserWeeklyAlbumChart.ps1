@@ -6,6 +6,7 @@ function Get-LFMUserWeeklyAlbumChart {
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [string] $UserName,
 
         [Parameter(ValueFromPipelineByPropertyName)]
@@ -16,15 +17,16 @@ function Get-LFMUserWeeklyAlbumChart {
     )
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'user.getWeeklyAlbumChart'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
         }
     }
     process {
+        $apiParams.add('user', $UserName)
+
         switch ($PSBoundParameters.Keys) {
-            'UserName' {$apiParams.add('user', $UserName)}
             'StartDate' {$apiParams.add('from', (ConvertTo-UnixTime -Date $StartDate))}
             'EndDate' {$apiParams.add('to', (ConvertTo-UnixTime -Date $EndDate))}
         }
@@ -39,21 +41,20 @@ function Get-LFMUserWeeklyAlbumChart {
     }
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
-        $hash = $irm | ConvertTo-Hashtable
 
-        foreach ($album in $hash.WeeklyAlbumChart.Album) {
+        foreach ($album in $irm.WeeklyAlbumChart.Album) {
             $albumInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.User.WeeklyChartList'
                 'Album' = $album.Name
                 'Url' = $album.Url
                 'Id' = $album.Mbid
                 'Artist' = $album.Artist.'#text'
                 'ArtistId' = $album.Artist.Mbid
                 'PlayCount' = [int] $album.PlayCount
-                'StartDate' = ConvertFrom-UnixTime -UnixTime $hash.WeeklyAlbumChart.'@attr'.From -Local
-                'EndDate' = ConvertFrom-UnixTime -UnixTime $hash.WeeklyAlbumChart.'@attr'.To -Local
+                'StartDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyAlbumChart.'@attr'.From -Local
+                'EndDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyAlbumChart.'@attr'.To -Local
             }
 
-            $albumInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.User.WeeklyChartList')
             Write-Output $albumInfo
         }
     }

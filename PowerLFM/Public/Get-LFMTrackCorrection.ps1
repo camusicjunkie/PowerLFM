@@ -6,25 +6,25 @@ function Get-LFMTrackCorrection {
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [string] $Track,
 
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [string] $Artist
     )
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'track.getCorrection'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
         }
     }
     process {
-        switch ($PSBoundParameters.Keys) {
-            'Track' {$apiParams.add('track', $Track)}
-            'Artist' {$apiParams.add('artist', $Artist)}
-        }
+        $apiParams.add('track', $Track)
+        $apiParams.add('artist', $Artist)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
@@ -36,10 +36,10 @@ function Get-LFMTrackCorrection {
     }
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
-        $hash = $irm | ConvertTo-Hashtable
 
-        $correction = $hash.Corrections.Correction.Track
+        $correction = $irm.Corrections.Correction.Track
         $correctedTrackInfo = [pscustomobject] @{
+            'PSTypeName' = 'PowerLFM.Track.Correction'
             'Track' = $correction.Name
             'TrackUrl' = $correction.Url
             'Artist' = $correction.Artist.Name
@@ -47,7 +47,6 @@ function Get-LFMTrackCorrection {
             'ArtistId' = $correction.Artist.Mbid
         }
 
-        $correctedTrackInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Track.Correction')
         Write-Output $correctedTrackInfo
     }
 }

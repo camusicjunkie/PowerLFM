@@ -13,7 +13,7 @@ function Get-LFMTagInfo {
 
     begin {
         #Default hashtable
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'tag.getInfo'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'

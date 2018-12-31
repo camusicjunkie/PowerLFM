@@ -31,7 +31,7 @@ function Request-LFMSession {
             $apiSig = New-LFMAuthSignature @sigParams
             Write-Verbose "Signature MD5 Hash: $apiSig"
 
-            $apiParams = [ordered] @{
+            $apiParams = @{
                 'method' = 'auth.getSession'
                 'api_key' = $APIKey
                 'token' = $Token
@@ -44,6 +44,7 @@ function Request-LFMSession {
                 "$($_.Name)=$($_.Value)"
             }
             $string = $keyValues -join '&'
+
             $apiUrl = "$baseUrl/?$string"
 
             $sessionKey = Invoke-RestMethod -Uri $apiUrl

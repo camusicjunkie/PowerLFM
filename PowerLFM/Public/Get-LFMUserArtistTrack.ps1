@@ -6,10 +6,12 @@ function Get-LFMUserArtistTrack {
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [string] $UserName,
 
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [string] $Artist,
 
         [Parameter(ValueFromPipelineByPropertyName)]
@@ -17,17 +19,21 @@ function Get-LFMUserArtistTrack {
 
         [Parameter(ValueFromPipelineByPropertyName)]
         [datetime] $EndDate,
+
         [string] $Page
     )
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'user.getArtistTracks'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
         }
     }
     process {
+        $apiParams.add('user', $UserName)
+        $apiParams.add('artist', $Artist)
+
         if ($PSBoundParameters.Keys -clike '*Date') {
             $unixStartTime = ConvertTo-UnixTime -Date $StartDate
             $unixEndTime = ConvertTo-UnixTime -Date $EndDate
@@ -37,8 +43,6 @@ function Get-LFMUserArtistTrack {
         }
 
         switch ($PSBoundParameters.Keys) {
-            'UserName' {$apiParams.add('user', $UserName)}
-            'Artist' {$apiParams.add('artist', $Artist)}
             'Page' {$apiParams.add('page', $Page)}
         }
 
@@ -52,10 +56,10 @@ function Get-LFMUserArtistTrack {
     }
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
-        $hash = $irm | ConvertTo-Hashtable
 
-        $tracks = foreach ($track in $hash.ArtistTracks.Track) {
+        foreach ($track in $irm.ArtistTracks.Track) {
             $trackInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.User.Track'
                 'Track' = $track.Name
                 'Id' = $track.Mbid
                 'Url' = $track.Url
@@ -63,23 +67,8 @@ function Get-LFMUserArtistTrack {
                 'Album' = $track.Album.'#text'
                 'ScrobbleTime' = ConvertFrom-UnixTime -UnixTime ($track.Date.Uts) -Local
             }
-            $trackInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.User.Track')
+
             Write-Output $trackInfo
         }
-
-        if ($null -eq $tracks) {
-            Write-Verbose 'No tracks were scrobbled during this time'
-        }
-
-        $trackArtist = $hash.ArtistTracks.'@attr'.Artist
-        $tcTrackArtist = ConvertTo-TitleCase -String $trackArtist
-        $userArtistTrackInfo = [pscustomobject] @{
-            'Artist' = $tcTrackArtist
-            'UserName' = $hash.ArtistTracks.'@attr'.User
-            'Tracks' = $tracks
-        }
-
-        $userArtistTrackInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.User.ArtistTrack')
-        Write-Output $userArtistTrackInfo
     }
 }

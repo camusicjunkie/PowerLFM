@@ -6,6 +6,7 @@ function Search-LFMAlbum {
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [string] $Album,
 
         [ValidateRange(1,50)]
@@ -15,7 +16,7 @@ function Search-LFMAlbum {
     )
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'album.search'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
@@ -27,9 +28,7 @@ function Search-LFMAlbum {
         }
     }
     process {
-        switch ($PSBoundParameters.Keys) {
-            'Album' {$apiParams.add('album', $Album)}
-        }
+        $apiParams.add('album', $Album)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
@@ -41,27 +40,17 @@ function Search-LFMAlbum {
     }
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
-        $hash = $irm | ConvertTo-Hashtable
 
-        $albumMatches = foreach ($match in $hash.Results.AlbumMatches.Album) {
+        foreach ($match in $irm.Results.AlbumMatches.Album) {
             $matchInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.Album.Search'
                 'Album' = $match.Name
                 'Artist' = $match.Artist
                 'Id' = $match.Mbid
                 'Url' = $match.Url
             }
-            $matchInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Album.Match')
+
             Write-Output $matchInfo
         }
-
-        $albumSearchInfo = [pscustomobject] @{
-            'SearchTerm' = $hash.Results.'OpenSearch:Query'.SearchTerms
-            'MatchesPerPage' = $hash.Results.'OpenSearch:ItemsPerPage'
-            'TotalMatches' = $hash.Results.'OpenSearch:TotalResults'
-            'ArtistMatches' = $albumMatches
-        }
-
-        $albumSearchInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Album.Search')
-        Write-Output $albumSearchInfo
     }
 }

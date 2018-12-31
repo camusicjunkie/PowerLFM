@@ -11,7 +11,7 @@ function Get-LFMChartTopTag {
         [string] $Page
     )
 
-    $apiParams = [ordered] @{
+    $apiParams = @{
         'method' = 'chart.getTopTags'
         'api_key' = $LFMConfig.APIKey
         'format' = 'json'
@@ -31,17 +31,16 @@ function Get-LFMChartTopTag {
     $apiUrl = "$baseUrl/?$string"
 
     $irm = Invoke-RestMethod -Uri $apiUrl
-    $hash = $irm | ConvertTo-Hashtable
 
-    foreach ($tag in $hash.Tags.Tag) {
+    foreach ($tag in $irm.Tags.Tag) {
         $tagInfo = [pscustomobject] @{
+            'PSTypeName' = 'PowerLFM.Chart.TopTags'
             'Tag' = ConvertTo-TitleCase -String $tag.Name
             'Url' = $tag.Url
             'Reach' = $tag.Reach
             'TotalTags' = $tag.Taggings
         }
 
-        $tagInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.Chart.TopTags')
         Write-Output $tagInfo
     }
 }

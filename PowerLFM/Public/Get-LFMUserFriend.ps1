@@ -2,10 +2,11 @@ function Get-LFMUserFriend {
     # .ExternalHelp PowerLFM.psm1-help.xml
 
     [CmdletBinding()]
-    [OutputType('PowerLFM.User.Friend')]
+    [OutputType('PowerLFM.User.Info')]
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [string] $UserName,
 
         [Parameter()]
@@ -13,11 +14,12 @@ function Get-LFMUserFriend {
         [string] $Limit,
 
         [string] $Page,
+
         [switch] $RecentTracks
     )
 
     begin {
-        $apiParams = [ordered] @{
+        $apiParams = @{
             'method' = 'user.getFriends'
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
@@ -30,9 +32,7 @@ function Get-LFMUserFriend {
         }
     }
     process {
-        switch ($PSBoundParameters.Keys) {
-            'UserName' {$apiParams.add('user', $UserName)}
-        }
+        $apiParams.add('user', $UserName)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
@@ -44,10 +44,10 @@ function Get-LFMUserFriend {
     }
     end {
         $irm = Invoke-RestMethod -Uri $apiUrl
-        $hash = $irm | ConvertTo-Hashtable
 
-        $users = foreach ($friend in $hash.Friends.User) {
-            $userInfo = [pscustomobject] @{
+        foreach ($friend in $irm.Friends.User) {
+            $userInfo = @{
+                'PSTypeName' = 'PowerLFM.User.Info'
                 'UserName' = $friend.Name
                 'RealName' = $friend.RealName
                 'Url' = $friend.Url
@@ -59,8 +59,9 @@ function Get-LFMUserFriend {
             }
 
             if ($RecentTracks) {
-                $tracks = foreach ($track in $hash.Friends.User.RecentTrack) {
+                $tracks = foreach ($track in $irm.Friends.User.RecentTrack) {
                     $trackInfo = [pscustomobject] @{
+                        'PSTypeName' = 'PowerLFM.User.RecentTracks'
                         'Track' = $track.Name
                         'TrackId' = $track.Mbid
                         'TrackUrl' = $track.Url
@@ -73,27 +74,14 @@ function Get-LFMUserFriend {
                         'ScrobbleTime' = ConvertFrom-UnixTime -UnixTime ($track.'@attr'.Uts) -Local
                     }
 
-                    $trackInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.User.RecentTracks')
                     Write-Output $trackInfo
                 }
 
-                $userInfo | Add-Member -MemberType NoteProperty -Name 'RecentTracks' -Value $tracks
+                $userInfo.add('RecentTracks', $tracks)
             }
 
-            $userInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.User.Info')
+            $userInfo = [pscustomobject] $userInfo
             Write-Output $userInfo
         }
-
-        $friendInfo = [pscustomobject] @{
-            'UserName' = $hash.Friends.'@attr'.For
-            'FriendsPerPage' = $hash.Friends.'@attr'.PerPage
-            'Page' = $hash.Friends.'@attr'.Page
-            'TotalPages' = $hash.Friends.'@attr'.TotalPages
-            'TotalFriends' = $hash.Friends.'@attr'.Total
-            'Friends' = $users
-        }
-
-        $friendInfo.PSObject.TypeNames.Insert(0, 'PowerLFM.User.Friend')
-        Write-Output $friendInfo
     }
 }
