@@ -12,7 +12,7 @@
 RootModule = 'PowerLFM.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.2.3'
+ModuleVersion = '0.3.1'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
