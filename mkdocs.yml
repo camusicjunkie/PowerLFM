@@ -1,5 +1,4 @@
 site_name: LastFM Docs
-docs_dir: docs
 repo_url: https://github.com/camusicjunkie/PowerLFM
 theme: readthedocs
 pages:
