@@ -1,8 +1,8 @@
-site_name: LastFM Docs
+site_name: PowerLFM Docs
 repo_url: https://github.com/camusicjunkie/PowerLFM
 theme: readthedocs
-pages:
-  - Home: PowerLFM.md
+home: README.md
+nav:
   - Commands:
     - Add-LFMAlbumTag: Add-LFMAlbumTag.md
     - Add-LFMArtistTag: Add-LFMArtistTag.md
@@ -43,3 +43,4 @@ pages:
     - Search-LFMArtist: Search-LFMArtist.md
     - Set-LFMTrackLove: Set-LFMTrackLove.md
     - Set-LFMTrackUnlove: Set-LFMTrackUnlove.md
+    - Index: PowerLFM.md
