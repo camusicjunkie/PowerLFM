@@ -57,8 +57,8 @@ $album.Tags
 * Album
   * [album.addTags](https://www.last.fm/api/show/album.addTags)
   * [album.getInfo](https://www.last.fm/api/show/album.getInfo)
-  * [album.getTags](https;//www.last.fm/api/show/album.getTags)
-  * [album.getTopTags](https;//www.last.fm/api/show/album.getTopTags)
+  * [album.getTags](https://www.last.fm/api/show/album.getTags)
+  * [album.getTopTags](https://www.last.fm/api/show/album.getTopTags)
   * [album.removeTag](https://www.last.fm/api/show/album.removeTag)
   * [album.search](https://www.last.fm/api/show/album.search)
 * Artist
