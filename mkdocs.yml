@@ -1,7 +1,7 @@
 site_name: PowerLFM Docs
 repo_url: https://github.com/camusicjunkie/PowerLFM
 theme: readthedocs
-nav:
+pages:
   - Home: README.md
   - Commands:
     - Add-LFMAlbumTag: Add-LFMAlbumTag.md
