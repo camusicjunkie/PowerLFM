@@ -42,6 +42,13 @@ function Get-LFMUserWeeklyAlbumChart {
     end {
         try {
             $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
+            if ($irm.error) {
+                [pscustomobject] @{
+                    'Error' = $irm.error
+                    'Message' = $irm.message
+                }
+                return
+            }
         }
         catch {
             $response = $_.errorDetails.message | ConvertFrom-Json
