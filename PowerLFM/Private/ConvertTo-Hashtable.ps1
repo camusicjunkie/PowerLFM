@@ -1,6 +1,6 @@
 function ConvertTo-Hashtable {
     [CmdletBinding()]
-    [OutputType('Hashtable')]
+    [OutputType('System.Collections.Hashtable')]
     param (
         [Parameter(ValueFromPipeline)]
         $InputObject
@@ -24,7 +24,7 @@ function ConvertTo-Hashtable {
             )
 
             ## Return the array but don't enumerate it because the object may be pretty complex
-            Write-Output -NoEnumerate $collection
+            Write-Output -InputObject $collection -NoEnumerate
         }
         elseif ($InputObject -is [psobject]) {
             ## If the object has properties that need enumeration
