@@ -54,7 +54,18 @@ function Get-LFMAlbumInfo {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $irm = Invoke-RestMethod -Uri $apiUrl
+        try {
+            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
+        }
+        catch {
+            $response = $_.errorDetails.message | ConvertFrom-Json
+
+            [pscustomobject] @{
+                'Error' = $response.error
+                'Message' = $response.message
+            }
+            return
+        }
 
         $tracks = foreach ($track in $irm.Album.Tracks.Track) {
             $trackInfo = [pscustomobject] @{

@@ -48,7 +48,18 @@ function Get-LFMArtistInfo {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $irm = Invoke-RestMethod -Uri $apiUrl
+        try {
+            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
+        }
+        catch {
+            $response = $_.errorDetails.message | ConvertFrom-Json
+
+            [pscustomobject] @{
+                'Error' = $response.error
+                'Message' = $response.message
+            }
+            return
+        }
 
         $similarArtists = foreach ($similar in $irm.Artist.Similar.Artist) {
             $similarInfo = [pscustomobject] @{

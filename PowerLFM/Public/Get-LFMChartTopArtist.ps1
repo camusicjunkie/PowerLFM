@@ -30,7 +30,18 @@ function Get-LFMChartTopArtist {
 
     $apiUrl = "$baseUrl/?$string"
 
-    $irm = Invoke-RestMethod -Uri $apiUrl
+    try {
+        $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
+    }
+    catch {
+        $response = $_.errorDetails.message | ConvertFrom-Json
+
+        [pscustomobject] @{
+            'Error' = $response.error
+            'Message' = $response.message
+        }
+        return
+    }
 
     foreach ($artist in $irm.Artists.Artist) {
         $artistInfo = [pscustomobject] @{

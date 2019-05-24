@@ -55,7 +55,18 @@ function Get-LFMUserTopAlbum {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $irm = Invoke-RestMethod -Uri $apiUrl
+        try {
+            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
+        }
+        catch {
+            $response = $_.errorDetails.message | ConvertFrom-Json
+
+            [pscustomobject] @{
+                'Error' = $response.error
+                'Message' = $response.message
+            }
+            return
+        }
 
         foreach ($album in $irm.TopAlbums.Album) {
             $albumInfo = [pscustomobject] @{
