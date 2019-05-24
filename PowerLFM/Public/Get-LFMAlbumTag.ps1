@@ -60,7 +60,25 @@ function Get-LFMAlbumTag {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $irm = Invoke-RestMethod -Uri $apiUrl
+        try {
+            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
+            if ($irm.error) {
+                [pscustomobject] @{
+                    'Error' = $irm.error
+                    'Message' = $irm.message
+                }
+                return
+            }
+        }
+        catch {
+            $response = $_.errorDetails.message | ConvertFrom-Json
+
+            [pscustomobject] @{
+                'Error' = $response.error
+                'Message' = $response.message
+            }
+            return
+        }
 
         foreach ($tag in $irm.Tags.Tag) {
             $tagInfo = [pscustomobject] @{
