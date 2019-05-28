@@ -97,7 +97,7 @@ InModuleScope PowerLFM {
                 Tag = 'Tag'
             }
 
-            It 'Should call the Last.fm Rest API for album.addTags method' {
+            It 'Should call the Last.fm Rest API for album.addTags post method' {
                 Add-LFMAlbumTag @aatParams
 
                 $amParams = @{
@@ -155,8 +155,8 @@ InModuleScope PowerLFM {
         It "Should add the new rock tag to the album" {
             Add-LFMAlbumTag @atParams
             $tag = Get-LFMAlbumTag -Album Gore -Artist Deftones
-            $tag.Where({$_.Tag -eq 'Rock'}).Tag | Should -Be 'Rock'
             $tag.Where({$_.Tag -eq 'Rock'}).Tag | Should -Not -BeNullOrEmpty
+            $tag.Where({$_.Tag -eq 'Rock'}).Tag | Should -Be 'Rock'
         }
 
         AfterAll {
