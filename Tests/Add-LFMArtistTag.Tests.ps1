@@ -129,7 +129,15 @@ InModuleScope PowerLFM {
 Describe 'Add-LFMArtistTag: Integration' -Tag Integration {
 
     BeforeAll {
-        Get-LFMConfiguration
+        if ($env:APPVEYOR) {
+            $script:LFMConfig = [pscustomobject] @{
+                'APIKey' = $env:LFMApiKey
+                'SessionKey' = $env:LFMSessionKey
+            }
+        }
+        else {
+            Get-LFMConfiguration
+        }
 
         $atParams = @{
             Artist = 'Deftones'

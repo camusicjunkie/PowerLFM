@@ -1,6 +1,10 @@
 # See http://www.appveyor.com/docs/appveyor-yml for many more options
 
 environment:
+    LFMApiKey:
+        secure: 3hqS76v5ydp1RAfqHveKisX1Cs/xFFOISouteoSO69wUuHVrSrqmi3IPpP/NFQmh
+    LFMSessionKey:
+        secure: gMAfmqAx9wTyeT5qEDB4zW5N6+GexurGriIaWoupOww1aFZGaDJNxUfbznCpA6PD
     NuGetApiKey:
         secure: 3BHyJdLSWsV+oTEApA674BGFBj2nhOED/WIAfLI2d1fDvo+6UatQzar6f36CAh05
 
@@ -8,7 +12,7 @@ environment:
 os: WMF 5
 
 # Skip on updates to the readme.
-# We can force this by adding [skip ci] or [ci skip] anywhere in commit message 
+# We can force this by adding [skip ci] or [ci skip] anywhere in commit message
 skip_commits:
     message: /updated readme.*|update readme.*s/
 
