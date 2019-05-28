@@ -126,34 +126,32 @@ InModuleScope PowerLFM {
     }
 }
 
-InModuleScope PowerLFM {
-    Describe 'Add-LFMArtistTag: Integration' -Tag Integration {
+Describe 'Add-LFMArtistTag: Integration' -Tag Integration {
 
-        BeforeAll {
-            Get-LFMConfiguration
+    BeforeAll {
+        Get-LFMConfiguration
 
-            $atParams = @{
-                Artist = 'Deftones'
-                Tag = 'Rock'
-                Confirm = $false
-            }
-            Remove-LFMArtistTag @atParams
+        $atParams = @{
+            Artist = 'Deftones'
+            Tag = 'Rock'
+            Confirm = $false
         }
+        Remove-LFMArtistTag @atParams
+    }
 
-        It "Should not contain the rock tag before adding it" {
-            $tag = Get-LFMArtistTag -Artist Deftones
-            $tag.Tag | Should -Not -Be 'Rock'
-        }
+    It "Should not contain the rock tag before adding it" {
+        $tag = Get-LFMArtistTag -Artist Deftones
+        $tag.Tag | Should -Not -Be 'Rock'
+    }
 
-        It "Should add the new rock tag to the album" {
-            Add-LFMArtistTag @atParams
-            $tag = Get-LFMArtistTag -Artist Deftones
-            $tag.Where({$_.Tag -eq 'Rock'}).Tag | Should -Not -BeNullOrEmpty
-            $tag.Where({$_.Tag -eq 'Rock'}).Tag | Should -Be 'Rock'
-        }
+    It "Should add the new rock tag to the artist" {
+        Add-LFMArtistTag @atParams
+        $tag = Get-LFMArtistTag -Artist Deftones
+        $tag.Where({$_.Tag -eq 'Rock'}).Tag | Should -Not -BeNullOrEmpty
+        $tag.Where({$_.Tag -eq 'Rock'}).Tag | Should -Be 'Rock'
+    }
 
-        AfterAll {
-            Remove-LFMArtistTag @atParams
-        }
+    AfterAll {
+        Remove-LFMArtistTag @atParams
     }
 }
