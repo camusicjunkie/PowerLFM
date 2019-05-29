@@ -1,4 +1,4 @@
-function New-LFMArtistSignature {
+function Get-LFMArtistSignature {
     [CmdletBinding(SupportsShouldProcess,
                    ConfirmImpact = 'Medium')]
     [OutputType('System.String')]

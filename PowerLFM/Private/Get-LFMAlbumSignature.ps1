@@ -1,4 +1,4 @@
-function New-LFMAlbumSignature {
+function Get-LFMAlbumSignature {
     [CmdletBinding()]
     [OutputType('System.String')]
     param (

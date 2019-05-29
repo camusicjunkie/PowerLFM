@@ -1,4 +1,4 @@
-function New-LFMTrackSignature {
+function Get-LFMTrackSignature {
     [CmdletBinding(SupportsShouldProcess,
                    ConfirmImpact = 'Medium')]
     [OutputType('System.String')]

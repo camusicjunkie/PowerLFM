@@ -1,4 +1,4 @@
-function New-LFMAuthSignature {
+function Get-LFMAuthSignature {
     [CmdletBinding(SupportsShouldProcess,
                    ConfirmImpact = 'Medium')]
     [OutputType('System.String')]
