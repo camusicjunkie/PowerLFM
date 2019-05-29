@@ -134,7 +134,7 @@ Describe 'Add-LFMArtistTag: Integration' -Tag Integration {
                 'APIKey' = $env:LFMApiKey
                 'SessionKey' = $env:LFMSessionKey
             }
-            Write-Host $LFMConfig.ApiKey
+            Write-Output [$LFMConfig.ApiKey]
         }
         else {
             Get-LFMConfiguration
