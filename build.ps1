@@ -17,8 +17,10 @@ if ($env:APPVEYOR) {
         'ProjectName' = $env:APPVEYOR_PROJECT_NAME
         'AccountName' = $env:APPVEYOR_ACCOUNT_NAME
     }
-    Write-Output [$LFMConfig.ProjectName]
-    Write-Output [$LFMConfig.AccountName]
+    $project = $LFMConfig.ProjectName
+    Write-Output $project
+    $account = $LFMConfig.AccountName
+    Write-Output $account
 }
 
 Invoke-Psake -buildFile "$PSScriptRoot\psake.ps1" -taskList $Task -Verbose:$VerbosePreference
