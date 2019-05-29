@@ -13,8 +13,8 @@ if (-not (Get-Module -Name PSScriptAnalyzer -ListAvailable)) {Install-Module -Na
 if ($env:APPVEYOR) {
     Write-Output 'Inside APPVEYOR if statement'
     $script:LFMConfig = [pscustomobject] @{
-        $APIKey = $env:LFMAPIKey
-        $SessionKey = $env:LFMSessionKey
+        APIKey = $env:LFMAPIKey
+        SessionKey = $env:LFMSessionKey
     }
 }
 
