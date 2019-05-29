@@ -17,10 +17,8 @@ if ($env:APPVEYOR) {
         'ProjectName' = $env:APPVEYOR_PROJECT_NAME
         'AccountName' = $env:APPVEYOR_ACCOUNT_NAME
     }
-    $project = $LFMConfig.ProjectName
-    Write-Output $project
-    $account = $LFMConfig.AccountName
-    Write-Output $account
+    Write-Output "This is my $($LFMConfig.ProjectName)"
+    $env:RandomValue
 }
 
 Invoke-Psake -buildFile "$PSScriptRoot\psake.ps1" -taskList $Task -Verbose:$VerbosePreference
