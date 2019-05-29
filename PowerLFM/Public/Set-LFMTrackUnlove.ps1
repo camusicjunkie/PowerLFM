@@ -22,7 +22,7 @@ function Set-LFMTrackUnlove {
             'Track' = $Track
             'Method' = 'track.unlove'
         }
-        $apiSig = New-LFMTrackSignature @apiSigParams
+        $apiSig = Get-LFMTrackSignature @apiSigParams
 
         $apiParams = @{
             'method' = 'track.unlove'

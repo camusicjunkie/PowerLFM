@@ -27,7 +27,7 @@ function Add-LFMAlbumTag {
             'Tag' = $Tag
             'Method' = 'album.addTags'
         }
-        $apiSig = New-LFMAlbumSignature @apiSigParams
+        $apiSig = Get-LFMAlbumSignature @apiSigParams
 
         $apiParams = @{
             'method' = 'album.addTags'

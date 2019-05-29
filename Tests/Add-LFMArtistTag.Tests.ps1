@@ -3,7 +3,7 @@ Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
 
 InModuleScope PowerLFM {
     Describe 'Add-LFMArtistTag: Unit' -Tag Unit {
-        Mock New-LFMArtistSignature
+        Mock Get-LFMArtistSignature
         Mock Invoke-WebRequest
         Mock Write-Verbose
 
@@ -63,7 +63,7 @@ InModuleScope PowerLFM {
 
             It 'Should create a signature from the parameters passed in' {
                 $amParams = @{
-                    CommandName = 'New-LFMArtistSignature'
+                    CommandName = 'Get-LFMArtistSignature'
                     Exactly = $true
                     Times = 1
                     ParameterFilter = {

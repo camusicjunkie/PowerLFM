@@ -27,7 +27,7 @@ function Remove-LFMAlbumTag {
             'Tag' = $Tag
             'Method' = 'album.removeTag'
         }
-        $apiSig = New-LFMAlbumSignature @apiSigParams
+        $apiSig = Get-LFMAlbumSignature @apiSigParams
 
         $apiParams = @{
             'method' = 'album.removeTag'

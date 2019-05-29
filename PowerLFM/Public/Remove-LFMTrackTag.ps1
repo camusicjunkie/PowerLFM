@@ -28,7 +28,7 @@ function Remove-LFMTrackTag {
             'Tag' = $Tag
             'Method' = 'track.removeTag'
         }
-        $apiSig = New-LFMTrackSignature @apiSigProps
+        $apiSig = Get-LFMTrackSignature @apiSigProps
 
         $apiParams = @{
             'method' = 'track.removeTag'

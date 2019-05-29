@@ -27,7 +27,7 @@ function Add-LFMTrackTag {
             'Tag' = $Tag
             'Method' = 'track.addTags'
         }
-        $apiSig = New-LFMTrackSignature @apiSigParams
+        $apiSig = Get-LFMTrackSignature @apiSigParams
 
         $apiParams = @{
             'method' = 'track.addTags'

@@ -28,7 +28,7 @@ function Request-LFMSession {
                 'SharedSecret' = $SharedSecret
                 'Token' = $Token
             }
-            $apiSig = New-LFMAuthSignature @sigParams
+            $apiSig = Get-LFMAuthSignature @sigParams
             Write-Verbose "Signature MD5 Hash: $apiSig"
 
             $apiParams = @{

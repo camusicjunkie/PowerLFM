@@ -21,7 +21,7 @@ function Remove-LFMArtistTag {
             'Tag' = $Tag
             'Method' = 'artist.removeTag'
         }
-        $apiSig = New-LFMArtistSignature @apiSigParams
+        $apiSig = Get-LFMArtistSignature @apiSigParams
 
         $apiParams = @{
             'method' = 'artist.removeTag'
