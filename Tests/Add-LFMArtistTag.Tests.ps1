@@ -108,7 +108,7 @@ InModuleScope PowerLFM {
 
             It 'Should send proper output when -Whatif is used' {
                 $output = Add-LFMArtistTag @aatParams -Verbose 4>&1
-                $output | Should -Match '^Performing the operation "Adding artist tag: Tag" on target "Artist: Artist".$'
+                $output | Should -Match 'Performing the operation "Adding artist tag: Tag" on target "Artist: Artist".'
             }
 
             It 'Should send verbose output when -Verbose is used' {
@@ -134,6 +134,7 @@ Describe 'Add-LFMArtistTag: Integration' -Tag Integration {
                 'APIKey' = $env:LFMApiKey
                 'SessionKey' = $env:LFMSessionKey
             }
+            Write-Host $LFMConfig.ApiKey
         }
         else {
             Get-LFMConfiguration

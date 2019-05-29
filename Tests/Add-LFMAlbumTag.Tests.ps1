@@ -114,7 +114,7 @@ InModuleScope PowerLFM {
 
             It 'Should send proper output when -Whatif is used' {
                 $output = Add-LFMAlbumTag @aatParams -Verbose 4>&1
-                $output | Should -Match '^Performing the operation "Adding album tag: Tag" on target "Album: Album".$'
+                $output | Should -Match 'Performing the operation "Adding album tag: Tag" on target "Album: Album".'
             }
 
             It 'Should send verbose output when -Verbose is used' {
