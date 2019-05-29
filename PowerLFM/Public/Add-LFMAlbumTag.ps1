@@ -49,7 +49,7 @@ function Add-LFMAlbumTag {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        if ($PSCmdlet.ShouldProcess("Album: $Album", "Adding album tag")) {
+        if ($PSCmdlet.ShouldProcess("Album: $Album", "Adding album tag: $Tag")) {
             $iwr = Invoke-WebRequest -Uri $apiUrl -Method Post
             Write-Verbose "$($iwr.StatusCode) $($iwr.StatusDescription)"
         }
