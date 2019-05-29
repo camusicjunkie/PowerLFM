@@ -14,11 +14,11 @@ if ($env:APPVEYOR) {
     Write-Output 'Inside APPVEYOR if statement'
 
     $script:LFMConfig = [pscustomobject] @{
-        'APIKey' = $env:LFMApiKey
-        'SessionKey' = $env:LFMSessionKey
+        'ProjectName' = $env:APPVEYOR_PROJECT_NAME
+        'AccountName' = $env:APPVEYOR_ACCOUNT_NAME
     }
-    Write-Output [$LFMConfig.ApiKey]
-    Write-Output [$LFMConfig.SessionKey]
+    Write-Output [$LFMConfig.ProjectName]
+    Write-Output [$LFMConfig.AccountName]
 }
 
 Invoke-Psake -buildFile "$PSScriptRoot\psake.ps1" -taskList $Task -Verbose:$VerbosePreference
