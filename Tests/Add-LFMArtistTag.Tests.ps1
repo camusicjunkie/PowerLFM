@@ -129,6 +129,8 @@ InModuleScope PowerLFM {
 Describe 'Add-LFMArtistTag: Integration' -Tag Integration {
 
     BeforeAll {
+        Get-LFMConfiguration
+
         $atParams = @{
             Artist = 'Deftones'
             Tag = 'randomValue'
