@@ -12,10 +12,17 @@ if (-not (Get-Module -Name PSScriptAnalyzer -ListAvailable)) {Install-Module -Na
 
 if ($env:APPVEYOR) {
     Write-Output 'Inside APPVEYOR if statement'
-    $script:LFMConfig = [pscustomobject] @{
+    $acParams = @{
         APIKey = $env:LFMAPIKey
         SessionKey = $env:LFMSessionKey
+        SharedSecret = $env:LFMSharedSecret
     }
+    Add-LFMConfiguration @acParams
+    Get-LFMConfiguration
+    #$script:LFMConfig = [pscustomobject] @{
+    #    APIKey = $env:LFMAPIKey
+    #    SessionKey = $env:LFMSessionKey
+    #}
 }
 
 Invoke-Psake -buildFile "$PSScriptRoot\psake.ps1" -taskList $Task -Verbose:$VerbosePreference

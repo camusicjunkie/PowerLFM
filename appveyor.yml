@@ -5,6 +5,8 @@ environment:
         secure: 3hqS76v5ydp1RAfqHveKisX1Cs/xFFOISouteoSO69wUuHVrSrqmi3IPpP/NFQmh
     LFMSessionKey:
         secure: gMAfmqAx9wTyeT5qEDB4zW5N6+GexurGriIaWoupOww1aFZGaDJNxUfbznCpA6PD
+    LFMSharedSecret:
+        secure: LA1YzNyJRI0WpbZ+HAWU9uXyalNMw3y24+9FHoFeFIHWXX8tm52CBfi/nz84wYke
     NuGetApiKey:
         secure: 3BHyJdLSWsV+oTEApA674BGFBj2nhOED/WIAfLI2d1fDvo+6UatQzar6f36CAh05
 
