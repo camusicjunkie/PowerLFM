@@ -13,7 +13,8 @@ if (-not (Get-Module -Name PSScriptAnalyzer -ListAvailable)) {Install-Module -Na
 Remove-Module -Name PowerLFM -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\PowerLFM\PowerLFM.psd1
 
-Get-ChildItem Env:\ALLUSERSPROFILE
+Get-ChildItem Env:
+
 if ($env:APPVEYOR) {
     Write-Output 'Inside APPVEYOR if statement'
     #$acParams = @{

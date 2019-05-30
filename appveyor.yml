@@ -11,15 +11,15 @@ environment:
         secure: 3BHyJdLSWsV+oTEApA674BGFBj2nhOED/WIAfLI2d1fDvo+6UatQzar6f36CAh05
 
 # Allow WMF5 (i.e. PowerShellGallery functionality)
-os: WMF 5
+image: Visual Studio 2017
 
 # Skip on updates to the readme.
 # We can force this by adding [skip ci] or [ci skip] anywhere in commit message
 skip_commits:
     message: /updated readme.*|update readme.*s/
 
-build: false
+build: off
 
 #Kick off the CI/CD pipeline
-test_script:
+build_script:
     - ps: . .\build.ps1
