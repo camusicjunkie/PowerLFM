@@ -15,29 +15,18 @@ $Script:Modules = @(
 'Starting build...'
 'Installing module dependencies...'
 
-Install-Module -Name $Script:Modules -Force
+Install-Module -Name $Script:Modules -Force -SkipPublisherCheck
 
 Remove-Module -Name PowerLFM -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\PowerLFM\PowerLFM.psd1
 
 if ($env:APPVEYOR) {
-    Write-Output 'Inside APPVEYOR if statement'
     $acParams = @{
         APIKey = $env:LFMAPIKey
         SessionKey = $env:LFMSessionKey
         SharedSecret = $env:LFMSharedSecret
     }
-    #$acParams = @{
-    #    APIKey = 'APIKey'
-    #    SessionKey = 'SessionKey'
-    #    SharedSecret = 'SharedSecret'
-    #}
     Add-LFMConfiguration @acParams
-
-    Get-LFMConfiguration
-}
-else {
-    Get-LFMConfiguration
 }
 
 Invoke-Psake -buildFile "$PSScriptRoot\psake.ps1" -taskList $Task -Verbose:$VerbosePreference
