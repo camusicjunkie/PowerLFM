@@ -129,35 +129,24 @@ InModuleScope PowerLFM {
 Describe 'Add-LFMArtistTag: Integration' -Tag Integration {
 
     BeforeAll {
-        if ($env:APPVEYOR) {
-            $script:LFMConfig = [pscustomobject] @{
-                'APIKey' = $env:LFMApiKey
-                'SessionKey' = $env:LFMSessionKey
-            }
-            Write-Output [$LFMConfig.ApiKey]
-        }
-        else {
-            Get-LFMConfiguration
-        }
-
         $atParams = @{
             Artist = 'Deftones'
-            Tag = 'Rock'
+            Tag = 'randomValue'
             Confirm = $false
         }
         Remove-LFMArtistTag @atParams
     }
 
-    It "Should not contain the rock tag before adding it" {
+    It "Should not contain the random value tag before adding it" {
         $tag = Get-LFMArtistTag -Artist Deftones
-        $tag.Tag | Should -Not -Be 'Rock'
+        $tag.Tag | Should -Not -Be 'randomValue'
     }
 
-    It "Should add the new rock tag to the artist" {
+    It "Should add the new random value tag to the artist" {
         Add-LFMArtistTag @atParams
         $tag = Get-LFMArtistTag -Artist Deftones
-        $tag.Where({$_.Tag -eq 'Rock'}).Tag | Should -Not -BeNullOrEmpty
-        $tag.Where({$_.Tag -eq 'Rock'}).Tag | Should -Be 'Rock'
+        $tag.Where({$_.Tag -eq 'randomValue'}).Tag | Should -Not -BeNullOrEmpty
+        $tag.Where({$_.Tag -eq 'randomValue'}).Tag | Should -Be 'randomValue'
     }
 
     AfterAll {
