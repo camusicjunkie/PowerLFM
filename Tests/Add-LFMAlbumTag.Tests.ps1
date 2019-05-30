@@ -140,22 +140,22 @@ Describe 'Add-LFMAlbumTag: Integration' -Tag Integration {
         $atParams = @{
             Album = 'Gore'
             Artist = 'Deftones'
-            Tag = 'Rock'
+            Tag = 'randomValue'
             Confirm = $false
         }
         Remove-LFMAlbumTag @atParams
     }
 
-    It "Should not contain the rock tag before adding it" {
+    It "Should not contain the random value tag before adding it" {
         $tag = Get-LFMAlbumTag -Album Gore -Artist Deftones
-        $tag.Tag | Should -Not -Be 'Rock'
+        $tag.Tag | Should -Not -Be 'randomValue'
     }
 
-    It "Should add the new rock tag to the album" {
+    It "Should add the new random value tag to the album" {
         Add-LFMAlbumTag @atParams
         $tag = Get-LFMAlbumTag -Album Gore -Artist Deftones
-        $tag.Where({$_.Tag -eq 'Rock'}).Tag | Should -Not -BeNullOrEmpty
-        $tag.Where({$_.Tag -eq 'Rock'}).Tag | Should -Be 'Rock'
+        $tag.Where({$_.Tag -eq 'randomValue'}).Tag | Should -Not -BeNullOrEmpty
+        $tag.Where({$_.Tag -eq 'randomValue'}).Tag | Should -Be 'randomValue'
     }
 
     AfterAll {
