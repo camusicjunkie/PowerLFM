@@ -5,10 +5,17 @@ param(
 
 $null = Get-PackageProvider -Name NuGet -ForceBootstrap
 
-if (-not (Get-Module -Name Pester -ListAvailable)) {Install-Module -Name Pester -Scope CurrentUser -Force}
-if (-not (Get-Module -Name psake -ListAvailable)) {Install-Module -Name psake -Scope CurrentUser -Force}
-if (-not (Get-Module -Name PSDeploy -ListAvailable)) {Install-Module -Name PSDeploy -Scope CurrentUser -Force}
-if (-not (Get-Module -Name PSScriptAnalyzer -ListAvailable)) {Install-Module -Name PSScriptAnalyzer -Scope CurrentUser -Force}
+$Script:Modules = @(
+    'Pester',
+    'PSScriptAnalyzer',
+    'Psake'
+    'PSDeploy'
+)
+
+'Starting build...'
+'Installing module dependencies...'
+
+Install-Module -Name $Script:Modules -Force
 
 Remove-Module -Name PowerLFM -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\PowerLFM\PowerLFM.psd1

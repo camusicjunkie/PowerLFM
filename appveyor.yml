@@ -21,5 +21,5 @@ skip_commits:
 build: false
 
 #Kick off the CI/CD pipeline
-test_script:
+build_script:
     - ps: . .\build.ps1
