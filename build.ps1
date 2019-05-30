@@ -10,6 +10,9 @@ if (-not (Get-Module -Name psake -ListAvailable)) {Install-Module -Name psake -S
 if (-not (Get-Module -Name PSDeploy -ListAvailable)) {Install-Module -Name PSDeploy -Scope CurrentUser -Force}
 if (-not (Get-Module -Name PSScriptAnalyzer -ListAvailable)) {Install-Module -Name PSScriptAnalyzer -Scope CurrentUser -Force}
 
+Remove-Module -Name PowerLFM -ErrorAction Ignore
+Import-Module -Name $PSScriptRoot\PowerLFM\PowerLFM.psd1
+
 if ($env:APPVEYOR) {
     Write-Output 'Inside APPVEYOR if statement'
     $acParams = @{
