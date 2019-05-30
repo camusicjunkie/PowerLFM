@@ -15,18 +15,19 @@ Import-Module -Name $PSScriptRoot\PowerLFM\PowerLFM.psd1
 
 if ($env:APPVEYOR) {
     Write-Output 'Inside APPVEYOR if statement'
+    #$acParams = @{
+    #    APIKey = $env:LFMAPIKey
+    #    SessionKey = $env:LFMSessionKey
+    #    SharedSecret = $env:LFMSharedSecret
+    #}
     $acParams = @{
-        APIKey = $env:LFMAPIKey
-        SessionKey = $env:LFMSessionKey
-        SharedSecret = $env:LFMSharedSecret
+        APIKey = 'APIKey'
+        SessionKey = 'SessionKey'
+        SharedSecret = 'SharedSecret'
     }
     Add-LFMConfiguration @acParams
 
     Get-LFMConfiguration
-    #$script:LFMConfig = [pscustomobject] @{
-    #    APIKey = $env:LFMAPIKey
-    #    SessionKey = $env:LFMSessionKey
-    #}
 }
 else {
     Get-LFMConfiguration
