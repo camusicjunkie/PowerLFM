@@ -3,7 +3,7 @@ param(
     [string[]]$Task = 'default'
 )
 
-Get-PackageProvider -Name NuGet -ForceBootstrap | Out-Null
+$null = Get-PackageProvider -Name NuGet -ForceBootstrap
 
 if (-not (Get-Module -Name Pester -ListAvailable)) {Install-Module -Name Pester -Scope CurrentUser -Force}
 if (-not (Get-Module -Name psake -ListAvailable)) {Install-Module -Name psake -Scope CurrentUser -Force}
@@ -21,11 +21,15 @@ if ($env:APPVEYOR) {
         SharedSecret = $env:LFMSharedSecret
     }
     Add-LFMConfiguration @acParams
+
     Get-LFMConfiguration
     #$script:LFMConfig = [pscustomobject] @{
     #    APIKey = $env:LFMAPIKey
     #    SessionKey = $env:LFMSessionKey
     #}
+}
+else {
+    Get-LFMConfiguration
 }
 
 Invoke-Psake -buildFile "$PSScriptRoot\psake.ps1" -taskList $Task -Verbose:$VerbosePreference
