@@ -49,7 +49,7 @@ function Add-LFMTrackTag {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        if ($PSCmdlet.ShouldProcess("Track: $Track", "Adding track tag")) {
+        if ($PSCmdlet.ShouldProcess("Track: $Track", "Adding track tag: $Tag")) {
             $iwr = Invoke-WebRequest -Uri $apiUrl -Method Post
             Write-Verbose "$($iwr.StatusCode) $($iwr.StatusDescription)"
         }
