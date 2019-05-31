@@ -147,8 +147,8 @@ Describe 'Add-LFMArtistTag: Integration' -Tag Integration {
     It "Should add the new random value tag to the artist" {
         Add-LFMArtistTag @atParams
         $tag = Get-LFMArtistTag -Artist Deftones
-        $tag.Where({$_.Tag -eq 'randomValue'}).Tag | Should -Not -BeNullOrEmpty
-        $tag.Where({$_.Tag -eq 'randomValue'}).Tag | Should -Be 'randomValue'
+        @($tag).Where({$_.Tag -eq 'randomValue'}).Tag | Should -Not -BeNullOrEmpty
+        @($tag).Where({$_.Tag -eq 'randomValue'}).Tag | Should -Be 'randomValue'
     }
 
     AfterAll {
