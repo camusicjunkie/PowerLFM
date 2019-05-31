@@ -17,10 +17,10 @@ $Script:Modules = @(
 
 Install-Module -Name $Script:Modules -Force -SkipPublisherCheck
 
-Remove-Module -Name PowerLFM -ErrorAction Ignore
-Import-Module -Name $PSScriptRoot\PowerLFM\PowerLFM.psd1
-
 if ($env:APPVEYOR) {
+    Remove-Module -Name PowerLFM -ErrorAction Ignore
+    Import-Module -Name $PSScriptRoot\PowerLFM\PowerLFM.psd1
+
     $acParams = @{
         APIKey = $env:LFMAPIKey
         SessionKey = $env:LFMSessionKey
