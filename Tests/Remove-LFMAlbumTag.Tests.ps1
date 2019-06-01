@@ -144,7 +144,7 @@ Describe 'Remove-LFMAlbumTag: Integration' -Tag Integration {
         $tag.Tag | Should -Contain 'randomValue'
     }
 
-    It "Should remove the new random value tag to the album" {
+    It "Should remove the new random value tag from the album" {
         Remove-LFMAlbumTag @atParams
         $tag = Get-LFMAlbumTag -Album Gore -Artist Deftones
         @($tag).Where({$_.Tag -eq 'randomValue'}).Tag | Should -BeNullOrEmpty
