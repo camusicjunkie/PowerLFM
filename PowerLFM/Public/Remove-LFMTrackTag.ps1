@@ -17,8 +17,7 @@ function Remove-LFMTrackTag {
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
-        [ValidateCount(1,10)]
-        [string[]] $Tag
+        [string] $Tag
     )
 
     process {
@@ -50,7 +49,7 @@ function Remove-LFMTrackTag {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        if ($PSCmdlet.ShouldProcess("Track: $Track", "Removing track tag")) {
+        if ($PSCmdlet.ShouldProcess("Track: $Track", "Removing track tag: $Tag")) {
             $iwr = Invoke-WebRequest -Uri $apiUrl -Method Post
             Write-Verbose "$($iwr.StatusCode) $($iwr.StatusDescription)"
         }
