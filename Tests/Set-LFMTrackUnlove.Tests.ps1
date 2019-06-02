@@ -102,7 +102,7 @@ InModuleScope PowerLFM {
 
             It 'Should send proper output when -Whatif is used' {
                 $output = Set-LFMTrackUnlove @aatParams -Verbose 4>&1
-                $output | Should -Match 'Performing the operation "Adding love" on target "Track: Track".'
+                $output | Should -Match 'Performing the operation "Removing love" on target "Track: Track".'
             }
 
             It 'Should send verbose output when -Verbose is used' {
