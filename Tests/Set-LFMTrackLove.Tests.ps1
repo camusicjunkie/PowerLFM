@@ -131,7 +131,6 @@ Describe 'Set-LFMTrackLove: Integration' -Tag Integration {
             Confirm = $false
         }
         Set-LFMTrackUnlove @stlParams
-        Set-LFMTrackLove @stlParams
     }
 
     Context "Rest API calls" {
@@ -141,16 +140,22 @@ Describe 'Set-LFMTrackLove: Integration' -Tag Integration {
             UserName = 'camusicjunkie'
         }
 
+        It "Track should not be loved for a user before loving it" {
+            Set-ItResult -Skipped -Because 'API is returning $null on calls with username'
+
+            $track = Get-LFMTrackInfo @gtiParams
+            $track.Loved | Should -Be 'No'
+        }
+
         It "Track should be loved for a user" {
-            #Gives extra time for track to be loved
+            Set-ItResult -Skipped -Because 'API is returning $null on calls with username'
+
+            Set-LFMTrackLove @stlParams
+            #Needs to sleep to allow enough time for track to be loved
             Start-Sleep -Seconds 1
 
             $track = Get-LFMTrackInfo @gtiParams
             $track.Loved | Should -Be 'Yes'
         }
-    }
-
-    AfterAll {
-        Set-LFMTrackUnlove @stlParams
     }
 }
