@@ -140,19 +140,18 @@ Describe 'Set-LFMTrackLove: Integration' -Tag Integration {
             UserName = 'camusicjunkie'
         }
 
+        #Calls to Start-Sleep are to allow enough time for track to be loved
         It "Track should not be loved for a user before loving it" {
-            Set-ItResult -Skipped -Because 'API is returning $null on calls with username'
+            Start-Sleep -Seconds 1.5
 
             $track = Get-LFMTrackInfo @gtiParams
             $track.Loved | Should -Be 'No'
         }
 
         It "Track should be loved for a user" {
-            Set-ItResult -Skipped -Because 'API is returning $null on calls with username'
-
             Set-LFMTrackLove @stlParams
-            #Needs to sleep to allow enough time for track to be loved
-            Start-Sleep -Seconds 1
+
+            Start-Sleep -Seconds 1.5
 
             $track = Get-LFMTrackInfo @gtiParams
             $track.Loved | Should -Be 'Yes'
