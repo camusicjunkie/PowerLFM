@@ -140,22 +140,21 @@ Describe 'Set-LFMTrackUnlove: Integration' -Tag Integration {
             UserName = 'camusicjunkie'
         }
 
+        #Calls to Start-Sleep are to allow enough time for track to be unloved
         It "Track should be loved for a user before unloving it" {
-            Set-ItResult -Skipped -Because 'API is returning $null on calls with username'
-
-            $track = Get-LFMTrackInfo @gtiParams
-            $track.Loved | Should -Be 'No'
-        }
-
-        It "Track should be unloved for a user" {
-            Set-ItResult -Skipped -Because 'API is returning $null on calls with username'
-
-            Set-LFMTrackUnlove @stlParams
-            #Needs to sleep to allow enough time for track to be unloved
-            Start-Sleep -Seconds 1
+            Start-Sleep -Seconds 1.5
 
             $track = Get-LFMTrackInfo @gtiParams
             $track.Loved | Should -Be 'Yes'
+        }
+
+        It "Track should be unloved for a user" {
+            Set-LFMTrackUnlove @stlParams
+
+            Start-Sleep -Seconds 1.5
+
+            $track = Get-LFMTrackInfo @gtiParams
+            $track.Loved | Should -Be 'No'
         }
     }
 }
