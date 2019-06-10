@@ -92,6 +92,7 @@ Describe 'Set-LFMTrackLove: Interface' -Tag Interface {
 }
 
 InModuleScope PowerLFM {
+
     Describe 'Set-LFMTrackLove: Unit' -Tag Unit {
         Mock Get-LFMTrackSignature
         Mock Invoke-WebRequest

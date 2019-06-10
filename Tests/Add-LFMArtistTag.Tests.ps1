@@ -84,6 +84,7 @@ Describe 'Add-LFMArtistTag: Interface' -Tag Interface {
 }
 
 InModuleScope PowerLFM {
+
     Describe 'Add-LFMArtistTag: Unit' -Tag Unit {
         Mock Get-LFMArtistSignature
         Mock Invoke-WebRequest

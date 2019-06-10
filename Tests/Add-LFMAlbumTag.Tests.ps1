@@ -117,6 +117,7 @@ Describe 'Add-LFMAlbumTag: Interface' -Tag Interface {
 }
 
 InModuleScope PowerLFM {
+
     Describe 'Add-LFMAlbumTag: Unit' -Tag Unit {
         Mock Get-LFMAlbumSignature
         Mock Invoke-WebRequest

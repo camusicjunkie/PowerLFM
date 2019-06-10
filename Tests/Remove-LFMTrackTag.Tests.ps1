@@ -117,6 +117,7 @@ Describe 'Remove-LFMTrackTag: Interface' -Tag Interface {
 }
 
 InModuleScope PowerLFM {
+
     Describe 'Remove-LFMTrackTag: Unit' -Tag Unit {
         Mock Get-LFMTrackSignature
         Mock Invoke-WebRequest

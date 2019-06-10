@@ -117,6 +117,7 @@ Describe 'Remove-LFMAlbumTag: Interface' -Tag Interface {
 }
 
 InModuleScope PowerLFM {
+
     Describe 'Remove-LFMAlbumTag: Unit' -Tag Unit {
         Mock Get-LFMAlbumSignature
         Mock Invoke-WebRequest
