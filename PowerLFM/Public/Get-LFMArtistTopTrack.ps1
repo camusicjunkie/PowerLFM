@@ -6,6 +6,7 @@ function Get-LFMArtistTopTrack {
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
+                   Position = 0,
                    ParameterSetName = 'artist')]
         [ValidateNotNullOrEmpty()]
         [string] $Artist,

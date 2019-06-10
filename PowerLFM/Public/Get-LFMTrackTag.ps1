@@ -6,12 +6,14 @@ function Get-LFMTrackTag {
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
+                   Position = 0,
                    ParameterSetName = 'track')]
         [ValidateNotNullOrEmpty()]
         [string] $Track,
 
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
+                   Position = 1,
                    ParameterSetName = 'track')]
         [ValidateNotNullOrEmpty()]
         [string] $Artist,

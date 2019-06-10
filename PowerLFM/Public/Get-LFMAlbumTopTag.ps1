@@ -6,12 +6,14 @@ function Get-LFMAlbumTopTag {
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
+                   Position = 0,
                    ParameterSetName = 'album')]
         [ValidateNotNullOrEmpty()]
         [string] $Album,
 
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
+                   Position = 1,
                    ParameterSetName = 'album')]
         [ValidateNotNullOrEmpty()]
         [string] $Artist,

@@ -6,6 +6,7 @@ function Get-LFMArtistTopAlbum {
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
+                   Position = 0,
                    ParameterSetName = 'artist')]
         [ValidateNotNullOrEmpty()]
         [string] $Artist,
