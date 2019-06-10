@@ -1,34 +1,101 @@
 Remove-Module -Name PowerLFM -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
 
+Describe 'Set-LFMTrackUnlove: Interface' -Tag Interface {
+
+    BeforeAll {
+        $script:command = (Get-Command 'Set-LFMTrackUnlove')
+    }
+
+    It 'Contains an output type of PowerLFM.Track.Unlove' {
+        $command.OutputType.Name -contains 'PowerLFM.Track.Unlove' | Should -BeTrue
+    }
+
+    It 'CmdletBinding should be declared' {
+        $command.CmdletBinding | Should -BeTrue
+    }
+
+    Context 'ParameterSetName __AllParameterSets' {
+
+        It 'Should have a parameter set of __AllParameterSets' {
+            $command.ParameterSets.Name -contains '__AllParameterSets' | Should -BeTrue
+        }
+
+        $parameterSet = $command.ParameterSets | Where-Object { $_.'Name' -eq '__AllParameterSets' }
+
+        Context 'Parameter [Artist] attribute validation' {
+
+            $parameter = $parameterSet.Parameters | Where-Object { $_.'Name' -eq 'Artist' }
+
+            It 'Should not be null or empty' {
+                $parameter | Should -Not -BeNullOrEmpty
+            }
+
+            It "Should be of type System.String" {
+                $parameter.ParameterType.ToString() | Should -Be System.String
+            }
+
+            It 'Mandatory should be set to True' {
+                $parameter.IsMandatory | Should -BeTrue
+            }
+
+            It 'ValueFromPipeline should be set to False' {
+                $parameter.ValueFromPipeline | Should -BeFalse
+            }
+
+            It 'ValueFromPipelineByPropertyName should be set to True' {
+                $parameter.ValueFromPipelineByPropertyName | Should -BeTrue
+            }
+
+            It 'ValueFromReminingArguments should be set to False' {
+                $parameter.ValueFromRemainingArguments | Should -BeFalse
+            }
+
+            It "Should have a position of 0" {
+                $parameter.Position | Should -Be 0
+            }
+        }
+
+        Context 'Parameter [Track] attribute validation' {
+
+            $parameter = $parameterSet.Parameters | Where-Object { $_.'Name' -eq 'Track' }
+
+            It 'Should not be null or empty' {
+                $parameter | Should -Not -BeNullOrEmpty
+            }
+
+            It "Should be of type System.String" {
+                $parameter.ParameterType.ToString() | Should -Be System.String
+            }
+
+            It 'Mandatory should be set to True' {
+                $parameter.IsMandatory | Should -BeTrue
+            }
+
+            It 'ValueFromPipeline should be set to False' {
+                $parameter.ValueFromPipeline | Should -BeFalse
+            }
+
+            It 'ValueFromPipelineByPropertyName should be set to True' {
+                $parameter.ValueFromPipelineByPropertyName | Should -BeTrue
+            }
+
+            It 'ValueFromReminingArguments should be set to False' {
+                $parameter.ValueFromRemainingArguments | Should -BeFalse
+            }
+
+            It "Should have a position of 1" {
+                $parameter.Position | Should -Be 1
+            }
+        }
+    }
+}
+
 InModuleScope PowerLFM {
     Describe 'Set-LFMTrackUnlove: Unit' -Tag Unit {
         Mock Get-LFMTrackSignature
         Mock Invoke-WebRequest
         Mock Write-Verbose
-
-        Context 'Parameter attribute validation' {
-            $command = Get-Command -Name Set-LFMTrackUnlove
-
-            $testCases = @(
-                @{Name = 'Artist'}
-                @{Name = 'Track'}
-            )
-
-            It 'Should have cmdletbinding declared' {
-                $command.CmdletBinding | Should -BeTrue
-            }
-
-            It '<Name> parameter should be mandatory' -TestCases $testCases {
-                param ($Name)
-                $command.Parameters[$Name].Attributes.Mandatory | Should -BeTrue
-            }
-
-            It '<Name> parameter should accept value from pipeline by property name' -TestCases $testCases {
-                param ($Name)
-                $command.Parameters[$Name].Attributes.ValueFromPipelineByPropertyName | Should -BeTrue
-            }
-        }
 
         Context 'Input' {
             It 'Should throw when Artist is null' {
