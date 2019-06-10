@@ -6,14 +6,17 @@ function Get-LFMAlbumInfo {
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
-                   ParameterSetName = 'album')]
-        [ValidateNotNullOrEmpty()]
-        [string] $Artist,
-
-        [Parameter(Mandatory,
+                   Position = 0,
                    ParameterSetName = 'album')]
         [ValidateNotNullOrEmpty()]
         [string] $Album,
+
+        [Parameter(Mandatory,
+                   ValueFromPipelineByPropertyName,
+                   Position = 1,
+                   ParameterSetName = 'album')]
+        [ValidateNotNullOrEmpty()]
+        [string] $Artist,
 
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
