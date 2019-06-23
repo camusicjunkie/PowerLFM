@@ -10,15 +10,20 @@ function Get-LFMConfiguration {
         [Void][Windows.Security.Credentials.PasswordVault,Windows.Security.Credentials,ContentType=WindowsRuntime]
         $vault = New-Object -TypeName Windows.Security.Credentials.PasswordVault -ErrorAction Stop
 
-        $ak = $vault.Retrieve($module, 'APIKey').Password
-        $sk = $vault.Retrieve($module, 'SessionKey').Password
-        $ss = $vault.Retrieve($module, 'SharedSecret').Password
-        $script:LFMConfig = [pscustomobject] @{
-            'APIKey' = $ak
-            'SessionKey' = $sk
-            'SharedSecret' = $ss
+        try {
+            $ak = $vault.Retrieve($module, 'APIKey').Password
+            $sk = $vault.Retrieve($module, 'SessionKey').Password
+            $ss = $vault.Retrieve($module, 'SharedSecret').Password
+            $script:LFMConfig = [pscustomobject] @{
+                'APIKey' = $ak
+                'SessionKey' = $sk
+                'SharedSecret' = $ss
+            }
+            Write-Verbose 'LFMConfig is loaded in to the session'
         }
-        Write-Verbose 'LFMConfig is loaded in to the session'
+        catch {
+            Write-Error "Could not retrieve credentials for $module in Password Vault. Run Add-LFMConfiguration with proper keys."
+        }
     } catch {
         Write-Error $_.Exception.Message
     }
