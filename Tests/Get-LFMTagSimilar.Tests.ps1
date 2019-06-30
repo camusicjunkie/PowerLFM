@@ -7,12 +7,12 @@ Describe 'Get-LFMTagSimilar: Interface' -Tag Interface {
         $script:command = (Get-Command -Name 'Get-LFMTagSimilar')
     }
 
-    It 'Should contain an output type of PowerLFM.Tag.Similar' {
-        $command.OutputType.Name -contains 'PowerLFM.Tag.Similar' | Should -BeTrue
-    }
-
     It 'CmdletBinding should be declared' {
         $command.CmdletBinding | Should -BeTrue
+    }
+
+    It 'Should contain an output type of PowerLFM.Tag.Similar' {
+        $command.OutputType.Name -contains 'PowerLFM.Tag.Similar' | Should -BeTrue
     }
 
     Context 'ParameterSetName __AllParameterSets' {
@@ -79,4 +79,3 @@ InModuleScope PowerLFM {
 Describe 'Get-LFMTagSimilar: Integration' -Tag Integration {
 
 }
-

@@ -7,12 +7,12 @@ Describe 'Get-LFMUserPersonalTag: Interface' -Tag Interface {
         $script:command = (Get-Command -Name 'Get-LFMUserPersonalTag')
     }
 
-    It 'Should contain an output type of PowerLFM.User.PersonalTag' {
-        $command.OutputType.Name -contains 'PowerLFM.User.PersonalTag' | Should -BeTrue
-    }
-
     It 'CmdletBinding should be declared' {
         $command.CmdletBinding | Should -BeTrue
+    }
+
+    It 'Should contain an output type of PowerLFM.User.PersonalTag' {
+        $command.OutputType.Name -contains 'PowerLFM.User.PersonalTag' | Should -BeTrue
     }
 
     Context 'ParameterSetName __AllParameterSets' {
@@ -211,4 +211,3 @@ InModuleScope PowerLFM {
 Describe 'Get-LFMUserPersonalTag: Integration' -Tag Integration {
 
 }
-

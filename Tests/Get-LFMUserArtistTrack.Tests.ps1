@@ -7,12 +7,12 @@ Describe 'Get-LFMUserArtistTrack: Interface' -Tag Interface {
         $script:command = (Get-Command -Name 'Get-LFMUserArtistTrack')
     }
 
-    It 'Should contain an output type of PowerLFM.User.ArtistTrack' {
-        $command.OutputType.Name -contains 'PowerLFM.User.ArtistTrack' | Should -BeTrue
-    }
-
     It 'CmdletBinding should be declared' {
         $command.CmdletBinding | Should -BeTrue
+    }
+
+    It 'Should contain an output type of PowerLFM.User.ArtistTrack' {
+        $command.OutputType.Name -contains 'PowerLFM.User.ArtistTrack' | Should -BeTrue
     }
 
     Context 'ParameterSetName __AllParameterSets' {
@@ -211,4 +211,3 @@ InModuleScope PowerLFM {
 Describe 'Get-LFMUserArtistTrack: Integration' -Tag Integration {
 
 }
-

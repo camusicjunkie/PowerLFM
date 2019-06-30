@@ -7,6 +7,10 @@ Describe 'Add-LFMConfiguration: Interface' -Tag Interface {
         $script:command = (Get-Command -Name 'Add-LFMConfiguration')
     }
 
+    It 'CmdletBinding should be declared' {
+        $command.CmdletBinding | Should -BeTrue
+    }
+
     Context 'ParameterSetName __AllParameterSets' {
 
         It 'Should have a parameter set of __AllParameterSets' {
@@ -137,4 +141,3 @@ InModuleScope PowerLFM {
 Describe 'Add-LFMConfiguration: Integration' -Tag Integration {
 
 }
-

@@ -6,17 +6,17 @@ Describe 'Get-LFMTrackInfo: Interface' -Tag Interface {
     BeforeAll {
         $script:command = (Get-Command -Name 'Get-LFMTrackInfo')
     }
-                         
+
+    It 'CmdletBinding should be declared' {
+        $command.CmdletBinding | Should -BeTrue
+    }
+
     It 'Should have track set as default parameter set' {
         $command.DefaultParameterSet | Should -Be 'track'
     }
 
     It 'Should contain an output type of PowerLFM.Track.Info' {
         $command.OutputType.Name -contains 'PowerLFM.Track.Info' | Should -BeTrue
-    }
-
-    It 'CmdletBinding should be declared' {
-        $command.CmdletBinding | Should -BeTrue
     }
 
     Context 'ParameterSetName track' {
@@ -290,4 +290,3 @@ InModuleScope PowerLFM {
 Describe 'Get-LFMTrackInfo: Integration' -Tag Integration {
 
 }
-

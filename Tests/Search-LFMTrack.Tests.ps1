@@ -7,12 +7,12 @@ Describe 'Search-LFMTrack: Interface' -Tag Interface {
         $script:command = (Get-Command -Name 'Search-LFMTrack')
     }
 
-    It 'Should contain an output type of PowerLFM.Track.Search' {
-        $command.OutputType.Name -contains 'PowerLFM.Track.Search' | Should -BeTrue
-    }
-
     It 'CmdletBinding should be declared' {
         $command.CmdletBinding | Should -BeTrue
+    }
+
+    It 'Should contain an output type of PowerLFM.Track.Search' {
+        $command.OutputType.Name -contains 'PowerLFM.Track.Search' | Should -BeTrue
     }
 
     Context 'ParameterSetName __AllParameterSets' {
@@ -145,4 +145,3 @@ InModuleScope PowerLFM {
 Describe 'Search-LFMTrack: Integration' -Tag Integration {
 
 }
-

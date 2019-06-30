@@ -7,12 +7,12 @@ Describe 'Get-LFMTrackCorrection: Interface' -Tag Interface {
         $script:command = (Get-Command -Name 'Get-LFMTrackCorrection')
     }
 
-    It 'Should contain an output type of PowerLFM.Track.Correction' {
-        $command.OutputType.Name -contains 'PowerLFM.Track.Correction' | Should -BeTrue
-    }
-
     It 'CmdletBinding should be declared' {
         $command.CmdletBinding | Should -BeTrue
+    }
+
+    It 'Should contain an output type of PowerLFM.Track.Correction' {
+        $command.OutputType.Name -contains 'PowerLFM.Track.Correction' | Should -BeTrue
     }
 
     Context 'ParameterSetName __AllParameterSets' {
@@ -112,4 +112,3 @@ InModuleScope PowerLFM {
 Describe 'Get-LFMTrackCorrection: Integration' -Tag Integration {
 
 }
-

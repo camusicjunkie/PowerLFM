@@ -7,12 +7,12 @@ Describe 'Get-LFMUserLovedTrack: Interface' -Tag Interface {
         $script:command = (Get-Command -Name 'Get-LFMUserLovedTrack')
     }
 
-    It 'Should contain an output type of PowerLFM.User.Track' {
-        $command.OutputType.Name -contains 'PowerLFM.User.Track' | Should -BeTrue
-    }
-
     It 'CmdletBinding should be declared' {
         $command.CmdletBinding | Should -BeTrue
+    }
+
+    It 'Should contain an output type of PowerLFM.User.Track' {
+        $command.OutputType.Name -contains 'PowerLFM.User.Track' | Should -BeTrue
     }
 
     Context 'ParameterSetName __AllParameterSets' {
@@ -145,4 +145,3 @@ InModuleScope PowerLFM {
 Describe 'Get-LFMUserLovedTrack: Integration' -Tag Integration {
 
 }
-

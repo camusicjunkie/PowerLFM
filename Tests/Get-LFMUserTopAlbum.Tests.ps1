@@ -7,12 +7,12 @@ Describe 'Get-LFMUserTopAlbum: Interface' -Tag Interface {
         $script:command = (Get-Command -Name 'Get-LFMUserTopAlbum')
     }
 
-    It 'Should contain an output type of PowerLFM.User.TopAlbum' {
-        $command.OutputType.Name -contains 'PowerLFM.User.TopAlbum' | Should -BeTrue
-    }
-
     It 'CmdletBinding should be declared' {
         $command.CmdletBinding | Should -BeTrue
+    }
+
+    It 'Should contain an output type of PowerLFM.User.TopAlbum' {
+        $command.OutputType.Name -contains 'PowerLFM.User.TopAlbum' | Should -BeTrue
     }
 
     Context 'ParameterSetName __AllParameterSets' {
@@ -178,4 +178,3 @@ InModuleScope PowerLFM {
 Describe 'Get-LFMUserTopAlbum: Integration' -Tag Integration {
 
 }
-

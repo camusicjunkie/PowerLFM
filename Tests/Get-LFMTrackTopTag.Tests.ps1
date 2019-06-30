@@ -6,17 +6,17 @@ Describe 'Get-LFMTrackTopTag: Interface' -Tag Interface {
     BeforeAll {
         $script:command = (Get-Command -Name 'Get-LFMTrackTopTag')
     }
-                         
+
+    It 'CmdletBinding should be declared' {
+        $command.CmdletBinding | Should -BeTrue
+    }
+
     It 'Should have track set as default parameter set' {
         $command.DefaultParameterSet | Should -Be 'track'
     }
 
     It 'Should contain an output type of PowerLFM.Track.TopTag' {
         $command.OutputType.Name -contains 'PowerLFM.Track.TopTag' | Should -BeTrue
-    }
-
-    It 'CmdletBinding should be declared' {
-        $command.CmdletBinding | Should -BeTrue
     }
 
     Context 'ParameterSetName track' {
@@ -224,4 +224,3 @@ InModuleScope PowerLFM {
 Describe 'Get-LFMTrackTopTag: Integration' -Tag Integration {
 
 }
-

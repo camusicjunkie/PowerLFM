@@ -7,12 +7,12 @@ Describe 'Get-LFMTagInfo: Interface' -Tag Interface {
         $script:command = (Get-Command -Name 'Get-LFMTagInfo')
     }
 
-    It 'Should contain an output type of PowerLFM.Tag.Info' {
-        $command.OutputType.Name -contains 'PowerLFM.Tag.Info' | Should -BeTrue
-    }
-
     It 'CmdletBinding should be declared' {
         $command.CmdletBinding | Should -BeTrue
+    }
+
+    It 'Should contain an output type of PowerLFM.Tag.Info' {
+        $command.OutputType.Name -contains 'PowerLFM.Tag.Info' | Should -BeTrue
     }
 
     Context 'ParameterSetName __AllParameterSets' {
@@ -112,4 +112,3 @@ InModuleScope PowerLFM {
 Describe 'Get-LFMTagInfo: Integration' -Tag Integration {
 
 }
-

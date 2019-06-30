@@ -7,12 +7,12 @@ Describe 'Search-LFMAlbum: Interface' -Tag Interface {
         $script:command = (Get-Command -Name 'Search-LFMAlbum')
     }
 
-    It 'Should contain an output type of PowerLFM.Album.Search' {
-        $command.OutputType.Name -contains 'PowerLFM.Album.Search' | Should -BeTrue
-    }
-
     It 'CmdletBinding should be declared' {
         $command.CmdletBinding | Should -BeTrue
+    }
+
+    It 'Should contain an output type of PowerLFM.Album.Search' {
+        $command.OutputType.Name -contains 'PowerLFM.Album.Search' | Should -BeTrue
     }
 
     Context 'ParameterSetName __AllParameterSets' {
@@ -145,4 +145,3 @@ InModuleScope PowerLFM {
 Describe 'Search-LFMAlbum: Integration' -Tag Integration {
 
 }
-

@@ -7,12 +7,12 @@ Describe 'Get-LFMGeoTopArtist: Interface' -Tag Interface {
         $script:command = (Get-Command -Name 'Get-LFMGeoTopArtist')
     }
 
-    It 'Should contain an output type of PowerLFM.Geo.TopArtists' {
-        $command.OutputType.Name -contains 'PowerLFM.Geo.TopArtists' | Should -BeTrue
-    }
-
     It 'CmdletBinding should be declared' {
         $command.CmdletBinding | Should -BeTrue
+    }
+
+    It 'Should contain an output type of PowerLFM.Geo.TopArtists' {
+        $command.OutputType.Name -contains 'PowerLFM.Geo.TopArtists' | Should -BeTrue
     }
 
     Context 'ParameterSetName __AllParameterSets' {
@@ -145,4 +145,3 @@ InModuleScope PowerLFM {
 Describe 'Get-LFMGeoTopArtist: Integration' -Tag Integration {
 
 }
-

@@ -7,12 +7,12 @@ Describe 'Get-LFMChartTopTrack: Interface' -Tag Interface {
         $script:command = (Get-Command -Name 'Get-LFMChartTopTrack')
     }
 
-    It 'Should contain an output type of PowerLFM.Chart.TopTracks' {
-        $command.OutputType.Name -contains 'PowerLFM.Chart.TopTracks' | Should -BeTrue
-    }
-
     It 'CmdletBinding should be declared' {
         $command.CmdletBinding | Should -BeTrue
+    }
+
+    It 'Should contain an output type of PowerLFM.Chart.TopTracks' {
+        $command.OutputType.Name -contains 'PowerLFM.Chart.TopTracks' | Should -BeTrue
     }
 
     Context 'ParameterSetName __AllParameterSets' {
@@ -112,4 +112,3 @@ InModuleScope PowerLFM {
 Describe 'Get-LFMChartTopTrack: Integration' -Tag Integration {
 
 }
-

@@ -7,12 +7,12 @@ Describe 'Get-LFMUserWeeklyArtistChart: Interface' -Tag Interface {
         $script:command = (Get-Command -Name 'Get-LFMUserWeeklyArtistChart')
     }
 
-    It 'Should contain an output type of PowerLFM.User.WeeklyArtistChart' {
-        $command.OutputType.Name -contains 'PowerLFM.User.WeeklyArtistChart' | Should -BeTrue
-    }
-
     It 'CmdletBinding should be declared' {
         $command.CmdletBinding | Should -BeTrue
+    }
+
+    It 'Should contain an output type of PowerLFM.User.WeeklyArtistChart' {
+        $command.OutputType.Name -contains 'PowerLFM.User.WeeklyArtistChart' | Should -BeTrue
     }
 
     Context 'ParameterSetName __AllParameterSets' {
@@ -145,4 +145,3 @@ InModuleScope PowerLFM {
 Describe 'Get-LFMUserWeeklyArtistChart: Integration' -Tag Integration {
 
 }
-

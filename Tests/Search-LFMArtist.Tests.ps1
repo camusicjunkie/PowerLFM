@@ -7,12 +7,12 @@ Describe 'Search-LFMArtist: Interface' -Tag Interface {
         $script:command = (Get-Command -Name 'Search-LFMArtist')
     }
 
-    It 'Should contain an output type of PowerLFM.Artist.Search' {
-        $command.OutputType.Name -contains 'PowerLFM.Artist.Search' | Should -BeTrue
-    }
-
     It 'CmdletBinding should be declared' {
         $command.CmdletBinding | Should -BeTrue
+    }
+
+    It 'Should contain an output type of PowerLFM.Artist.Search' {
+        $command.OutputType.Name -contains 'PowerLFM.Artist.Search' | Should -BeTrue
     }
 
     Context 'ParameterSetName __AllParameterSets' {
@@ -145,4 +145,3 @@ InModuleScope PowerLFM {
 Describe 'Search-LFMArtist: Integration' -Tag Integration {
 
 }
-

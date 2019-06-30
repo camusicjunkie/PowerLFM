@@ -7,12 +7,12 @@ Describe 'Get-LFMUserRecentTrack: Interface' -Tag Interface {
         $script:command = (Get-Command -Name 'Get-LFMUserRecentTrack')
     }
 
-    It 'Should contain an output type of PowerLFM.User.RecentTrack' {
-        $command.OutputType.Name -contains 'PowerLFM.User.RecentTrack' | Should -BeTrue
-    }
-
     It 'CmdletBinding should be declared' {
         $command.CmdletBinding | Should -BeTrue
+    }
+
+    It 'Should contain an output type of PowerLFM.User.RecentTrack' {
+        $command.OutputType.Name -contains 'PowerLFM.User.RecentTrack' | Should -BeTrue
     }
 
     Context 'ParameterSetName __AllParameterSets' {
@@ -244,4 +244,3 @@ InModuleScope PowerLFM {
 Describe 'Get-LFMUserRecentTrack: Integration' -Tag Integration {
 
 }
-

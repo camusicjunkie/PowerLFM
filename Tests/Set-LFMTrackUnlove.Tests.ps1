@@ -7,12 +7,12 @@ Describe 'Set-LFMTrackUnlove: Interface' -Tag Interface {
         $script:command = (Get-Command -Name 'Set-LFMTrackUnlove')
     }
 
-    It 'Should contain an output type of PowerLFM.Track.Unlove' {
-        $command.OutputType.Name -contains 'PowerLFM.Track.Unlove' | Should -BeTrue
-    }
-
     It 'CmdletBinding should be declared' {
         $command.CmdletBinding | Should -BeTrue
+    }
+
+    It 'Should contain an output type of PowerLFM.Track.Unlove' {
+        $command.OutputType.Name -contains 'PowerLFM.Track.Unlove' | Should -BeTrue
     }
 
     Context 'ParameterSetName __AllParameterSets' {

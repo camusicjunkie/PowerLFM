@@ -7,6 +7,10 @@ Describe 'Remove-LFMArtistTag: Interface' -Tag Interface {
         $script:command = (Get-Command -Name 'Remove-LFMArtistTag')
     }
 
+    It 'CmdletBinding should be declared' {
+        $command.CmdletBinding | Should -BeTrue
+    }
+
     Context 'ParameterSetName __AllParameterSets' {
 
         It 'Should have a parameter set of __AllParameterSets' {

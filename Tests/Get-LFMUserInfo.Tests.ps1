@@ -7,12 +7,12 @@ Describe 'Get-LFMUserInfo: Interface' -Tag Interface {
         $script:command = (Get-Command -Name 'Get-LFMUserInfo')
     }
 
-    It 'Should contain an output type of PowerLFM.User.Info' {
-        $command.OutputType.Name -contains 'PowerLFM.User.Info' | Should -BeTrue
-    }
-
     It 'CmdletBinding should be declared' {
         $command.CmdletBinding | Should -BeTrue
+    }
+
+    It 'Should contain an output type of PowerLFM.User.Info' {
+        $command.OutputType.Name -contains 'PowerLFM.User.Info' | Should -BeTrue
     }
 
     Context 'ParameterSetName __AllParameterSets' {
@@ -79,4 +79,3 @@ InModuleScope PowerLFM {
 Describe 'Get-LFMUserInfo: Integration' -Tag Integration {
 
 }
-

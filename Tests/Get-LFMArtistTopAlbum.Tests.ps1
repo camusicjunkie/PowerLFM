@@ -6,17 +6,17 @@ Describe 'Get-LFMArtistTopAlbum: Interface' -Tag Interface {
     BeforeAll {
         $script:command = (Get-Command -Name 'Get-LFMArtistTopAlbum')
     }
-                         
+
+    It 'CmdletBinding should be declared' {
+        $command.CmdletBinding | Should -BeTrue
+    }
+
     It 'Should have artist set as default parameter set' {
         $command.DefaultParameterSet | Should -Be 'artist'
     }
 
     It 'Should contain an output type of PowerLFM.Artist.Album' {
         $command.OutputType.Name -contains 'PowerLFM.Artist.Album' | Should -BeTrue
-    }
-
-    It 'CmdletBinding should be declared' {
-        $command.CmdletBinding | Should -BeTrue
     }
 
     Context 'ParameterSetName artist' {
@@ -323,4 +323,3 @@ InModuleScope PowerLFM {
 Describe 'Get-LFMArtistTopAlbum: Integration' -Tag Integration {
 
 }
-

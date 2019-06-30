@@ -7,12 +7,12 @@ Describe 'Get-LFMUserTopArtist: Interface' -Tag Interface {
         $script:command = (Get-Command -Name 'Get-LFMUserTopArtist')
     }
 
-    It 'Should contain an output type of PowerLFM.User.TopArtist' {
-        $command.OutputType.Name -contains 'PowerLFM.User.TopArtist' | Should -BeTrue
-    }
-
     It 'CmdletBinding should be declared' {
         $command.CmdletBinding | Should -BeTrue
+    }
+
+    It 'Should contain an output type of PowerLFM.User.TopArtist' {
+        $command.OutputType.Name -contains 'PowerLFM.User.TopArtist' | Should -BeTrue
     }
 
     Context 'ParameterSetName __AllParameterSets' {
@@ -178,4 +178,3 @@ InModuleScope PowerLFM {
 Describe 'Get-LFMUserTopArtist: Integration' -Tag Integration {
 
 }
-

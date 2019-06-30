@@ -7,12 +7,12 @@ Describe 'Get-LFMLibraryArtist: Interface' -Tag Interface {
         $script:command = (Get-Command -Name 'Get-LFMLibraryArtist')
     }
 
-    It 'Should contain an output type of PowerLFM.Library.Artist' {
-        $command.OutputType.Name -contains 'PowerLFM.Library.Artist' | Should -BeTrue
-    }
-
     It 'CmdletBinding should be declared' {
         $command.CmdletBinding | Should -BeTrue
+    }
+
+    It 'Should contain an output type of PowerLFM.Library.Artist' {
+        $command.OutputType.Name -contains 'PowerLFM.Library.Artist' | Should -BeTrue
     }
 
     Context 'ParameterSetName __AllParameterSets' {
@@ -145,4 +145,3 @@ InModuleScope PowerLFM {
 Describe 'Get-LFMLibraryArtist: Integration' -Tag Integration {
 
 }
-

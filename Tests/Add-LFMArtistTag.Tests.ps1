@@ -7,17 +7,21 @@ Describe 'Add-LFMArtistTag: Interface' -Tag Interface {
         $script:command = (Get-Command -Name 'Add-LFMArtistTag')
     }
 
+    It 'CmdletBinding should be declared' {
+        $command.CmdletBinding | Should -BeTrue
+    }
+
     Context 'ParameterSetName __AllParameterSets' {
 
         It 'Should have a parameter set of __AllParameterSets' {
             $command.ParameterSets.Name -contains '__AllParameterSets' | Should -BeTrue
         }
 
-        $parameterSet = $command.ParameterSets | Where-Object { $_.'Name' -eq '__AllParameterSets' }
+        $parameterSet = $command.ParameterSets | Where-Object Name -eq __AllParameterSets
 
         Context 'Parameter [Artist] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object { $_.'Name' -eq 'Artist' }
+            $parameter = $parameterSet.Parameters | Where-Object Name -eq Artist
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
@@ -50,7 +54,7 @@ Describe 'Add-LFMArtistTag: Interface' -Tag Interface {
 
         Context 'Parameter [Tag] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object { $_.'Name' -eq 'Tag' }
+            $parameter = $parameterSet.Parameters | Where-Object Name -eq Tag
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty

@@ -7,12 +7,12 @@ Describe 'Get-LFMChartTopTag: Interface' -Tag Interface {
         $script:command = (Get-Command -Name 'Get-LFMChartTopTag')
     }
 
-    It 'Should contain an output type of PowerLFM.Chart.TopTags' {
-        $command.OutputType.Name -contains 'PowerLFM.Chart.TopTags' | Should -BeTrue
-    }
-
     It 'CmdletBinding should be declared' {
         $command.CmdletBinding | Should -BeTrue
+    }
+
+    It 'Should contain an output type of PowerLFM.Chart.TopTags' {
+        $command.OutputType.Name -contains 'PowerLFM.Chart.TopTags' | Should -BeTrue
     }
 
     Context 'ParameterSetName __AllParameterSets' {
@@ -112,4 +112,3 @@ InModuleScope PowerLFM {
 Describe 'Get-LFMChartTopTag: Integration' -Tag Integration {
 
 }
-

@@ -7,12 +7,12 @@ Describe 'Get-LFMUserTopTag: Interface' -Tag Interface {
         $script:command = (Get-Command -Name 'Get-LFMUserTopTag')
     }
 
-    It 'Should contain an output type of PowerLFM.User.TopTag' {
-        $command.OutputType.Name -contains 'PowerLFM.User.TopTag' | Should -BeTrue
-    }
-
     It 'CmdletBinding should be declared' {
         $command.CmdletBinding | Should -BeTrue
+    }
+
+    It 'Should contain an output type of PowerLFM.User.TopTag' {
+        $command.OutputType.Name -contains 'PowerLFM.User.TopTag' | Should -BeTrue
     }
 
     Context 'ParameterSetName __AllParameterSets' {
@@ -112,4 +112,3 @@ InModuleScope PowerLFM {
 Describe 'Get-LFMUserTopTag: Integration' -Tag Integration {
 
 }
-

@@ -7,12 +7,12 @@ Describe 'Request-LFMSession: Interface' -Tag Interface {
         $script:command = (Get-Command -Name 'Request-LFMSession')
     }
 
-    It 'Should contain an output type of System.String' {
-        $command.OutputType.Name -contains 'System.String' | Should -BeTrue
-    }
-
     It 'CmdletBinding should be declared' {
         $command.CmdletBinding | Should -BeTrue
+    }
+
+    It 'Should contain an output type of System.String' {
+        $command.OutputType.Name -contains 'System.String' | Should -BeTrue
     }
 
     Context 'ParameterSetName __AllParameterSets' {
@@ -145,4 +145,3 @@ InModuleScope PowerLFM {
 Describe 'Request-LFMSession: Integration' -Tag Integration {
 
 }
-

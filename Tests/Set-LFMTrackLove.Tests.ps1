@@ -7,12 +7,12 @@ Describe 'Set-LFMTrackLove: Interface' -Tag Interface {
         $script:command = (Get-Command -Name 'Set-LFMTrackLove')
     }
 
-    It 'Should contain an output type of PowerLFM.Track.Love' {
-        $command.OutputType.Name -contains 'PowerLFM.Track.Love' | Should -BeTrue
-    }
-
     It 'CmdletBinding should be declared' {
         $command.CmdletBinding | Should -BeTrue
+    }
+
+    It 'Should contain an output type of PowerLFM.Track.Love' {
+        $command.OutputType.Name -contains 'PowerLFM.Track.Love' | Should -BeTrue
     }
 
     Context 'ParameterSetName __AllParameterSets' {
