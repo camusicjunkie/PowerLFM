@@ -4,10 +4,10 @@ Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
 Describe 'Set-LFMTrackLove: Interface' -Tag Interface {
 
     BeforeAll {
-        $script:command = (Get-Command 'Set-LFMTrackLove')
+        $script:command = (Get-Command -Name 'Set-LFMTrackLove')
     }
 
-    It 'Contains an output type of PowerLFM.Track.Love' {
+    It 'Should contain an output type of PowerLFM.Track.Love' {
         $command.OutputType.Name -contains 'PowerLFM.Track.Love' | Should -BeTrue
     }
 
@@ -21,11 +21,11 @@ Describe 'Set-LFMTrackLove: Interface' -Tag Interface {
             $command.ParameterSets.Name -contains '__AllParameterSets' | Should -BeTrue
         }
 
-        $parameterSet = $command.ParameterSets | Where-Object { $_.'Name' -eq '__AllParameterSets' }
+        $parameterSet = $command.ParameterSets | Where-Object Name -eq __AllParameterSets
 
         Context 'Parameter [Artist] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object { $_.'Name' -eq 'Artist' }
+            $parameter = $parameterSet.Parameters | Where-Object Name -eq Artist
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
@@ -58,7 +58,7 @@ Describe 'Set-LFMTrackLove: Interface' -Tag Interface {
 
         Context 'Parameter [Track] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object { $_.'Name' -eq 'Track' }
+            $parameter = $parameterSet.Parameters | Where-Object Name -eq Track
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
@@ -202,26 +202,32 @@ Describe 'Set-LFMTrackLove: Integration' -Tag Integration {
     }
 
     Context "Rest API calls" {
+
         $gtiParams = @{
             Artist = 'Deftones'
             Track = 'Pink Cellphone'
             UserName = 'camusicjunkie'
         }
 
-        #Calls to Start-Sleep are to allow enough time for track to be loved
         It "Track should not be loved for a user before loving it" {
-            Start-Sleep -Seconds 1.5
+            $i = 0
+            do {
+                $track = Get-LFMTrackInfo @gtiParams
+                $i += .25
+            } until ($track.loved -eq 'No' -or $i -eq 5)
 
-            $track = Get-LFMTrackInfo @gtiParams
             $track.Loved | Should -Be 'No'
         }
 
         It "Track should be loved for a user" {
             Set-LFMTrackLove @stlParams
 
-            Start-Sleep -Seconds 1.5
+            $i = 0
+            do {
+                $track = Get-LFMTrackInfo @gtiParams
+                $i += .25
+            } until ($track.loved -eq 'Yes' -or $i -eq 5)
 
-            $track = Get-LFMTrackInfo @gtiParams
             $track.Loved | Should -Be 'Yes'
         }
     }

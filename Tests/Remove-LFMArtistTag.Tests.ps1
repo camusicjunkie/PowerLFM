@@ -4,7 +4,7 @@ Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
 Describe 'Remove-LFMArtistTag: Interface' -Tag Interface {
 
     BeforeAll {
-        $script:command = (Get-Command 'Remove-LFMArtistTag')
+        $script:command = (Get-Command -Name 'Remove-LFMArtistTag')
     }
 
     Context 'ParameterSetName __AllParameterSets' {
@@ -13,11 +13,11 @@ Describe 'Remove-LFMArtistTag: Interface' -Tag Interface {
             $command.ParameterSets.Name -contains '__AllParameterSets' | Should -BeTrue
         }
 
-        $parameterSet = $command.ParameterSets | Where-Object { $_.'Name' -eq '__AllParameterSets' }
+        $parameterSet = $command.ParameterSets | Where-Object Name -eq __AllParameterSets
 
         Context 'Parameter [Artist] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object { $_.'Name' -eq 'Artist' }
+            $parameter = $parameterSet.Parameters | Where-Object Name -eq Artist
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
@@ -50,7 +50,7 @@ Describe 'Remove-LFMArtistTag: Interface' -Tag Interface {
 
         Context 'Parameter [Tag] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object { $_.'Name' -eq 'Tag' }
+            $parameter = $parameterSet.Parameters | Where-Object Name -eq Tag
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
@@ -216,15 +216,18 @@ Describe 'Remove-LFMArtistTag: Integration' -Tag Integration {
         Add-LFMArtistTag @atParams
     }
 
-    It "Should contain the random value tag before removing it" {
-        $tag = Get-LFMArtistTag -Artist Deftones
-        $tag.Tag | Should -Contain 'randomValue'
-    }
+    Context "Rest API calls" {
 
-    It "Should remove the new random value tag from the artist" {
-        Remove-LFMArtistTag @atParams
-        $tag = Get-LFMArtistTag -Artist Deftones
-        @($tag).Where({$_.Tag -eq 'randomValue'}).Tag | Should -BeNullOrEmpty
-        @($tag).Where({$_.Tag -eq 'randomValue'}).Tag | Should -Not -Be 'randomValue'
+        It "Should contain the random value tag before removing it" {
+            $tag = Get-LFMArtistTag -Artist Deftones
+            $tag.Tag | Should -Contain 'randomValue'
+        }
+
+        It "Should remove the new random value tag from the artist" {
+            Remove-LFMArtistTag @atParams
+            $tag = Get-LFMArtistTag -Artist Deftones
+            @($tag).Where({$_.Tag -eq 'randomValue'}).Tag | Should -BeNullOrEmpty
+            @($tag).Where({$_.Tag -eq 'randomValue'}).Tag | Should -Not -Be 'randomValue'
+        }
     }
 }

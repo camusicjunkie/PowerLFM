@@ -1,10 +1,10 @@
-﻿Remove-Module -Name PowerLFM -ErrorAction Ignore
+Remove-Module -Name PowerLFM -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
 
 Describe 'Add-LFMAlbumTag: Interface' -Tag Interface {
 
     BeforeAll {
-        $script:command = (Get-Command 'Add-LFMAlbumTag')
+        $script:command = (Get-Command -Name 'Add-LFMAlbumTag')
     }
 
     Context 'ParameterSetName __AllParameterSets' {
@@ -13,11 +13,11 @@ Describe 'Add-LFMAlbumTag: Interface' -Tag Interface {
             $command.ParameterSets.Name -contains '__AllParameterSets' | Should -BeTrue
         }
 
-        $parameterSet = $command.ParameterSets | Where-Object { $_.'Name' -eq '__AllParameterSets' }
+        $parameterSet = $command.ParameterSets | Where-Object Name -eq __AllParameterSets
 
         Context 'Parameter [Album] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object { $_.'Name' -eq 'Album' }
+            $parameter = $parameterSet.Parameters | Where-Object Name -eq Album
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
@@ -50,7 +50,7 @@ Describe 'Add-LFMAlbumTag: Interface' -Tag Interface {
 
         Context 'Parameter [Artist] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object { $_.'Name' -eq 'Artist' }
+            $parameter = $parameterSet.Parameters | Where-Object Name -eq Artist
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
@@ -83,7 +83,7 @@ Describe 'Add-LFMAlbumTag: Interface' -Tag Interface {
 
         Context 'Parameter [Tag] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object { $_.'Name' -eq 'Tag' }
+            $parameter = $parameterSet.Parameters | Where-Object Name -eq Tag
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
@@ -238,16 +238,19 @@ Describe 'Add-LFMAlbumTag: Integration' -Tag Integration {
         Remove-LFMAlbumTag @atParams
     }
 
-    It "Should not contain the random value tag before adding it" {
-        $tag = Get-LFMAlbumTag -Album Gore -Artist Deftones
-        $tag.Tag | Should -Not -Be 'randomValue'
-    }
+    Context "Rest API calls" {
 
-    It "Should add the new random value tag to the album" {
-        Add-LFMAlbumTag @atParams
-        $tag = Get-LFMAlbumTag -Album Gore -Artist Deftones
-        @($tag).Where({$_.Tag -eq 'randomValue'}).Tag | Should -Not -BeNullOrEmpty
-        @($tag).Where({$_.Tag -eq 'randomValue'}).Tag | Should -Be 'randomValue'
+        It "Should not contain the random value tag before adding it" {
+            $tag = Get-LFMAlbumTag -Album Gore -Artist Deftones
+            $tag.Tag | Should -Not -Be 'randomValue'
+        }
+
+        It "Should add the new random value tag to the album" {
+            Add-LFMAlbumTag @atParams
+            $tag = Get-LFMAlbumTag -Album Gore -Artist Deftones
+            @($tag).Where({$_.Tag -eq 'randomValue'}).Tag | Should -Not -BeNullOrEmpty
+            @($tag).Where({$_.Tag -eq 'randomValue'}).Tag | Should -Be 'randomValue'
+        }
     }
 
     AfterAll {
