@@ -271,6 +271,9 @@ Describe 'Get-LFMAlbumInfo: Interface' -Tag Interface {
 
 InModuleScope PowerLFM {
 
+    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+    $contextMock = $mocks.'Get-LFMAlbumInfo'.AlbumInfo
+
     Describe 'Get-LFMAlbumInfo: Unit' -Tag Unit {
 
         Context 'Input' {
@@ -279,10 +282,134 @@ InModuleScope PowerLFM {
 
         Context 'Execution' {
 
+            Mock Invoke-RestMethod
+            Mock Foreach-Object
+
+            $testCases = @(
+                @{
+                    set = 'album'
+                    times = 5
+                    gaiParams = @{
+                        Album = 'Album'
+                        Artist = 'Artist'
+                    }
+                }
+                @{
+                    set = 'album'
+                    times = 6
+                    gaiParams = @{
+                        Album = 'Album'
+                        Artist = 'Artist'
+                        UserName = 'camusicjunkie'
+                    }
+                }
+                @{
+                    set = 'album'
+                    times = 7
+                    gaiParams = @{
+                        Album = 'Album'
+                        Artist = 'Artist'
+                        UserName = 'camusicjunkie'
+                        AutoCorrect = $true
+                    }
+                }
+                @{
+                    set = 'id'
+                    times = 4
+                    gaiParams = @{
+                        Id = (New-Guid)
+                    }
+                }
+            )
+
+            It 'Should call Foreach-Object <times> times building url in <set> parameter set' -TestCases $testCases {
+                param ($times, $gaiParams)
+
+                Get-LFMAlbumInfo @gaiParams
+
+                $amParams = @{
+                    CommandName = 'Foreach-Object'
+                    Exactly = $true
+                    Times = $times
+                    Scope = 'It'
+                }
+                Assert-MockCalled @amParams
+            }
         }
 
         Context 'Output' {
 
+            Mock Invoke-RestMethod {$contextMock}
+
+            BeforeEach {
+                $script:output = Get-LFMAlbumInfo -Album Album -Artist Artist
+            }
+
+            It 'Should output object of type PowerLFM.Album.Info' {
+                $output.PSTypeNames[0] | Should -Be 'PowerLFM.Album.Info'
+            }
+
+            It "Should have album name of $($contextMock.album.name)" {
+                $output.Album | Should -Be $contextMock.album.name
+            }
+
+            It "Should have artist name of $($contextMock.album.artist)" {
+                $output.Artist | Should -Be $contextMock.album.artist
+            }
+
+            It "Should have id of $($contextMock.album.mbid)" {
+                $output.Id | Should -Be $contextMock.album.mbid
+            }
+
+            It "Should have url of $($contextMock.album.url)" {
+                $output.Url | Should -Be $contextMock.album.url
+            }
+
+            It "Should have listeners with a value of $($contextMock.album.listeners)" {
+                $output.Listeners | Should -BeOfType [int]
+                $output.Listeners | Should -Be $contextMock.album.listeners
+            }
+
+            It "Should have playcount with a value of $($contextMock.album.playcount)" {
+                $output.Playcount | Should -BeOfType [int]
+                $output.Playcount | Should -Be $contextMock.album.playcount
+            }
+
+            It "First track should have name of $($contextMock.album.tracks.track[0].name)" {
+                $output.Tracks[0].Track | Should -Be $contextMock.album.tracks.track[0].name
+            }
+
+            It "Second track should have a duration of $($contextMock.album.tracks.track[1].duration)" {
+                $output.Tracks[1].Duration | Should -Be $contextMock.album.tracks.track[1].duration
+            }
+
+            It 'Should have two tracks' {
+                $output.Tracks | Should -HaveCount 2
+            }
+
+            It 'Should not have more than two tracks' {
+                $output.Tracks | Should -Not -HaveCount 3
+            }
+
+            It "First tag should have name of $($contextMock.album.tags.tag[0].name)" {
+                $output.Tags[0].Tag | Should -Be $contextMock.album.tags.tag[0].name
+            }
+
+            It "Second tag should have url of $($contextMock.album.tags.tag[1].url)" {
+                $output.Tags[1].Url | Should -Be $contextMock.album.tags.tag[1].url
+            }
+
+            It 'Should have two tags' {
+                $output.Tags | Should -HaveCount 2
+            }
+
+            It 'Should not have more than two tags' {
+                $output.Tags | Should -Not -HaveCount 3
+            }
+
+            It "Should have summary of $($contextMock.album.wiki.summary)" {
+                $output.Summary | Should -BeExactly $contextMock.album.wiki.summary
+            }
         }
     }
 }
