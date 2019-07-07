@@ -90,34 +90,13 @@ Describe 'Remove-LFMArtistTag: Interface' -Tag Interface {
 InModuleScope PowerLFM {
 
     Describe 'Remove-LFMArtistTag: Unit' -Tag Unit {
+
         Mock Get-LFMArtistSignature
         Mock Invoke-WebRequest
         Mock Write-Verbose
 
-        Context 'Parameter attribute validation' {
-            $command = Get-Command -Name Remove-LFMArtistTag
-
-            $testCases = @(
-                @{Name = 'Artist'}
-                @{Name = 'Tag'}
-            )
-
-            It 'Should have cmdletbinding declared' {
-                $command.CmdletBinding | Should -BeTrue
-            }
-
-            It '<Name> parameter should be mandatory' -TestCases $testCases {
-                param ($Name)
-                $command.Parameters[$Name].Attributes.Mandatory | Should -BeTrue
-            }
-
-            It '<Name> parameter should accept value from pipeline by property name' -TestCases $testCases {
-                param ($Name)
-                $command.Parameters[$Name].Attributes.ValueFromPipelineByPropertyName | Should -BeTrue
-            }
-        }
-
         Context 'Input' {
+
             It 'Should throw when Album is null' {
                 {Remove-LFMArtistTag -Album $null} | Should -Throw
             }
@@ -132,6 +111,7 @@ InModuleScope PowerLFM {
         }
 
         Context 'Execution' {
+
             Mock ForEach-Object
 
             $aatParams = @{
@@ -166,6 +146,7 @@ InModuleScope PowerLFM {
         }
 
         Context 'Output' {
+
             $aatParams = @{
                 Artist = 'Artist'
                 Tag = 'Tag'
