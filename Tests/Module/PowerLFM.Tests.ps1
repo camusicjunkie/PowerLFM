@@ -30,6 +30,5 @@ Describe 'Module Tests' {
             $null = [System.Management.Automation.PSParser]::Tokenize($contents, [ref]$errors)
             $errors.count | Should Be 0
         }
-
     }
 }
