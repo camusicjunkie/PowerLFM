@@ -94,11 +94,13 @@ Describe 'Set-LFMTrackUnlove: Interface' -Tag Interface {
 InModuleScope PowerLFM {
 
     Describe 'Set-LFMTrackUnlove: Unit' -Tag Unit {
+
         Mock Get-LFMTrackSignature
         Mock Invoke-WebRequest
         Mock Write-Verbose
 
         Context 'Input' {
+
             It 'Should throw when Artist is null' {
                 {Set-LFMTrackUnlove -Artist $null} | Should -Throw
             }
@@ -113,6 +115,7 @@ InModuleScope PowerLFM {
         }
 
         Context 'Execution' {
+
             Mock ForEach-Object
 
             $aatParams = @{
@@ -147,6 +150,7 @@ InModuleScope PowerLFM {
         }
 
         Context 'Output' {
+
             $aatParams = @{
                 Artist = 'Artist'
                 Track = 'Track'

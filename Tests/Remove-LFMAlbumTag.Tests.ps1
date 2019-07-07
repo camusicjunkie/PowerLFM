@@ -123,11 +123,13 @@ Describe 'Remove-LFMAlbumTag: Interface' -Tag Interface {
 InModuleScope PowerLFM {
 
     Describe 'Remove-LFMAlbumTag: Unit' -Tag Unit {
+
         Mock Get-LFMAlbumSignature
         Mock Invoke-WebRequest
         Mock Write-Verbose
 
         Context 'Input' {
+
             It 'Should throw when Album is null' {
                 {Remove-LFMAlbumTag -Album $null} | Should -Throw
             }
@@ -143,6 +145,7 @@ InModuleScope PowerLFM {
         }
 
         Context 'Execution' {
+
             Mock ForEach-Object
 
             $aatParams = @{
@@ -179,6 +182,7 @@ InModuleScope PowerLFM {
         }
 
         Context 'Output' {
+
             $aatParams = @{
                 Album = 'Album'
                 Artist = 'Artist'

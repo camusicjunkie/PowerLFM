@@ -123,11 +123,13 @@ Describe 'Add-LFMAlbumTag: Interface' -Tag Interface {
 InModuleScope PowerLFM {
 
     Describe 'Add-LFMAlbumTag: Unit' -Tag Unit {
+
         Mock Get-LFMAlbumSignature
         Mock Invoke-WebRequest
         Mock Write-Verbose
 
         Context 'Input' {
+
             It 'Should throw when Album is null' {
                 {Add-LFMAlbumTag -Album $null} | Should -Throw
             }
@@ -152,6 +154,7 @@ InModuleScope PowerLFM {
         }
 
         Context 'Execution' {
+
             Mock ForEach-Object
 
             $aatParams = @{
@@ -187,6 +190,7 @@ InModuleScope PowerLFM {
         }
 
         Context 'Output' {
+
             $aatParams = @{
                 Album = 'Album'
                 Artist = 'Artist'

@@ -123,11 +123,13 @@ Describe 'Add-LFMTrackTag: Interface' -Tag Interface {
 InModuleScope PowerLFM {
 
     Describe 'Add-LFMTrackTag: Unit' -Tag Unit {
+
         Mock Get-LFMTrackSignature
         Mock Invoke-WebRequest
         Mock Write-Verbose
 
         Context 'Input' {
+
             It 'Should throw when Track is null' {
                 {Add-LFMTrackTag -Track $null} | Should -Throw
             }
@@ -152,6 +154,7 @@ InModuleScope PowerLFM {
         }
 
         Context 'Execution' {
+
             Mock ForEach-Object
 
             $aatParams = @{
@@ -187,6 +190,7 @@ InModuleScope PowerLFM {
         }
 
         Context 'Output' {
+
             $aatParams = @{
                 Track = 'Track'
                 Artist = 'Artist'

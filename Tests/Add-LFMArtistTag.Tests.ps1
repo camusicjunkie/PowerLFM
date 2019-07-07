@@ -90,11 +90,13 @@ Describe 'Add-LFMArtistTag: Interface' -Tag Interface {
 InModuleScope PowerLFM {
 
     Describe 'Add-LFMArtistTag: Unit' -Tag Unit {
+
         Mock Get-LFMArtistSignature
         Mock Invoke-WebRequest
         Mock Write-Verbose
 
         Context 'Input' {
+
             It 'Should throw when Artist is null' {
                 {Add-LFMArtistTag -Artist $null} | Should -Throw
             }
@@ -117,6 +119,7 @@ InModuleScope PowerLFM {
         }
 
         Context 'Execution' {
+
             Mock ForEach-Object
 
             $aatParams = @{
@@ -150,6 +153,7 @@ InModuleScope PowerLFM {
         }
 
         Context 'Output' {
+
             $aatParams = @{
                 Artist = 'Artist'
                 Tag = 'Tag'
