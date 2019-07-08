@@ -407,8 +407,13 @@ InModuleScope PowerLFM {
                 $output.Tags | Should -Not -HaveCount 3
             }
 
-            It "Should have summary of $($contextMock.album.wiki.summary)" {
+            It "Should have summary of '$($contextMock.album.wiki.summary)'" {
                 $output.Summary | Should -BeExactly $contextMock.album.wiki.summary
+            }
+
+            It "Should have a user play count of $($contextMock.album.userplaycount)" {
+                $output = Get-LFMAlbumInfo -Artist Artist -Album Album -UserName camusicjunkie
+                $output.userplaycount | Should -Be $contextMock.album.userplaycount
             }
         }
     }
@@ -416,4 +421,7 @@ InModuleScope PowerLFM {
 
 Describe 'Get-LFMAlbumInfo: Integration' -Tag Integration {
 
+    BeforeAll {
+        Get-LFMConfiguration
+    }
 }
