@@ -14,7 +14,11 @@ task Analyze {
 }
 
 task Test {
-    $testResults = Invoke-Pester -Path $PSScriptRoot -PassThru
+    $testResultsFile = ".\TestsResults.xml"
+    $appveyorPath = "https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)"
+    $testResults = Invoke-Pester -Path $PSScriptRoot -OutputFile $testResultsFile -OutputFormat NUnitXml -PassThru
+    (New-Object 'System.Net.WebClient').UploadFile($appveyorPath, (Resolve-Path $testResultsFile))
+
     if ($testResults.FailedCount -gt 0) {
         $testResults | Format-List
         Write-Error -Message 'One or more Pester tests failed. Build cannot continue!'
