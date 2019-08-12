@@ -271,22 +271,105 @@ Describe 'Get-LFMAlbumTag: Interface' -Tag Interface {
 
 InModuleScope PowerLFM {
 
+    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+    $contextMock = $mocks.'Get-LFMAlbumTag'.AlbumTag
+
     Describe 'Get-LFMAlbumTag: Unit' -Tag Unit {
 
         Context 'Input' {
 
+            It 'Should throw when Album is null' {
+                {Get-LFMAlbumTag -Album $null} | Should -Throw
+            }
         }
 
         Context 'Execution' {
+            Mock Invoke-RestMethod
+            Mock Foreach-Object
 
+            $testCases = @(
+                @{
+                    set = 'album'
+                    times = 6
+                    gatParams = @{
+                        Album = 'Album'
+                        Artist = 'Artist'
+                    }
+                }
+                @{
+                    set = 'album'
+                    times = 6
+                    gatParams = @{
+                        Album = 'Album'
+                        Artist = 'Artist'
+                        UserName = 'camusicjunkie'
+                    }
+                }
+                @{
+                    set = 'album'
+                    times = 7
+                    gatParams = @{
+                        Album = 'Album'
+                        Artist = 'Artist'
+                        UserName = 'camusicjunkie'
+                        AutoCorrect = $true
+                    }
+                }
+                @{
+                    set = 'id'
+                    times = 5
+                    gatParams = @{
+                        Id = (New-Guid)
+                    }
+                }
+            )
+
+            It 'Should call Foreach-Object <times> times building url in <set> parameter set' -TestCases $testCases {
+                param ($times, $gatParams)
+
+                Get-LFMAlbumTag @gatParams
+
+                $amParams = @{
+                    CommandName = 'Foreach-Object'
+                    Exactly = $true
+                    Times = $times
+                    Scope = 'It'
+                }
+                Assert-MockCalled @amParams
+            }
         }
 
         Context 'Output' {
 
+            Mock Invoke-RestMethod {$contextMock}
+
+            BeforeEach {
+                $script:output = Get-LFMAlbumTag -Album Album -Artist Artist
+            }
+
+            It "Album first tag should have name of $($contextMock.tags.tag[0].name)" {
+                $output.Tag[0] | Should -Be $contextMock.tags.tag[0].name
+            }
+
+            It "Album second tag should have url of $($contextMock.tags.tag[1].url)" {
+                $output.Url[1] | Should -Be $contextMock.tags.tag[1].url
+            }
+
+            It 'Album should have two tags' {
+                $output.Tag | Should -HaveCount 2
+            }
+
+            It 'Album should not have more than two tags' {
+                $output.Tag | Should -Not -BeNullOrEmpty
+                $output.Tag | Should -Not -HaveCount 3
+            }
         }
     }
 }
 
 Describe 'Get-LFMAlbumTag: Integration' -Tag Integration {
 
+    It "Integration test" {
+        Set-ItResult -Skipped -Because 'the integration tests will be set up later'
+    }
 }
