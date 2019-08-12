@@ -7,20 +7,20 @@
           "artist": "Artist",
           "mbid": "12345678-1234-1234-1234-123456789012",
           "url": "https://www.last.fake/music/Artist/Album",
-          "listeners": "1",
-          "playcount": "199",
-          "userplaycount": "99",
+          "listeners": 1,
+          "playcount": 199,
+          "userplaycount": 99,
           "tracks": {
             "track": [
               {
                 "name": "Track1",
                 "url": "https://www.last.fake/music/Artist/_/Track1",
-                "duration": "30"
+                "duration": 30
               },
               {
                 "name": "Track2",
                 "url": "https://www.last.fake/music/Artist/_/Track2",
-                "duration": "60"
+                "duration": 60
               }
             ]
           },
@@ -39,6 +39,44 @@
           "wiki": {
             "summary": "Album summary"
           }
+        }
+      }
+    }
+  ],
+  "Get-LFMAlbumTag": [
+    {
+      "AlbumTag": {
+        "tags": {
+          "tag": [
+            {
+              "name": "Tag1",
+              "url": "https://www.last.fake/tag/Tag1"
+            },
+            {
+              "name": "Tag2",
+              "url": "https://www.last.fake/tag/Tag2"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Get-LFMAlbumTopTag": [
+    {
+      "AlbumTopTag": {
+        "topTags": {
+          "tag": [
+            {
+              "name": "Tag1",
+              "url": "https://www.last.fake/tag/Tag1",
+              "count": 100
+            },
+            {
+              "name": "Tag2",
+              "url": "https://www.last.fake/tag/Tag2",
+              "count": 50
+            }
+          ]
         }
       }
     }
