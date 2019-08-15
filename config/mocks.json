@@ -6,7 +6,7 @@
           "name": "Album",
           "artist": "Artist",
           "mbid": "12345678-1234-1234-1234-123456789012",
-          "url": "https://www.last.fake/music/Artist/Album",
+          "url": "https://www.last.fake/album",
           "listeners": 1,
           "playcount": 199,
           "userplaycount": 99,
@@ -14,12 +14,12 @@
             "track": [
               {
                 "name": "Track1",
-                "url": "https://www.last.fake/music/Artist/_/Track1",
+                "url": "https://www.last.fake/album/track1",
                 "duration": 30
               },
               {
                 "name": "Track2",
-                "url": "https://www.last.fake/music/Artist/_/Track2",
+                "url": "https://www.last.fake/album/track2",
                 "duration": 60
               }
             ]
@@ -28,16 +28,16 @@
             "tag": [
               {
                 "name": "Tag1",
-                "url": "https://www.last.fake/tag/Tag1"
+                "url": "https://www.last.fake/album/tag1"
               },
               {
                 "name": "Tag2",
-                "url": "https://www.last.fake/tag/Tag2"
+                "url": "https://www.last.fake/album/tag2"
               }
             ]
           },
           "wiki": {
-            "summary": "Album summary"
+            "summary": "Summary"
           }
         }
       }
@@ -50,11 +50,11 @@
           "tag": [
             {
               "name": "Tag1",
-              "url": "https://www.last.fake/tag/Tag1"
+              "url": "https://www.last.fake/tag/tag1"
             },
             {
               "name": "Tag2",
-              "url": "https://www.last.fake/tag/Tag2"
+              "url": "https://www.last.fake/tag/tag2"
             }
           ]
         }
@@ -68,12 +68,12 @@
           "tag": [
             {
               "name": "Tag1",
-              "url": "https://www.last.fake/tag/Tag1",
+              "url": "https://www.last.fake/tag/tag1",
               "count": 100
             },
             {
               "name": "Tag2",
-              "url": "https://www.last.fake/tag/Tag2",
+              "url": "https://www.last.fake/tag/tag2",
               "count": 50
             }
           ]
@@ -89,8 +89,52 @@
             "artist": {
               "name": "Artist",
               "mbid": "12345678-1234-1234-1234-123456789012",
-              "url": "https://www.last.fake/music/Artist/Album"
+              "url": "https://www.last.fake/music/artist/correction"
             }
+          }
+        }
+      }
+    }
+  ],
+  "Get-LFMArtistInfo": [
+    {
+      "ArtistInfo": {
+        "artist": {
+          "name": "Artist",
+          "mbid": "12345678-1234-1234-1234-123456789012",
+          "url": "https://www.last.fm/artist",
+          "ontour": 1,
+          "stats": {
+            "listeners": 1,
+            "playcount": 199,
+            "userplaycount": 99
+          },
+          "similar": {
+            "artist": [
+              {
+                "name": "Artist1",
+                "url": "https://www.last.fm/artist/similar/artist1"
+              },
+              {
+                "name": "Artist2",
+                "url": "https://www.last.fm/artist/similar/artist2"
+              }
+            ]
+          },
+          "tags": {
+            "tag": [
+              {
+                "name": "Tag1",
+                "url": "https://www.last.fake/artist/tag1"
+              },
+              {
+                "name": "Tag2",
+                "url": "https://www.last.fake/artist/tag2"
+              }
+            ]
+          },
+          "bio": {
+            "summary": "Summary"
           }
         }
       }
