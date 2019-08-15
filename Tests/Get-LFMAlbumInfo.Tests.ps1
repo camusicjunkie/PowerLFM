@@ -417,7 +417,7 @@ InModuleScope PowerLFM {
 
             It "Album should have a user play count of $($contextMock.album.userplaycount)" {
                 $output = Get-LFMAlbumInfo -Artist Artist -Album Album -UserName camusicjunkie
-                $output.userplaycount | Should -Be $contextMock.album.userplaycount
+                $output.UserPlayCount | Should -Be $contextMock.album.userplaycount
             }
         }
     }
