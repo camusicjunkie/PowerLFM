@@ -66,6 +66,7 @@ InModuleScope PowerLFM {
     Describe 'Get-LFMArtistCorrection: Unit' -Tag Unit {
 
         Context 'Input' {
+
             It 'Should throw when Artist is null' {
                 {Get-LFMArtistCorrection -Artist $null} | Should -Throw
             }
