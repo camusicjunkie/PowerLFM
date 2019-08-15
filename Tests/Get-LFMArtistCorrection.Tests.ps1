@@ -60,22 +60,78 @@ Describe 'Get-LFMArtistCorrection: Interface' -Tag Interface {
 
 InModuleScope PowerLFM {
 
+    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+    $contextMock = $mocks.'Get-LFMArtistCorrection'.ArtistCorrection
+
     Describe 'Get-LFMArtistCorrection: Unit' -Tag Unit {
 
         Context 'Input' {
-
+            It 'Should throw when Artist is null' {
+                {Get-LFMArtistCorrection -Artist $null} | Should -Throw
+            }
         }
 
         Context 'Execution' {
+
+            Mock Invoke-RestMethod
+            Mock Foreach-Object
+
+            $testCases = @(
+                @{
+                    times = 4
+                    gacParams = @{
+                        Artist = 'Artist'
+                    }
+                }
+            )
+
+            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
+                param ($times, $gacParams)
+
+                Get-LFMArtistCorrection @gacParams
+
+                $amParams = @{
+                    CommandName = 'Foreach-Object'
+                    Exactly = $true
+                    Times = $times
+                    Scope = 'It'
+                }
+                Assert-MockCalled @amParams
+            }
 
         }
 
         Context 'Output' {
 
+            Mock Invoke-RestMethod {$contextMock}
+
+            BeforeEach {
+                $script:output = Get-LFMArtistCorrection -Artist Artist
+            }
+
+            It "Artist should have corrected name of $($contextMock.corrections.correction.artist.name)" {
+                $output.Artist | Should -Be $contextMock.corrections.correction.artist.name
+            }
+
+            It "Artist correction should have url of $($contextMock.corrections.correction.artist.url)" {
+                $output.Url | Should -Be $contextMock.corrections.correction.artist.url
+            }
+
+            It "Artist correction should have id of $($contextMock.corrections.correction.artist.mbid)" {
+                $output.Id | Should -Be $contextMock.corrections.correction.artist.mbid
+            }
+
+            It 'Artist should not have more than 1 correction' {
+                $output.Artist | Should -Not -BeNullOrEmpty
+                $output.Artist | Should -Not -HaveCount 2
+            }
         }
     }
 }
 
 Describe 'Get-LFMArtistCorrection: Integration' -Tag Integration {
 
+    It "Integration test" {
+        Set-ItResult -Skipped -Because 'the integration tests will be set up later'
+    }
 }
