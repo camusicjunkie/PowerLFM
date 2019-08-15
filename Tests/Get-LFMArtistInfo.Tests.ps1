@@ -238,22 +238,154 @@ Describe 'Get-LFMArtistInfo: Interface' -Tag Interface {
 
 InModuleScope PowerLFM {
 
+    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+    $contextMock = $mocks.'Get-LFMArtistInfo'.ArtistInfo
+
     Describe 'Get-LFMArtistInfo: Unit' -Tag Unit {
 
         Context 'Input' {
-
+            It 'Should throw when artist is null' {
+                {Get-LFMArtistInfo -Artist $null} | Should -Throw
+            }
         }
 
         Context 'Execution' {
+
+            Mock Invoke-RestMethod
+            Mock Foreach-Object
+
+            $testCases = @(
+                @{
+                    set = 'artist'
+                    times = 4
+                    gaiParams = @{
+                        Artist = 'Artist'
+                    }
+                }
+                @{
+                    set = 'artist'
+                    times = 5
+                    gaiParams = @{
+                        Artist = 'Artist'
+                        UserName = 'camusicjunkie'
+                    }
+                }
+                @{
+                    set = 'artist'
+                    times = 6
+                    gaiParams = @{
+                        Artist = 'Artist'
+                        UserName = 'camusicjunkie'
+                        AutoCorrect = $true
+                    }
+                }
+                @{
+                    set = 'id'
+                    times = 4
+                    gaiParams = @{
+                        Id = (New-Guid)
+                    }
+                }
+            )
+
+            It 'Should call Foreach-Object <times> times building url in <set> parameter set' -TestCases $testCases {
+                param ($times, $gaiParams)
+
+                Get-LFMArtistInfo @gaiParams
+
+                $amParams = @{
+                    CommandName = 'Foreach-Object'
+                    Exactly = $true
+                    Times = $times
+                    Scope = 'It'
+                }
+                Assert-MockCalled @amParams
+            }
 
         }
 
         Context 'Output' {
 
+            Mock Invoke-RestMethod {$contextMock}
+
+            BeforeEach {
+                $script:output = Get-LFMArtistInfo -Artist Artist
+            }
+
+            It 'Artist should output object of type PowerLFM.Artist.Info' {
+                $output.PSTypeNames[0] | Should -Be 'PowerLFM.Artist.Info'
+            }
+
+            It "Artist should have artist name of $($contextMock.artist.name)" {
+                $output.Artist | Should -Be $contextMock.artist.name
+            }
+
+            It "Artist should have id of $($contextMock.artist.mbid)" {
+                $output.Id | Should -Be $contextMock.artist.mbid
+            }
+
+            It "Artist should have url of $($contextMock.artist.url)" {
+                $output.Url | Should -Be $contextMock.artist.url
+            }
+
+            It "Artist should have listeners with a value of $($contextMock.artist.stats.listeners)" {
+                $output.Listeners | Should -BeOfType [int]
+                $output.Listeners | Should -Be $contextMock.artist.stats.listeners
+            }
+
+            It "Artist should have playcount with a value of $($contextMock.artist.stats.playcount)" {
+                $output.Playcount | Should -BeOfType [int]
+                $output.Playcount | Should -Be $contextMock.artist.stats.playcount
+            }
+
+            It "Artist first similar artist should have name of $($contextMock.artist.similar.artist[0].name)" {
+                $output.SimilarArtists[0].Artist | Should -Be $contextMock.artist.similar.artist[0].name
+            }
+
+            It "Artist second similar artist should have url of $($contextMock.artist.similar.artist[1].url)" {
+                $output.SimilarArtists[1].Url | Should -Be $contextMock.artist.similar.artist[1].url
+            }
+
+            It 'Artist should have two similar artists' {
+                $output.SimilarArtists | Should -HaveCount 2
+            }
+
+            It 'Artist should not have more than two similar artists' {
+                $output.SimilarArtists | Should -Not -BeNullOrEmpty
+                $output.SimilarArtists | Should -Not -HaveCount 3
+            }
+
+            It "Artist first tag should have name of $($contextMock.artist.tags.tag[0].name)" {
+                $output.Tags[0].Tag | Should -Be $contextMock.artist.tags.tag[0].name
+            }
+
+            It "Artist second tag should have url of $($contextMock.artist.tags.tag[1].url)" {
+                $output.Tags[1].Url | Should -Be $contextMock.artist.tags.tag[1].url
+            }
+
+            It 'Artist should have two tags' {
+                $output.Tags | Should -HaveCount 2
+            }
+
+            It 'Artist should not have more than two tags' {
+                $output.Tags | Should -Not -HaveCount 3
+            }
+
+            It "Artist should have summary of '$($contextMock.artist.bio.summary)'" {
+                $output.Summary | Should -BeExactly $contextMock.artist.bio.summary
+            }
+
+            It "Artist should have a user play count of $($contextMock.artist.stats.userplaycount)" {
+                $output = Get-LFMArtistInfo -Artist Artist -UserName camusicjunkie
+                $output.UserPlayCount | Should -Be $contextMock.artist.stats.userplaycount
+            }
         }
     }
 }
 
 Describe 'Get-LFMArtistInfo: Integration' -Tag Integration {
 
+    It "Integration test" {
+        Set-ItResult -Skipped -Because 'the integration tests will be set up later'
+    }
 }
