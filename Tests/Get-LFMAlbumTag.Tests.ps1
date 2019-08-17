@@ -364,6 +364,11 @@ InModuleScope PowerLFM {
                 $output.Tag | Should -Not -BeNullOrEmpty
                 $output.Tag | Should -Not -HaveCount 3
             }
+
+            It "Album should have two tags when id parameter is used" {
+                $output = Get-LFMAlbumTag -Id 1
+                $output.Tags | Should -HaveCount 2
+            }
         }
     }
 }

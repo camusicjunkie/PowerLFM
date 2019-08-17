@@ -296,6 +296,11 @@ InModuleScope PowerLFM {
             It "Album second tag should have match of $($contextMock.topTags.tag[1].count)" {
                 $output.Match[1] | Should -Be $contextMock.topTags.tag[1].count
             }
+
+            It "Album should have two tags when id parameter is used" {
+                $output = Get-LFMAlbumTopTag -Id 1
+                $output.Tags | Should -HaveCount 2
+            }
         }
     }
 }

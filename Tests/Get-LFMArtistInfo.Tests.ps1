@@ -380,6 +380,11 @@ InModuleScope PowerLFM {
                 $output = Get-LFMArtistInfo -Artist Artist -UserName camusicjunkie
                 $output.UserPlayCount | Should -Be $contextMock.artist.stats.userplaycount
             }
+
+            It "Artist should have two similar artists when id parameter is used" {
+                $output = Get-LFMArtistInfo -Id 1
+                $output.SimilarArtists | Should -HaveCount 2
+            }
         }
     }
 }

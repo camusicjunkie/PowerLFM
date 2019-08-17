@@ -336,6 +336,11 @@ InModuleScope PowerLFM {
             It "Artist second match should have percentage of $($contextMock.similarartists.artist[1].match)" {
                 $output.Match[1] | Should -Be .5
             }
+
+            It "Artist should return two similar artists when id parameter is used" {
+                $output = Get-LFMArtistSimilar -Id 1
+                $output.Artist | Should -HaveCount 2
+            }
         }
     }
 }

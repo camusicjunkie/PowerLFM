@@ -419,6 +419,11 @@ InModuleScope PowerLFM {
                 $output = Get-LFMAlbumInfo -Artist Artist -Album Album -UserName camusicjunkie
                 $output.UserPlayCount | Should -Be $contextMock.album.userplaycount
             }
+
+            It "Album should have two tracks when id parameter is used" {
+                $output = Get-LFMAlbumInfo -Id 1
+                $output.Tracks | Should -HaveCount 2
+            }
         }
     }
 }
