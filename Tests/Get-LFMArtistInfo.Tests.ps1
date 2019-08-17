@@ -244,6 +244,7 @@ InModuleScope PowerLFM {
     Describe 'Get-LFMArtistInfo: Unit' -Tag Unit {
 
         Context 'Input' {
+
             It 'Should throw when artist is null' {
                 {Get-LFMArtistInfo -Artist $null} | Should -Throw
             }

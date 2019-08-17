@@ -284,6 +284,7 @@ InModuleScope PowerLFM {
         }
 
         Context 'Execution' {
+
             Mock Invoke-RestMethod
             Mock Foreach-Object
 
