@@ -214,6 +214,7 @@ Describe 'Set-LFMTrackLove: Integration' -Tag Integration {
         }
 
         It "Track should not be loved for a user before loving it" {
+            # do/until loop is allowing for track love/unlove to finish
             $i = 0
             do {
                 $track = Get-LFMTrackInfo @gtiParams
@@ -224,6 +225,7 @@ Describe 'Set-LFMTrackLove: Integration' -Tag Integration {
         }
 
         It "Track should be loved for a user" {
+            # do/until loop is allowing for track love/unlove to finish
             Set-LFMTrackLove @stlParams
 
             $i = 0
