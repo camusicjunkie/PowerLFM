@@ -238,22 +238,111 @@ Describe 'Get-LFMArtistSimilar: Interface' -Tag Interface {
 
 InModuleScope PowerLFM {
 
+    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+    $contextMock = $mocks.'Get-LFMArtistSimilar'.ArtistSimilar
+
     Describe 'Get-LFMArtistSimilar: Unit' -Tag Unit {
 
         Context 'Input' {
 
+            It 'Should throw when Artist is null' {
+                {Get-LFMArtistSimilar -Artist $null} | Should -Throw
+            }
         }
 
         Context 'Execution' {
 
+            Mock Invoke-RestMethod
+            Mock Foreach-Object
+
+            $testCases = @(
+                @{
+                    set = 'artist'
+                    times = 5
+                    gasParams = @{
+                        Artist = 'Artist'
+                    }
+                }
+                @{
+                    set = 'artist'
+                    times = 5
+                    gasParams = @{
+                        Artist = 'Artist'
+                        Limit = '5'
+                    }
+                }
+                @{
+                    set = 'artist'
+                    times = 6
+                    gasParams = @{
+                        Artist = 'Artist'
+                        Limit = '5'
+                        AutoCorrect = $true
+                    }
+                }
+                @{
+                    set = 'id'
+                    times = 5
+                    gasParams = @{
+                        Id = (New-Guid)
+                    }
+                }
+            )
+
+            It 'Should call Foreach-Object <times> times building url in <set> parameter set' -TestCases $testCases {
+                param ($times, $gasParams)
+
+                Get-LFMArtistSimilar @gasParams
+
+                $amParams = @{
+                    CommandName = 'Foreach-Object'
+                    Exactly = $true
+                    Times = $times
+                    Scope = 'It'
+                }
+                Assert-MockCalled @amParams
+            }
         }
 
         Context 'Output' {
 
+            Mock Invoke-RestMethod {$contextMock}
+
+            BeforeEach {
+                $script:output = Get-LFMArtistSimilar -Artist Artist
+            }
+
+            It "Artist first similar artist should have name of $($contextMock.similarartists.artist[0].name)" {
+                $output.Artist[0] | Should -Be $contextMock.similarartists.artist[0].name
+            }
+
+            It "Artist second similar artist should have url of $($contextMock.similarartists.artist[1].url)" {
+                $output.Url[1] | Should -Be $contextMock.similarartists.artist[1].url
+            }
+
+            It 'Artist should have two similar artists' {
+                $output.Artist | Should -HaveCount 2
+            }
+
+            It 'Artist should not have more than two similar artists' {
+                $output.Artist | Should -Not -BeNullOrEmpty
+                $output.Artist | Should -Not -HaveCount 3
+            }
+
+            It "Artist first match should have percentage of $($contextMock.similarartists.artist[0].match)" {
+                $output.Match[0] | Should -Be 1
+            }
+
+            It "Artist second match should have percentage of $($contextMock.similarartists.artist[1].match)" {
+                $output.Match[1] | Should -Be .5
+            }
         }
     }
 }
 
 Describe 'Get-LFMArtistSimilar: Integration' -Tag Integration {
 
+    It "Integration test" {
+        Set-ItResult -Skipped -Because 'the integration tests will be set up later'
+    }
 }
