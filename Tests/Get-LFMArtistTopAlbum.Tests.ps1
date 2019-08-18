@@ -304,22 +304,121 @@ Describe 'Get-LFMArtistTopAlbum: Interface' -Tag Interface {
 
 InModuleScope PowerLFM {
 
+    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+    $contextMock = $mocks.'Get-LFMArtistTopAlbum'.ArtistTopAlbum
+
     Describe 'Get-LFMArtistTopAlbum: Unit' -Tag Unit {
 
         Context 'Input' {
 
+            It 'Should throw when artist is null' {
+                {Get-LFMArtistTopAlbum -Artist $null} | Should -Throw
+            }
         }
 
         Context 'Execution' {
 
+            Mock Invoke-RestMethod
+            Mock Foreach-Object
+
+            $testCases = @(
+                @{
+                    set = 'artist'
+                    times = 4
+                    gataParams = @{
+                        Artist = 'Artist'
+                    }
+                }
+                @{
+                    set = 'artist'
+                    times = 5
+                    gataParams = @{
+                        Artist = 'Artist'
+                        Limit = '5'
+                    }
+                }
+                @{
+                    set = 'artist'
+                    times = 6
+                    gataParams = @{
+                        Artist = 'Artist'
+                        Limit = '5'
+                        Page = '1'
+                    }
+                }
+                @{
+                    set = 'id'
+                    times = 4
+                    gataParams = @{
+                        Id = (New-Guid)
+                    }
+                }
+            )
+
+            It 'Should call Foreach-Object <times> times building url in <set> parameter set' -TestCases $testCases {
+                param ($times, $gataParams)
+
+                Get-LFMArtistTopAlbum @gataParams
+
+                $amParams = @{
+                    CommandName = 'Foreach-Object'
+                    Exactly = $true
+                    Times = $times
+                    Scope = 'It'
+                }
+                Assert-MockCalled @amParams
+            }
         }
 
         Context 'Output' {
 
+            Mock Invoke-RestMethod {$contextMock}
+
+            BeforeEach {
+                $script:output = Get-LFMArtistTopAlbum -Artist Artist
+            }
+
+            It 'Should output object of type PowerLFM.Artist.Album' {
+                $output[0].PSTypeNames[0] | Should -Be 'PowerLFM.Artist.Album'
+            }
+
+            It "Artist first top album should have name of $($contextMock.topalbums.album[0].name)" {
+                $output.Album[0] | Should -Be $contextMock.topalbums.album[0].name
+            }
+
+            It "Artist first top album should have id of $($contextMock.topalbums.album[0].mbid)" {
+                $output.Id[0] | Should -Be $contextMock.topalbums.album[0].mbid
+            }
+
+            It "Artist second top album should have url of $($contextMock.topalbums.album[1].url)" {
+                $output.Url[1] | Should -Be $contextMock.topalbums.album[1].url
+            }
+
+            It "Artist second top album should have playcount with a value of $($contextMock.topalbums.album[1].playcount)" {
+                $output.Playcount[1] | Should -BeOfType [int]
+                $output.Playcount[1] | Should -Be $contextMock.topalbums.album[1].playcount
+            }
+
+            It 'Artist should have two top albums' {
+                $output.Album | Should -HaveCount 2
+            }
+
+            It 'Artist should not have more than two top albums' {
+                $output.Album | Should -Not -BeNullOrEmpty
+                $output.Album | Should -Not -HaveCount 3
+            }
+
+            It "Artist should have two top albums when id parameter is used" {
+                $output = Get-LFMArtistTopAlbum -Id 1
+                $output.Album | Should -HaveCount 2
+            }
         }
     }
 }
 
 Describe 'Get-LFMArtistTopAlbum: Integration' -Tag Integration {
 
+    It "Integration test" {
+        Set-ItResult -Skipped -Because 'the integration tests will be set up later'
+    }
 }
