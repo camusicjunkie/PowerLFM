@@ -102,7 +102,7 @@
         "artist": {
           "name": "Artist",
           "mbid": "12345678-1234-1234-1234-123456789012",
-          "url": "https://www.last.fm/artist",
+          "url": "https://www.last.fake/artist",
           "ontour": 1,
           "stats": {
             "listeners": 1,
@@ -113,11 +113,11 @@
             "artist": [
               {
                 "name": "Artist1",
-                "url": "https://www.last.fm/artist/similar/artist1"
+                "url": "https://www.last.fake/artist/similar/artist1"
               },
               {
                 "name": "Artist2",
-                "url": "https://www.last.fm/artist/similar/artist2"
+                "url": "https://www.last.fake/artist/similar/artist2"
               }
             ]
           },
@@ -147,15 +147,55 @@
           "artist": [
             {
               "name": "Artist1",
-              "mbid": "12345678-1234-1234-1234-123456789012",
+              "mbid": "12345678-1234-1234-1234-123456789011",
               "match": "1",
-              "url": "https://www.last.fm/similar/artist1"
+              "url": "https://www.last.fake/similar/artist1"
             },
             {
               "name": "Artist2",
               "mbid": "12345678-1234-1234-1234-123456789012",
               "match": "0.5",
-              "url": "https://www.last.fm/similar/artist2"
+              "url": "https://www.last.fake/similar/artist2"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Get-LFMArtistTag": [
+    {
+      "ArtistTag": {
+        "tags": {
+          "tag": [
+            {
+              "name": "Tag1",
+              "url": "https://www.last.fm/artist/tag1"
+            },
+            {
+              "name": "new wave",
+              "url": "https://www.last.fm/artist/tag2"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Get-LFMArtistTopAlbum": [
+    {
+      "ArtistTopAlbum": {
+        "topalbums": {
+          "album": [
+            {
+              "name": "Album1",
+              "playcount": 199,
+              "mbid": "12345678-1234-1234-1234-123456789011",
+              "url": "https://www.last.fake/artist/topalbum1"
+            },
+            {
+              "name": "Album2",
+              "playcount": 200,
+              "mbid": "12345678-1234-1234-1234-123456789012",
+              "url": "https://www.last.fake/artist/topalbum2"
             }
           ]
         }
