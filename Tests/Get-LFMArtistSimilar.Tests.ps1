@@ -312,6 +312,10 @@ InModuleScope PowerLFM {
                 $script:output = Get-LFMArtistSimilar -Artist Artist
             }
 
+            It 'Should output object of type PowerLFM.Artist.Similar' {
+                $output[0].PSTypeNames[0] | Should -Be 'PowerLFM.Artist.Similar'
+            }
+
             It "Artist first similar artist should have name of $($contextMock.similarartists.artist[0].name)" {
                 $output.Artist[0] | Should -Be $contextMock.similarartists.artist[0].name
             }

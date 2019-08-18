@@ -110,6 +110,10 @@ InModuleScope PowerLFM {
                 $script:output = Get-LFMArtistCorrection -Artist Artist
             }
 
+            It 'Should output object of type PowerLFM.Artist.Correction' {
+                $output.PSTypeNames[0] | Should -Be 'PowerLFM.Artist.Correction'
+            }
+
             It "Artist should have corrected name of $($contextMock.corrections.correction.artist.name)" {
                 $output.Artist | Should -Be $contextMock.corrections.correction.artist.name
             }

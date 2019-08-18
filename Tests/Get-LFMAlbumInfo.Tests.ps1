@@ -348,7 +348,7 @@ InModuleScope PowerLFM {
                 $script:output = Get-LFMAlbumInfo -Album Album -Artist Artist
             }
 
-            It 'Album should output object of type PowerLFM.Album.Info' {
+            It 'Should output object of type PowerLFM.Album.Info' {
                 $output.PSTypeNames[0] | Should -Be 'PowerLFM.Album.Info'
             }
 

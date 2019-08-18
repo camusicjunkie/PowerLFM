@@ -272,6 +272,10 @@ InModuleScope PowerLFM {
                 $script:output = Get-LFMAlbumTopTag -Album Album -Artist Artist
             }
 
+            It 'Should output object of type PowerLFM.Album.Tag' {
+                $output[0].PSTypeNames[0] | Should -Be 'PowerLFM.Album.Tag'
+            }
+
             It "Album first tag should have name of $($contextMock.topTags.tag[0].name)" {
                 $output.Tag[0] | Should -Be $contextMock.topTags.tag[0].name
             }

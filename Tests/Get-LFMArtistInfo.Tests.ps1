@@ -302,7 +302,6 @@ InModuleScope PowerLFM {
                 }
                 Assert-MockCalled @amParams
             }
-
         }
 
         Context 'Output' {
@@ -313,7 +312,7 @@ InModuleScope PowerLFM {
                 $script:output = Get-LFMArtistInfo -Artist Artist
             }
 
-            It 'Artist should output object of type PowerLFM.Artist.Info' {
+            It 'Should output object of type PowerLFM.Artist.Info' {
                 $output.PSTypeNames[0] | Should -Be 'PowerLFM.Artist.Info'
             }
 
