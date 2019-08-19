@@ -201,5 +201,73 @@
         }
       }
     }
+  ],
+  "Get-LFMArtistTopTag": [
+    {
+      "ArtistTopTag": {
+        "toptags": {
+          "tag": [
+            {
+              "name": "Tag1",
+              "url": "https://www.last.fake/toptag/tag1",
+              "count": 1
+            },
+            {
+              "name": "Tag2",
+              "url": "https://www.last.fake/toptag/tag2",
+              "count": 0.5
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Get-LFMArtistTopTrack": [
+    {
+      "ArtistTopTrack": {
+        "toptracks": {
+          "track": [
+            {
+              "name": "Track1",
+              "listeners": 1,
+              "playcount": 199,
+              "mbid": "12345678-1234-1234-1234-123456789011",
+              "url": "https://www.last.fake/artist/toptrack1"
+            },
+            {
+              "name": "Track2",
+              "listeners": 2,
+              "playcount": 200,
+              "mbid": "12345678-1234-1234-1234-123456789012",
+              "url": "https://www.last.fake/artist/toptrack2"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Get-LFMChartTopArtist": [
+    {
+      "ChartTopArtist": {
+        "artists": {
+          "artist": [
+            {
+              "name": "Artist1",
+              "playcount": "199",
+              "listeners": "1",
+              "mbid": "12345678-1234-1234-1234-123456789011",
+              "url": "https://www.last.fm/chart/topartist"
+            },
+            {
+              "name": "Artist2",
+              "playcount": "200",
+              "listeners": "2",
+              "mbid": "12345678-1234-1234-1234-123456789012",
+              "url": "https://www.last.fm/chart/topartist"
+            }
+          ]
+        }
+      }
+    }
   ]
 }
