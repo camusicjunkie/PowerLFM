@@ -347,6 +347,16 @@ InModuleScope PowerLFM {
                     }
                 }
                 @{
+                    set = 'artist'
+                    times = 7
+                    gataParams = @{
+                        Artist = 'Artist'
+                        Limit = '5'
+                        Page = '1'
+                        AutoCorrect = $true
+                    }
+                }
+                @{
                     set = 'id'
                     times = 4
                     gataParams = @{
