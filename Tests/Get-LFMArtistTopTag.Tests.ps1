@@ -177,6 +177,8 @@ InModuleScope PowerLFM {
 
     Describe 'Get-LFMArtistTopTag: Unit' -Tag Unit {
 
+        Mock Invoke-RestMethod
+
         Context 'Input' {
 
             It 'Should throw when artist is null' {
@@ -186,7 +188,6 @@ InModuleScope PowerLFM {
 
         Context 'Execution' {
 
-            Mock Invoke-RestMethod
             Mock Foreach-Object
 
             $testCases = @(
