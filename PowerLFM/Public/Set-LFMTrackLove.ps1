@@ -3,7 +3,6 @@ function Set-LFMTrackLove {
 
     [CmdletBinding(SupportsShouldProcess,
                    ConfirmImpact = 'High')]
-    [OutputType('PowerLFM.Track.Love')]
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]

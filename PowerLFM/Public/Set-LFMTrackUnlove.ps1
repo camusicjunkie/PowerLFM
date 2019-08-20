@@ -3,7 +3,6 @@ function Set-LFMTrackUnlove {
 
     [CmdletBinding(SupportsShouldProcess,
                    ConfirmImpact = 'High')]
-    [OutputType('PowerLFM.Track.Unlove')]
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
