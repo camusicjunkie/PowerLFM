@@ -12,7 +12,7 @@ Describe 'Get-LFMUserPersonalTag: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.User.PersonalTag' {
-        $command.OutputType.Name -contains 'PowerLFM.User.PersonalTag' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.User.PersonalTag'
     }
 
     Context 'ParameterSetName __AllParameterSets' {

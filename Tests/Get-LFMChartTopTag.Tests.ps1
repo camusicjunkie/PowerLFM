@@ -12,7 +12,7 @@ Describe 'Get-LFMChartTopTag: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.Chart.TopTags' {
-        $command.OutputType.Name -contains 'PowerLFM.Chart.TopTags' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.Chart.TopTags'
     }
 
     Context 'ParameterSetName __AllParameterSets' {
@@ -148,10 +148,6 @@ InModuleScope PowerLFM {
 
             BeforeEach {
                 $script:output = Get-LFMChartTopTag
-            }
-
-            It 'Should output object of type PowerLFM.Chart.TopTags' {
-                $output[0].PSTypeNames[0] | Should -Be 'PowerLFM.Chart.TopTags'
             }
 
             It "Chart first top tag should have name of $($contextMock.tags.tag[0].name)" {

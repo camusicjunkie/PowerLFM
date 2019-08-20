@@ -12,7 +12,7 @@ Describe 'Get-LFMLibraryArtist: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.Library.Artist' {
-        $command.OutputType.Name -contains 'PowerLFM.Library.Artist' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.Library.Artist'
     }
 
     Context 'ParameterSetName __AllParameterSets' {

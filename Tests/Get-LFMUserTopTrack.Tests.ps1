@@ -12,7 +12,7 @@ Describe 'Get-LFMUserTopTrack: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.User.TopTrack' {
-        $command.OutputType.Name -contains 'PowerLFM.User.TopTrack' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.User.TopTrack'
     }
 
     Context 'ParameterSetName __AllParameterSets' {

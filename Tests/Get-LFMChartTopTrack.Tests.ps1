@@ -12,7 +12,7 @@ Describe 'Get-LFMChartTopTrack: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.Chart.TopTracks' {
-        $command.OutputType.Name -contains 'PowerLFM.Chart.TopTracks' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.Chart.TopTracks'
     }
 
     Context 'ParameterSetName __AllParameterSets' {
@@ -148,10 +148,6 @@ InModuleScope PowerLFM {
 
             BeforeEach {
                 $script:output = Get-LFMChartTopTrack
-            }
-
-            It 'Should output object of type PowerLFM.Chart.TopTracks' {
-                $output[0].PSTypeNames[0] | Should -Be 'PowerLFM.Chart.TopTracks'
             }
 
             It "Chart first top track should have track name of $($contextMock.tracks.track[0].name)" {

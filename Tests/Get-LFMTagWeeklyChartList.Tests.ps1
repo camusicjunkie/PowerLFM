@@ -12,7 +12,7 @@ Describe 'Get-LFMTagWeeklyChartList: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.Tag.WeeklyChartList' {
-        $command.OutputType.Name -contains 'PowerLFM.Tag.WeeklyChartList' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.Tag.WeeklyChartList'
     }
 
     Context 'ParameterSetName __AllParameterSets' {

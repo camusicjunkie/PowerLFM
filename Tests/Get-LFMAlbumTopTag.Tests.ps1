@@ -16,7 +16,7 @@ Describe 'Get-LFMAlbumTopTag: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.Album.Tag' {
-        $command.OutputType.Name -contains 'PowerLFM.Album.Tag' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.Album.Tag'
     }
 
     Context 'ParameterSetName album' {
@@ -271,10 +271,6 @@ InModuleScope PowerLFM {
 
             BeforeEach {
                 $script:output = Get-LFMAlbumTopTag -Album Album -Artist Artist
-            }
-
-            It 'Should output object of type PowerLFM.Album.Tag' {
-                $output[0].PSTypeNames[0] | Should -Be 'PowerLFM.Album.Tag'
             }
 
             It "Album first tag should have name of $($contextMock.topTags.tag[0].name)" {

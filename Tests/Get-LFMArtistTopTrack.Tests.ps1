@@ -16,7 +16,7 @@ Describe 'Get-LFMArtistTopTrack: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.Artist.Track' {
-        $command.OutputType.Name -contains 'PowerLFM.Artist.Track' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.Artist.Track'
     }
 
     Context 'ParameterSetName artist' {
@@ -387,10 +387,6 @@ InModuleScope PowerLFM {
 
             BeforeEach {
                 $script:output = Get-LFMArtistTopTrack -Artist Artist
-            }
-
-            It 'Should output object of type PowerLFM.Artist.Track' {
-                $output[0].PSTypeNames[0] | Should -Be 'PowerLFM.Artist.Track'
             }
 
             It "Artist first top track should have name of $($contextMock.toptracks.track[0].name)" {

@@ -12,7 +12,7 @@ Describe 'Get-LFMChartTopArtist: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.Chart.TopArtists' {
-        $command.OutputType.Name -contains 'PowerLFM.Chart.TopArtists' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.Chart.TopArtists'
     }
 
     Context 'ParameterSetName __AllParameterSets' {
@@ -148,10 +148,6 @@ InModuleScope PowerLFM {
 
             BeforeEach {
                 $script:output = Get-LFMChartTopArtist
-            }
-
-            It 'Should output object of type PowerLFM.Chart.TopArtists' {
-                $output[0].PSTypeNames[0] | Should -Be 'PowerLFM.Chart.TopArtists'
             }
 
             It "Chart first top artist should have name of $($contextMock.artists.artist[0].name)" {

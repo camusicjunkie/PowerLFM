@@ -16,7 +16,7 @@ Describe 'Get-LFMTrackTopTag: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.Track.TopTag' {
-        $command.OutputType.Name -contains 'PowerLFM.Track.TopTag' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.Track.TopTag'
     }
 
     Context 'ParameterSetName track' {

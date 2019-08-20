@@ -16,7 +16,7 @@ Describe 'Get-LFMTrackInfo: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.Track.Info' {
-        $command.OutputType.Name -contains 'PowerLFM.Track.Info' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.Track.Info'
     }
 
     Context 'ParameterSetName track' {

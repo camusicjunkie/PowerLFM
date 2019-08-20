@@ -12,7 +12,7 @@ Describe 'Get-LFMUserRecentTrack: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.User.RecentTrack' {
-        $command.OutputType.Name -contains 'PowerLFM.User.RecentTrack' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.User.RecentTrack'
     }
 
     Context 'ParameterSetName __AllParameterSets' {

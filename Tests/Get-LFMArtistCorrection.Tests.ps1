@@ -12,7 +12,7 @@ Describe 'Get-LFMArtistCorrection: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.Artist.Correction' {
-        $command.OutputType.Name -contains 'PowerLFM.Artist.Correction' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.Artist.Correction'
     }
 
     Context 'ParameterSetName __AllParameterSets' {
@@ -109,10 +109,6 @@ InModuleScope PowerLFM {
 
             BeforeEach {
                 $script:output = Get-LFMArtistCorrection -Artist Artist
-            }
-
-            It 'Should output object of type PowerLFM.Artist.Correction' {
-                $output.PSTypeNames[0] | Should -Be 'PowerLFM.Artist.Correction'
             }
 
             It "Artist should have corrected name of $($contextMock.corrections.correction.artist.name)" {

@@ -12,7 +12,7 @@ Describe 'Request-LFMToken: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of System.String' {
-        $command.OutputType.Name -contains 'System.String' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'System.String'
     }
 
     Context 'ParameterSetName __AllParameterSets' {

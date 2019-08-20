@@ -12,7 +12,7 @@ Describe 'Search-LFMArtist: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.Artist.Search' {
-        $command.OutputType.Name -contains 'PowerLFM.Artist.Search' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.Artist.Search'
     }
 
     Context 'ParameterSetName __AllParameterSets' {

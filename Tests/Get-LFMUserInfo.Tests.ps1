@@ -12,7 +12,7 @@ Describe 'Get-LFMUserInfo: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.User.Info' {
-        $command.OutputType.Name -contains 'PowerLFM.User.Info' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.User.Info'
     }
 
     Context 'ParameterSetName __AllParameterSets' {

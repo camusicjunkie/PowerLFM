@@ -12,7 +12,7 @@ Describe 'Get-LFMUserWeeklyArtistChart: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.User.WeeklyArtistChart' {
-        $command.OutputType.Name -contains 'PowerLFM.User.WeeklyArtistChart' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.User.WeeklyArtistChart'
     }
 
     Context 'ParameterSetName __AllParameterSets' {
