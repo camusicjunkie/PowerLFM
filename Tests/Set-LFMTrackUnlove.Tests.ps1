@@ -11,10 +11,6 @@ Describe 'Set-LFMTrackUnlove: Interface' -Tag Interface {
         $command.CmdletBinding | Should -BeTrue
     }
 
-    It 'Should contain an output type of PowerLFM.Track.Unlove' {
-        $command.OutputType.Name -contains 'PowerLFM.Track.Unlove' | Should -BeTrue
-    }
-
     Context 'ParameterSetName __AllParameterSets' {
 
         It 'Should have a parameter set of __AllParameterSets' {
