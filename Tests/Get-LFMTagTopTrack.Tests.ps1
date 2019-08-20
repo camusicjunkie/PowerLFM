@@ -12,7 +12,7 @@ Describe 'Get-LFMTagTopTrack: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.Tag.TopTracks' {
-        $command.OutputType.Name -contains 'PowerLFM.Tag.TopTracks' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.Tag.TopTracks'
     }
 
     Context 'ParameterSetName __AllParameterSets' {

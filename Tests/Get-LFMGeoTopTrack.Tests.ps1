@@ -12,7 +12,7 @@ Describe 'Get-LFMGeoTopTrack: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.Geo.TopTracks' {
-        $command.OutputType.Name -contains 'PowerLFM.Geo.TopTracks' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.Geo.TopTracks'
     }
 
     Context 'ParameterSetName __AllParameterSets' {

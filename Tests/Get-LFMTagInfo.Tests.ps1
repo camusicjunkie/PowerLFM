@@ -12,7 +12,7 @@ Describe 'Get-LFMTagInfo: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.Tag.Info' {
-        $command.OutputType.Name -contains 'PowerLFM.Tag.Info' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.Tag.Info'
     }
 
     Context 'ParameterSetName __AllParameterSets' {

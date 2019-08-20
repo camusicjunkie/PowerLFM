@@ -12,7 +12,7 @@ Describe 'Get-LFMUserTopArtist: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.User.TopArtist' {
-        $command.OutputType.Name -contains 'PowerLFM.User.TopArtist' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.User.TopArtist'
     }
 
     Context 'ParameterSetName __AllParameterSets' {

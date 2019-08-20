@@ -16,7 +16,7 @@ Describe 'Get-LFMTrackSimilar: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.Track.Similar' {
-        $command.OutputType.Name -contains 'PowerLFM.Track.Similar' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.Track.Similar'
     }
 
     Context 'ParameterSetName track' {

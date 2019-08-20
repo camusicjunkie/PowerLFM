@@ -12,7 +12,7 @@ Describe 'Get-LFMUserLovedTrack: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.User.Track' {
-        $command.OutputType.Name -contains 'PowerLFM.User.Track' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.User.Track'
     }
 
     Context 'ParameterSetName __AllParameterSets' {

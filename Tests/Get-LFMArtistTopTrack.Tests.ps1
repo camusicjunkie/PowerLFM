@@ -16,7 +16,7 @@ Describe 'Get-LFMArtistTopTrack: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.Artist.Track' {
-        $command.OutputType.Name -contains 'PowerLFM.Artist.Track' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.Artist.Track'
     }
 
     Context 'ParameterSetName artist' {
@@ -304,22 +304,138 @@ Describe 'Get-LFMArtistTopTrack: Interface' -Tag Interface {
 
 InModuleScope PowerLFM {
 
+    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+    $contextMock = $mocks.'Get-LFMArtistTopTrack'.ArtistTopTrack
+
     Describe 'Get-LFMArtistTopTrack: Unit' -Tag Unit {
+
+        Mock Invoke-RestMethod
 
         Context 'Input' {
 
+            It 'Should throw when artist is null' {
+                {Get-LFMArtistTopTrack -Artist $null} | Should -Throw
+            }
         }
 
         Context 'Execution' {
 
+            Mock Foreach-Object
+
+            $testCases = @(
+                @{
+                    set = 'artist'
+                    times = 4
+                    gattParams = @{
+                        Artist = 'Artist'
+                    }
+                }
+                @{
+                    set = 'artist'
+                    times = 5
+                    gattParams = @{
+                        Artist = 'Artist'
+                        Limit = '5'
+                    }
+                }
+                @{
+                    set = 'artist'
+                    times = 6
+                    gattParams = @{
+                        Artist = 'Artist'
+                        Limit = '5'
+                        Page = '1'
+                    }
+                }
+                @{
+                    set = 'artist'
+                    times = 7
+                    gattParams = @{
+                        Artist = 'Artist'
+                        Limit = '5'
+                        Page = '1'
+                        AutoCorrect = $true
+                    }
+                }
+                @{
+                    set = 'id'
+                    times = 4
+                    gattParams = @{
+                        Id = (New-Guid)
+                    }
+                }
+            )
+
+            It 'Should call Foreach-Object <times> times building url in <set> parameter set' -TestCases $testCases {
+                param ($times, $gattParams)
+
+                Get-LFMArtistTopAlbum @gattParams
+
+                $amParams = @{
+                    CommandName = 'Foreach-Object'
+                    Exactly = $true
+                    Times = $times
+                    Scope = 'It'
+                }
+                Assert-MockCalled @amParams
+            }
         }
 
         Context 'Output' {
 
+            Mock Invoke-RestMethod {$contextMock}
+
+            BeforeEach {
+                $script:output = Get-LFMArtistTopTrack -Artist Artist
+            }
+
+            It "Artist first top track should have name of $($contextMock.toptracks.track[0].name)" {
+                $output.Track[0] | Should -Be $contextMock.toptracks.track[0].name
+            }
+
+            It "Artist first top track should have id of $($contextMock.toptracks.track[0].mbid)" {
+                $output.Id[0] | Should -Be $contextMock.toptracks.track[0].mbid
+            }
+
+            It "Artist first top track should have listeners with a value of $($contextMock.toptracks.track[0].listeners)" {
+                $output.Listeners[0] | Should -BeOfType [int]
+                $output.Listeners[0] | Should -Be $contextMock.toptracks.track[0].listeners
+            }
+
+            It "Artist second top track should have listeners with a value of $($contextMock.toptracks.track[1].listeners)" {
+                $output.Listeners[1] | Should -BeOfType [int]
+                $output.Listeners[1] | Should -Be $contextMock.toptracks.track[1].listeners
+            }
+
+            It "Artist second top track should have url of $($contextMock.toptracks.track[1].url)" {
+                $output.Url[1] | Should -Be $contextMock.toptracks.track[1].url
+            }
+
+            It "Artist second top track should have playcount with a value of $($contextMock.toptracks.track[1].playcount)" {
+                $output.Playcount[1] | Should -BeOfType [int]
+                $output.Playcount[1] | Should -Be $contextMock.toptracks.track[1].playcount
+            }
+
+            It 'Artist should have two top tracks' {
+                $output.Album | Should -HaveCount 2
+            }
+
+            It 'Artist should not have more than two top tracks' {
+                $output.Album | Should -Not -BeNullOrEmpty
+                $output.Album | Should -Not -HaveCount 3
+            }
+
+            It "Artist should have two top tracks when id parameter is used" {
+                $output = Get-LFMArtistTopTrack -Id 1
+                $output.Track | Should -HaveCount 2
+            }
         }
     }
 }
 
 Describe 'Get-LFMArtistTopTrack: Integration' -Tag Integration {
 
+    It "Integration test" {
+        Set-ItResult -Skipped -Because 'the integration tests will be set up later'
+    }
 }

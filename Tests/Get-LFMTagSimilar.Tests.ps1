@@ -12,7 +12,7 @@ Describe 'Get-LFMTagSimilar: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.Tag.Similar' {
-        $command.OutputType.Name -contains 'PowerLFM.Tag.Similar' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.Tag.Similar'
     }
 
     Context 'ParameterSetName __AllParameterSets' {

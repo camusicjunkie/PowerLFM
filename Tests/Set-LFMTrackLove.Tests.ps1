@@ -11,10 +11,6 @@ Describe 'Set-LFMTrackLove: Interface' -Tag Interface {
         $command.CmdletBinding | Should -BeTrue
     }
 
-    It 'Should contain an output type of PowerLFM.Track.Love' {
-        $command.OutputType.Name -contains 'PowerLFM.Track.Love' | Should -BeTrue
-    }
-
     Context 'ParameterSetName __AllParameterSets' {
 
         It 'Should have a parameter set of __AllParameterSets' {

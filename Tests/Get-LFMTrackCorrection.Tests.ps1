@@ -12,7 +12,7 @@ Describe 'Get-LFMTrackCorrection: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.Track.Correction' {
-        $command.OutputType.Name -contains 'PowerLFM.Track.Correction' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.Track.Correction'
     }
 
     Context 'ParameterSetName __AllParameterSets' {

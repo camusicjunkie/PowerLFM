@@ -12,7 +12,7 @@ Describe 'Get-LFMTagTopArtist: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.Tag.TopArtists' {
-        $command.OutputType.Name -contains 'PowerLFM.Tag.TopArtists' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.Tag.TopArtists'
     }
 
     Context 'ParameterSetName __AllParameterSets' {

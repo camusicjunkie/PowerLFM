@@ -16,7 +16,7 @@ Describe 'Get-LFMTrackTag: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.Track.UserTag' {
-        $command.OutputType.Name -contains 'PowerLFM.Track.UserTag' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.Track.UserTag'
     }
 
     Context 'ParameterSetName track' {

@@ -12,7 +12,7 @@ Describe 'Get-LFMUserArtistTrack: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.User.ArtistTrack' {
-        $command.OutputType.Name -contains 'PowerLFM.User.ArtistTrack' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.User.ArtistTrack'
     }
 
     Context 'ParameterSetName __AllParameterSets' {

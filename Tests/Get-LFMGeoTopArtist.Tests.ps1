@@ -12,7 +12,7 @@ Describe 'Get-LFMGeoTopArtist: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.Geo.TopArtists' {
-        $command.OutputType.Name -contains 'PowerLFM.Geo.TopArtists' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.Geo.TopArtists'
     }
 
     Context 'ParameterSetName __AllParameterSets' {

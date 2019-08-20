@@ -12,7 +12,7 @@ Describe 'Get-LFMUserWeeklyTrackChart: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.User.WeeklyTrackChart' {
-        $command.OutputType.Name -contains 'PowerLFM.User.WeeklyTrackChart' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.User.WeeklyTrackChart'
     }
 
     Context 'ParameterSetName __AllParameterSets' {

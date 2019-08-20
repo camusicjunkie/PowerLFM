@@ -16,7 +16,7 @@ Describe 'Get-LFMArtistTag: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.Artist.Tag' {
-        $command.OutputType.Name -contains 'PowerLFM.Artist.Tag' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.Artist.Tag'
     }
 
     Context 'ParameterSetName artist' {
@@ -243,6 +243,8 @@ InModuleScope PowerLFM {
 
     Describe 'Get-LFMArtistTag: Unit' -Tag Unit {
 
+        Mock Invoke-RestMethod
+
         Context 'Input' {
 
             It 'Should throw when artist is null' {
@@ -252,7 +254,6 @@ InModuleScope PowerLFM {
 
         Context 'Execution' {
 
-            Mock Invoke-RestMethod
             Mock Foreach-Object
 
             $testCases = @(
@@ -310,10 +311,6 @@ InModuleScope PowerLFM {
 
             BeforeEach {
                 $script:output = Get-LFMArtistTag -Artist Artist
-            }
-
-            It 'Should output object of type PowerLFM.Artist.Tag' {
-                $output[0].PSTypeNames[0] | Should -Be 'PowerLFM.Artist.Tag'
             }
 
             It "Artist first tag should have name of $($contextMock.tags.tag[0].name)" {

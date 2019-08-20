@@ -12,7 +12,7 @@ Describe 'Get-LFMUserTopTag: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.User.TopTag' {
-        $command.OutputType.Name -contains 'PowerLFM.User.TopTag' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.User.TopTag'
     }
 
     Context 'ParameterSetName __AllParameterSets' {

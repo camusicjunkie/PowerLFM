@@ -16,7 +16,7 @@ Describe 'Get-LFMAlbumInfo: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.Album.Info' {
-        $command.OutputType.Name -contains 'PowerLFM.Album.Info' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.Album.Info'
     }
 
     Context 'ParameterSetName album' {
@@ -276,6 +276,8 @@ InModuleScope PowerLFM {
 
     Describe 'Get-LFMAlbumInfo: Unit' -Tag Unit {
 
+        Mock Invoke-RestMethod
+
         Context 'Input' {
 
             It 'Should throw when Album is null' {
@@ -285,7 +287,6 @@ InModuleScope PowerLFM {
 
         Context 'Execution' {
 
-            Mock Invoke-RestMethod
             Mock Foreach-Object
 
             $testCases = @(
@@ -346,10 +347,6 @@ InModuleScope PowerLFM {
 
             BeforeEach {
                 $script:output = Get-LFMAlbumInfo -Album Album -Artist Artist
-            }
-
-            It 'Should output object of type PowerLFM.Album.Info' {
-                $output.PSTypeNames[0] | Should -Be 'PowerLFM.Album.Info'
             }
 
             It "Album should have name of $($contextMock.album.name)" {

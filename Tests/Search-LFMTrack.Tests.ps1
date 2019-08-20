@@ -12,7 +12,7 @@ Describe 'Search-LFMTrack: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.Track.Search' {
-        $command.OutputType.Name -contains 'PowerLFM.Track.Search' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.Track.Search'
     }
 
     Context 'ParameterSetName __AllParameterSets' {

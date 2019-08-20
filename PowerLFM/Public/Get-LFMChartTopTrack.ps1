@@ -34,7 +34,7 @@ function Get-LFMChartTopTrack {
 
     foreach ($track in $irm.Tracks.Track) {
         $trackInfo = [pscustomobject] @{
-            'PSTypeName' = 'PowerLFM.Chart.TopArtists'
+            'PSTypeName' = 'PowerLFM.Chart.TopTracks'
             'Track' = $track.Name
             'TrackId' = $track.Mbid
             'TrackUrl' = $track.Url

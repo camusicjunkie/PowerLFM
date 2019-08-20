@@ -12,7 +12,7 @@ Describe 'Get-LFMTagTopAlbum: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.Tag.TopAlbums' {
-        $command.OutputType.Name -contains 'PowerLFM.Tag.TopAlbums' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.Tag.TopAlbums'
     }
 
     Context 'ParameterSetName __AllParameterSets' {

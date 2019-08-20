@@ -16,7 +16,7 @@ Describe 'Get-LFMArtistTopAlbum: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.Artist.Album' {
-        $command.OutputType.Name -contains 'PowerLFM.Artist.Album' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.Artist.Album'
     }
 
     Context 'ParameterSetName artist' {
@@ -309,6 +309,8 @@ InModuleScope PowerLFM {
 
     Describe 'Get-LFMArtistTopAlbum: Unit' -Tag Unit {
 
+        Mock Invoke-RestMethod
+
         Context 'Input' {
 
             It 'Should throw when artist is null' {
@@ -318,7 +320,6 @@ InModuleScope PowerLFM {
 
         Context 'Execution' {
 
-            Mock Invoke-RestMethod
             Mock Foreach-Object
 
             $testCases = @(
@@ -344,6 +345,16 @@ InModuleScope PowerLFM {
                         Artist = 'Artist'
                         Limit = '5'
                         Page = '1'
+                    }
+                }
+                @{
+                    set = 'artist'
+                    times = 7
+                    gataParams = @{
+                        Artist = 'Artist'
+                        Limit = '5'
+                        Page = '1'
+                        AutoCorrect = $true
                     }
                 }
                 @{
@@ -376,10 +387,6 @@ InModuleScope PowerLFM {
 
             BeforeEach {
                 $script:output = Get-LFMArtistTopAlbum -Artist Artist
-            }
-
-            It 'Should output object of type PowerLFM.Artist.Album' {
-                $output[0].PSTypeNames[0] | Should -Be 'PowerLFM.Artist.Album'
             }
 
             It "Artist first top album should have name of $($contextMock.topalbums.album[0].name)" {

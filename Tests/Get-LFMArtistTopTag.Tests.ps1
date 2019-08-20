@@ -16,7 +16,7 @@ Describe 'Get-LFMArtistTopTag: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.Artist.Tag' {
-        $command.OutputType.Name -contains 'PowerLFM.Artist.Tag' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.Artist.Tag'
     }
 
     Context 'ParameterSetName artist' {
@@ -172,22 +172,108 @@ Describe 'Get-LFMArtistTopTag: Interface' -Tag Interface {
 
 InModuleScope PowerLFM {
 
+    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+    $contextMock = $mocks.'Get-LFMArtistTopTag'.ArtistTopTag
+
     Describe 'Get-LFMArtistTopTag: Unit' -Tag Unit {
+
+        Mock Invoke-RestMethod
 
         Context 'Input' {
 
+            It 'Should throw when artist is null' {
+                {Get-LFMArtistTopTag -Artist $null} | Should -Throw
+            }
         }
 
         Context 'Execution' {
 
+            Mock Foreach-Object
+
+            $testCases = @(
+                @{
+                    set = 'artist'
+                    times = 4
+                    gattParams = @{
+                        Artist = 'Artist'
+                    }
+                }
+                @{
+                    set = 'artist'
+                    times = 5
+                    gattParams = @{
+                        Artist = 'Artist'
+                        AutoCorrect = $true
+                    }
+                }
+                @{
+                    set = 'id'
+                    times = 4
+                    gattParams = @{
+                        Id = (New-Guid)
+                    }
+                }
+            )
+
+            It 'Should call Foreach-Object <times> times building url in <set> parameter set' -TestCases $testCases {
+                param ($times, $gattParams)
+
+                Get-LFMArtistTopTag @gattParams
+
+                $amParams = @{
+                    CommandName = 'Foreach-Object'
+                    Exactly = $true
+                    Times = $times
+                    Scope = 'It'
+                }
+                Assert-MockCalled @amParams
+            }
         }
 
         Context 'Output' {
 
+            Mock Invoke-RestMethod {$contextMock}
+
+            BeforeEach {
+                $script:output = Get-LFMArtistTopTag -Artist Artist
+            }
+
+            It "Artist first top tag should have name of $($contextMock.toptags.tag[0].name)" {
+                $output.Tag[0] | Should -Be $contextMock.toptags.tag[0].name
+            }
+
+            It "Artist second tag should have url of $($contextMock.toptags.tag[1].url)" {
+                $output.Url[1] | Should -Be $contextMock.toptags.tag[1].url
+            }
+
+            It "Artist first tag should have match of $($contextMock.toptags.tag[0].count)" {
+                $output.Match[0] | Should -Be $contextMock.toptags.tag[0].count
+            }
+
+            It "Artist second tag should have match of $($contextMock.toptags.tag[1].count)" {
+                $output.Match[1] | Should -Be $contextMock.toptags.tag[1].count
+            }
+
+            It 'Artist should have two tags' {
+                $output.Tag | Should -HaveCount 2
+            }
+
+            It 'Artist should not have more than two tags' {
+                $output.Tag | Should -Not -BeNullOrEmpty
+                $output.Tag | Should -Not -HaveCount 3
+            }
+
+            It "Artist should have two tags when id parameter is used" {
+                $output = Get-LFMArtistTopTag -Id 1
+                $output.Tag | Should -HaveCount 2
+            }
         }
     }
 }
 
 Describe 'Get-LFMArtistTopTag: Integration' -Tag Integration {
 
+    It "Integration test" {
+        Set-ItResult -Skipped -Because 'the integration tests will be set up later'
+    }
 }

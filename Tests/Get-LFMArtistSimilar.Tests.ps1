@@ -16,7 +16,7 @@ Describe 'Get-LFMArtistSimilar: Interface' -Tag Interface {
     }
 
     It 'Should contain an output type of PowerLFM.Artist.Similar' {
-        $command.OutputType.Name -contains 'PowerLFM.Artist.Similar' | Should -BeTrue
+        $command.OutputType.Name | Should -Be 'PowerLFM.Artist.Similar'
     }
 
     Context 'ParameterSetName artist' {
@@ -243,6 +243,8 @@ InModuleScope PowerLFM {
 
     Describe 'Get-LFMArtistSimilar: Unit' -Tag Unit {
 
+        Mock Invoke-RestMethod
+
         Context 'Input' {
 
             It 'Should throw when Artist is null' {
@@ -252,7 +254,6 @@ InModuleScope PowerLFM {
 
         Context 'Execution' {
 
-            Mock Invoke-RestMethod
             Mock Foreach-Object
 
             $testCases = @(
@@ -310,10 +311,6 @@ InModuleScope PowerLFM {
 
             BeforeEach {
                 $script:output = Get-LFMArtistSimilar -Artist Artist
-            }
-
-            It 'Should output object of type PowerLFM.Artist.Similar' {
-                $output[0].PSTypeNames[0] | Should -Be 'PowerLFM.Artist.Similar'
             }
 
             It "Artist first similar artist should have name of $($contextMock.similarartists.artist[0].name)" {
