@@ -93,22 +93,104 @@ Describe 'Get-LFMChartTopTag: Interface' -Tag Interface {
 
 InModuleScope PowerLFM {
 
+    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+    $contextMock = $mocks.'Get-LFMChartTopTag'.ChartTopTag
+
     Describe 'Get-LFMChartTopTag: Unit' -Tag Unit {
+
+        Mock Invoke-RestMethod
 
         Context 'Input' {
 
+            It 'Should throw when limit is greater than 119' {
+                {Get-LFMChartTopTag -Limit 120} | Should -Throw
+            }
         }
 
         Context 'Execution' {
 
+            Mock Foreach-Object
+
+            $testCases = @(
+                @{
+                    times = 4
+                    gcttParams = @{
+                        Limit = '5'
+                    }
+                }
+                @{
+                    times = 5
+                    gcttParams = @{
+                        Limit = '5'
+                        Page = '1'
+                    }
+                }
+            )
+
+            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
+                param ($times, $gcttParams)
+
+                Get-LFMChartTopTag @gcttParams
+
+                $amParams = @{
+                    CommandName = 'Foreach-Object'
+                    Exactly = $true
+                    Times = $times
+                    Scope = 'It'
+                }
+                Assert-MockCalled @amParams
+            }
         }
 
         Context 'Output' {
 
+            Mock Invoke-RestMethod {$contextMock}
+
+            BeforeEach {
+                $script:output = Get-LFMChartTopTag
+            }
+
+            It 'Should output object of type PowerLFM.Chart.TopTags' {
+                $output[0].PSTypeNames[0] | Should -Be 'PowerLFM.Chart.TopTags'
+            }
+
+            It "Chart first top tag should have name of $($contextMock.tags.tag[0].name)" {
+                $output.Tag[0] | Should -Be $contextMock.tags.tag[0].name
+            }
+
+            It "Chart first top tag should have total tags with a value of $($contextMock.tags.tag[0].taggings)" {
+                $output.TotalTags[0] | Should -Be $contextMock.tags.tag[0].taggings
+            }
+
+            It "Chart first top tag should have reach with a value of $($contextMock.tags.tag[0].reach)" {
+                $output.Reach[0] | Should -BeOfType [int]
+                $output.Reach[0] | Should -Be $contextMock.tags.tag[0].reach
+            }
+
+            It "Chart second top tag should have reach with a value of $($contextMock.tags.tag[1].reach)" {
+                $output.Reach[1] | Should -BeOfType [int]
+                $output.Reach[1] | Should -Be $contextMock.tags.tag[1].reach
+            }
+
+            It "Chart second top tag should have url of $($contextMock.tags.tag[1].url)" {
+                $output.Url[1] | Should -Be $contextMock.tags.tag[1].url
+            }
+
+            It 'Chart should have two top tags' {
+                $output.Tag | Should -HaveCount 2
+            }
+
+            It 'Chart should not have more than two top tags' {
+                $output.Tag | Should -Not -BeNullOrEmpty
+                $output.Tag | Should -Not -HaveCount 3
+            }
         }
     }
 }
 
 Describe 'Get-LFMChartTopTag: Integration' -Tag Integration {
 
+    It "Integration test" {
+        Set-ItResult -Skipped -Because 'the integration tests will be set up later'
+    }
 }

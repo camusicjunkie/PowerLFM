@@ -93,22 +93,116 @@ Describe 'Get-LFMChartTopTrack: Interface' -Tag Interface {
 
 InModuleScope PowerLFM {
 
+    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+    $contextMock = $mocks.'Get-LFMChartTopTrack'.ChartTopTrack
+
     Describe 'Get-LFMChartTopTrack: Unit' -Tag Unit {
+
+        Mock Invoke-RestMethod
 
         Context 'Input' {
 
+            It "Should throw when limit is greater than 119" {
+                {Get-LFMChartTopTrack -Limit 120} | Should -Throw
+            }
         }
 
         Context 'Execution' {
 
+            Mock Foreach-Object
+
+            $testCases = @(
+                @{
+                    times = 4
+                    gcttParams = @{
+                        Limit = '5'
+                    }
+                }
+                @{
+                    times = 5
+                    gcttParams = @{
+                        Limit = '5'
+                        Page = '1'
+                    }
+                }
+            )
+
+            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
+                param ($times, $gcttParams)
+
+                Get-LFMChartTopTrack @gcttParams
+
+                $amParams = @{
+                    CommandName = 'Foreach-Object'
+                    Exactly = $true
+                    Times = $times
+                    Scope = 'It'
+                }
+                Assert-MockCalled @amParams
+            }
         }
 
         Context 'Output' {
 
+            Mock Invoke-RestMethod {$contextMock}
+
+            BeforeEach {
+                $script:output = Get-LFMChartTopTrack
+            }
+
+            It 'Should output object of type PowerLFM.Chart.TopTracks' {
+                $output[0].PSTypeNames[0] | Should -Be 'PowerLFM.Chart.TopTracks'
+            }
+
+            It "Chart first top track should have track name of $($contextMock.tracks.track[0].name)" {
+                $output.Track[0] | Should -Be $contextMock.tracks.track[0].name
+            }
+
+            It "Chart first top track should have artist name of $($contextMock.tracks.track[0].artist.name)" {
+                $output.Artist[0] | Should -Be $contextMock.tracks.track[0].artist.name
+            }
+
+            It "Chart first top track should have duration with a value of $($contextMock.tracks.track[0].duration)" {
+                $output.Duration[0] | Should -Be $contextMock.tracks.track[0].duration
+            }
+
+            It "Chart first top track should have playcount with a value of $($contextMock.tracks.track[0].Playcount)" {
+                $output.Playcount[0] | Should -BeOfType [int]
+                $output.Playcount[0] | Should -Be $contextMock.tracks.track[0].Playcount
+            }
+
+            It "Chart second top track should have playcount with a value of $($contextMock.tracks.track[1].Playcount)" {
+                $output.Playcount[1] | Should -BeOfType [int]
+                $output.Playcount[1] | Should -Be $contextMock.tracks.track[1].Playcount
+            }
+
+            It "Chart second top track should have artist id with a value of $($contextMock.tracks.track[1].artist.mbid)" {
+                $output.ArtistId[1] | Should -Be $contextMock.tracks.track[1].artist.mbid
+            }
+
+            It "Chart second top track should have artist url of $($contextMock.tracks.track[1].artist.url)" {
+                $output.ArtistUrl[1] | Should -Be $contextMock.tracks.track[1].artist.url
+            }
+
+            It "Chart second top track should have track url of $($contextMock.tracks.track[1].url)" {
+                $output.TrackUrl[1] | Should -Be $contextMock.tracks.track[1].url
+            }
+
+            It 'Chart should have two top tracks' {
+                $output.Track | Should -HaveCount 2
+            }
+
+            It 'Chart should not have more than two top tracks' {
+                $output.Track | Should -Not -BeNullOrEmpty
+                $output.Track | Should -Not -HaveCount 3
+            }
         }
     }
 }
 
 Describe 'Get-LFMChartTopTrack: Integration' -Tag Integration {
 
+    It "Integration test" {
+        Set-ItResult -Skipped -Because 'the integration tests will be set up later'
+    }
 }
