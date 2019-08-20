@@ -113,14 +113,12 @@ InModuleScope PowerLFM {
 
             $testCases = @(
                 @{
-                    set = 'artist'
                     times = 4
                     gctaParams = @{
                         Limit = '5'
                     }
                 }
                 @{
-                    set = 'artist'
                     times = 5
                     gctaParams = @{
                         Limit = '5'
@@ -129,7 +127,7 @@ InModuleScope PowerLFM {
                 }
             )
 
-            It 'Should call Foreach-Object <times> times building url in <set> parameter set' -TestCases $testCases {
+            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
                 param ($times, $gctaParams)
 
                 Get-LFMChartTopArtist @gctaParams
