@@ -23,10 +23,6 @@ InModuleScope PowerLFM {
 
     Describe 'Get-LFMConfiguration: Unit' -Tag Unit {
 
-        Context 'Input' {
-
-        }
-
         Context 'Execution' {
 
         }
