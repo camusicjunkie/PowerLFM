@@ -93,22 +93,95 @@ Describe 'Get-LFMTagInfo: Interface' -Tag Interface {
 
 InModuleScope PowerLFM {
 
+    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+    $contextMock = $mocks.'Get-LFMTagInfo'.TagInfo
+
     Describe 'Get-LFMTagInfo: Unit' -Tag Unit {
+
+        Mock Invoke-RestMethod
 
         Context 'Input' {
 
+            It 'Should throw when limit is greater than 119' {
+                {Get-LFMTagInfo -Tag $null} | Should -Throw
+            }
         }
 
         Context 'Execution' {
 
+            Mock Foreach-Object
+
+            $testCases = @(
+                @{
+                    times = 4
+                    gtiParams = @{
+                        Tag = 'Tag'
+                    }
+                }
+                @{
+                    times = 5
+                    gtiParams = @{
+                        Tag = 'Tag'
+                        Language = 'Language'
+                    }
+                }
+            )
+
+            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
+                param ($times, $gtiParams)
+
+                Get-LFMTagInfo @gtiParams
+
+                $amParams = @{
+                    CommandName = 'Foreach-Object'
+                    Exactly = $true
+                    Times = $times
+                    Scope = 'It'
+                }
+                Assert-MockCalled @amParams
+            }
         }
 
         Context 'Output' {
 
+            Mock Invoke-RestMethod {$contextMock}
+
+            BeforeEach {
+                $script:output = Get-LFMTagInfo -Tag Tag
+            }
+
+            It "Tag should have name of $($contextMock.tag.name)" {
+                $output.Tag | Should -Be $contextMock.tag.name
+            }
+
+            It "Tag should have total tags with a value of $($contextMock.tag.total)" {
+                $output.TotalTags | Should -Be $contextMock.tag.total
+            }
+
+            It "Tag should have reach with a value of $($contextMock.tag.reach)" {
+                $output.Reach | Should -BeOfType [int]
+                $output.Reach | Should -Be $contextMock.tag.reach
+            }
+
+            It "Tag should have url of http://www.last.fm/tag/$(($output.Tag).Replace(' ', '+'))" {
+                $output.Url | Should -Be "http://www.last.fm/tag/$($output.Tag)".Replace(' ', '+')
+            }
+
+            It 'Tag should have one tag' {
+                $output.Tag | Should -HaveCount 1
+            }
+
+            It 'Tag should not have more than one tag' {
+                $output.Tag | Should -Not -BeNullOrEmpty
+                $output.Tag | Should -Not -HaveCount 2
+            }
         }
     }
 }
 
 Describe 'Get-LFMTagInfo: Integration' -Tag Integration {
 
+    It "Integration test" {
+        Set-ItResult -Skipped -Because 'the integration tests will be set up later'
+    }
 }
