@@ -169,11 +169,11 @@
           "tag": [
             {
               "name": "Tag1",
-              "url": "https://www.last.fm/artist/tag1"
+              "url": "https://www.last.fake/artist/tag1"
             },
             {
               "name": "new wave",
-              "url": "https://www.last.fm/artist/tag2"
+              "url": "https://www.last.fake/artist/tag2"
             }
           ]
         }
@@ -256,14 +256,14 @@
               "playcount": "199",
               "listeners": "1",
               "mbid": "12345678-1234-1234-1234-123456789011",
-              "url": "https://www.last.fm/chart/topartist1"
+              "url": "https://www.last.fake/chart/topartist1"
             },
             {
               "name": "Artist2",
               "playcount": "200",
               "listeners": "2",
               "mbid": "12345678-1234-1234-1234-123456789012",
-              "url": "https://www.last.fm/chart/topartist2"
+              "url": "https://www.last.fake/chart/topartist2"
             }
           ]
         }
@@ -277,13 +277,13 @@
           "tag": [
             {
               "name": "Tag1",
-              "url": "https://www.last.fm/tag/tag1",
+              "url": "https://www.last.fake/tag/tag1",
               "reach": "1",
               "taggings": "10"
             },
             {
               "name": "Tag2",
-              "url": "https://www.last.fm/tag/tag2",
+              "url": "https://www.last.fake/tag/tag2",
               "reach": "2",
               "taggings": "20"
             }
@@ -303,11 +303,11 @@
               "playcount": "199",
               "listeners": "1",
               "mbid": "12345678-1234-1234-1234-123456789011",
-              "url": "https://www.last.fm/chart/toptrack1",
+              "url": "https://www.last.fake/chart/toptrack1",
               "artist": {
                 "name": "Artist1",
                 "mbid": "12345678-1234-1234-1234-123456789012",
-                "url": "https://www.last.fm/chart/artist/artist1"
+                "url": "https://www.last.fake/chart/artist/artist1"
               }
             },
             {
@@ -316,14 +316,110 @@
               "playcount": "200",
               "listeners": "2",
               "mbid": "12345678-1234-1234-1234-123456789013",
-              "url": "https://www.last.fm/chart/toptrack1",
+              "url": "https://www.last.fake/chart/toptrack1",
               "artist": {
                 "name": "Artist2",
                 "mbid": "12345678-1234-1234-1234-123456789014",
-                "url": "https://www.last.fm/chart/artist/artist2"
+                "url": "https://www.last.fake/chart/artist/artist2"
               }
             }
           ]
+        }
+      }
+    }
+  ],
+  "Get-LFMGeoTopArtist": [
+    {
+      "GeoTopArtist": {
+        "topartists": {
+          "artist": [
+            {
+              "name": "Artist1",
+              "listeners": "1",
+              "mbid": "12345678-1234-1234-1234-123456789011",
+              "url": "https://www.last.fake/geo/topartist1"
+            },
+            {
+              "name": "Artist2",
+              "listeners": "2",
+              "mbid": "12345678-1234-1234-1234-123456789012",
+              "url": "https://www.last.fake/geo/topartist2"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Get-LFMGeoTopTrack": [
+    {
+      "GeoTopTrack": {
+        "tracks": {
+          "track": [
+            {
+              "name": "Track1",
+              "listeners": 1,
+              "mbid": "12345678-1234-1234-1234-123456789011",
+              "url": "https://www.last.fake/geo/toptrack1",
+              "@attr": {
+                "rank": 1
+              },
+              "artist": {
+                "name": "Artist1",
+                "mbid": "12345678-1234-1234-1234-123456789012",
+                "url": "https://www.last.fake/geo/toptrack1/artist1"
+              }
+            },
+            {
+              "name": "Track2",
+              "listeners": 2,
+              "mbid": "12345678-1234-1234-1234-123456789013",
+              "url": "https://www.last.fake/geo/toptrack2",
+              "@attr": {
+                "rank": 2
+              },
+              "artist": {
+                "name": "Artist1",
+                "mbid": "12345678-1234-1234-1234-123456789014",
+                "url": "https://www.last.fake/geo/toptrack2/artist2"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Get-LFMLibraryArtist": [
+    {
+      "LibraryArtist": {
+        "artists": {
+          "artist": [
+            {
+              "name": "Artist1",
+              "mbid": "12345678-1234-1234-1234-123456789011",
+              "playcount": "199",
+              "url": "https://www.last.fake/library/artist1"
+            },
+            {
+              "name": "Artist2",
+              "mbid": "12345678-1234-1234-1234-123456789012",
+              "playcount": "200",
+              "url": "https://www.last.fake/library/artist2"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Get-LFMTagInfo": [
+    {
+      "TagInfo": {
+        "tag": {
+          "name": "Tag",
+          "reach": 1,
+          "total": 10,
+          "wiki": {
+            "summary": "Summary"
+          }
         }
       }
     }
