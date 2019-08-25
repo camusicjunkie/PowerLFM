@@ -80,11 +80,11 @@ function Get-LFMUserTopAlbum {
                 'PSTypeName' = 'PowerLFM.User.Album'
                 'Album' = $album.Name
                 'PlayCount' = [int] $album.PlayCount
-                'AlbumUrl' = $album.Url
-                'Albumid' = $album.Mbid
+                'AlbumUrl' = [uri] $album.Url
+                'Albumid' = [guid] $album.Mbid
                 'Artist' = $album.Artist.Name
-                'ArtistUrl' = $album.Artist.url
-                'ArtistId' = $album.Artist.Mbid
+                'ArtistUrl' = [uri] $album.Artist.url
+                'ArtistId' = [guid] $album.Artist.Mbid
                 'ImageUrl' = $album.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 

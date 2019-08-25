@@ -72,9 +72,9 @@ function Get-LFMArtistSimilar {
             $similarInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.Artist.Similar'
                 'Artist' = $similar.Name
-                'Id' = $similar.Mbid
-                'Url' = $similar.Url
-                'Match' = $similar.Match
+                'Id' = [guid] $similar.Mbid
+                'Url' = [uri] $similar.Url
+                'Match' = [int] $similar.Match
             }
 
             Write-Output $similarInfo

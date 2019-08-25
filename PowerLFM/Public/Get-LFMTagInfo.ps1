@@ -58,9 +58,9 @@ function Get-LFMTagInfo {
         $tagInfo = [pscustomobject] @{
             'PSTypeName' = 'PowerLFM.Tag.Info'
             'Tag' = $irm.Tag.Name
-            'Url' = "http://www.last.fm/tag/$Tag".Replace(' ', '+')
-            'Reach' = $irm.Tag.Reach
-            'TotalTags' = $irm.Tag.Total
+            'Url' = [uri] "http://www.last.fm/tag/$Tag".Replace(' ', '+')
+            'Reach' = [int] $irm.Tag.Reach
+            'TotalTags' = [int] $irm.Tag.Total
             'Summary' = $irm.Tag.Wiki.Summary
         }
 

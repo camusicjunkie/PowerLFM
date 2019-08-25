@@ -54,8 +54,8 @@ function Get-LFMChartTopArtist {
         $artistInfo = [pscustomobject] @{
             'PSTypeName' = 'PowerLFM.Chart.TopArtists'
             'Artist' = $artist.Name
-            'Id' = $artist.Mbid
-            'Url' = $artist.Url
+            'Id' = [guid] $artist.Mbid
+            'Url' = [uri] $artist.Url
             'Listeners' = [int] $artist.Listeners
             'PlayCount' = [int] $artist.PlayCount
             'ImageUrl' = $artist.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'

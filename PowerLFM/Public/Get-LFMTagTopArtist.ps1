@@ -62,9 +62,9 @@ function Get-LFMTagTopArtist {
             $artistInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.Tag.TopArtists'
                 'Artist' = $artist.Name
-                'ArtistId' = $artist.Mbid
-                'ArtistUrl' = $artist.Url
-                'Rank' = $artist.'@attr'.rank
+                'ArtistId' = [guid] $artist.Mbid
+                'ArtistUrl' = [uri] $artist.Url
+                'Rank' = [int] $artist.'@attr'.rank
                 'ImageUrl' = $artist.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 

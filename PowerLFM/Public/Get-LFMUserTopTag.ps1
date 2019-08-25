@@ -59,8 +59,8 @@ function Get-LFMUserTopTag {
             $tagInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.User.TopTag'
                 'Tag' = $tag.Name
-                'TagUrl' = $tag.url
-                'Count' = $tag.Count
+                'TagUrl' = [uri] $tag.url
+                'Count' = [int] $tag.Count
             }
 
             Write-Output $tagInfo

@@ -76,8 +76,8 @@ function Get-LFMAlbumTopTag {
             $tagInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.Album.Tag'
                 'Tag' = $tag.Name
-                'Url' = $tag.Url
-                'Match' = $tag.Count
+                'Url' = [uri] $tag.Url
+                'Match' = [int] $tag.Count
             }
 
             Write-Output $tagInfo

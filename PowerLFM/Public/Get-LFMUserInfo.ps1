@@ -55,11 +55,11 @@ function Get-LFMUserInfo {
             'PSTypeName' = 'PowerLFM.User.Info'
             'UserName' = $irm.User.Name
             'RealName' = $irm.User.RealName
-            'Url' = $irm.User.Url
+            'Url' = [uri] $irm.User.Url
             'Country' = $irm.User.Country
             'Registered' = ConvertFrom-UnixTime -UnixTime $irm.User.Registered.UnixTime -Local
             'PlayCount' = [int] $irm.User.PlayCount
-            'PlayLists' = $irm.User.PlayLists
+            'PlayLists' = [int] $irm.User.PlayLists
             'ImageUrl' = $irm.User.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
         }
 

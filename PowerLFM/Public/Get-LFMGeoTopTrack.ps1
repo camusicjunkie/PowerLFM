@@ -72,12 +72,12 @@ function Get-LFMGeoTopTrack {
             $trackInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.Geo.TopTracks'
                 'Track' = $track.Name
-                'TrackId' = $track.Mbid
-                'TrackUrl' = $track.Url
+                'TrackId' = [guid] $track.Mbid
+                'TrackUrl' = [uri] $track.Url
                 'Artist' = $track.Artist.Name
-                'ArtistId' = $track.Artist.Mbid
-                'ArtistUrl' = $track.Artist.Url
-                'Rank' = $track.'@attr'.rank
+                'ArtistId' = [guid] $track.Artist.Mbid
+                'ArtistUrl' = [uri] $track.Artist.Url
+                'Rank' = [int] $track.'@attr'.rank
                 'Listeners' = [int] $track.Listeners
                 'ImageUrl' = $track.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }

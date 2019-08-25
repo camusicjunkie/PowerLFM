@@ -54,9 +54,9 @@ function Get-LFMChartTopTag {
         $tagInfo = [pscustomobject] @{
             'PSTypeName' = 'PowerLFM.Chart.TopTags'
             'Tag' = ConvertTo-TitleCase -String $tag.Name
-            'Url' = $tag.Url
-            'Reach' = $tag.Reach
-            'TotalTags' = $tag.Taggings
+            'Url' = [uri] $tag.Url
+            'Reach' = [int] $tag.Reach
+            'TotalTags' = [int] $tag.Taggings
         }
 
         Write-Output $tagInfo

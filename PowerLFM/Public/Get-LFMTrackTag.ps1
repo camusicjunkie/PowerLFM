@@ -84,7 +84,7 @@ function Get-LFMTrackTag {
             $tagInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.Track.Tag'
                 'Tag' = $tag.Name
-                'Url' = $tag.Url
+                'Url' = [uri] $tag.Url
             }
 
             Write-Output $tagInfo
