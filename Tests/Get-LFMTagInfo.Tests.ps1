@@ -102,7 +102,7 @@ InModuleScope PowerLFM {
 
         Context 'Input' {
 
-            It 'Should throw when limit is greater than 119' {
+            It 'Should throw when Tag is null' {
                 {Get-LFMTagInfo -Tag $null} | Should -Throw
             }
         }
