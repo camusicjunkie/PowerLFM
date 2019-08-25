@@ -56,7 +56,7 @@ function Get-LFMChartTopTag {
             'Tag' = ConvertTo-TitleCase -String $tag.Name
             'Url' = [uri] $tag.Url
             'Reach' = [int] $tag.Reach
-            'TotalTags' = $tag.Taggings
+            'TotalTags' = [int] $tag.Taggings
         }
 
         Write-Output $tagInfo
