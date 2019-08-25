@@ -78,8 +78,8 @@ function Get-LFMAlbumInfo {
             $trackInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.Album.Track'
                 'Track' = $track.Name
-                'Duration' = $track.Duration
-                'Url' = $track.Url
+                'Duration' = [int] $track.Duration
+                'Url' = [uri] $track.Url
             }
             Write-Output $trackInfo
         }
@@ -88,7 +88,7 @@ function Get-LFMAlbumInfo {
             $tagInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.Album.Tag'
                 'Tag' = $tag.Name
-                'Url' = $tag.Url
+                'Url' = [uri] $tag.Url
             }
             Write-Output $tagInfo
         }
@@ -97,16 +97,16 @@ function Get-LFMAlbumInfo {
             'PSTypeName' = 'PowerLFM.Album.Info'
             'Artist' = $irm.Album.Artist
             'Album' = $irm.Album.Name
-            'Id' = $irm.Album.Mbid
+            'Id' = [guid] $irm.Album.Mbid
             'Listeners' = [int] $irm.Album.Listeners
             'PlayCount' = [int] $irm.Album.PlayCount
-            'Url' = $irm.Album.Url
+            'Url' = [uri] $irm.Album.Url
             'Summary' = $irm.Album.Wiki.Summary
             'Tracks' = $tracks
             'Tags' = $tags
         }
 
-        $userPlayCount = $irm.Album.UserPlayCount
+        $userPlayCount = [int] $irm.Album.UserPlayCount
         if ($PSBoundParameters.ContainsKey('UserName')) {
             $albumInfo.add('UserPlayCount', $userPlayCount)
         }

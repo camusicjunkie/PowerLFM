@@ -46,8 +46,8 @@ function Get-LFMTagTopTag {
             $tagInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.Tag.TopTags'
                 'Tag' = $tag.Name
-                'Count' = $tag.Count
-                'Reach' = $tag.Reach
+                'Count' = [int] $tag.Count
+                'Reach' = [int] $tag.Reach
             }
 
             Write-Output $tagInfo

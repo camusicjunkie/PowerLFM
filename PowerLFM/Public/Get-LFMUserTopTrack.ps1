@@ -80,11 +80,11 @@ function Get-LFMUserTopTrack {
                 'PSTypeName' = 'PowerLFM.User.TopTrack'
                 'Track' = $track.Name
                 'PlayCount' = [int] $track.PlayCount
-                'TrackUrl' = $track.url
-                'TrackId' = $track.Mbid
+                'TrackUrl' = [uri] $track.url
+                'TrackId' = [guid] $track.Mbid
                 'Artist' = $track.Artist.Name
-                'ArtistUrl' = $track.Artist.url
-                'ArtistId' = $track.Artist.Mbid
+                'ArtistUrl' = [uri] $track.Artist.url
+                'ArtistId' = [guid] $track.Artist.Mbid
                 'ImageUrl' = $track.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 

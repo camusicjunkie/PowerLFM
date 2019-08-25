@@ -78,7 +78,7 @@ function Get-LFMTrackInfo {
             $tagInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.Album.Tag'
                 'Tag' = $tag.Name
-                'Url' = $tag.Url
+                'Url' = [uri] $tag.Url
             }
             Write-Output $tagInfo
         }
@@ -93,14 +93,14 @@ function Get-LFMTrackInfo {
             'Track' = $irm.Track.Name
             'Artist' = $irm.Track.Artist.Name
             'Album' = $irm.Track.Album.Title
-            'Id' = $irm.Track.Mbid
+            'Id' = [guid] $irm.Track.Mbid
             'Listeners' = [int] $irm.Track.Listeners
             'PlayCount' = [int] $irm.Track.PlayCount
-            'Url' = $irm.Track.Url
+            'Url' = [uri] $irm.Track.Url
             'Tags' = $tags
         }
 
-        $userPlayCount = $irm.Track.UserPlayCount
+        $userPlayCount = [int] $irm.Track.UserPlayCount
         if ($PSBoundParameters.ContainsKey('UserName')) {
             $trackInfo.add('UserPlayCount', $userPlayCount)
             $trackInfo.add('Loved', $loved)

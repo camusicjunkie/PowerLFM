@@ -65,8 +65,8 @@ function Get-LFMGeoTopArtist {
             $artistInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.Geo.TopArtists'
                 'Artist' = $artist.Name
-                'Id' = $artist.Mbid
-                'Url' = $artist.Url
+                'Id' = [guid] $artist.Mbid
+                'Url' = [uri] $artist.Url
                 'Listeners' = [int] $artist.Listeners
                 'ImageUrl' = $artist.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }

@@ -51,7 +51,7 @@ function Get-LFMTagSimilar {
         $tagInfo = [pscustomobject] @{
             'PSTypeName' = 'PowerLFM.Tag.Similar'
             'Tag' = $irm.Tag.Name
-            'Url' = $irm.Tag.Url
+            'Url' = [uri] $irm.Tag.Url
         }
 
         # This api method seems broken at the moment.

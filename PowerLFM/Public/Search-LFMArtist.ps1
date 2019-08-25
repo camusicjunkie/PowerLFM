@@ -64,9 +64,9 @@ function Search-LFMArtist {
             $matchInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.Artist.Search'
                 'Artist' = $match.Name
-                'Id' = $match.Mbid
+                'Id' = [guid] $match.Mbid
                 'Listeners' = [int] $match.Listeners
-                'Url' = $match.Url
+                'Url' = [uri] $match.Url
             }
 
             Write-Output $matchInfo

@@ -59,10 +59,10 @@ function Get-LFMTrackCorrection {
         $correctedTrackInfo = [pscustomobject] @{
             'PSTypeName' = 'PowerLFM.Track.Correction'
             'Track' = $correction.Name
-            'TrackUrl' = $correction.Url
+            'TrackUrl' = [uri] $correction.Url
             'Artist' = $correction.Artist.Name
-            'ArtistUrl' = $correction.Artist.Url
-            'ArtistId' = $correction.Artist.Mbid
+            'ArtistUrl' = [uri] $correction.Artist.Url
+            'ArtistId' = [guid] $correction.Artist.Mbid
         }
 
         Write-Output $correctedTrackInfo

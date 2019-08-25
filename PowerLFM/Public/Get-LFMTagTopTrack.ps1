@@ -62,13 +62,13 @@ function Get-LFMTagTopTrack {
             $trackInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.Tag.TopTracks'
                 'Track' = $track.Name
-                'TrackId' = $track.Mbid
-                'TrackUrl' = $track.Url
+                'TrackId' = [guid] $track.Mbid
+                'TrackUrl' = [uri] $track.Url
                 'Artist' = $track.Artist.Name
-                'ArtistId' = $track.Artist.Mbid
-                'ArtistUrl' = $track.Artist.Url
-                'Rank' = $track.'@attr'.Rank
-                'Duration' = $track.Duration
+                'ArtistId' = [guid] $track.Artist.Mbid
+                'ArtistUrl' = [uri] $track.Artist.Url
+                'Rank' = [int] $track.'@attr'.Rank
+                'Duration' = [int] $track.Duration
                 'ImageUrl' = $track.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 

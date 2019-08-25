@@ -69,8 +69,8 @@ function Get-LFMArtistTopTag {
             $tagInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.Artist.Tag'
                 'Tag' = $tag.Name
-                'Url' = $tag.Url
-                'Match' = $tag.Count
+                'Url' = [uri] $tag.Url
+                'Match' = [int] $tag.Count
             }
 
             Write-Output $tagInfo

@@ -80,8 +80,8 @@ function Get-LFMUserTopArtist {
                 'PSTypeName' = 'PowerLFM.User.Artist'
                 'Artist' = $artist.Name
                 'PlayCount' = [int] $artist.PlayCount
-                'Url' = $artist.url
-                'Id' = $artist.Mbid
+                'Url' = [uri] $artist.url
+                'Id' = [guid] $artist.Mbid
                 'ImageUrl' = $artist.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 

@@ -54,12 +54,12 @@ function Get-LFMChartTopTrack {
         $trackInfo = [pscustomobject] @{
             'PSTypeName' = 'PowerLFM.Chart.TopArtists'
             'Track' = $track.Name
-            'TrackId' = $track.Mbid
-            'TrackUrl' = $track.Url
+            'TrackId' = [guid] $track.Mbid
+            'TrackUrl' = [uri] $track.Url
             'Artist' = $track.Artist.Name
-            'ArtistId' = $track.Artist.Mbid
-            'ArtistUrl' = $track.Artist.Url
-            'Duration' = $track.Duration
+            'ArtistId' = [guid] $track.Artist.Mbid
+            'ArtistUrl' = [uri] $track.Artist.Url
+            'Duration' = [int] $track.Duration
             'Listeners' = [int] $track.Listeners
             'PlayCount' = [int] $track.PlayCount
             'ImageUrl' = $track.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'

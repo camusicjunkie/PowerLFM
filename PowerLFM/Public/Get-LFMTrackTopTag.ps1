@@ -76,8 +76,8 @@ function Get-LFMTrackTopTag {
             $tagInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.Track.Tag'
                 'Tag' = $tag.Name
-                'Url' = $tag.Url
-                'Match' = $tag.Count
+                'Url' = [uri] $tag.Url
+                'Match' = [int] $tag.Count
             }
 
             Write-Output $tagInfo

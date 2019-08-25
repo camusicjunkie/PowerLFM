@@ -64,10 +64,10 @@ function Get-LFMUserWeeklyTrackChart {
             $trackInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.User.WeeklyTrackChart'
                 'Track' = $track.Name
-                'Url' = $track.Url
-                'Id' = $track.Mbid
+                'Url' = [uri] $track.Url
+                'Id' = [guid] $track.Mbid
                 'Artist' = $track.Artist.'#text'
-                'ArtistId' = $track.Artist.Mbid
+                'ArtistId' = [guid] $track.Artist.Mbid
                 'PlayCount' = [int] $track.PlayCount
                 'ImageUrl' = $track.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
                 'StartDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyTrackChart.'@attr'.From -Local
