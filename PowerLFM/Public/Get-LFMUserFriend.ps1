@@ -71,31 +71,8 @@ function Get-LFMUserFriend {
                 'Url' = [uri] $friend.Url
                 'Country' = $friend.Country
                 'Registered' = ConvertFrom-UnixTime -UnixTime $friend.Registered.UnixTime -Local
-                'PlayCount' = [int] $friend.PlayCount
                 'PlayLists' = [int] $friend.PlayLists
                 'ImageUrl' = $friend.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
-            }
-
-            if ($RecentTracks) {
-                $tracks = foreach ($track in $irm.Friends.User.RecentTrack) {
-                    $trackInfo = [pscustomobject] @{
-                        'PSTypeName' = 'PowerLFM.User.RecentTracks'
-                        'Track' = $track.Name
-                        'TrackId' = [guid] $track.Mbid
-                        'TrackUrl' = [uri] $track.Url
-                        'Artist' = $track.Artist.Name
-                        'ArtistId' = [guid] $track.Artist.Mbid
-                        'ArtistUrl' = [uri] $track.Artist.Url
-                        'Album' = $track.Album.Name
-                        'AlbumId' = [guid] $track.Album.Mbid
-                        'AlbumUrl' = [uri] $track.Album.Url
-                        'ScrobbleTime' = ConvertFrom-UnixTime -UnixTime ($track.'@attr'.Uts) -Local
-                    }
-
-                    Write-Output $trackInfo
-                }
-
-                $userInfo.add('RecentTracks', $tracks)
             }
 
             $userInfo = [pscustomobject] $userInfo
