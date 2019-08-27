@@ -55,18 +55,36 @@ function Get-LFMUserTopTrack {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $irm = Invoke-RestMethod -Uri $apiUrl
+        try {
+            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
+            if ($irm.error) {
+                [pscustomobject] @{
+                    'Error' = $irm.error
+                    'Message' = $irm.message
+                }
+                return
+            }
+        }
+        catch {
+            $response = $_.errorDetails.message | ConvertFrom-Json
+
+            [pscustomobject] @{
+                'Error' = $response.error
+                'Message' = $response.message
+            }
+            return
+        }
 
         foreach ($track in $irm.TopTracks.Track) {
             $trackInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.User.TopTrack'
                 'Track' = $track.Name
                 'PlayCount' = [int] $track.PlayCount
-                'TrackUrl' = $track.Url
-                'TrackId' = $track.Mbid
+                'TrackUrl' = [uri] $track.Url
+                'TrackId' = [guid] $track.Mbid
                 'Artist' = $track.Artist.Name
-                'ArtistUrl' = $track.Artist.Url
-                'ArtistId' = $track.Artist.Mbid
+                'ArtistUrl' = [uri] $track.Artist.Url
+                'ArtistId' = [guid] $track.Artist.Mbid
                 'ImageUrl' = $track.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 

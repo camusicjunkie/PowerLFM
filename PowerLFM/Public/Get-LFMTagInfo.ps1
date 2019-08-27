@@ -35,14 +35,32 @@ function Get-LFMTagInfo {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $irm = Invoke-RestMethod -Uri $apiUrl
+        try {
+            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
+            if ($irm.error) {
+                [pscustomobject] @{
+                    'Error' = $irm.error
+                    'Message' = $irm.message
+                }
+                return
+            }
+        }
+        catch {
+            $response = $_.errorDetails.message | ConvertFrom-Json
+
+            [pscustomobject] @{
+                'Error' = $response.error
+                'Message' = $response.message
+            }
+            return
+        }
 
         $tagInfo = [pscustomobject] @{
             'PSTypeName' = 'PowerLFM.Tag.Info'
             'Tag' = $irm.Tag.Name
-            'Url' = "http://www.last.fm/tag/$Tag".Replace(' ', '+')
-            'Reach' = $irm.Tag.Reach
-            'TotalTags' = $irm.Tag.Total
+            'Url' = [uri] "http://www.last.fm/tag/$Tag".Replace(' ', '+')
+            'Reach' = [int] $irm.Tag.Reach
+            'TotalTags' = [int] $irm.Tag.Total
             'Summary' = $irm.Tag.Wiki.Summary
         }
 

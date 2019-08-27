@@ -38,15 +38,33 @@ function Get-LFMTagTopArtist {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $irm = Invoke-RestMethod -Uri $apiUrl
+        try {
+            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
+            if ($irm.error) {
+                [pscustomobject] @{
+                    'Error' = $irm.error
+                    'Message' = $irm.message
+                }
+                return
+            }
+        }
+        catch {
+            $response = $_.errorDetails.message | ConvertFrom-Json
+
+            [pscustomobject] @{
+                'Error' = $response.error
+                'Message' = $response.message
+            }
+            return
+        }
 
         foreach ($artist in $irm.TopArtists.Artist) {
             $artistInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.Tag.TopArtists'
                 'Artist' = $artist.Name
-                'ArtistId' = $artist.Mbid
-                'ArtistUrl' = $artist.Url
-                'Rank' = $artist.'@attr'.Rank
+                'ArtistId' = [guid] $artist.Mbid
+                'ArtistUrl' = [uri] $artist.Url
+                'Rank' = [int] $artist.'@attr'.Rank
                 'ImageUrl' = $artist.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 

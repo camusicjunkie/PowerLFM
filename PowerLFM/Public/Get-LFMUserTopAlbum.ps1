@@ -55,18 +55,36 @@ function Get-LFMUserTopAlbum {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $irm = Invoke-RestMethod -Uri $apiUrl
+        try {
+            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
+            if ($irm.error) {
+                [pscustomobject] @{
+                    'Error' = $irm.error
+                    'Message' = $irm.message
+                }
+                return
+            }
+        }
+        catch {
+            $response = $_.errorDetails.message | ConvertFrom-Json
+
+            [pscustomobject] @{
+                'Error' = $response.error
+                'Message' = $response.message
+            }
+            return
+        }
 
         foreach ($album in $irm.TopAlbums.Album) {
             $albumInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.User.Album'
                 'Album' = $album.Name
                 'PlayCount' = [int] $album.PlayCount
-                'AlbumUrl' = $album.Url
-                'Albumid' = $album.Mbid
+                'AlbumUrl' = [uri] $album.Url
+                'Albumid' = [guid] $album.Mbid
                 'Artist' = $album.Artist.Name
-                'ArtistUrl' = $album.Artist.Url
-                'ArtistId' = $album.Artist.Mbid
+                'ArtistUrl' = [uri] $album.Artist.Url
+                'ArtistId' = [guid] $album.Artist.Mbid
                 'ImageUrl' = $album.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 

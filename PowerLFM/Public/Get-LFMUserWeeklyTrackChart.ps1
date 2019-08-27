@@ -40,16 +40,34 @@ function Get-LFMUserWeeklyTrackChart {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $irm = Invoke-RestMethod -Uri $apiUrl
+        try {
+            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
+            if ($irm.error) {
+                [pscustomobject] @{
+                    'Error' = $irm.error
+                    'Message' = $irm.message
+                }
+                return
+            }
+        }
+        catch {
+            $response = $_.errorDetails.message | ConvertFrom-Json
+
+            [pscustomobject] @{
+                'Error' = $response.error
+                'Message' = $response.message
+            }
+            return
+        }
 
         foreach ($track in $irm.WeeklyTrackChart.Track) {
             $trackInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.User.WeeklyTrackChart'
                 'Track' = $track.Name
-                'Url' = $track.Url
-                'Id' = $track.Mbid
+                'Url' = [uri] $track.Url
+                'Id' = [guid] $track.Mbid
                 'Artist' = $track.Artist.'#text'
-                'ArtistId' = $track.Artist.Mbid
+                'ArtistId' = [guid] $track.Artist.Mbid
                 'PlayCount' = [int] $track.PlayCount
                 'ImageUrl' = $track.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
                 'StartDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyTrackChart.'@attr'.From -Local

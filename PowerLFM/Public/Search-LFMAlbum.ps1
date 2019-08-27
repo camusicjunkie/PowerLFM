@@ -39,15 +39,33 @@ function Search-LFMAlbum {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $irm = Invoke-RestMethod -Uri $apiUrl
+        try {
+            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
+            if ($irm.error) {
+                [pscustomobject] @{
+                    'Error' = $irm.error
+                    'Message' = $irm.message
+                }
+                return
+            }
+        }
+        catch {
+            $response = $_.errorDetails.message | ConvertFrom-Json
+
+            [pscustomobject] @{
+                'Error' = $response.error
+                'Message' = $response.message
+            }
+            return
+        }
 
         foreach ($match in $irm.Results.AlbumMatches.Album) {
             $matchInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.Album.Search'
                 'Album' = $match.Name
                 'Artist' = $match.Artist
-                'Id' = $match.Mbid
-                'Url' = $match.Url
+                'Id' = [guid] $match.Mbid
+                'Url' = [uri] $match.Url
             }
 
             Write-Output $matchInfo

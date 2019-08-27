@@ -30,15 +30,33 @@ function Get-LFMChartTopTag {
 
     $apiUrl = "$baseUrl/?$string"
 
-    $irm = Invoke-RestMethod -Uri $apiUrl
+    try {
+        $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
+        if ($irm.error) {
+            [pscustomobject] @{
+                'Error' = $irm.error
+                'Message' = $irm.message
+            }
+            return
+        }
+    }
+    catch {
+        $response = $_.errorDetails.message | ConvertFrom-Json
+
+        [pscustomobject] @{
+            'Error' = $response.error
+            'Message' = $response.message
+        }
+        return
+    }
 
     foreach ($tag in $irm.Tags.Tag) {
         $tagInfo = [pscustomobject] @{
             'PSTypeName' = 'PowerLFM.Chart.TopTags'
             'Tag' = ConvertTo-TitleCase -String $tag.Name
-            'Url' = $tag.Url
-            'Reach' = $tag.Reach
-            'TotalTags' = $tag.Taggings
+            'Url' = [uri] $tag.Url
+            'Reach' = [int] $tag.Reach
+            'TotalTags' = [int] $tag.Taggings
         }
 
         Write-Output $tagInfo

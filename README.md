@@ -51,6 +51,7 @@ $album.Tags
 * Track
   * [track.scrobble](https://www.last.fm/api/show/track.scrobble)
   * [track.updateNowPlaying](https://www.last.fm/api/show/track.updateNowPlaying)
+  * user.getTrackScrobbles 
 
 ## Currently supported methods
 
@@ -104,7 +105,7 @@ $album.Tags
   * [track.search](https://www.last.fm/api/show/track.search)
   * [track.unlove](https://www.last.fm/api/show/track.unlove)
 * User
-  * [user.getArtistTracks](https://www.last.fm/api/show/user.getArtistTracks)
+  * user.getArtistTracks
   * [user.getFriends](https://www.last.fm/api/show/user.getFriends)
   * [user.getInfo](https://www.last.fm/api/show/user.getInfo)
   * [user.getLovedTracks](https://www.last.fm/api/show/user.getLovedTracks)

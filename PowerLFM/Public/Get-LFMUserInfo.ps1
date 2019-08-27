@@ -31,17 +31,35 @@ function Get-LFMUserInfo {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $irm = Invoke-RestMethod -Uri $apiUrl
+        try {
+            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
+            if ($irm.error) {
+                [pscustomobject] @{
+                    'Error' = $irm.error
+                    'Message' = $irm.message
+                }
+                return
+            }
+        }
+        catch {
+            $response = $_.errorDetails.message | ConvertFrom-Json
+
+            [pscustomobject] @{
+                'Error' = $response.error
+                'Message' = $response.message
+            }
+            return
+        }
 
         $userInfo = [pscustomobject] @{
             'PSTypeName' = 'PowerLFM.User.Info'
             'UserName' = $irm.User.Name
             'RealName' = $irm.User.RealName
-            'Url' = $irm.User.Url
+            'Url' = [uri] $irm.User.Url
             'Country' = $irm.User.Country
             'Registered' = ConvertFrom-UnixTime -UnixTime $irm.User.Registered.UnixTime -Local
             'PlayCount' = [int] $irm.User.PlayCount
-            'PlayLists' = $irm.User.PlayLists
+            'PlayLists' = [int] $irm.User.PlayLists
             'ImageUrl' = $irm.User.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
         }
 

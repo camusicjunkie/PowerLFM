@@ -40,14 +40,32 @@ function Get-LFMUserWeeklyArtistChart {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $irm = Invoke-RestMethod -Uri $apiUrl
+        try {
+            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
+            if ($irm.error) {
+                [pscustomobject] @{
+                    'Error' = $irm.error
+                    'Message' = $irm.message
+                }
+                return
+            }
+        }
+        catch {
+            $response = $_.errorDetails.message | ConvertFrom-Json
+
+            [pscustomobject] @{
+                'Error' = $response.error
+                'Message' = $response.message
+            }
+            return
+        }
 
         foreach ($artist in $irm.WeeklyArtistChart.Artist) {
             $artistInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.User.WeeklyArtistChart'
                 'Artist' = $artist.Name
-                'Url' = $artist.Url
-                'Id' = $artist.Mbid
+                'Url' = [uri] $artist.Url
+                'Id' = [guid] $artist.Mbid
                 'PlayCount' = [int] $artist.PlayCount
                 'StartDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyArtistChart.'@attr'.From -Local
                 'EndDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyArtistChart.'@attr'.To -Local

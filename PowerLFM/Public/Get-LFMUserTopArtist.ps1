@@ -55,15 +55,33 @@ function Get-LFMUserTopArtist {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $irm = Invoke-RestMethod -Uri $apiUrl
+        try {
+            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
+            if ($irm.error) {
+                [pscustomobject] @{
+                    'Error' = $irm.error
+                    'Message' = $irm.message
+                }
+                return
+            }
+        }
+        catch {
+            $response = $_.errorDetails.message | ConvertFrom-Json
+
+            [pscustomobject] @{
+                'Error' = $response.error
+                'Message' = $response.message
+            }
+            return
+        }
 
         foreach ($artist in $irm.TopArtists.Artist) {
             $artistInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.User.Artist'
                 'Artist' = $artist.Name
                 'PlayCount' = [int] $artist.PlayCount
-                'Url' = $artist.Url
-                'Id' = $artist.Mbid
+                'Url' = [uri] $artist.Url
+                'Id' = [guid] $artist.Mbid
                 'ImageUrl' = $artist.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 

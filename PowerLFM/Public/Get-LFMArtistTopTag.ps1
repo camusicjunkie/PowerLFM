@@ -46,14 +46,32 @@ function Get-LFMArtistTopTag {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $irm = Invoke-RestMethod -Uri $apiUrl
+        try {
+            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
+            if ($irm.error) {
+                [pscustomobject] @{
+                    'Error' = $irm.error
+                    'Message' = $irm.message
+                }
+                return
+            }
+        }
+        catch {
+            $response = $_.errorDetails.message | ConvertFrom-Json
+
+            [pscustomobject] @{
+                'Error' = $response.error
+                'Message' = $response.message
+            }
+            return
+        }
 
         foreach ($tag in $irm.TopTags.Tag) {
             $tagInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.Artist.Tag'
                 'Tag' = $tag.Name
-                'Url' = $tag.Url
-                'Match' = $tag.Count
+                'Url' = [uri] $tag.Url
+                'Match' = [int] $tag.Count
             }
 
             Write-Output $tagInfo

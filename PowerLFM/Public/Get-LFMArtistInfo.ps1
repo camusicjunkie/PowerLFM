@@ -49,13 +49,31 @@ function Get-LFMArtistInfo {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $irm = Invoke-RestMethod -Uri $apiUrl
+        try {
+            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
+            if ($irm.error) {
+                [pscustomobject] @{
+                    'Error' = $irm.error
+                    'Message' = $irm.message
+                }
+                return
+            }
+        }
+        catch {
+            $response = $_.errorDetails.message | ConvertFrom-Json
+
+            [pscustomobject] @{
+                'Error' = $response.error
+                'Message' = $response.message
+            }
+            return
+        }
 
         $similarArtists = foreach ($similar in $irm.Artist.Similar.Artist) {
             $similarInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.Artist.Similar'
                 'Artist' = $similar.Name
-                'Url' = $similar.Url
+                'Url' = [uri] $similar.Url
             }
 
             Write-Output $similarInfo
@@ -65,7 +83,7 @@ function Get-LFMArtistInfo {
             $tagInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.Artist.Tag'
                 'Tag' = $tag.Name
-                'Url' = $tag.Url
+                'Url' = [uri] $tag.Url
             }
 
             Write-Output $tagInfo
@@ -79,17 +97,17 @@ function Get-LFMArtistInfo {
         $artistInfo = @{
             'PSTypeName' = 'PowerLFM.Artist.Info'
             'Artist' = $irm.Artist.Name
-            'Id' = $irm.Artist.Mbid
+            'Id' = [guid] $irm.Artist.Mbid
             'Listeners' = [int] $irm.Artist.Stats.Listeners
             'PlayCount' = [int] $irm.Artist.Stats.PlayCount
             'OnTour' = $tour
-            'Url' = $irm.Artist.Url
+            'Url' = [uri] $irm.Artist.Url
             'Summary' = $irm.Artist.Bio.Summary
             'SimilarArtists' = $similarArtists
             'Tags' = $tags
         }
 
-        $userPlayCount = $irm.Artist.Stats.UserPlayCount
+        $userPlayCount = [int] $irm.Artist.Stats.UserPlayCount
         if ($PSBoundParameters.ContainsKey('UserName')) {
             $artistInfo.Add('UserPlayCount', $userPlayCount)
         }

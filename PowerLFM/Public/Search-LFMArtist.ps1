@@ -40,15 +40,33 @@ function Search-LFMArtist {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $irm = Invoke-RestMethod -Uri $apiUrl
+        try {
+            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
+            if ($irm.error) {
+                [pscustomobject] @{
+                    'Error' = $irm.error
+                    'Message' = $irm.message
+                }
+                return
+            }
+        }
+        catch {
+            $response = $_.errorDetails.message | ConvertFrom-Json
+
+            [pscustomobject] @{
+                'Error' = $response.error
+                'Message' = $response.message
+            }
+            return
+        }
 
         foreach ($match in $irm.Results.ArtistMatches.Artist) {
             $matchInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.Artist.Search'
                 'Artist' = $match.Name
-                'Id' = $match.Mbid
+                'Id' = [guid] $match.Mbid
                 'Listeners' = [int] $match.Listeners
-                'Url' = $match.Url
+                'Url' = [uri] $match.Url
             }
 
             Write-Output $matchInfo

@@ -55,14 +55,32 @@ function Get-LFMUserArtistTrack {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $irm = Invoke-RestMethod -Uri $apiUrl
+        try {
+            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
+            if ($irm.error) {
+                [pscustomobject] @{
+                    'Error' = $irm.error
+                    'Message' = $irm.message
+                }
+                return
+            }
+        }
+        catch {
+            $response = $_.errorDetails.message | ConvertFrom-Json
+
+            [pscustomobject] @{
+                'Error' = $response.error
+                'Message' = $response.message
+            }
+            return
+        }
 
         foreach ($track in $irm.ArtistTracks.Track) {
             $trackInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.User.Track'
                 'Track' = $track.Name
-                'Id' = $track.Mbid
-                'Url' = $track.Url
+                'Id' = [guid] $track.Mbid
+                'Url' = [uri] $track.Url
                 'ImageUrl' = $track.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
                 'Album' = $track.Album.'#text'
                 'ScrobbleTime' = ConvertFrom-UnixTime -UnixTime ($track.Date.Uts) -Local
