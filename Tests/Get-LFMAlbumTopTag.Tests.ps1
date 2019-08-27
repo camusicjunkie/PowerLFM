@@ -274,11 +274,11 @@ InModuleScope PowerLFM {
             }
 
             It "Album first tag should have name of $($contextMock.topTags.tag[0].name)" {
-                $output.Tag[0] | Should -Be $contextMock.topTags.tag[0].name
+                $output[0].Tag | Should -Be $contextMock.topTags.tag[0].name
             }
 
             It "Album second tag should have url of $($contextMock.topTags.tag[1].url)" {
-                $output.Url[1] | Should -Be $contextMock.topTags.tag[1].url
+                $output[1].Url | Should -Be $contextMock.topTags.tag[1].url
             }
 
             It 'Album should have two tags' {
@@ -291,11 +291,11 @@ InModuleScope PowerLFM {
             }
 
             It "Album first tag should have match of $($contextMock.topTags.tag[0].count)" {
-                $output.Match[0] | Should -Be $contextMock.topTags.tag[0].count
+                $output[0].Match | Should -Be $contextMock.topTags.tag[0].count
             }
 
             It "Album second tag should have match of $($contextMock.topTags.tag[1].count)" {
-                $output.Match[1] | Should -Be $contextMock.topTags.tag[1].count
+                $output[1].Match | Should -Be $contextMock.topTags.tag[1].count
             }
 
             It "Album should have two tags when id parameter is used" {

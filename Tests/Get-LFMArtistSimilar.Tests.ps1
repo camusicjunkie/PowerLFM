@@ -314,11 +314,11 @@ InModuleScope PowerLFM {
             }
 
             It "Artist first similar artist should have name of $($contextMock.similarartists.artist[0].name)" {
-                $output.Artist[0] | Should -Be $contextMock.similarartists.artist[0].name
+                $output[0].Artist | Should -Be $contextMock.similarartists.artist[0].name
             }
 
             It "Artist second similar artist should have url of $($contextMock.similarartists.artist[1].url)" {
-                $output.Url[1] | Should -Be $contextMock.similarartists.artist[1].url
+                $output[1].Url | Should -Be $contextMock.similarartists.artist[1].url
             }
 
             It 'Artist should have two similar artists' {
@@ -331,11 +331,11 @@ InModuleScope PowerLFM {
             }
 
             It "Artist first match should have percentage of $($contextMock.similarartists.artist[0].match)" {
-                $output.Match[0] | Should -Be 1
+                $output[0].Match | Should -Be 1
             }
 
             It "Artist second match should have percentage of $($contextMock.similarartists.artist[1].match)" {
-                $output.Match[1] | Should -Be .5
+                $output[1].Match | Should -Be .5
             }
 
             It "Artist should return two similar artists when id parameter is used" {

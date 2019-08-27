@@ -239,19 +239,19 @@ InModuleScope PowerLFM {
             }
 
             It "Artist first top tag should have name of $($contextMock.toptags.tag[0].name)" {
-                $output.Tag[0] | Should -Be $contextMock.toptags.tag[0].name
+                $output[0].Tag | Should -Be $contextMock.toptags.tag[0].name
             }
 
             It "Artist second tag should have url of $($contextMock.toptags.tag[1].url)" {
-                $output.Url[1] | Should -Be $contextMock.toptags.tag[1].url
+                $output[1].Url | Should -Be $contextMock.toptags.tag[1].url
             }
 
             It "Artist first tag should have match of $($contextMock.toptags.tag[0].count)" {
-                $output.Match[0] | Should -Be $contextMock.toptags.tag[0].count
+                $output[0].Match | Should -Be $contextMock.toptags.tag[0].count
             }
 
             It "Artist second tag should have match of $($contextMock.toptags.tag[1].count)" {
-                $output.Match[1] | Should -Be $contextMock.toptags.tag[1].count
+                $output[1].Match | Should -Be $contextMock.toptags.tag[1].count
             }
 
             It 'Artist should have two tags' {

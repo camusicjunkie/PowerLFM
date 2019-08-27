@@ -350,11 +350,11 @@ InModuleScope PowerLFM {
             }
 
             It "Album first tag should have name of $($contextMock.tags.tag[0].name)" {
-                $output.Tag[0] | Should -Be $contextMock.tags.tag[0].name
+                $output[0].Tag | Should -Be $contextMock.tags.tag[0].name
             }
 
             It "Album second tag should have url of $($contextMock.tags.tag[1].url)" {
-                $output.Url[1] | Should -Be $contextMock.tags.tag[1].url
+                $output[1].Url | Should -Be $contextMock.tags.tag[1].url
             }
 
             It 'Album should have two tags' {

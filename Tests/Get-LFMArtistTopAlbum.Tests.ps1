@@ -390,20 +390,20 @@ InModuleScope PowerLFM {
             }
 
             It "Artist first top album should have name of $($contextMock.topalbums.album[0].name)" {
-                $output.Album[0] | Should -Be $contextMock.topalbums.album[0].name
+                $output[0].Album | Should -Be $contextMock.topalbums.album[0].name
             }
 
             It "Artist first top album should have id of $($contextMock.topalbums.album[0].mbid)" {
-                $output.Id[0] | Should -Be $contextMock.topalbums.album[0].mbid
+                $output[0].Id | Should -Be $contextMock.topalbums.album[0].mbid
             }
 
             It "Artist second top album should have url of $($contextMock.topalbums.album[1].url)" {
-                $output.Url[1] | Should -Be $contextMock.topalbums.album[1].url
+                $output[1].Url | Should -Be $contextMock.topalbums.album[1].url
             }
 
             It "Artist second top album should have playcount with a value of $($contextMock.topalbums.album[1].playcount)" {
-                $output.Playcount[1] | Should -BeOfType [int]
-                $output.Playcount[1] | Should -Be $contextMock.topalbums.album[1].playcount
+                $output[1].Playcount | Should -BeOfType [int]
+                $output[1].Playcount | Should -Be $contextMock.topalbums.album[1].playcount
             }
 
             It 'Artist should have two top albums' {

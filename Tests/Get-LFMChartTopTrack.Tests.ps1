@@ -151,37 +151,37 @@ InModuleScope PowerLFM {
             }
 
             It "Chart first top track should have track name of $($contextMock.tracks.track[0].name)" {
-                $output.Track[0] | Should -Be $contextMock.tracks.track[0].name
+                $output[0].Track | Should -Be $contextMock.tracks.track[0].name
             }
 
             It "Chart first top track should have artist name of $($contextMock.tracks.track[0].artist.name)" {
-                $output.Artist[0] | Should -Be $contextMock.tracks.track[0].artist.name
+                $output[0].Artist | Should -Be $contextMock.tracks.track[0].artist.name
             }
 
             It "Chart first top track should have duration with a value of $($contextMock.tracks.track[0].duration)" {
-                $output.Duration[0] | Should -Be $contextMock.tracks.track[0].duration
+                $output[0].Duration | Should -Be $contextMock.tracks.track[0].duration
             }
 
             It "Chart first top track should have playcount with a value of $($contextMock.tracks.track[0].Playcount)" {
-                $output.Playcount[0] | Should -BeOfType [int]
-                $output.Playcount[0] | Should -Be $contextMock.tracks.track[0].Playcount
+                $output[0].Playcount | Should -BeOfType [int]
+                $output[0].Playcount | Should -Be $contextMock.tracks.track[0].Playcount
             }
 
             It "Chart second top track should have playcount with a value of $($contextMock.tracks.track[1].Playcount)" {
-                $output.Playcount[1] | Should -BeOfType [int]
-                $output.Playcount[1] | Should -Be $contextMock.tracks.track[1].Playcount
+                $output[1].Playcount | Should -BeOfType [int]
+                $output[1].Playcount | Should -Be $contextMock.tracks.track[1].Playcount
             }
 
             It "Chart second top track should have artist id with a value of $($contextMock.tracks.track[1].artist.mbid)" {
-                $output.ArtistId[1] | Should -Be $contextMock.tracks.track[1].artist.mbid
+                $output[1].ArtistId | Should -Be $contextMock.tracks.track[1].artist.mbid
             }
 
             It "Chart second top track should have artist url of $($contextMock.tracks.track[1].artist.url)" {
-                $output.ArtistUrl[1] | Should -Be $contextMock.tracks.track[1].artist.url
+                $output[1].ArtistUrl | Should -Be $contextMock.tracks.track[1].artist.url
             }
 
             It "Chart second top track should have track url of $($contextMock.tracks.track[1].url)" {
-                $output.TrackUrl[1] | Should -Be $contextMock.tracks.track[1].url
+                $output[1].TrackUrl | Should -Be $contextMock.tracks.track[1].url
             }
 
             It 'Chart should have two top tracks' {

@@ -192,25 +192,25 @@ InModuleScope PowerLFM {
             }
 
             It "Country first top artist should have name of $($contextMock.topartists.artist[0].name)" {
-                $output.Artist[0] | Should -Be $contextMock.topartists.artist[0].name
+                $output[0].Artist | Should -Be $contextMock.topartists.artist[0].name
             }
 
             It "Country first top artist should have id of $($contextMock.topartists.artist[0].mbid)" {
-                $output.Id[0] | Should -Be $contextMock.topartists.artist[0].mbid
+                $output[0].Id | Should -Be $contextMock.topartists.artist[0].mbid
             }
 
             It "Country first top artist should have listeners with a value of $($contextMock.topartists.artist[0].Listeners)" {
-                $output.Listeners[0] | Should -BeOfType [int]
-                $output.Listeners[0] | Should -Be $contextMock.topartists.artist[0].Listeners
+                $output[0].Listeners | Should -BeOfType [int]
+                $output[0].Listeners | Should -Be $contextMock.topartists.artist[0].Listeners
             }
 
             It "Country second top artist should have listeners with a value of $($contextMock.topartists.artist[1].Listeners)" {
-                $output.Listeners[1] | Should -BeOfType [int]
-                $output.Listeners[1] | Should -Be $contextMock.topartists.artist[1].Listeners
+                $output[1].Listeners | Should -BeOfType [int]
+                $output[1].Listeners | Should -Be $contextMock.topartists.artist[1].Listeners
             }
 
             It "Country second top artist should have track url of $($contextMock.topartists.artist[1].url)" {
-                $output.Url[1] | Should -Be $contextMock.topartists.artist[1].url
+                $output[1].Url | Should -Be $contextMock.topartists.artist[1].url
             }
 
             It 'Country should have two top artists' {

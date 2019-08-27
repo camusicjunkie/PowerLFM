@@ -192,35 +192,35 @@ InModuleScope PowerLFM {
             }
 
             It "Tag first top album should have name of $($contextMock.albums.album[0].name)" {
-                $output.Album[0] | Should -Be $contextMock.albums.album[0].name
+                $output[0].Album | Should -Be $contextMock.albums.album[0].name
             }
 
             It "Tag first top album should have artist name of $($contextMock.albums.album[0].artist.name)" {
-                $output.Artist[0] | Should -Be $contextMock.albums.album[0].artist.name
+                $output[0].Artist | Should -Be $contextMock.albums.album[0].artist.name
             }
 
             It "Tag first top album should have url of $($contextMock.albums.album[0].url)" {
-                $output.AlbumUrl[0] | Should -Be $contextMock.albums.album[0].url
+                $output[0].AlbumUrl | Should -Be $contextMock.albums.album[0].url
             }
 
             It "Tag first top album should have rank with a value of $($contextMock.albums.album[0].'@attr'.rank)" {
-                $output.Rank[0] | Should -Be $contextMock.albums.album[0].'@attr'.rank
+                $output[0].Rank | Should -Be $contextMock.albums.album[0].'@attr'.rank
             }
 
             It "Tag second top album should have rank with a value of $($contextMock.albums.album[1].'@attr'.rank)" {
-                $output.Rank[1] | Should -Be $contextMock.albums.album[1].'@attr'.rank
+                $output[1].Rank | Should -Be $contextMock.albums.album[1].'@attr'.rank
             }
 
             It "Tag second top album should have url of $($contextMock.albums.album[1].url)" {
-                $output.AlbumUrl[1] | Should -Be $contextMock.albums.album[1].url
+                $output[1].AlbumUrl | Should -Be $contextMock.albums.album[1].url
             }
 
             It "Tag second top album should have artist id with a value of $($contextMock.albums.album[1].artist.mbid)" {
-                $output.ArtistId[1] | Should -Be $contextMock.albums.album[1].artist.mbid
+                $output[1].ArtistId | Should -Be $contextMock.albums.album[1].artist.mbid
             }
 
             It "Tag second top album should have artist url of $($contextMock.albums.album[1].artist.url)" {
-                $output.ArtistUrl[1] | Should -Be $contextMock.albums.album[1].artist.url
+                $output[1].ArtistUrl | Should -Be $contextMock.albums.album[1].artist.url
             }
 
             It 'Tag should have two top albums' {

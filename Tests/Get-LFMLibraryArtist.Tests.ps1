@@ -192,25 +192,25 @@ InModuleScope PowerLFM {
             }
 
             It "Library first artist should have name of $($contextMock.artists.artist[0].name)" {
-                $output.Artist[0] | Should -Be $contextMock.artists.artist[0].name
+                $output[0].Artist | Should -Be $contextMock.artists.artist[0].name
             }
 
             It "Library first artist should have id of $($contextMock.artists.artist[0].mbid)" {
-                $output.Id[0] | Should -Be $contextMock.artists.artist[0].mbid
+                $output[0].Id | Should -Be $contextMock.artists.artist[0].mbid
             }
 
             It "Library first artist should have playcount with a value of $($contextMock.artists.artist[0].Playcount)" {
-                $output.Playcount[0] | Should -BeOfType [int]
-                $output.Playcount[0] | Should -Be $contextMock.artists.artist[0].Playcount
+                $output[0].Playcount | Should -BeOfType [int]
+                $output[0].Playcount | Should -Be $contextMock.artists.artist[0].Playcount
             }
 
             It "Library second artist should have playcount with a value of $($contextMock.artists.artist[1].Playcount)" {
-                $output.Playcount[1] | Should -BeOfType [int]
-                $output.Playcount[1] | Should -Be $contextMock.artists.artist[1].Playcount
+                $output[1].Playcount | Should -BeOfType [int]
+                $output[1].Playcount | Should -Be $contextMock.artists.artist[1].Playcount
             }
 
             It "Library second artist should have track url of $($contextMock.artists.artist[1].url)" {
-                $output.Url[1] | Should -Be $contextMock.artists.artist[1].url
+                $output[1].Url | Should -Be $contextMock.artists.artist[1].url
             }
 
             It 'Library should have two artists' {

@@ -234,37 +234,37 @@ InModuleScope PowerLFM {
             }
 
             It "Country first top track should have track name of $($contextMock.tracks.track[0].name)" {
-                $output.Track[0] | Should -Be $contextMock.tracks.track[0].name
+                $output[0].Track | Should -Be $contextMock.tracks.track[0].name
             }
 
             It "Country first top track should have artist name of $($contextMock.tracks.track[0].artist.name)" {
-                $output.Artist[0] | Should -Be $contextMock.tracks.track[0].artist.name
+                $output[0].Artist | Should -Be $contextMock.tracks.track[0].artist.name
             }
 
             It "Country first top track should have track id with a value of $($contextMock.tracks.track[0].mbid)" {
-                $output.TrackId[0] | Should -Be $contextMock.tracks.track[0].mbid
+                $output[0].TrackId | Should -Be $contextMock.tracks.track[0].mbid
             }
 
             It "Country first top track should have listeners with a value of $($contextMock.tracks.track[0].Listeners)" {
-                $output.Listeners[0] | Should -BeOfType [int]
-                $output.Listeners[0] | Should -Be $contextMock.tracks.track[0].Listeners
+                $output[0].Listeners | Should -BeOfType [int]
+                $output[0].Listeners | Should -Be $contextMock.tracks.track[0].Listeners
             }
 
             It "Country second top track should have listeners with a value of $($contextMock.tracks.track[1].Listeners)" {
-                $output.Listeners[1] | Should -BeOfType [int]
-                $output.Listeners[1] | Should -Be $contextMock.tracks.track[1].Listeners
+                $output[1].Listeners | Should -BeOfType [int]
+                $output[1].Listeners | Should -Be $contextMock.tracks.track[1].Listeners
             }
 
             It "Country second top track should have artist id with a value of $($contextMock.tracks.track[1].artist.mbid)" {
-                $output.ArtistId[1] | Should -Be $contextMock.tracks.track[1].artist.mbid
+                $output[1].ArtistId | Should -Be $contextMock.tracks.track[1].artist.mbid
             }
 
             It "Country second top track should have artist url of $($contextMock.tracks.track[1].artist.url)" {
-                $output.ArtistUrl[1] | Should -Be $contextMock.tracks.track[1].artist.url
+                $output[1].ArtistUrl | Should -Be $contextMock.tracks.track[1].artist.url
             }
 
             It "Country second top track should have track url of $($contextMock.tracks.track[1].url)" {
-                $output.TrackUrl[1] | Should -Be $contextMock.tracks.track[1].url
+                $output[1].TrackUrl | Should -Be $contextMock.tracks.track[1].url
             }
 
             It 'Country should have two top tracks' {
