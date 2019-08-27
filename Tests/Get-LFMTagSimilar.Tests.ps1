@@ -60,22 +60,79 @@ Describe 'Get-LFMTagSimilar: Interface' -Tag Interface {
 
 InModuleScope PowerLFM {
 
+    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+    $contextMock = $mocks.'Get-LFMTagSimilar'.TagSimilar
+
     Describe 'Get-LFMTagSimilar: Unit' -Tag Unit {
+
+        Mock Invoke-RestMethod
 
         Context 'Input' {
 
+            It 'Should throw when Tag is null' {
+                {Get-LFMTagSimilar -Tag $null} | Should -Throw
+            }
         }
 
         Context 'Execution' {
 
+            Mock Foreach-Object
+
+            $testCases = @(
+                @{
+                    times = 4
+                    gtiParams = @{
+                        Tag = 'Tag'
+                    }
+                }
+            )
+
+            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
+                param ($times, $gtiParams)
+
+                Get-LFMTagInfo @gtiParams
+
+                $amParams = @{
+                    CommandName = 'Foreach-Object'
+                    Exactly = $true
+                    Times = $times
+                    Scope = 'It'
+                }
+                Assert-MockCalled @amParams
+            }
         }
 
         Context 'Output' {
 
+            Mock Invoke-RestMethod {$contextMock}
+
+            BeforeEach {
+                $script:output = Get-LFMTagSimilar -Tag Tag
+            }
+
+            It "Tag should have name of $($contextMock.tag.name)" {
+                $output.Tag | Should -Be $contextMock.tag.name
+            }
+
+            It "Tag should have url of $($contextMock.tag.url)" {
+                $output.Url | Should -Be $($contextMock.tag.url)
+            }
+
+            It 'Tag should have one tag' {
+                $output.Tag | Should -HaveCount 1
+            }
+
+            It 'Tag should not have more than one tag' {
+                $output.Tag | Should -Not -BeNullOrEmpty
+                $output.Tag | Should -Not -HaveCount 2
+            }
         }
     }
 }
 
 Describe 'Get-LFMTagSimilar: Integration' -Tag Integration {
 
+    It "Integration test" {
+        Set-ItResult -Skipped -Because 'the integration tests will be set up later'
+    }
 }
