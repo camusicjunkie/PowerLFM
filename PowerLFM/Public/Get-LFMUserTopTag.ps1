@@ -20,11 +20,11 @@ function Get-LFMUserTopTag {
         }
 
         switch ($PSBoundParameters.Keys) {
-            'Limit' {$apiParams.add('limit', $Limit)}
+            'Limit' {$apiParams.Add('limit', $Limit)}
         }
     }
     process {
-        $apiParams.add('user', $UserName)
+        $apiParams.Add('user', $UserName)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
@@ -41,7 +41,7 @@ function Get-LFMUserTopTag {
             $tagInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.User.TopTag'
                 'Tag' = $tag.Name
-                'TagUrl' = $tag.url
+                'TagUrl' = $tag.Url
                 'Count' = $tag.Count
             }
 

@@ -31,19 +31,19 @@ function Get-LFMUserArtistTrack {
         }
     }
     process {
-        $apiParams.add('user', $UserName)
-        $apiParams.add('artist', $Artist)
+        $apiParams.Add('user', $UserName)
+        $apiParams.Add('artist', $Artist)
 
         if ($PSBoundParameters.Keys -clike '*Date') {
             $unixStartTime = ConvertTo-UnixTime -Date $StartDate
             $unixEndTime = ConvertTo-UnixTime -Date $EndDate
 
-            $apiParams.add('startTimestamp', $unixStartTime)
-            $apiParams.add('endTimestamp', $unixEndTime)
+            $apiParams.Add('startTimestamp', $unixStartTime)
+            $apiParams.Add('endTimestamp', $unixEndTime)
         }
 
         switch ($PSBoundParameters.Keys) {
-            'Page' {$apiParams.add('page', $Page)}
+            'Page' {$apiParams.Add('page', $Page)}
         }
 
         #Building string to append to base url

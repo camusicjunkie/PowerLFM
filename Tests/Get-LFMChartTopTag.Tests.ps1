@@ -150,26 +150,26 @@ InModuleScope PowerLFM {
                 $script:output = Get-LFMChartTopTag
             }
 
-            It "Chart first top tag should have name of $($contextMock.tags.tag[0].name)" {
-                $output[0].Tag | Should -Be $contextMock.tags.tag[0].name
+            It "Chart first top tag should have name of $($contextMock.Tags.Tag[0].Name)" {
+                $output[0].Tag | Should -Be $contextMock.Tags.Tag[0].Name
             }
 
-            It "Chart first top tag should have total tags with a value of $($contextMock.tags.tag[0].taggings)" {
-                $output[0].TotalTags | Should -Be $contextMock.tags.tag[0].taggings
+            It "Chart first top tag should have total tags with a value of $($contextMock.Tags.Tag[0].Taggings)" {
+                $output[0].TotalTags | Should -Be $contextMock.Tags.Tag[0].Taggings
             }
 
-            It "Chart first top tag should have reach with a value of $($contextMock.tags.tag[0].reach)" {
+            It "Chart first top tag should have reach with a value of $($contextMock.Tags.Tag[0].reach)" {
                 $output[0].Reach | Should -BeOfType [int]
-                $output[0].Reach | Should -Be $contextMock.tags.tag[0].reach
+                $output[0].Reach | Should -Be $contextMock.Tags.Tag[0].reach
             }
 
-            It "Chart second top tag should have reach with a value of $($contextMock.tags.tag[1].reach)" {
+            It "Chart second top tag should have reach with a value of $($contextMock.Tags.Tag[1].reach)" {
                 $output[1].Reach | Should -BeOfType [int]
-                $output[1].Reach | Should -Be $contextMock.tags.tag[1].reach
+                $output[1].Reach | Should -Be $contextMock.Tags.Tag[1].reach
             }
 
-            It "Chart second top tag should have url of $($contextMock.tags.tag[1].url)" {
-                $output[1].Url | Should -Be $contextMock.tags.tag[1].url
+            It "Chart second top tag should have url of $($contextMock.Tags.Tag[1].Url)" {
+                $output[1].Url | Should -Be $contextMock.Tags.Tag[1].Url
             }
 
             It 'Chart should have two top tags' {

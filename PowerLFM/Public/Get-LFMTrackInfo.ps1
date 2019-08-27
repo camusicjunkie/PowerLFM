@@ -37,15 +37,15 @@ function Get-LFMTrackInfo {
         }
 
         switch ($PSBoundParameters.Keys) {
-            'UserName' {$apiParams.add('username', $UserName)}
-            'AutoCorrect' {$apiParams.add('autocorrect', 1)}
+            'UserName' {$apiParams.Add('username', $UserName)}
+            'AutoCorrect' {$apiParams.Add('autocorrect', 1)}
         }
     }
     process {
         switch ($PSCmdlet.ParameterSetName) {
-            'track' {$apiParams.add('track', $Track);
-                     $apiParams.add('artist', $Artist)}
-            'id'    {$apiParams.add('mbid', $Id)}
+            'track' {$apiParams.Add('track', $Track);
+                     $apiParams.Add('artist', $Artist)}
+            'id'    {$apiParams.Add('mbid', $Id)}
         }
 
         #Building string to append to base url
@@ -87,8 +87,8 @@ function Get-LFMTrackInfo {
 
         $userPlayCount = $irm.Track.UserPlayCount
         if ($PSBoundParameters.ContainsKey('UserName')) {
-            $trackInfo.add('UserPlayCount', $userPlayCount)
-            $trackInfo.add('Loved', $loved)
+            $trackInfo.Add('UserPlayCount', $userPlayCount)
+            $trackInfo.Add('Loved', $loved)
         }
 
         $trackInfo = [pscustomobject] $trackInfo

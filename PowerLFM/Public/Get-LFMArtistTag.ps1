@@ -31,18 +31,18 @@ function Get-LFMArtistTag {
         }
 
         switch ($PSBoundParameters.Keys) {
-            'AutoCorrect' {$apiParams.add('autocorrect', 1)}
+            'AutoCorrect' {$apiParams.Add('autocorrect', 1)}
         }
     }
     process {
         switch ($PSCmdlet.ParameterSetName) {
-            'artist' {$apiParams.add('artist', $Artist)}
-            'id'     {$apiParams.add('mbid', $Id)}
+            'artist' {$apiParams.Add('artist', $Artist)}
+            'id'     {$apiParams.Add('mbid', $Id)}
         }
 
         if ($PSBoundParameters.ContainsKey('UserName')) {
-            $apiParams.remove('sk')
-            $apiParams.add('user', $UserName)
+            $apiParams.Remove('sk')
+            $apiParams.Add('user', $UserName)
         }
 
         #Building string to append to base url

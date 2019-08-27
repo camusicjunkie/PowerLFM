@@ -30,8 +30,8 @@ function Remove-LFMArtistTag {
             'api_sig' = $apiSig
         }
 
-        $apiParams.add('artist', $Artist)
-        $apiParams.add('tag', $Tag)
+        $apiParams.Add('artist', $Artist)
+        $apiParams.Add('tag', $Tag)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {

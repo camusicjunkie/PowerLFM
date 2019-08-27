@@ -28,15 +28,15 @@ function Get-LFMGeoTopTrack {
         }
 
         switch ($PSBoundParameters.Keys) {
-            'Limit' {$apiParams.add('limit', $Limit)}
-            'Page' {$apiParams.add('page', $Page)}
+            'Limit' {$apiParams.Add('limit', $Limit)}
+            'Page' {$apiParams.Add('page', $Page)}
         }
     }
     process {
-        $apiParams.add('country', $Country)
+        $apiParams.Add('country', $Country)
 
         switch ($PSBoundParameters.Keys) {
-            'City' {$apiParams.add('location', $City)}
+            'City' {$apiParams.Add('location', $City)}
         }
 
         #Building string to append to base url
@@ -59,7 +59,7 @@ function Get-LFMGeoTopTrack {
                 'Artist' = $track.Artist.Name
                 'ArtistId' = $track.Artist.Mbid
                 'ArtistUrl' = $track.Artist.Url
-                'Rank' = $track.'@attr'.rank
+                'Rank' = $track.'@attr'.Rank
                 'Listeners' = [int] $track.Listeners
                 'ImageUrl' = $track.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }

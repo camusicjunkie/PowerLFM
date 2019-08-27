@@ -36,9 +36,9 @@ function Add-LFMAlbumTag {
             'api_sig' = $apiSig
         }
 
-        $apiParams.add('album', $Album)
-        $apiParams.add('artist', $Artist)
-        $apiParams.add('tags', $Tag)
+        $apiParams.Add('album', $Album)
+        $apiParams.Add('artist', $Artist)
+        $apiParams.Add('tags', $Tag)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {

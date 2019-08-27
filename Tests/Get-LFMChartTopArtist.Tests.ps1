@@ -150,31 +150,31 @@ InModuleScope PowerLFM {
                 $script:output = Get-LFMChartTopArtist
             }
 
-            It "Chart first top artist should have name of $($contextMock.artists.artist[0].name)" {
-                $output[0].Artist | Should -Be $contextMock.artists.artist[0].name
+            It "Chart first top artist should have name of $($contextMock.Artists.Artist[0].Name)" {
+                $output[0].Artist | Should -Be $contextMock.Artists.Artist[0].Name
             }
 
-            It "Chart first top artist should have id of $($contextMock.artists.artist[0].mbid)" {
-                $output[0].Id | Should -Be $contextMock.artists.artist[0].mbid
+            It "Chart first top artist should have id of $($contextMock.Artists.Artist[0].Mbid)" {
+                $output[0].Id | Should -Be $contextMock.Artists.Artist[0].Mbid
             }
 
-            It "Chart first top artist should have listeners with a value of $($contextMock.artists.artist[0].listeners)" {
+            It "Chart first top artist should have listeners with a value of $($contextMock.Artists.Artist[0].Listeners)" {
                 $output[0].Listeners | Should -BeOfType [int]
-                $output[0].Listeners | Should -Be $contextMock.artists.artist[0].listeners
+                $output[0].Listeners | Should -Be $contextMock.Artists.Artist[0].Listeners
             }
 
-            It "Chart second top artist should have listeners with a value of $($contextMock.artists.artist[1].listeners)" {
+            It "Chart second top artist should have listeners with a value of $($contextMock.Artists.Artist[1].Listeners)" {
                 $output[1].Listeners | Should -BeOfType [int]
-                $output[1].Listeners | Should -Be $contextMock.artists.artist[1].listeners
+                $output[1].Listeners | Should -Be $contextMock.Artists.Artist[1].Listeners
             }
 
-            It "Chart second top artist should have url of $($contextMock.artists.artist[1].url)" {
-                $output[1].Url | Should -Be $contextMock.artists.artist[1].url
+            It "Chart second top artist should have url of $($contextMock.Artists.Artist[1].Url)" {
+                $output[1].Url | Should -Be $contextMock.Artists.Artist[1].Url
             }
 
-            It "Chart second top artist should have playcount with a value of $($contextMock.artists.artist[1].playcount)" {
+            It "Chart second top artist should have playcount with a value of $($contextMock.Artists.Artist[1].Playcount)" {
                 $output[1].Playcount | Should -BeOfType [int]
-                $output[1].Playcount | Should -Be $contextMock.artists.artist[1].playcount
+                $output[1].Playcount | Should -Be $contextMock.Artists.Artist[1].Playcount
             }
 
             It 'Chart should have two top artists' {

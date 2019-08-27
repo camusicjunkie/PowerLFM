@@ -32,10 +32,10 @@ function Get-LFMTrackSignature {
 
         if ($PSBoundParameters.ContainsKey('Tag')) {
             if ($Method -eq 'track.removeTag') {
-                $sigParams.add('tag', $Tag)
+                $sigParams.Add('tag', $Tag)
             }
             else {
-                $sigParams.add('tags', $Tag)
+                $sigParams.Add('tags', $Tag)
             }
         }
 

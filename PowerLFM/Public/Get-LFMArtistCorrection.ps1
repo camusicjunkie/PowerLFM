@@ -18,7 +18,7 @@ function Get-LFMArtistCorrection {
         }
     }
     process {
-        $apiParams.add('artist', $Artist)
+        $apiParams.Add('artist', $Artist)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {

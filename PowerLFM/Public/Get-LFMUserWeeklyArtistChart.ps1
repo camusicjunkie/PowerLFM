@@ -24,11 +24,11 @@ function Get-LFMUserWeeklyArtistChart {
         }
     }
     process {
-        $apiParams.add('user', $UserName)
+        $apiParams.Add('user', $UserName)
 
         switch ($PSBoundParameters.Keys) {
-            'StartDate' {$apiParams.add('from', (ConvertTo-UnixTime -Date $StartDate))}
-            'EndDate' {$apiParams.add('to', (ConvertTo-UnixTime -Date $EndDate))}
+            'StartDate' {$apiParams.Add('from', (ConvertTo-UnixTime -Date $StartDate))}
+            'EndDate' {$apiParams.Add('to', (ConvertTo-UnixTime -Date $EndDate))}
         }
 
         #Building string to append to base url

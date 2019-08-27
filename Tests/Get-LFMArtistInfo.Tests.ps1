@@ -313,34 +313,34 @@ InModuleScope PowerLFM {
                 $script:output = Get-LFMArtistInfo -Artist Artist
             }
 
-            It "Artist should have artist name of $($contextMock.artist.name)" {
-                $output.Artist | Should -Be $contextMock.artist.name
+            It "Artist should have artist name of $($contextMock.Artist.Name)" {
+                $output.Artist | Should -Be $contextMock.Artist.Name
             }
 
-            It "Artist should have id of $($contextMock.artist.mbid)" {
-                $output.Id | Should -Be $contextMock.artist.mbid
+            It "Artist should have id of $($contextMock.Artist.Mbid)" {
+                $output.Id | Should -Be $contextMock.Artist.Mbid
             }
 
-            It "Artist should have url of $($contextMock.artist.url)" {
-                $output.Url | Should -Be $contextMock.artist.url
+            It "Artist should have url of $($contextMock.Artist.Url)" {
+                $output.Url | Should -Be $contextMock.Artist.Url
             }
 
-            It "Artist should have listeners with a value of $($contextMock.artist.stats.listeners)" {
+            It "Artist should have listeners with a value of $($contextMock.Artist.Stats.Listeners)" {
                 $output.Listeners | Should -BeOfType [int]
-                $output.Listeners | Should -Be $contextMock.artist.stats.listeners
+                $output.Listeners | Should -Be $contextMock.Artist.Stats.Listeners
             }
 
-            It "Artist should have playcount with a value of $($contextMock.artist.stats.playcount)" {
+            It "Artist should have playcount with a value of $($contextMock.Artist.Stats.Playcount)" {
                 $output.Playcount | Should -BeOfType [int]
-                $output.Playcount | Should -Be $contextMock.artist.stats.playcount
+                $output.Playcount | Should -Be $contextMock.Artist.Stats.Playcount
             }
 
-            It "Artist first similar artist should have name of $($contextMock.artist.similar.artist[0].name)" {
-                $output.SimilarArtists[0].Artist | Should -Be $contextMock.artist.similar.artist[0].name
+            It "Artist first similar artist should have name of $($contextMock.Artist.Similar.Artist[0].Name)" {
+                $output.SimilarArtists[0].Artist | Should -Be $contextMock.Artist.Similar.Artist[0].Name
             }
 
-            It "Artist second similar artist should have url of $($contextMock.artist.similar.artist[1].url)" {
-                $output.SimilarArtists[1].Url | Should -Be $contextMock.artist.similar.artist[1].url
+            It "Artist second similar artist should have url of $($contextMock.Artist.Similar.Artist[1].Url)" {
+                $output.SimilarArtists[1].Url | Should -Be $contextMock.Artist.Similar.Artist[1].Url
             }
 
             It 'Artist should have two similar artists' {
@@ -352,12 +352,12 @@ InModuleScope PowerLFM {
                 $output.SimilarArtists | Should -Not -HaveCount 3
             }
 
-            It "Artist first tag should have name of $($contextMock.artist.tags.tag[0].name)" {
-                $output.Tags[0].Tag | Should -Be $contextMock.artist.tags.tag[0].name
+            It "Artist first tag should have name of $($contextMock.Artist.Tags.Tag[0].Name)" {
+                $output.Tags[0].Tag | Should -Be $contextMock.Artist.Tags.Tag[0].Name
             }
 
-            It "Artist second tag should have url of $($contextMock.artist.tags.tag[1].url)" {
-                $output.Tags[1].Url | Should -Be $contextMock.artist.tags.tag[1].url
+            It "Artist second tag should have url of $($contextMock.Artist.Tags.Tag[1].Url)" {
+                $output.Tags[1].Url | Should -Be $contextMock.Artist.Tags.Tag[1].Url
             }
 
             It 'Artist should have two tags' {
@@ -368,13 +368,13 @@ InModuleScope PowerLFM {
                 $output.Tags | Should -Not -HaveCount 3
             }
 
-            It "Artist should have summary of '$($contextMock.artist.bio.summary)'" {
-                $output.Summary | Should -BeExactly $contextMock.artist.bio.summary
+            It "Artist should have summary of '$($contextMock.Artist.Bio.Summary)'" {
+                $output.Summary | Should -BeExactly $contextMock.Artist.Bio.Summary
             }
 
-            It "Artist should have a user play count of $($contextMock.artist.stats.userplaycount)" {
+            It "Artist should have a user play count of $($contextMock.Artist.Stats.UserPlayCount)" {
                 $output = Get-LFMArtistInfo -Artist Artist -UserName camusicjunkie
-                $output.UserPlayCount | Should -Be $contextMock.artist.stats.userplaycount
+                $output.UserPlayCount | Should -Be $contextMock.Artist.Stats.UserPlayCount
             }
 
             It "Artist should have two similar artists when id parameter is used" {

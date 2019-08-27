@@ -150,17 +150,17 @@ InModuleScope PowerLFM {
                 $script:output = Get-LFMTagInfo -Tag Tag
             }
 
-            It "Tag should have name of $($contextMock.tag.name)" {
-                $output.Tag | Should -Be $contextMock.tag.name
+            It "Tag should have name of $($contextMock.Tag.Name)" {
+                $output.Tag | Should -Be $contextMock.Tag.Name
             }
 
-            It "Tag should have total tags with a value of $($contextMock.tag.total)" {
-                $output.TotalTags | Should -Be $contextMock.tag.total
+            It "Tag should have total tags with a value of $($contextMock.Tag.total)" {
+                $output.TotalTags | Should -Be $contextMock.Tag.total
             }
 
-            It "Tag should have reach with a value of $($contextMock.tag.reach)" {
+            It "Tag should have reach with a value of $($contextMock.Tag.reach)" {
                 $output.Reach | Should -BeOfType [int]
-                $output.Reach | Should -Be $contextMock.tag.reach
+                $output.Reach | Should -Be $contextMock.Tag.reach
             }
 
             It "Tag should have url of http://www.last.fm/tag/$(($output.Tag).Replace(' ', '+'))" {

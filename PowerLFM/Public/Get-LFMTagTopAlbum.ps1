@@ -22,12 +22,12 @@ function Get-LFMTagTopAlbum {
         }
 
         switch ($PSBoundParameters.Keys) {
-            'Limit' {$apiParams.add('limit', $Limit)}
-            'Page' {$apiParams.add('page', $Page)}
+            'Limit' {$apiParams.Add('limit', $Limit)}
+            'Page' {$apiParams.Add('page', $Page)}
         }
     }
     process {
-        $apiParams.add('tag', $Tag)
+        $apiParams.Add('tag', $Tag)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
@@ -49,7 +49,7 @@ function Get-LFMTagTopAlbum {
                 'Artist' = $album.Artist.Name
                 'ArtistId' = $album.Artist.Mbid
                 'ArtistUrl' = $album.Artist.Url
-                'Rank' = $album.'@attr'.rank
+                'Rank' = $album.'@attr'.Rank
                 'ImageUrl' = $album.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 

@@ -32,7 +32,7 @@ function Get-LFMAlbumSignature {
 
         if ($Method -eq 'album.removeTag') {
             $sigParams.Remove('tags')
-            $sigParams.add('tag', $Tag)
+            $sigParams.Add('tag', $Tag)
         }
 
         $keyValues = $sigParams.GetEnumerator() | Sort-Object Name | ForEach-Object {

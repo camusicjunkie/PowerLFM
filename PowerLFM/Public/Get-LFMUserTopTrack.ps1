@@ -38,13 +38,13 @@ function Get-LFMUserTopTrack {
         }
 
         switch ($PSBoundParameters.Keys) {
-            'Limit' {$apiParams.add('limit', $Limit)}
-            'Page' {$apiParams.add('page', $Page)}
-            'TimePeriod' {$apiParams.add('period', $period[$TimePeriod])}
+            'Limit' {$apiParams.Add('limit', $Limit)}
+            'Page' {$apiParams.Add('page', $Page)}
+            'TimePeriod' {$apiParams.Add('period', $period[$TimePeriod])}
         }
     }
     process {
-        $apiParams.add('user', $UserName)
+        $apiParams.Add('user', $UserName)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
@@ -62,10 +62,10 @@ function Get-LFMUserTopTrack {
                 'PSTypeName' = 'PowerLFM.User.TopTrack'
                 'Track' = $track.Name
                 'PlayCount' = [int] $track.PlayCount
-                'TrackUrl' = $track.url
+                'TrackUrl' = $track.Url
                 'TrackId' = $track.Mbid
                 'Artist' = $track.Artist.Name
-                'ArtistUrl' = $track.Artist.url
+                'ArtistUrl' = $track.Artist.Url
                 'ArtistId' = $track.Artist.Mbid
                 'ImageUrl' = $track.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }

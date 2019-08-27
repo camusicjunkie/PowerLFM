@@ -38,14 +38,14 @@ function Get-LFMTrackSimilar {
         }
 
         switch ($PSBoundParameters.Keys) {
-            'AutoCorrect' {$apiParams.add('autocorrect', 1)}
+            'AutoCorrect' {$apiParams.Add('autocorrect', 1)}
         }
     }
     process {
         switch ($PSCmdlet.ParameterSetName) {
-            'track' {$apiParams.add('track', $Track);
-                     $apiParams.add('artist', $Artist)}
-            'id'    {$apiParams.add('mbid', $Id)}
+            'track' {$apiParams.Add('track', $Track);
+                     $apiParams.Add('artist', $Artist)}
+            'id'    {$apiParams.Add('mbid', $Id)}
         }
 
         #Building string to append to base url

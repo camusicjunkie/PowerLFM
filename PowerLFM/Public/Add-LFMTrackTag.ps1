@@ -36,9 +36,9 @@ function Add-LFMTrackTag {
             'api_sig' = $apiSig
         }
 
-        $apiParams.add('track', $Track)
-        $apiParams.add('artist', $Artist)
-        $apiParams.add('tags', $Tag)
+        $apiParams.Add('track', $Track)
+        $apiParams.Add('artist', $Artist)
+        $apiParams.Add('tags', $Tag)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {

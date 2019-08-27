@@ -349,38 +349,38 @@ InModuleScope PowerLFM {
                 $script:output = Get-LFMAlbumInfo -Album Album -Artist Artist
             }
 
-            It "Album should have name of $($contextMock.album.name)" {
-                $output.Album | Should -Be $contextMock.album.name
+            It "Album should have name of $($contextMock.Album.Name)" {
+                $output.Album | Should -Be $contextMock.Album.Name
             }
 
-            It "Album should have artist name of $($contextMock.album.artist)" {
-                $output.Artist | Should -Be $contextMock.album.artist
+            It "Album should have artist name of $($contextMock.Album.Artist)" {
+                $output.Artist | Should -Be $contextMock.Album.Artist
             }
 
-            It "Album should have id of $($contextMock.album.mbid)" {
-                $output.Id | Should -Be $contextMock.album.mbid
+            It "Album should have id of $($contextMock.Album.Mbid)" {
+                $output.Id | Should -Be $contextMock.Album.Mbid
             }
 
-            It "Album should have url of $($contextMock.album.url)" {
-                $output.Url | Should -Be $contextMock.album.url
+            It "Album should have url of $($contextMock.Album.Url)" {
+                $output.Url | Should -Be $contextMock.Album.Url
             }
 
-            It "Album should have listeners with a value of $($contextMock.album.listeners)" {
+            It "Album should have listeners with a value of $($contextMock.Album.Listeners)" {
                 $output.Listeners | Should -BeOfType [int]
-                $output.Listeners | Should -Be $contextMock.album.listeners
+                $output.Listeners | Should -Be $contextMock.Album.Listeners
             }
 
-            It "Album should have playcount with a value of $($contextMock.album.playcount)" {
+            It "Album should have playcount with a value of $($contextMock.Album.Playcount)" {
                 $output.Playcount | Should -BeOfType [int]
-                $output.Playcount | Should -Be $contextMock.album.playcount
+                $output.Playcount | Should -Be $contextMock.Album.Playcount
             }
 
-            It "Album first track should have name of $($contextMock.album.tracks.track[0].name)" {
-                $output.Tracks[0].Track | Should -Be $contextMock.album.tracks.track[0].name
+            It "Album first track should have name of $($contextMock.Album.Tracks.Track[0].Name)" {
+                $output.Tracks[0].Track | Should -Be $contextMock.Album.Tracks.Track[0].Name
             }
 
-            It "Album second track should have a duration of $($contextMock.album.tracks.track[1].duration)" {
-                $output.Tracks[1].Duration | Should -Be $contextMock.album.tracks.track[1].duration
+            It "Album second track should have a duration of $($contextMock.Album.Tracks.Track[1].Duration)" {
+                $output.Tracks[1].Duration | Should -Be $contextMock.Album.Tracks.Track[1].Duration
             }
 
             It 'Album should have two tracks' {
@@ -392,12 +392,12 @@ InModuleScope PowerLFM {
                 $output.Tracks | Should -Not -HaveCount 3
             }
 
-            It "Album first tag should have name of $($contextMock.album.tags.tag[0].name)" {
-                $output.Tags[0].Tag | Should -Be $contextMock.album.tags.tag[0].name
+            It "Album first tag should have name of $($contextMock.Album.Tags.Tag[0].Name)" {
+                $output.Tags[0].Tag | Should -Be $contextMock.Album.Tags.Tag[0].Name
             }
 
-            It "Album second tag should have url of $($contextMock.album.tags.tag[1].url)" {
-                $output.Tags[1].Url | Should -Be $contextMock.album.tags.tag[1].url
+            It "Album second tag should have url of $($contextMock.Album.Tags.Tag[1].Url)" {
+                $output.Tags[1].Url | Should -Be $contextMock.Album.Tags.Tag[1].Url
             }
 
             It 'Album should have two tags' {
@@ -408,13 +408,13 @@ InModuleScope PowerLFM {
                 $output.Tags | Should -Not -HaveCount 3
             }
 
-            It "Album should have summary of '$($contextMock.album.wiki.summary)'" {
-                $output.Summary | Should -BeExactly $contextMock.album.wiki.summary
+            It "Album should have summary of '$($contextMock.Album.Wiki.Summary)'" {
+                $output.Summary | Should -BeExactly $contextMock.Album.Wiki.Summary
             }
 
-            It "Album should have a user play count of $($contextMock.album.userplaycount)" {
+            It "Album should have a user play count of $($contextMock.Album.UserPlayCount)" {
                 $output = Get-LFMAlbumInfo -Artist Artist -Album Album -UserName camusicjunkie
-                $output.UserPlayCount | Should -Be $contextMock.album.userplaycount
+                $output.UserPlayCount | Should -Be $contextMock.Album.UserPlayCount
             }
 
             It "Album should have two tracks when id parameter is used" {

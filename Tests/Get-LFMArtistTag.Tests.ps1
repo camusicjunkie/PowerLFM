@@ -313,12 +313,12 @@ InModuleScope PowerLFM {
                 $script:output = Get-LFMArtistTag -Artist Artist
             }
 
-            It "Artist first tag should have name of $($contextMock.tags.tag[0].name)" {
-                $output[0].Tag | Should -Be $contextMock.tags.tag[0].name
+            It "Artist first tag should have name of $($contextMock.Tags.Tag[0].Name)" {
+                $output[0].Tag | Should -Be $contextMock.Tags.Tag[0].Name
             }
 
-            It "Artist second tag should have url of $($contextMock.tags.tag[1].url)" {
-                $output[1].Url | Should -Be $contextMock.tags.tag[1].url
+            It "Artist second tag should have url of $($contextMock.Tags.Tag[1].Url)" {
+                $output[1].Url | Should -Be $contextMock.Tags.Tag[1].Url
             }
 
             It 'Artist should have two tags' {

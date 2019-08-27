@@ -18,8 +18,8 @@ function Get-LFMUserInfo {
     }
     process {
         if ($PSBoundParameters.ContainsKey('UserName')) {
-            $apiParams.remove('sk')
-            $apiParams.add('user', $UserName)
+            $apiParams.Remove('sk')
+            $apiParams.Add('user', $UserName)
         }
 
         #Building string to append to base url

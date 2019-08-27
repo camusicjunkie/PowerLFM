@@ -111,16 +111,16 @@ InModuleScope PowerLFM {
                 $script:output = Get-LFMArtistCorrection -Artist Artist
             }
 
-            It "Artist should have corrected name of $($contextMock.corrections.correction.artist.name)" {
-                $output.Artist | Should -Be $contextMock.corrections.correction.artist.name
+            It "Artist should have corrected name of $($contextMock.Corrections.Correction.Artist.Name)" {
+                $output.Artist | Should -Be $contextMock.Corrections.Correction.Artist.Name
             }
 
-            It "Artist correction should have url of $($contextMock.corrections.correction.artist.url)" {
-                $output.Url | Should -Be $contextMock.corrections.correction.artist.url
+            It "Artist correction should have url of $($contextMock.Corrections.Correction.Artist.Url)" {
+                $output.Url | Should -Be $contextMock.Corrections.Correction.Artist.Url
             }
 
-            It "Artist correction should have id of $($contextMock.corrections.correction.artist.mbid)" {
-                $output.Id | Should -Be $contextMock.corrections.correction.artist.mbid
+            It "Artist correction should have id of $($contextMock.Corrections.Correction.Artist.Mbid)" {
+                $output.Id | Should -Be $contextMock.Corrections.Correction.Artist.Mbid
             }
 
             It 'Artist should not have more than 1 correction' {

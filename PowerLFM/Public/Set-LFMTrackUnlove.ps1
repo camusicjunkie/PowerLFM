@@ -30,8 +30,8 @@ function Set-LFMTrackUnlove {
             'api_sig' = $apiSig
         }
 
-        $apiParams.add('artist', $Artist)
-        $apiParams.add('track', $Track)
+        $apiParams.Add('artist', $Artist)
+        $apiParams.Add('track', $Track)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {

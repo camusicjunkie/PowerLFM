@@ -38,13 +38,13 @@ function Get-LFMUserTopArtist {
         }
 
         switch ($PSBoundParameters.Keys) {
-            'Limit' {$apiParams.add('limit', $Limit)}
-            'Page' {$apiParams.add('page', $Page)}
-            'TimePeriod' {$apiParams.add('period', $period[$TimePeriod])}
+            'Limit' {$apiParams.Add('limit', $Limit)}
+            'Page' {$apiParams.Add('page', $Page)}
+            'TimePeriod' {$apiParams.Add('period', $period[$TimePeriod])}
         }
     }
     process {
-        $apiParams.add('user', $UserName)
+        $apiParams.Add('user', $UserName)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
@@ -62,7 +62,7 @@ function Get-LFMUserTopArtist {
                 'PSTypeName' = 'PowerLFM.User.Artist'
                 'Artist' = $artist.Name
                 'PlayCount' = [int] $artist.PlayCount
-                'Url' = $artist.url
+                'Url' = $artist.Url
                 'Id' = $artist.Mbid
                 'ImageUrl' = $artist.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }

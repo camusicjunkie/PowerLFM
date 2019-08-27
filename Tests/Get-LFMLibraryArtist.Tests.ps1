@@ -191,26 +191,26 @@ InModuleScope PowerLFM {
                 $script:output = Get-LFMLibraryArtist -UserName camusicjunkie
             }
 
-            It "Library first artist should have name of $($contextMock.artists.artist[0].name)" {
-                $output[0].Artist | Should -Be $contextMock.artists.artist[0].name
+            It "Library first artist should have name of $($contextMock.Artists.Artist[0].Name)" {
+                $output[0].Artist | Should -Be $contextMock.Artists.Artist[0].Name
             }
 
-            It "Library first artist should have id of $($contextMock.artists.artist[0].mbid)" {
-                $output[0].Id | Should -Be $contextMock.artists.artist[0].mbid
+            It "Library first artist should have id of $($contextMock.Artists.Artist[0].Mbid)" {
+                $output[0].Id | Should -Be $contextMock.Artists.Artist[0].Mbid
             }
 
-            It "Library first artist should have playcount with a value of $($contextMock.artists.artist[0].Playcount)" {
+            It "Library first artist should have playcount with a value of $($contextMock.Artists.Artist[0].Playcount)" {
                 $output[0].Playcount | Should -BeOfType [int]
-                $output[0].Playcount | Should -Be $contextMock.artists.artist[0].Playcount
+                $output[0].Playcount | Should -Be $contextMock.Artists.Artist[0].Playcount
             }
 
-            It "Library second artist should have playcount with a value of $($contextMock.artists.artist[1].Playcount)" {
+            It "Library second artist should have playcount with a value of $($contextMock.Artists.Artist[1].Playcount)" {
                 $output[1].Playcount | Should -BeOfType [int]
-                $output[1].Playcount | Should -Be $contextMock.artists.artist[1].Playcount
+                $output[1].Playcount | Should -Be $contextMock.Artists.Artist[1].Playcount
             }
 
-            It "Library second artist should have track url of $($contextMock.artists.artist[1].url)" {
-                $output[1].Url | Should -Be $contextMock.artists.artist[1].url
+            It "Library second artist should have track url of $($contextMock.Artists.Artist[1].Url)" {
+                $output[1].Url | Should -Be $contextMock.Artists.Artist[1].Url
             }
 
             It 'Library should have two artists' {

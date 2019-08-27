@@ -38,13 +38,13 @@ function Get-LFMUserTopAlbum {
         }
 
         switch ($PSBoundParameters.Keys) {
-            'Limit' {$apiParams.add('limit', $Limit)}
-            'Page' {$apiParams.add('page', $Page)}
-            'TimePeriod' {$apiParams.add('period', $period[$TimePeriod])}
+            'Limit' {$apiParams.Add('limit', $Limit)}
+            'Page' {$apiParams.Add('page', $Page)}
+            'TimePeriod' {$apiParams.Add('period', $period[$TimePeriod])}
         }
     }
     process {
-        $apiParams.add('user', $UserName)
+        $apiParams.Add('user', $UserName)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
@@ -65,7 +65,7 @@ function Get-LFMUserTopAlbum {
                 'AlbumUrl' = $album.Url
                 'Albumid' = $album.Mbid
                 'Artist' = $album.Artist.Name
-                'ArtistUrl' = $album.Artist.url
+                'ArtistUrl' = $album.Artist.Url
                 'ArtistId' = $album.Artist.Mbid
                 'ImageUrl' = $album.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }

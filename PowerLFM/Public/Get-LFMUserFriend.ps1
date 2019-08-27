@@ -26,13 +26,13 @@ function Get-LFMUserFriend {
         }
 
         switch ($PSBoundParameters.Keys) {
-            'Limit' {$apiParams.add('limit', $Limit)}
-            'Page' {$apiParams.add('page', $Page)}
-            'RecentTracks' {$apiParams.add('recenttracks', 1)}
+            'Limit' {$apiParams.Add('limit', $Limit)}
+            'Page' {$apiParams.Add('page', $Page)}
+            'RecentTracks' {$apiParams.Add('recenttracks', 1)}
         }
     }
     process {
-        $apiParams.add('user', $UserName)
+        $apiParams.Add('user', $UserName)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
@@ -77,7 +77,7 @@ function Get-LFMUserFriend {
                     Write-Output $trackInfo
                 }
 
-                $userInfo.add('RecentTracks', $tracks)
+                $userInfo.Add('RecentTracks', $tracks)
             }
 
             $userInfo = [pscustomobject] $userInfo

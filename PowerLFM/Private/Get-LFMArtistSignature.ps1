@@ -27,8 +27,8 @@ function Get-LFMArtistSignature {
         }
 
         if ($Method -eq 'artist.removeTag') {
-            $sigParams.remove('tags')
-            $sigParams.add('tag', $Tag)
+            $sigParams.Remove('tags')
+            $sigParams.Add('tag', $Tag)
         }
 
         $keyValues = $sigParams.GetEnumerator() | Sort-Object Name | ForEach-Object {

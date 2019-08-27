@@ -23,8 +23,8 @@ function Get-LFMTrackCorrection {
         }
     }
     process {
-        $apiParams.add('track', $Track)
-        $apiParams.add('artist', $Artist)
+        $apiParams.Add('track', $Track)
+        $apiParams.Add('artist', $Artist)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {

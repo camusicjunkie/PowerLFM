@@ -18,8 +18,8 @@ function Get-LFMChartTopTrack {
     }
 
     switch ($PSBoundParameters.Keys) {
-        'Limit' {$apiParams.add('limit', $Limit)}
-        'Page' {$apiParams.add('page', $Page)}
+        'Limit' {$apiParams.Add('limit', $Limit)}
+        'Page' {$apiParams.Add('page', $Page)}
     }
 
     #Building string to append to base url

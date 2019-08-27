@@ -30,14 +30,14 @@ function Get-LFMArtistInfo {
         }
 
         switch ($PSBoundParameters.Keys) {
-            'UserName' {$apiParams.add('username', $UserName)}
-            'AutoCorrect' {$apiParams.add('autocorrect', 1)}
+            'UserName' {$apiParams.Add('username', $UserName)}
+            'AutoCorrect' {$apiParams.Add('autocorrect', 1)}
         }
     }
     process {
         switch ($PSCmdlet.ParameterSetName) {
-            'artist' {$apiParams.add('artist', $Artist)}
-            'id'     {$apiParams.add('mbid', $Id)}
+            'artist' {$apiParams.Add('artist', $Artist)}
+            'id'     {$apiParams.Add('mbid', $Id)}
         }
 
         #Building string to append to base url
@@ -91,7 +91,7 @@ function Get-LFMArtistInfo {
 
         $userPlayCount = $irm.Artist.Stats.UserPlayCount
         if ($PSBoundParameters.ContainsKey('UserName')) {
-            $artistInfo.add('UserPlayCount', $userPlayCount)
+            $artistInfo.Add('UserPlayCount', $userPlayCount)
         }
 
         $artistInfo = [pscustomobject] $artistInfo

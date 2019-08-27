@@ -110,12 +110,12 @@ InModuleScope PowerLFM {
                 $script:output = Get-LFMTagSimilar -Tag Tag
             }
 
-            It "Tag should have name of $($contextMock.tag.name)" {
-                $output.Tag | Should -Be $contextMock.tag.name
+            It "Tag should have name of $($contextMock.Tag.Name)" {
+                $output.Tag | Should -Be $contextMock.Tag.Name
             }
 
-            It "Tag should have url of $($contextMock.tag.url)" {
-                $output.Url | Should -Be $($contextMock.tag.url)
+            It "Tag should have url of $($contextMock.Tag.Url)" {
+                $output.Url | Should -Be $($contextMock.Tag.Url)
             }
 
             It 'Tag should have one tag' {

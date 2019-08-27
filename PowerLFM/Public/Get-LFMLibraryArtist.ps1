@@ -22,12 +22,12 @@ function Get-LFMLibraryArtist {
         }
 
         switch ($PSBoundParameters.Keys) {
-            'Limit' {$apiParams.add('limit', $Limit)}
-            'Page' {$apiParams.add('page', $Page)}
+            'Limit' {$apiParams.Add('limit', $Limit)}
+            'Page' {$apiParams.Add('page', $Page)}
         }
     }
     process {
-        $apiParams.add('user', $UserName)
+        $apiParams.Add('user', $UserName)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
@@ -45,7 +45,7 @@ function Get-LFMLibraryArtist {
                 'PSTypeName' = 'PowerLFM.Library.Artist'
                 'Artist' = $artist.Name
                 'PlayCount' = [int] $artist.PlayCount
-                'Url' = $artist.url
+                'Url' = $artist.Url
                 'Id' = $artist.Mbid
                 'ImageUrl' = $artist.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }

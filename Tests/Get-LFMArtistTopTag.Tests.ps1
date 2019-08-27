@@ -238,20 +238,20 @@ InModuleScope PowerLFM {
                 $script:output = Get-LFMArtistTopTag -Artist Artist
             }
 
-            It "Artist first top tag should have name of $($contextMock.toptags.tag[0].name)" {
-                $output[0].Tag | Should -Be $contextMock.toptags.tag[0].name
+            It "Artist first top tag should have name of $($contextMock.TopTags.Tag[0].Name)" {
+                $output[0].Tag | Should -Be $contextMock.TopTags.Tag[0].Name
             }
 
-            It "Artist second tag should have url of $($contextMock.toptags.tag[1].url)" {
-                $output[1].Url | Should -Be $contextMock.toptags.tag[1].url
+            It "Artist second tag should have url of $($contextMock.TopTags.Tag[1].Url)" {
+                $output[1].Url | Should -Be $contextMock.TopTags.Tag[1].Url
             }
 
-            It "Artist first tag should have match of $($contextMock.toptags.tag[0].count)" {
-                $output[0].Match | Should -Be $contextMock.toptags.tag[0].count
+            It "Artist first tag should have match of $($contextMock.TopTags.Tag[0].Count)" {
+                $output[0].Match | Should -Be $contextMock.TopTags.Tag[0].Count
             }
 
-            It "Artist second tag should have match of $($contextMock.toptags.tag[1].count)" {
-                $output[1].Match | Should -Be $contextMock.toptags.tag[1].count
+            It "Artist second tag should have match of $($contextMock.TopTags.Tag[1].Count)" {
+                $output[1].Match | Should -Be $contextMock.TopTags.Tag[1].Count
             }
 
             It 'Artist should have two tags' {

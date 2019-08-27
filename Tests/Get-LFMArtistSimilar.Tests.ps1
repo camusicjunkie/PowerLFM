@@ -313,12 +313,12 @@ InModuleScope PowerLFM {
                 $script:output = Get-LFMArtistSimilar -Artist Artist
             }
 
-            It "Artist first similar artist should have name of $($contextMock.similarartists.artist[0].name)" {
-                $output[0].Artist | Should -Be $contextMock.similarartists.artist[0].name
+            It "Artist first similar artist should have name of $($contextMock.Similarartists.Artist[0].Name)" {
+                $output[0].Artist | Should -Be $contextMock.Similarartists.Artist[0].Name
             }
 
-            It "Artist second similar artist should have url of $($contextMock.similarartists.artist[1].url)" {
-                $output[1].Url | Should -Be $contextMock.similarartists.artist[1].url
+            It "Artist second similar artist should have url of $($contextMock.Similarartists.Artist[1].Url)" {
+                $output[1].Url | Should -Be $contextMock.Similarartists.Artist[1].Url
             }
 
             It 'Artist should have two similar artists' {
@@ -330,11 +330,11 @@ InModuleScope PowerLFM {
                 $output.Artist | Should -Not -HaveCount 3
             }
 
-            It "Artist first match should have percentage of $($contextMock.similarartists.artist[0].match)" {
+            It "Artist first match should have percentage of $($contextMock.Similarartists.Artist[0].Match)" {
                 $output[0].Match | Should -Be 1
             }
 
-            It "Artist second match should have percentage of $($contextMock.similarartists.artist[1].match)" {
+            It "Artist second match should have percentage of $($contextMock.Similarartists.Artist[1].Match)" {
                 $output[1].Match | Should -Be .5
             }
 

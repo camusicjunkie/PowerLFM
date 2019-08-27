@@ -273,12 +273,12 @@ InModuleScope PowerLFM {
                 $script:output = Get-LFMAlbumTopTag -Album Album -Artist Artist
             }
 
-            It "Album first tag should have name of $($contextMock.topTags.tag[0].name)" {
-                $output[0].Tag | Should -Be $contextMock.topTags.tag[0].name
+            It "Album first tag should have name of $($contextMock.TopTags.Tag[0].Name)" {
+                $output[0].Tag | Should -Be $contextMock.TopTags.Tag[0].Name
             }
 
-            It "Album second tag should have url of $($contextMock.topTags.tag[1].url)" {
-                $output[1].Url | Should -Be $contextMock.topTags.tag[1].url
+            It "Album second tag should have url of $($contextMock.TopTags.Tag[1].Url)" {
+                $output[1].Url | Should -Be $contextMock.TopTags.Tag[1].Url
             }
 
             It 'Album should have two tags' {
@@ -290,12 +290,12 @@ InModuleScope PowerLFM {
                 $output.Tag | Should -Not -HaveCount 3
             }
 
-            It "Album first tag should have match of $($contextMock.topTags.tag[0].count)" {
-                $output[0].Match | Should -Be $contextMock.topTags.tag[0].count
+            It "Album first tag should have match of $($contextMock.TopTags.Tag[0].Count)" {
+                $output[0].Match | Should -Be $contextMock.TopTags.Tag[0].Count
             }
 
-            It "Album second tag should have match of $($contextMock.topTags.tag[1].count)" {
-                $output[1].Match | Should -Be $contextMock.topTags.tag[1].count
+            It "Album second tag should have match of $($contextMock.TopTags.Tag[1].Count)" {
+                $output[1].Match | Should -Be $contextMock.TopTags.Tag[1].Count
             }
 
             It "Album should have two tags when id parameter is used" {

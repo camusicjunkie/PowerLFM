@@ -35,14 +35,14 @@ function Get-LFMUserPersonalTag {
         }
 
         switch ($PSBoundParameters.Keys) {
-            'Limit' {$apiParams.add('limit', $Limit)}
-            'Page' {$apiParams.add('page', $Page)}
+            'Limit' {$apiParams.Add('limit', $Limit)}
+            'Page' {$apiParams.Add('page', $Page)}
         }
     }
     process {
-        $apiParams.add('user', $UserName)
-        $apiParams.add('tag', $Tag)
-        $apiParams.add('taggingtype', $TagType.ToLower())
+        $apiParams.Add('user', $UserName)
+        $apiParams.Add('tag', $Tag)
+        $apiParams.Add('taggingtype', $TagType.ToLower())
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
@@ -58,9 +58,9 @@ function Get-LFMUserPersonalTag {
         foreach ($userTag in $irm.Taggings.Artists.Artist) {
             $userTagInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.User.PersonalTag'
-                'Artist' = $userTag.name
-                'Id' = $userTag.mbid
-                'Url' = $userTag.url
+                'Artist' = $userTag.Name
+                'Id' = $userTag.Mbid
+                'Url' = $userTag.Url
             }
 
             Write-Output $userTagInfo
