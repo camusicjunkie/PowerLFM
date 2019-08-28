@@ -148,13 +148,13 @@
             {
               "name": "Artist1",
               "mbid": "12345678-1234-1234-1234-123456789011",
-              "match": "1",
+              "match": 1,
               "url": "https://www.last.fake/similar/artist1"
             },
             {
               "name": "Artist2",
               "mbid": "12345678-1234-1234-1234-123456789012",
-              "match": "0.5",
+              "match": 0.5,
               "url": "https://www.last.fake/similar/artist2"
             }
           ]
@@ -210,12 +210,12 @@
             {
               "name": "Tag1",
               "url": "https://www.last.fake/toptag/tag1",
-              "count": 1
+              "count": 100
             },
             {
               "name": "Tag2",
               "url": "https://www.last.fake/toptag/tag2",
-              "count": 0.5
+              "count": 50
             }
           ]
         }
