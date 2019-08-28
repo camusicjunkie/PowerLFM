@@ -97,7 +97,7 @@ function Get-LFMAlbumInfo {
             'PSTypeName' = 'PowerLFM.Album.Info'
             'Artist' = $irm.Album.Artist
             'Album' = $irm.Album.Name
-            'Id' = [guid] $irm.Album.Mbid
+            'Id' = $irm.Album.Mbid
             'Listeners' = [int] $irm.Album.Listeners
             'PlayCount' = [int] $irm.Album.PlayCount
             'Url' = [uri] $irm.Album.Url

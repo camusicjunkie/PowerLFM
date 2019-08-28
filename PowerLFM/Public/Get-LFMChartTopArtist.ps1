@@ -54,7 +54,7 @@ function Get-LFMChartTopArtist {
         $artistInfo = [pscustomobject] @{
             'PSTypeName' = 'PowerLFM.Chart.TopArtists'
             'Artist' = $artist.Name
-            'Id' = [guid] $artist.Mbid
+            'Id' = $artist.Mbid
             'Url' = [uri] $artist.Url
             'Listeners' = [int] $artist.Listeners
             'PlayCount' = [int] $artist.PlayCount

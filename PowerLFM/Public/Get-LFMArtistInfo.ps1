@@ -96,7 +96,7 @@ function Get-LFMArtistInfo {
         $artistInfo = @{
             'PSTypeName' = 'PowerLFM.Artist.Info'
             'Artist' = $irm.Artist.Name
-            'Id' = [guid] $irm.Artist.Mbid
+            'Id' = $irm.Artist.Mbid
             'Listeners' = [int] $irm.Artist.Stats.Listeners
             'PlayCount' = [int] $irm.Artist.Stats.PlayCount
             'OnTour' = $tour

@@ -77,7 +77,7 @@ function Get-LFMArtistTopTrack {
             $trackInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.Artist.Track'
                 'Track' = $track.Name
-                'Id' = [guid] $track.Mbid
+                'Id' = $track.Mbid
                 'Url' = [uri] $track.Url
                 'Listeners' = [int] $track.Listeners
                 'PlayCount' = [int] $track.PlayCount

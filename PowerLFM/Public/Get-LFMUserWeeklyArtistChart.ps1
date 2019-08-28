@@ -65,7 +65,7 @@ function Get-LFMUserWeeklyArtistChart {
                 'PSTypeName' = 'PowerLFM.User.WeeklyArtistChart'
                 'Artist' = $artist.Name
                 'Url' = [uri] $artist.Url
-                'Id' = [guid] $artist.Mbid
+                'Id' = $artist.Mbid
                 'PlayCount' = [int] $artist.PlayCount
                 'StartDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyArtistChart.'@attr'.From -Local
                 'EndDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyArtistChart.'@attr'.To -Local
