@@ -64,7 +64,7 @@ function Search-LFMAlbum {
                 'PSTypeName' = 'PowerLFM.Album.Search'
                 'Album' = $match.Name
                 'Artist' = $match.Artist
-                'Id' = [guid] $match.Mbid
+                'Id' = $match.Mbid
                 'Url' = [uri] $match.Url
             }
 

@@ -81,7 +81,7 @@ function Get-LFMUserTopArtist {
                 'Artist' = $artist.Name
                 'PlayCount' = [int] $artist.PlayCount
                 'Url' = [uri] $artist.Url
-                'Id' = [guid] $artist.Mbid
+                'Id' = $artist.Mbid
                 'ImageUrl' = $artist.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 

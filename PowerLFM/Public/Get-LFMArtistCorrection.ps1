@@ -53,7 +53,7 @@ function Get-LFMArtistCorrection {
         $correctedArtistInfo = [pscustomobject] @{
             'PSTypeName' = 'PowerLFM.Artist.Correction'
             'Artist' = $correction.Name
-            'Id' = [guid] $correction.Mbid
+            'Id' = $correction.Mbid
             'Url' = [uri] $correction.Url
         }
 

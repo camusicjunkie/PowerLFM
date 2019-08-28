@@ -79,7 +79,7 @@ function Get-LFMUserArtistTrack {
             $trackInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.User.Track'
                 'Track' = $track.Name
-                'Id' = [guid] $track.Mbid
+                'Id' = $track.Mbid
                 'Url' = [uri] $track.Url
                 'ImageUrl' = $track.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
                 'Album' = $track.Album.'#text'

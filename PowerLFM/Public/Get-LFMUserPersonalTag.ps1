@@ -77,7 +77,7 @@ function Get-LFMUserPersonalTag {
             $userTagInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.User.PersonalTag'
                 'Artist' = $userTag.Name
-                'Id' = [guid] $userTag.Mbid
+                'Id' = $userTag.Mbid
                 'Url' = [uri] $userTag.Url
             }
 

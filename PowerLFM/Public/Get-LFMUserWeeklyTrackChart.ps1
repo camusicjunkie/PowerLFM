@@ -65,7 +65,7 @@ function Get-LFMUserWeeklyTrackChart {
                 'PSTypeName' = 'PowerLFM.User.WeeklyTrackChart'
                 'Track' = $track.Name
                 'Url' = [uri] $track.Url
-                'Id' = [guid] $track.Mbid
+                'Id' = $track.Mbid
                 'Artist' = $track.Artist.'#text'
                 'ArtistId' = [guid] $track.Artist.Mbid
                 'PlayCount' = [int] $track.PlayCount

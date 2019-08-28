@@ -96,7 +96,7 @@ function Get-LFMTrackInfo {
             'Track' = $irm.Track.Name
             'Artist' = $irm.Track.Artist.Name
             'Album' = $irm.Track.Album.Title
-            'Id' = [guid] $irm.Track.Mbid
+            'Id' = $irm.Track.Mbid
             'Listeners' = [int] $irm.Track.Listeners
             'PlayCount' = [int] $irm.Track.PlayCount
             'Url' = [uri] $irm.Track.Url

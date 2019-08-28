@@ -65,7 +65,7 @@ function Get-LFMUserWeeklyAlbumChart {
                 'PSTypeName' = 'PowerLFM.User.WeeklyChartList'
                 'Album' = $album.Name
                 'Url' = [uri] $album.Url
-                'Id' = [guid] $album.Mbid
+                'Id' = $album.Mbid
                 'Artist' = $album.Artist.'#text'
                 'ArtistId' = [guid] $album.Artist.Mbid
                 'PlayCount' = [int] $album.PlayCount

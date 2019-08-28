@@ -82,7 +82,7 @@ function Get-LFMTrackSimilar {
                 'PSTypeName' = 'PowerLFM.Track.Similar'
                 'Track' = $similar.Name
                 'Artist' = $similar.Artist.Name
-                'Id' = [guid] $similar.Mbid
+                'Id' = $similar.Mbid
                'PlayCount' = [int] $similar.PlayCount
                 'Url' = [uri] $similar.Url
                'Match' = [math]::Round($similar.Match, 2)
