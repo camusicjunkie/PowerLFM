@@ -85,7 +85,7 @@ function Get-LFMTrackSimilar {
                 'Id' = [guid] $similar.Mbid
                'PlayCount' = [int] $similar.PlayCount
                 'Url' = [uri] $similar.Url
-               'Match' = [int] $similar.Match
+               'Match' = [math]::Round($similar.Match, 2)
             }
 
             Write-Output $similarInfo

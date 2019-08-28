@@ -75,7 +75,7 @@ function Get-LFMArtistSimilar {
                 'Artist' = $similar.Name
                 'Id' = [guid] $similar.Mbid
                 'Url' = [uri] $similar.Url
-                'Match' = [int] $similar.Match
+                'Match' = [math]::Round($similar.Match, 2)
             }
 
             Write-Output $similarInfo
