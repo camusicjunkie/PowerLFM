@@ -64,7 +64,7 @@ function Search-LFMTrack {
                 'PSTypeName' = 'PowerLFM.Track.Search'
                 'Track' = $match.Name
                 'Artist' = $match.Artist
-                'Id' = [guid] $match.Mbid
+                'Id' = $match.Mbid
                 'Listeners' = [int] $match.Listeners
                 'Url' = [uri] $match.Url
             }

@@ -77,7 +77,7 @@ function Get-LFMArtistTopAlbum {
             $albumInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.Artist.Album'
                 'Album' = $album.Name
-                'Id' = [guid] $album.Mbid
+                'Id' = $album.Mbid
                 'Url' = [uri]$album.Url
                 'PlayCount' = [int] $album.PlayCount
             }
