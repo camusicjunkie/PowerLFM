@@ -331,11 +331,11 @@ InModuleScope PowerLFM {
             }
 
             It "Artist first match should have percentage of $($contextMock.Similarartists.Artist[0].Match)" {
-                $output[0].Match | Should -Be 1
+                $output[0].Match | Should -Be $contextMock.Similarartists.Artist[0].Match
             }
 
             It "Artist second match should have percentage of $($contextMock.Similarartists.Artist[1].Match)" {
-                $output[1].Match | Should -Be .5
+                $output[1].Match | Should -Be $contextMock.Similarartists.Artist[1].Match
             }
 
             It "Artist should return two similar artists when id parameter is used" {

@@ -253,7 +253,7 @@ InModuleScope PowerLFM {
             It 'Should call Foreach-Object <times> times building url in <set> parameter set' -TestCases $testCases {
                 param ($times, $gaiParams)
 
-                Get-LFMAlbumInfo @gaiParams
+                Get-LFMAlbumTopTag @gaiParams
 
                 $amParams = @{
                     CommandName = 'Foreach-Object'
