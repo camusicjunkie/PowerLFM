@@ -126,22 +126,110 @@ Describe 'Get-LFMTagTopArtist: Interface' -Tag Interface {
 
 InModuleScope PowerLFM {
 
+    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+    $contextMock = $mocks.'Get-LFMTagTopArtist'.TagTopArtist
+
     Describe 'Get-LFMTagTopArtist: Unit' -Tag Unit {
+
+        Mock Invoke-RestMethod
 
         Context 'Input' {
 
+            It "Should throw when Tag is null" {
+                {Get-LFMTagTopAlbum -Tag $null} | Should -Throw
+            }
         }
 
         Context 'Execution' {
 
+            Mock Foreach-Object
+
+            $testCases = @(
+                @{
+                    times = 4
+                    gttaParams = @{
+                        Tag = 'Tag'
+                    }
+                }
+                @{
+                    times = 5
+                    gttaParams = @{
+                        Tag = 'Tag'
+                        Limit = '5'
+                    }
+                }
+                @{
+                    times = 6
+                    gttaParams = @{
+                        Tag = 'Tag'
+                        Limit = '5'
+                        Page = '1'
+                    }
+                }
+            )
+
+            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
+                param ($times, $gttaParams)
+
+                Get-LFMTagTopArtist @gttaParams
+
+                $amParams = @{
+                    CommandName = 'Foreach-Object'
+                    Exactly = $true
+                    Times = $times
+                    Scope = 'It'
+                }
+                Assert-MockCalled @amParams
+            }
         }
 
         Context 'Output' {
 
+            Mock Invoke-RestMethod {$contextMock}
+
+            BeforeEach {
+                $script:output = Get-LFMTagTopArtist -Tag Tag
+            }
+
+            It "Tag first top artist should have artist name of $($contextMock.TopArtists.Artist[0].Name)" {
+                $output[0].Artist | Should -Be $contextMock.TopArtists.Artist[0].Name
+            }
+
+            It "Tag first top album should have url of $($contextMock.TopArtists.Artist[0].Url)" {
+                $output[0].ArtistUrl | Should -Be $contextMock.TopArtists.Artist[0].Url
+            }
+
+            It "Tag first top album should have rank with a value of $($contextMock.TopArtists.Artist[0].'@attr'.Rank)" {
+                $output[0].Rank | Should -Be $contextMock.TopArtists.Artist[0].'@attr'.Rank
+            }
+
+            It "Tag second top album should have rank with a value of $($contextMock.TopArtists.Artist[1].'@attr'.Rank)" {
+                $output[1].Rank | Should -Be $contextMock.TopArtists.Artist[1].'@attr'.Rank
+            }
+
+            It "Tag second top album should have artist id with a value of $($contextMock.TopArtists.Artist[1].Mbid)" {
+                $output[1].ArtistId | Should -Be $contextMock.TopArtists.Artist[1].Mbid
+            }
+
+            It "Tag second top album should have artist url of $($contextMock.TopArtists.Artist[1].Url)" {
+                $output[1].ArtistUrl | Should -Be $contextMock.TopArtists.Artist[1].Url
+            }
+
+            It 'Tag should have two top albums' {
+                $output.Artist | Should -HaveCount 2
+            }
+
+            It 'Tag should not have more than two top albums' {
+                $output.Artist | Should -Not -BeNullOrEmpty
+                $output.Artist | Should -Not -HaveCount 3
+            }
         }
     }
 }
 
 Describe 'Get-LFMTagTopArtist: Integration' -Tag Integration {
 
+    It "Integration test" {
+        Set-ItResult -Skipped -Because 'the integration tests will be set up later'
+    }
 }
