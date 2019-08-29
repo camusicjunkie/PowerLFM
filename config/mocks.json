@@ -495,5 +495,25 @@
         }
       }
     }
+  ],
+  "Get-LFMTagTopTag": [
+    {
+      "TagTopTag": {
+        "toptags": {
+          "tag": [
+            {
+              "name": "Tag1",
+              "count": 99,
+              "reach": 1
+            },
+            {
+              "name": "Tag2",
+              "count": 100,
+              "reach": 2
+            }
+          ]
+        }
+      }
+    }
   ]
 }
