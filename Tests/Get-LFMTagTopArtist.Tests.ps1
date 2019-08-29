@@ -136,7 +136,7 @@ InModuleScope PowerLFM {
         Context 'Input' {
 
             It "Should throw when Tag is null" {
-                {Get-LFMTagTopAlbum -Tag $null} | Should -Throw
+                {Get-LFMTagTopArtist -Tag $null} | Should -Throw
             }
         }
 
