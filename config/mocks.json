@@ -515,5 +515,43 @@
         }
       }
     }
+  ],
+  "Get-LFMTagTopTrack": [
+    {
+      "TagTopTrack": {
+        "tracks": {
+          "track": [
+            {
+              "name": "Track1",
+              "duration": 30,
+              "mbid": "12345678-1234-1234-1234-123456789011",
+              "url": "https://www.last.fake/tag/toptrack1",
+              "artist": {
+                "name": "Artist1",
+                "mbid": "12345678-1234-1234-1234-123456789012",
+                "url": "https://www.last.fake/tag/toptrack1/artist1"
+              },
+              "@attr": {
+                "rank": 1
+              }
+            },
+            {
+              "name": "Track2",
+              "duration": 60,
+              "mbid": "12345678-1234-1234-1234-123456789013",
+              "url": "https://www.last.fake/tag/toptrack2",
+              "artist": {
+                "name": "Artist",
+                "mbid": "12345678-1234-1234-1234-123456789014",
+                "url": "https://www.last.fake/tag/toptrack2/artists2"
+              },
+              "@attr": {
+                "rank": 2
+              }
+            }
+          ]
+        }
+      }
+    }
   ]
 }
