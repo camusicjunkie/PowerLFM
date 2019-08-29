@@ -62,7 +62,7 @@ function Get-LFMTrackCorrection {
             'TrackUrl' = [uri] $correction.Url
             'Artist' = $correction.Artist.Name
             'ArtistUrl' = [uri] $correction.Artist.Url
-            'ArtistId' = [guid] $correction.Artist.Mbid
+            'ArtistId' = $correction.Artist.Mbid
         }
 
         Write-Output $correctedTrackInfo
