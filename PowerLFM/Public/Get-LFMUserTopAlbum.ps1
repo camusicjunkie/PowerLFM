@@ -81,10 +81,10 @@ function Get-LFMUserTopAlbum {
                 'Album' = $album.Name
                 'PlayCount' = [int] $album.PlayCount
                 'AlbumUrl' = [uri] $album.Url
-                'Albumid' = [guid] $album.Mbid
+                'Albumid' = $album.Mbid
                 'Artist' = $album.Artist.Name
                 'ArtistUrl' = [uri] $album.Artist.url
-                'ArtistId' = [guid] $album.Artist.Mbid
+                'ArtistId' = $album.Artist.Mbid
                 'ImageUrl' = $album.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 

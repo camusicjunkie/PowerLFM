@@ -67,7 +67,7 @@ function Get-LFMUserWeeklyAlbumChart {
                 'Url' = [uri] $album.Url
                 'Id' = $album.Mbid
                 'Artist' = $album.Artist.'#text'
-                'ArtistId' = [guid] $album.Artist.Mbid
+                'ArtistId' = $album.Artist.Mbid
                 'PlayCount' = [int] $album.PlayCount
                 'StartDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyAlbumChart.'@attr'.From -Local
                 'EndDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyAlbumChart.'@attr'.To -Local

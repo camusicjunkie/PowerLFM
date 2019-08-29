@@ -65,10 +65,10 @@ function Get-LFMUserLovedTrack {
                 'PSTypeName' = 'PowerLFM.User.Track'
                 'Track' = $track.Name
                 'TrackUrl' = [uri] $track.Url
-                'Trackid' = [guid] $track.Mbid
+                'Trackid' = $track.Mbid
                 'Artist' = $track.Artist.Name
                 'ArtistUrl' = [uri] $track.Artist.url
-                'ArtistId' = [guid] $track.Artist.Mbid
+                'ArtistId' = $track.Artist.Mbid
                 'Date' = ConvertFrom-UnixTime -UnixTime $track.Date.Uts -Local
                 'ImageUrl' = $track.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
