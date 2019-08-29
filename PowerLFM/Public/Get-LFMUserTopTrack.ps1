@@ -81,10 +81,10 @@ function Get-LFMUserTopTrack {
                 'Track' = $track.Name
                 'PlayCount' = [int] $track.PlayCount
                 'TrackUrl' = [uri] $track.Url
-                'TrackId' = [guid] $track.Mbid
+                'TrackId' = $track.Mbid
                 'Artist' = $track.Artist.Name
                 'ArtistUrl' = [uri] $track.Artist.Url
-                'ArtistId' = [guid] $track.Artist.Mbid
+                'ArtistId' = $track.Artist.Mbid
                 'ImageUrl' = $track.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 

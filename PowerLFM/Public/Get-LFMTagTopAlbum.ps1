@@ -62,10 +62,10 @@ function Get-LFMTagTopAlbum {
             $albumInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.Tag.TopAlbums'
                 'Album' = $album.Name
-                'AlbumId' = [guid] $album.Mbid
+                'AlbumId' = $album.Mbid
                 'AlbumUrl' = [uri] $album.Url
                 'Artist' = $album.Artist.Name
-                'ArtistId' = [guid] $album.Artist.Mbid
+                'ArtistId' = $album.Artist.Mbid
                 'ArtistUrl' = [uri] $album.Artist.Url
                 'Rank' = [int] $album.'@attr'.Rank
                 'ImageUrl' = $album.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'

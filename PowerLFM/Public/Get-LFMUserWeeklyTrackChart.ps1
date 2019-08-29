@@ -67,7 +67,7 @@ function Get-LFMUserWeeklyTrackChart {
                 'Url' = [uri] $track.Url
                 'Id' = $track.Mbid
                 'Artist' = $track.Artist.'#text'
-                'ArtistId' = [guid] $track.Artist.Mbid
+                'ArtistId' = $track.Artist.Mbid
                 'PlayCount' = [int] $track.PlayCount
                 'ImageUrl' = $track.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
                 'StartDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyTrackChart.'@attr'.From -Local
