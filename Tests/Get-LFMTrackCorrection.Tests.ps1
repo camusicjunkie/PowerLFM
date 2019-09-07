@@ -93,22 +93,92 @@ Describe 'Get-LFMTrackCorrection: Interface' -Tag Interface {
 
 InModuleScope PowerLFM {
 
+    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+    $contextMock = $mocks.'Get-LFMTrackCorrection'.TrackCorrection
+
     Describe 'Get-LFMTrackCorrection: Unit' -Tag Unit {
+
+        Mock Invoke-RestMethod
 
         Context 'Input' {
 
+            It "Should throw when Track is null" {
+                {Get-LFMTrackCorrection -Track $null} | Should -Throw
+            }
         }
 
         Context 'Execution' {
 
+            Mock Foreach-Object
+
+            $testCases = @(
+                @{
+                    times = 5
+                    gtcParams = @{
+                        Track = 'Track'
+                        Artist = 'Artist'
+                    }
+                }
+            )
+
+            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
+                param ($times, $gtcParams)
+
+                Get-LFMTrackCorrection @gtcParams
+
+                $amParams = @{
+                    CommandName = 'Foreach-Object'
+                    Exactly = $true
+                    Times = $times
+                    Scope = 'It'
+                }
+                Assert-MockCalled @amParams
+            }
         }
 
         Context 'Output' {
 
+            Mock Invoke-RestMethod {$contextMock}
+
+            BeforeEach {
+                $script:output = Get-LFMTrackCorrection -Track Track -Artist Artist
+            }
+
+            It "Corrected track should have a name of $($contextMock.Corrections.Correction.Track.Name)" {
+                $output.Track | Should -Be $contextMock.Corrections.Correction.Track.Name
+            }
+
+            It "Corrected track should have a url of $($contextMock.Corrections.Correction.Track.Url)" {
+                $output.TrackUrl | Should -Be $contextMock.Corrections.Correction.Track.Url
+            }
+
+            It "Corrected track should have an artist name of $($contextMock.Corrections.Correction.Track.Artist.Name)" {
+                $output.Artist | Should -Be $contextMock.Corrections.Correction.Track.Artist.Name
+            }
+
+            It "Corrected track should have an artist id of $($contextMock.Corrections.Correction.Track.Artist.Mbid)" {
+                $output.ArtistId | Should -Be $contextMock.Corrections.Correction.Track.Artist.Mbid
+            }
+
+            It "Corrected track should have an artist url of $($contextMock.Corrections.Correction.Track.Artist.Url)" {
+                $output.ArtistUrl | Should -Be $contextMock.Corrections.Correction.Track.Artist.Url
+            }
+
+            It 'Corrected track should have one track' {
+                $output.Track | Should -HaveCount 1
+            }
+
+            It "Corrected track should not have two tracks" {
+                $output.Track | Should -Not -BeNullOrEmpty
+                $output.Track | Should -Not -HaveCount 2
+            }
         }
     }
 }
 
 Describe 'Get-LFMTrackCorrection: Integration' -Tag Integration {
 
+    It "Integration test" {
+        Set-ItResult -Skipped -Because 'the integration tests will be set up later'
+    }
 }

@@ -60,22 +60,68 @@ Describe 'Get-LFMTagWeeklyChartList: Interface' -Tag Interface {
 
 InModuleScope PowerLFM {
 
+    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+    $contextMock = $mocks.'Get-LFMTagWeeklyChartList'.TagWeeklyChartList
+
     Describe 'Get-LFMTagWeeklyChartList: Unit' -Tag Unit {
+
+        Mock Invoke-RestMethod {$contextMock}
 
         Context 'Input' {
 
+            It "Should throw when Tag is null" {
+                {Get-LFMTagWeeklyChartList -Tag $null} | Should -Throw
+            }
         }
 
         Context 'Execution' {
 
+            Mock Foreach-Object
+
+            $testCases = @(
+                @{
+                    times = 4
+                    gtwcParams = @{
+                        Tag = 'Tag'
+                    }
+                }
+            )
+
+            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
+                param ($times, $gtwcParams)
+
+                Get-LFMTagWeeklyChartList -Tag Tag
+
+                $amParams = @{
+                    CommandName = 'Foreach-Object'
+                    Exactly = $true
+                    Times = $times
+                    Scope = 'It'
+                }
+                Assert-MockCalled @amParams
+            }
         }
 
         Context 'Output' {
 
+            BeforeEach {
+                $script:output = Get-LFMTagWeeklyChartList -Tag Tag | Sort-Object From
+            }
+
+            It "Tag first weekly chart list start date should have a value of $($contextMock.WeeklyChartList.Chart[0].From)" {
+                $output[0].StartDate | ConvertTo-UnixTime | Should -Be $contextMock.WeeklyChartList.Chart[0].From
+            }
+
+            It "Tag second weekly chart list end date should have a value of $($contextMock.WeeklyChartList.Chart[1].To)" {
+                $output[1].EndDate | ConvertTo-UnixTime | Should -Be $contextMock.WeeklyChartList.Chart[1].To
+            }
         }
     }
 }
 
 Describe 'Get-LFMTagWeeklyChartList: Integration' -Tag Integration {
 
+    It "Integration test" {
+        Set-ItResult -Skipped -Because 'the integration tests will be set up later'
+    }
 }
