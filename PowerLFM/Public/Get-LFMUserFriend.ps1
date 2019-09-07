@@ -13,9 +13,7 @@ function Get-LFMUserFriend {
         [ValidateRange(1,50)]
         [string] $Limit,
 
-        [string] $Page,
-
-        [switch] $RecentTracks
+        [string] $Page
     )
 
     begin {
