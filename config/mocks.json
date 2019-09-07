@@ -68,12 +68,12 @@
           "tag": [
             {
               "name": "Tag1",
-              "url": "https://www.last.fake/tag/tag1",
+              "url": "https://www.last.fake/toptag/tag1",
               "count": 100
             },
             {
               "name": "Tag2",
-              "url": "https://www.last.fake/tag/tag2",
+              "url": "https://www.last.fake/toptag/tag2",
               "count": 50
             }
           ]
@@ -277,13 +277,13 @@
           "tag": [
             {
               "name": "Tag1",
-              "url": "https://www.last.fake/tag/tag1",
+              "url": "https://www.last.fake/toptag/tag1",
               "reach": "1",
               "taggings": "10"
             },
             {
               "name": "Tag2",
-              "url": "https://www.last.fake/tag/tag2",
+              "url": "https://www.last.fake/toptag/tag2",
               "reach": "2",
               "taggings": "20"
             }
@@ -587,6 +587,39 @@
                 "url": "https://www.last.fake/correction/artist1"
               }
             }
+          }
+        }
+      }
+    }
+  ],
+  "Get-LFMTrackInfo": [
+    {
+      "TrackInfo": {
+        "track": {
+          "name": "Track",
+          "url": "https://www.last.fake/Track",
+          "duration": 30,
+          "listeners": 1,
+          "playcount": 199,
+          "userplaycount": 99,
+          "artist": {
+            "name": "Artist"
+          },
+          "album": {
+            "title": "Album"
+          },
+          "userloved": 1,
+          "toptags": {
+            "tag": [
+              {
+                "name": "Tag1",
+                "url": "https://www.last.fake/toptag/tag1"
+              },
+              {
+                "name": "Tag2",
+                "url": "https://www.last.fake/toptag/tag2"
+              }
+            ]
           }
         }
       }
