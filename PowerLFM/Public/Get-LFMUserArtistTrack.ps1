@@ -81,7 +81,6 @@ function Get-LFMUserArtistTrack {
                 'Track' = $track.Name
                 'Id' = $track.Mbid
                 'Url' = [uri] $track.Url
-                'ImageUrl' = $track.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
                 'Album' = $track.Album.'#text'
                 'ScrobbleTime' = ConvertFrom-UnixTime -UnixTime ($track.Date.Uts) -Local
             }

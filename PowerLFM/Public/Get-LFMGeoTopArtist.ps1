@@ -68,7 +68,6 @@ function Get-LFMGeoTopArtist {
                 'Id' = $artist.Mbid
                 'Url' = [uri] $artist.Url
                 'Listeners' = [int] $artist.Listeners
-                'ImageUrl' = $artist.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 
             Write-Output $artistInfo

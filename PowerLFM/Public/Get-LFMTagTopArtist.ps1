@@ -65,7 +65,6 @@ function Get-LFMTagTopArtist {
                 'ArtistId' = $artist.Mbid
                 'ArtistUrl' = [uri] $artist.Url
                 'Rank' = [int] $artist.'@attr'.Rank
-                'ImageUrl' = $artist.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 
             Write-Output $artistInfo

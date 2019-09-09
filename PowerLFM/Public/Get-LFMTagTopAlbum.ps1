@@ -68,7 +68,6 @@ function Get-LFMTagTopAlbum {
                 'ArtistId' = $album.Artist.Mbid
                 'ArtistUrl' = [uri] $album.Artist.Url
                 'Rank' = [int] $album.'@attr'.Rank
-                'ImageUrl' = $album.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 
             Write-Output $albumInfo

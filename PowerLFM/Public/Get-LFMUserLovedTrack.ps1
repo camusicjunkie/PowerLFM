@@ -70,7 +70,6 @@ function Get-LFMUserLovedTrack {
                 'ArtistUrl' = [uri] $track.Artist.Url
                 'ArtistId' = $track.Artist.Mbid
                 'Date' = ConvertFrom-UnixTime -UnixTime $track.Date.Uts -Local
-                'ImageUrl' = $track.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 
             Write-Output $trackInfo

@@ -58,7 +58,6 @@ function Get-LFMChartTopArtist {
             'Url' = [uri] $artist.Url
             'Listeners' = [int] $artist.Listeners
             'PlayCount' = [int] $artist.PlayCount
-            'ImageUrl' = $artist.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
         }
 
         Write-Output $artistInfo

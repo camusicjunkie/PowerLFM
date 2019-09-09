@@ -60,7 +60,6 @@ function Get-LFMUserInfo {
             'Registered' = ConvertFrom-UnixTime -UnixTime $irm.User.Registered.UnixTime -Local
             'PlayCount' = [int] $irm.User.PlayCount
             'PlayLists' = [int] $irm.User.PlayLists
-            'ImageUrl' = $irm.User.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
         }
 
         Write-Output $userInfo

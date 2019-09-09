@@ -85,7 +85,6 @@ function Get-LFMUserTopTrack {
                 'Artist' = $track.Artist.Name
                 'ArtistUrl' = [uri] $track.Artist.Url
                 'ArtistId' = $track.Artist.Mbid
-                'ImageUrl' = $track.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 
             Write-Output $trackInfo

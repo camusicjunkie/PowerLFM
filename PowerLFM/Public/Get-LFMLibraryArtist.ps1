@@ -65,7 +65,6 @@ function Get-LFMLibraryArtist {
                 'PlayCount' = [int] $artist.PlayCount
                 'Url' = [uri] $artist.Url
                 'Id' = $artist.Mbid
-                'ImageUrl' = $artist.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 
             Write-Output $artistInfo

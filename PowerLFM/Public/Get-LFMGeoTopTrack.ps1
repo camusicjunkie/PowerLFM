@@ -79,7 +79,6 @@ function Get-LFMGeoTopTrack {
                 'ArtistUrl' = [uri] $track.Artist.Url
                 'Rank' = [int] $track.'@attr'.Rank
                 'Listeners' = [int] $track.Listeners
-                'ImageUrl' = $track.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 
             Write-Output $trackInfo

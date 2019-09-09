@@ -85,7 +85,6 @@ function Get-LFMUserTopAlbum {
                 'Artist' = $album.Artist.Name
                 'ArtistUrl' = [uri] $album.Artist.Url
                 'ArtistId' = $album.Artist.Mbid
-                'ImageUrl' = $album.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 
             Write-Output $albumInfo

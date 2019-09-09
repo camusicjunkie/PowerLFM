@@ -70,7 +70,6 @@ function Get-LFMUserFriend {
                 'Country' = $friend.Country
                 'Registered' = ConvertFrom-UnixTime -UnixTime $friend.Registered.UnixTime -Local
                 'PlayLists' = [int] $friend.PlayLists
-                'ImageUrl' = $friend.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 
             $userInfo = [pscustomobject] $userInfo

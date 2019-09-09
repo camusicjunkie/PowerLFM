@@ -69,7 +69,6 @@ function Get-LFMTagTopTrack {
                 'ArtistUrl' = [uri] $track.Artist.Url
                 'Rank' = [int] $track.'@attr'.Rank
                 'Duration' = [int] $track.Duration
-                'ImageUrl' = $track.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 
             Write-Output $trackInfo
