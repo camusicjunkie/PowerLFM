@@ -330,11 +330,11 @@ InModuleScope PowerLFM {
                 $output.Artist | Should -Not -HaveCount 3
             }
 
-            It "Artist first match should have percentage of $($contextMock.Similarartists.Artist[0].Match)" {
+            It "Artist first match should have value of $($contextMock.Similarartists.Artist[0].Match)" {
                 $output[0].Match | Should -Be $contextMock.Similarartists.Artist[0].Match
             }
 
-            It "Artist second match should have percentage of $($contextMock.Similarartists.Artist[1].Match)" {
+            It "Artist second match should have value of $($contextMock.Similarartists.Artist[1].Match)" {
                 $output[1].Match | Should -Be $contextMock.Similarartists.Artist[1].Match
             }
 
