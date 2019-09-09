@@ -624,5 +624,71 @@
         }
       }
     }
+  ],
+  "Get-LFMTrackSimilar": [
+    {
+      "TrackSimilar": {
+        "similartracks": {
+          "track": [
+            {
+              "name": "Track1",
+              "playcount": 199,
+              "match": 1.0,
+              "url": "https://www.last.fake/similar/track1",
+              "artist": {
+                "name": "Artist1"
+              }
+            },
+            {
+              "name": "Track2",
+              "playcount": 200,
+              "match": 0.5,
+              "url": "https://www.last.fake/similar/track2",
+              "artist": {
+                "name": "Artist2"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Get-LFMTrackTag": [
+    {
+      "TrackTag": {
+        "tags": {
+          "tag": [
+            {
+              "name": "Tag1",
+              "url": "https://www.last.fake/tag/tag1"
+            },
+            {
+              "name": "Tag2",
+              "url": "https://www.last.fake/tag/tag2"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Get-LFMTrackTopTag": [
+    {
+      "TrackTopTag": {
+        "toptags": {
+          "tag": [
+            {
+              "name": "Tag1",
+              "url": "https://www.last.fake/toptag/tag1",
+              "count": 100
+            },
+            {
+              "name": "Tag2",
+              "url": "https://www.last.fake/toptag/tag2",
+              "count": 50
+            }
+          ]
+        }
+      }
+    }
   ]
 }
