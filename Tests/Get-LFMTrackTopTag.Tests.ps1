@@ -205,22 +205,110 @@ Describe 'Get-LFMTrackTopTag: Interface' -Tag Interface {
 
 InModuleScope PowerLFM {
 
+    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+    $contextMock = $mocks.'Get-LFMTrackTopTag'.TrackTopTag
+
     Describe 'Get-LFMTrackTopTag: Unit' -Tag Unit {
+
+        Mock Invoke-RestMethod
 
         Context 'Input' {
 
+            It 'Should throw when track is null' {
+                {Get-LFMTrackTopTag -Track $null} | Should -Throw
+            }
         }
 
         Context 'Execution' {
 
+            Mock Foreach-Object
+
+            $testCases = @(
+                @{
+                    set = 'track'
+                    times = 5
+                    gtttParams = @{
+                        Track = 'Track'
+                        Artist = 'Artist'
+                    }
+                }
+                @{
+                    set = 'track'
+                    times = 6
+                    gtttParams = @{
+                        Track = 'Track'
+                        Artist = 'Artist'
+                        AutoCorrect = $true
+                    }
+                }
+                @{
+                    set = 'id'
+                    times = 4
+                    gtttParams = @{
+                        Id = (New-Guid)
+                    }
+                }
+            )
+
+            It 'Should call Foreach-Object <times> times building url in <set> parameter set' -TestCases $testCases {
+                param ($times, $gtttParams)
+
+                Get-LFMTrackTopTag @gtttParams
+
+                $amParams = @{
+                    CommandName = 'Foreach-Object'
+                    Exactly = $true
+                    Times = $times
+                    Scope = 'It'
+                }
+                Assert-MockCalled @amParams
+            }
         }
 
         Context 'Output' {
 
+            Mock Invoke-RestMethod {$contextMock}
+
+            BeforeEach {
+                $script:output = Get-LFMTrackTopTag -Artist Artist -Track Track
+            }
+
+            It "Track first top tag should have name of $($contextMock.TopTags.Tag[0].Name)" {
+                $output[0].Tag | Should -Be $contextMock.TopTags.Tag[0].Name
+            }
+
+            It "Track second tag should have url of $($contextMock.TopTags.Tag[1].Url)" {
+                $output[1].Url | Should -Be $contextMock.TopTags.Tag[1].Url
+            }
+
+            It "Track first tag should have match of $($contextMock.TopTags.Tag[0].Count)" {
+                $output[0].Match | Should -Be $contextMock.TopTags.Tag[0].Count
+            }
+
+            It "Track second tag should have match of $($contextMock.TopTags.Tag[1].Count)" {
+                $output[1].Match | Should -Be $contextMock.TopTags.Tag[1].Count
+            }
+
+            It 'Track should have two tags' {
+                $output.Tag | Should -HaveCount 2
+            }
+
+            It 'Track should not have more than two tags' {
+                $output.Tag | Should -Not -BeNullOrEmpty
+                $output.Tag | Should -Not -HaveCount 3
+            }
+
+            It "Track should have two tags when id parameter is used" {
+                $output = Get-LFMTrackTopTag -Id 1
+                $output.Tag | Should -HaveCount 2
+            }
         }
     }
 }
 
 Describe 'Get-LFMTrackTopTag: Integration' -Tag Integration {
 
+    It "Integration test" {
+        Set-ItResult -Skipped -Because 'the integration tests will be set up later'
+    }
 }

@@ -271,22 +271,112 @@ Describe 'Get-LFMTrackTag: Interface' -Tag Interface {
 
 InModuleScope PowerLFM {
 
+    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+    $contextMock = $mocks.'Get-LFMTrackTag'.TrackTag
+
     Describe 'Get-LFMTrackTag: Unit' -Tag Unit {
+
+        Mock Invoke-RestMethod
 
         Context 'Input' {
 
+            It 'Should throw when track is null' {
+                {Get-LFMTrackTag -Track $null} | Should -Throw
+            }
         }
 
         Context 'Execution' {
 
+            Mock Foreach-Object
+
+            $testCases = @(
+                @{
+                    set = 'track'
+                    times = 6
+                    gttParams = @{
+                        Track = 'Track'
+                        Artist = 'Artist'
+                    }
+                }
+                @{
+                    set = 'track'
+                    times = 6
+                    gttParams = @{
+                        Track = 'Track'
+                        Artist = 'Artist'
+                        UserName = 'camusicjunkie'
+                    }
+                }
+                @{
+                    set = 'track'
+                    times = 7
+                    gttParams = @{
+                        Track = 'Track'
+                        Artist = 'Artist'
+                        UserName = 'camusicjunkie'
+                        AutoCorrect = $true
+                    }
+                }
+                @{
+                    set = 'id'
+                    times = 5
+                    gttParams = @{
+                        Id = (New-Guid)
+                    }
+                }
+            )
+
+            It 'Should call Foreach-Object <times> times building url in <set> parameter set' -TestCases $testCases {
+                param ($times, $gttParams)
+
+                Get-LFMTrackTag @gttParams
+
+                $amParams = @{
+                    CommandName = 'Foreach-Object'
+                    Exactly = $true
+                    Times = $times
+                    Scope = 'It'
+                }
+                Assert-MockCalled @amParams
+            }
         }
 
         Context 'Output' {
 
+            Mock Invoke-RestMethod {$contextMock}
+
+            BeforeEach {
+                $script:output = Get-LFMTrackTag -Track Track -Artist Artist
+            }
+
+            It "Track first tag should have name of $($contextMock.Tags.Tag[0].Name)" {
+                $output[0].Tag | Should -Be $contextMock.Tags.Tag[0].Name
+            }
+
+            It "Track second tag should have url of $($contextMock.Tags.Tag[1].Url)" {
+                $output[1].Url | Should -Be $contextMock.Tags.Tag[1].Url
+            }
+
+            It 'Track should have two tags' {
+                $output.Tag | Should -HaveCount 2
+            }
+
+            It 'Track should not have more than two tags' {
+                $output.Tag | Should -Not -BeNullOrEmpty
+                $output.Tag | Should -Not -HaveCount 3
+            }
+
+            It "Track should have two tags when id parameter is used" {
+                $output = Get-LFMTrackTag -Id 1
+                $output.Tags | Should -HaveCount 2
+            }
         }
     }
 }
 
 Describe 'Get-LFMTrackTag: Integration' -Tag Integration {
 
+    It "Integration test" {
+        Set-ItResult -Skipped -Because 'the integration tests will be set up later'
+    }
 }
