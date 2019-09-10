@@ -121,39 +121,6 @@ Describe 'Get-LFMUserFriend: Interface' -Tag Interface {
                 $parameter.Position | Should -Be 2
             }
         }
-
-        Context 'Parameter [RecentTracks] attribute validation' {
-
-            $parameter = $parameterSet.Parameters | Where-Object Name -eq RecentTracks
-
-            It 'Should not be null or empty' {
-                $parameter | Should -Not -BeNullOrEmpty
-            }
-
-            It "Should be of type System.Management.Automation.SwitchParameter" {
-                $parameter.ParameterType.ToString() | Should -Be System.Management.Automation.SwitchParameter
-            }
-
-            It 'Mandatory should be set to False' {
-                $parameter.IsMandatory | Should -BeFalse
-            }
-
-            It 'ValueFromPipeline should be set to False' {
-                $parameter.ValueFromPipeline | Should -BeFalse
-            }
-
-            It 'ValueFromPipelineByPropertyName should be set to False' {
-                $parameter.ValueFromPipelineByPropertyName | Should -BeFalse
-            }
-
-            It 'ValueFromReminingArguments should be set to False' {
-                $parameter.ValueFromRemainingArguments | Should -BeFalse
-            }
-
-            It "Should have a position of -2147483648" {
-                $parameter.Position | Should -Be -2147483648
-            }
-        }
     }
 }
 
