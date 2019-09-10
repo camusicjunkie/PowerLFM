@@ -104,16 +104,20 @@ InModuleScope PowerLFM {
 
         Context 'Output' {
 
-            BeforeEach {
-                $script:output = Get-LFMTagWeeklyChartList -Tag Tag | Sort-Object From
+
+
+            It "Tag first weekly chart list should have start date of $($contextMock.WeeklyChartList.Chart[0].UnixTimeFrom)" {
+                Mock ConvertFrom-UnixTime {'1 Jan 1970 12:00:00 AM'}
+
+                $output = Get-LFMTagWeeklyChartList -Tag Tag
+                $output[0].StartDate | Should -Be $contextMock.WeeklyChartList.Chart[0].UnixTimeFrom
             }
 
-            It "Tag first weekly chart list start date should have a value of $($contextMock.WeeklyChartList.Chart[0].From)" {
-                $output[0].StartDate | ConvertTo-UnixTime | Should -Be $contextMock.WeeklyChartList.Chart[0].From
-            }
+            It "Tag second weekly chart list should have end date of $($contextMock.WeeklyChartList.Chart[1].UnixTimeTo)" {
+                Mock ConvertFrom-UnixTime {'1 Jan 1970 12:01:01 AM'}
 
-            It "Tag second weekly chart list end date should have a value of $($contextMock.WeeklyChartList.Chart[1].To)" {
-                $output[1].EndDate | ConvertTo-UnixTime | Should -Be $contextMock.WeeklyChartList.Chart[1].To
+                $output = Get-LFMTagWeeklyChartList -Tag Tag
+                $output[1].EndDate | Should -Be $contextMock.WeeklyChartList.Chart[1].UnixTimeTo
             }
         }
     }
