@@ -562,11 +562,14 @@
             {
               "from": 0,
               "to": 60,
-              "startDate": "1 Jan 1970 12:00:00"
+              "unixtimefrom": "1 Jan 1970 12:00:00 AM",
+              "unixtimeto": "1 Jan 1970 12:01:00 AM"
             },
             {
-              "from": 1234567892,
-              "to": 1234567893
+              "from": 1,
+              "to": 61,
+              "unixtimefrom": "1 Jan 1970 12:00:01 AM",
+              "unixtimeto": "1 Jan 1970 12:01:01 AM"
             }
           ]
         }
