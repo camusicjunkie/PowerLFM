@@ -104,20 +104,29 @@ InModuleScope PowerLFM {
 
         Context 'Output' {
 
-
-
-            It "Tag first weekly chart list should have start date of $($contextMock.WeeklyChartList.Chart[0].UnixTimeFrom)" {
-                Mock ConvertFrom-UnixTime {'1 Jan 1970 12:00:00 AM'}
-
-                $output = Get-LFMTagWeeklyChartList -Tag Tag
-                $output[0].StartDate | Should -Be $contextMock.WeeklyChartList.Chart[0].UnixTimeFrom
+            BeforeEach {
+                $script:output = Get-LFMTagWeeklyChartList -Tag Tag
             }
 
-            It "Tag second weekly chart list should have end date of $($contextMock.WeeklyChartList.Chart[1].UnixTimeTo)" {
-                Mock ConvertFrom-UnixTime {'1 Jan 1970 12:01:01 AM'}
+            Mock ConvertFrom-UnixTime {$mocks.UnixTime.From}
 
-                $output = Get-LFMTagWeeklyChartList -Tag Tag
-                $output[1].EndDate | Should -Be $contextMock.WeeklyChartList.Chart[1].UnixTimeTo
+            It "Tag first weekly chart list should have start date of $($mocks.UnixTime.From)" {
+                $output[0].StartDate | Should -Be $mocks.UnixTime.From
+            }
+
+            Mock ConvertFrom-UnixTime {$mocks.UnixTime.To}
+
+            It "Tag second weekly chart list should have end date of $($mocks.UnixTime.To)" {
+                $output[0].EndDate | Should -Be $mocks.UnixTime.To
+            }
+
+            It 'Tag should have two charts' {
+                $output.StartDate | Should -HaveCount 2
+            }
+
+            It 'Tag should not have more than two charts' {
+                $output.StartDate | Should -Not -BeNullOrEmpty
+                $output.StartDate | Should -Not -HaveCount 3
             }
         }
     }

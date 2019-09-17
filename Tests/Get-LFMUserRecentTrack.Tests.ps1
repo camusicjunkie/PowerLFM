@@ -225,22 +225,136 @@ Describe 'Get-LFMUserRecentTrack: Interface' -Tag Interface {
 
 InModuleScope PowerLFM {
 
+    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+    $contextMock = $mocks.'Get-LFMUserRecentTrack'.UserRecentTrack
+
     Describe 'Get-LFMUserRecentTrack: Unit' -Tag Unit {
+
+        Mock Invoke-RestMethod
 
         Context 'Input' {
 
+            It "Should throw when username is null" {
+                {Get-LFMUserRecentTrack -UserName $null} | Should -Throw
+            }
         }
 
         Context 'Execution' {
 
+            Mock Foreach-Object
+
+            $testCases = @(
+                @{
+                    times = 4
+                    gurtParams = @{
+                        UserName = 'UserName'
+                    }
+                }
+                @{
+                    times = 5
+                    gurtParams = @{
+                        UserName = 'UserName'
+                        StartDate = '1 Jan 1970'
+                    }
+                }
+                @{
+                    times = 6
+                    gurtParams = @{
+                        UserName = 'UserName'
+                        StartDate = '1 Jan 1970'
+                        EndDate = '2 Jan 1970'
+                    }
+                }
+                @{
+                    times = 7
+                    gurtParams = @{
+                        UserName = 'UserName'
+                        StartDate = '1 Jan 1970'
+                        EndDate = '2 Jan 1970'
+                        Limit = '5'
+                    }
+                }
+                @{
+                    times = 8
+                    gurtParams = @{
+                        UserName = 'UserName'
+                        StartDate = '1 Jan 1970'
+                        EndDate = '2 Jan 1970'
+                        Limit = '5'
+                        Page = '1'
+                    }
+                }
+                @{
+                    times = 9
+                    gurtParams = @{
+                        UserName = 'UserName'
+                        StartDate = '1 Jan 1970'
+                        EndDate = '2 Jan 1970'
+                        Limit = '5'
+                        Page = '1'
+                        Extended = $true
+                    }
+                }
+            )
+
+            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
+                param ($times, $gurtParams)
+
+                Get-LFMUserRecentTrack @gurtParams
+
+                $amParams = @{
+                    CommandName = 'Foreach-Object'
+                    Exactly = $true
+                    Times = $times
+                    Scope = 'It'
+                }
+                Assert-MockCalled @amParams
+            }
         }
 
         Context 'Output' {
 
+            Mock Invoke-RestMethod {$contextMock}
+            Mock ConvertFrom-UnixTime {$mocks.UnixTime.From}
+
+            $output = Get-LFMUserRecentTrack -UserName camusicjunkie
+
+            It "User first recent track should be playing now" {
+                $output[0].NowPlaying | Should -BeTrue
+            }
+
+            It "User first recent track should have a name of $($contextMock.RecentTracks.Track[0].Name)" {
+                $output[0].Track | Should -Be $contextMock.RecentTracks.Track[0].Name
+            }
+
+            It "User first recent track should have an artist name of $($contextMock.RecentTracks.Track[0].Artist.'#Text')" {
+                $output[0].Artist | Should -Be $contextMock.RecentTracks.Track[0].Artist.'#Text'
+            }
+
+            $output = Get-LFMUserRecentTrack -UserName camusicjunkie -Extended
+
+            It "User second recent track should have an album name of $($contextMock.RecentTracks.Track[1].Album.'#Text')" {
+                $output[1].Album | Should -Be $contextMock.RecentTracks.Track[1].Album.'#Text'
+            }
+
+            It "User second recent track should have scrobble time of $($mocks.UnixTime.From)" {
+                $output[1].ScrobbleTime | Should -Be $mocks.UnixTime.From
+            }
+
+            It "User extended second recent track should be loved" {
+                $output[1].Loved | Should -Be 'Yes'
+            }
+
+            It "User extended third recent track should have an artist name of $($contextMock.RecentTracks.Track[2].Artist.Name)" {
+                $output[2].Artist | Should -Be $contextMock.RecentTracks.Track[2].Artist.Name
+            }
         }
     }
 }
 
 Describe 'Get-LFMUserRecentTrack: Integration' -Tag Integration {
 
+    It "Integration test" {
+        Set-ItResult -Skipped -Because 'the integration tests will be set up later'
+    }
 }
