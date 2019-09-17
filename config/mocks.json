@@ -335,13 +335,13 @@
           "artist": [
             {
               "name": "Artist1",
-              "listeners": "1",
+              "listeners": 1,
               "mbid": "12345678-1234-1234-1234-123456789011",
               "url": "https://www.last.fake/geo/topartist1"
             },
             {
               "name": "Artist2",
-              "listeners": "2",
+              "listeners": 2,
               "mbid": "12345678-1234-1234-1234-123456789012",
               "url": "https://www.last.fake/geo/topartist2"
             }
@@ -396,13 +396,13 @@
             {
               "name": "Artist1",
               "mbid": "12345678-1234-1234-1234-123456789011",
-              "playcount": "199",
+              "playcount": 199,
               "url": "https://www.last.fake/library/artist1"
             },
             {
               "name": "Artist2",
               "mbid": "12345678-1234-1234-1234-123456789012",
-              "playcount": "200",
+              "playcount": 200,
               "url": "https://www.last.fake/library/artist2"
             }
           ]
@@ -561,15 +561,11 @@
           "chart": [
             {
               "from": 0,
-              "to": 60,
-              "unixtimefrom": "1 Jan 1970 12:00:00 AM",
-              "unixtimeto": "1 Jan 1970 12:01:00 AM"
+              "to": 60
             },
             {
               "from": 1,
-              "to": 61,
-              "unixtimefrom": "1 Jan 1970 12:00:01 AM",
-              "unixtimeto": "1 Jan 1970 12:01:01 AM"
+              "to": 61
             }
           ]
         }
@@ -692,6 +688,165 @@
           ]
         }
       }
+    }
+  ],
+  "Get-LFMUserFriend": [
+    {
+      "UserFriend": {
+        "friends": {
+          "user": [
+            {
+              "realname": "Name1",
+              "name": "UserName1",
+              "playlists": 0,
+              "url": "https://www.last.fake/user/name1",
+              "country": "Country1",
+              "registered": {
+                "unixtime": 0
+              }
+            },
+            {
+              "realname": "Name2",
+              "name": "UserName2",
+              "playlists": 0,
+              "url": "https://www.last.fake/user/name2",
+              "country": "Country2",
+              "registered": {
+                "unixtime": 1
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Get-LFMUserInfo": [
+    {
+      "UserInfo": {
+        "user": {
+          "realname": "Name",
+          "name": "UserName",
+          "playlists": 0,
+          "playcount": 199,
+          "url": "https://www.last.fake/user/name",
+          "country": "United States",
+          "registered": {
+            "unixtime": 0
+          }
+        }
+      }
+    }
+  ],
+  "Get-LFMUserLovedTrack": [
+    {
+      "UserLovedTrack": {
+        "lovedtracks": {
+          "track": [
+            {
+              "name": "Track1",
+              "url": "https://www.last.fake/loved/track1",
+              "mbid": "12345678-1234-1234-1234-123456789011",
+              "artist": {
+                "url": "https://www.last.fake/loved/track1/artist1",
+                "name": "Artist1",
+                "mbid": "12345678-1234-1234-1234-123456789012"
+              },
+              "date": {
+                "uts": 0
+              }
+            },
+            {
+              "name": "Track2",
+              "url": "https://www.last.fake/loved/track2",
+              "mbid": "12345678-1234-1234-1234-123456789013",
+              "artist": {
+                "url": "https://www.last.fake/loved/track2/artist2",
+                "name": "Artist2",
+                "mbid": "12345678-1234-1234-1234-123456789014"
+              },
+              "date": {
+                "uts": 60
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Get-LFMUserPersonalTag": [
+    {
+      "UserPersonalTag": {
+        "taggings": {
+          "artists": {
+            "artist": [
+              {
+                "name": "Artist1",
+                "mbid": "12345678-1234-1234-1234-123456789011",
+                "url": "https://www.last.fake/artist1"
+              },
+              {
+                "name": "Artist2",
+                "mbid": "12345678-1234-1234-1234-123456789012",
+                "url": "https://www.last.fake/artist2"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "Get-LFMUserRecentTrack": [
+    {
+      "UserRecentTrack": {
+        "recenttracks": {
+          "track": [
+            {
+              "@attr": {
+                "nowplaying": "true"
+              },
+              "name": "Track1",
+              "artist": {
+                "#text": "Artist1"
+              },
+              "album": {
+                "#text": "Album1"
+              },
+              "loved": 0
+            },
+            {
+              "name": "Track2",
+              "artist": {
+                "name": "Artist2"
+              },
+              "album": {
+                "#text": "Album2"
+              },
+              "date": {
+                "uts": 0
+              },
+              "loved": 1
+            },
+            {
+              "name": "Track3",
+              "artist": {
+                "name": "Artist3"
+              },
+              "album": {
+                "#text": "Album3"
+              },
+              "date": {
+                "uts": 60
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "UnixTime": [
+    {
+      "from": "1 Jan 1970 12:00:00 AM",
+      "to": "1 Jan 1970 12:01:00 AM"
     }
   ]
 }
