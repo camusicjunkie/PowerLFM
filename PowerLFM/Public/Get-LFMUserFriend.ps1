@@ -42,7 +42,7 @@ function Get-LFMUserFriend {
     }
     end {
         $irm = Invoke-LFMApiUri -Uri $apiUrl
-        if ((Invoke-LFMApiUri -Uri $apiUrl).Error) {Write-Output $irm; return}
+        if ($irm.Error) {Write-Output $irm; return}
 
         foreach ($friend in $irm.Friends.User) {
             $userInfo = @{
