@@ -214,7 +214,7 @@ InModuleScope PowerLFM {
                     TagType = 'Artist'
                     Limit = @(1..51)
                 }
-                {Get-LFMUserPersonalTag @guptParams} | Should -Not -Throw
+                {Get-LFMUserPersonalTag @guptParams} | Should -Throw
             }
 
             It "Should not throw when limit has 1 to 50 values" {
