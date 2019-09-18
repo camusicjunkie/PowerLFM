@@ -237,6 +237,26 @@ InModuleScope PowerLFM {
             It "Should throw when username is null" {
                 {Get-LFMUserRecentTrack -UserName $null} | Should -Throw
             }
+
+            It "Should throw when limit has more than 50 values" {
+                Set-ItResult -Pending -Because 'the type needs to change on the limit parameter'
+
+                $gurtParams = @{
+                    UserName = 'UserName'
+                    Limit = @(1..51)
+                }
+                {Get-LFMUserRecentTrack @gurtParams} | Should -Throw
+            }
+
+            It "Should not throw when limit has 1 to 50 values" {
+                Set-ItResult -Pending -Because 'the type needs to change on the limit parameter'
+
+                $gurtParams = @{
+                    UserName = 'UserName'
+                    Limit = @(1..50)
+                }
+                {Get-LFMUserRecentTrack @gurtParams} | Should -Not -Throw
+            }
         }
 
         Context 'Execution' {
