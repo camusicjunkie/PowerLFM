@@ -843,6 +843,60 @@
       }
     }
   ],
+  "Get-LFMUserTopAlbum": [
+    {
+      "UserTopAlbum": {
+        "topalbums": {
+          "album": [
+            {
+              "playcount": 199,
+              "name": "Album1",
+              "mbid": "12345678-1234-1234-1234-123456789011",
+              "url": "https://www.last.fake/user/topalbum/album1",
+              "artist": {
+                "name": "Artist1",
+                "mbid": "12345678-1234-1234-1234-123456789012",
+                "url": "https://www.last.fake/user/topalbum/artist1"
+              }
+            },
+            {
+              "playcount": 200,
+              "name": "Album2",
+              "mbid": "12345678-1234-1234-1234-123456789011",
+              "url": "https://www.last.fake/user/topalbum/album2",
+              "artist": {
+                "name": "Artist2",
+                "mbid": "12345678-1234-1234-1234-123456789012",
+                "url": "https://www.last.fake/user/topalbum/artist2"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Get-LFMUserTopArtist": [
+    {
+      "UserTopArtist": {
+        "topartists": {
+          "artist": [
+            {
+              "name": "Artist1",
+              "url": "https://www.last.fake/user/topartist/artist1",
+              "mbid": "12345678-1234-1234-1234-123456789011",
+              "playcount": 199
+            },
+            {
+              "name": "Artist2",
+              "url": "https://www.last.fake/user/topartist/artist2",
+              "mbid": "12345678-1234-1234-1234-123456789012",
+              "playcount": 200
+            }
+          ]
+        }
+      }
+    }
+  ],
   "UnixTime": [
     {
       "from": "1 Jan 1970 12:00:00 AM",
