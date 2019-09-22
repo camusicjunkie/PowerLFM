@@ -126,22 +126,77 @@ Describe 'Request-LFMSession: Interface' -Tag Interface {
 
 InModuleScope PowerLFM {
 
+    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+    $contextMock = $mocks.'Request-LFMSession'.Session
+
     Describe 'Request-LFMSession: Unit' -Tag Unit {
+
+        Mock Invoke-RestMethod
 
         Context 'Input' {
 
+            It "Should throw when api key is null" {
+                {Request-LFMSession -ApiKey $null} | Should -Throw
+            }
+
+            It "Should throw when token is null" {
+                {Request-LFMSession -Token $null} | Should -Throw
+            }
+
+            It "Should throw when shared secret is null" {
+                {Request-LFMSession -SharedSecret $null} | Should -Throw
+            }
         }
 
         Context 'Execution' {
+
+            Mock Foreach-Object
+
+            $testCases = @(
+                @{
+                    times = 8
+                    rsParams = @{
+                        ApiKey = 'ApiKey'
+                        Token = 'Token'
+                        SharedSecret = 'SharedSecret'
+                    }
+                }
+            )
+
+            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
+                param ($times, $rsParams)
+
+                Request-LFMSession @rsParams
+
+                $amParams = @{
+                    CommandName = 'Foreach-Object'
+                    Exactly = $true
+                    Times = $times
+                    Scope = 'It'
+                }
+                Assert-MockCalled @amParams
+            }
 
         }
 
         Context 'Output' {
 
+            Mock Invoke-RestMethod {$contextMock}
+
+            BeforeEach {
+                $script:output = Request-LFMSession -ApiKey 'ApiKey' -Token 'Token' -SharedSecret 'SharedSecret'
+            }
+
+            It "Session key should have a value of $($contextMock.Session.Key)" {
+                $output[0].SessionKey | Should -Be $contextMock.Session.Key
+            }
         }
     }
 }
 
 Describe 'Request-LFMSession: Integration' -Tag Integration {
 
+    It "Integration test" {
+        Set-ItResult -Skipped -Because 'the integration tests will be set up later'
+    }
 }

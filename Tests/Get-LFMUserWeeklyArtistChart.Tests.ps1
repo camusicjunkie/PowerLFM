@@ -126,22 +126,106 @@ Describe 'Get-LFMUserWeeklyArtistChart: Interface' -Tag Interface {
 
 InModuleScope PowerLFM {
 
+    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+    $contextMock = $mocks.'Get-LFMUserWeeklyArtistChart'.UserWeeklyArtistChart
+
     Describe 'Get-LFMUserWeeklyArtistChart: Unit' -Tag Unit {
+
+        Mock Invoke-RestMethod
 
         Context 'Input' {
 
+            It "Should throw when username is null" {
+                {Get-LFMUserWeeklyArtistChart -UserName $null} | Should -Throw
+            }
         }
 
         Context 'Execution' {
 
+            Mock Foreach-Object
+
+            $testCases = @(
+                @{
+                    times = 4
+                    guwacParams = @{
+                        UserName = 'UserName'
+                    }
+                }
+                @{
+                    times = 5
+                    guwacParams = @{
+                        UserName = 'UserName'
+                        StartDate = '1 Jan 1970'
+                    }
+                }
+                @{
+                    times = 6
+                    guwacParams = @{
+                        UserName = 'UserName'
+                        StartDate = '1 Jan 1970'
+                        EndDate = '2 Jan 1970'
+                    }
+                }
+            )
+
+            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
+                param ($times, $guwacParams)
+
+                Get-LFMUserWeeklyArtistChart @guwacParams
+
+                $amParams = @{
+                    CommandName = 'Foreach-Object'
+                    Exactly = $true
+                    Times = $times
+                    Scope = 'It'
+                }
+                Assert-MockCalled @amParams
+            }
         }
 
         Context 'Output' {
 
+            Mock Invoke-RestMethod {$contextMock}
+
+            BeforeEach {
+                $script:output = Get-LFMUserWeeklyArtistChart -UserName camusicjunkie
+            }
+
+            It "User weekly artist chart first artist should have name of $($contextMock.WeeklyArtistChart.Artist[0].Name)" {
+                $output[0].Artist | Should -Be $contextMock.WeeklyArtistChart.Artist[0].Name
+            }
+
+            It "User weekly artist chart first artist should have url of $($contextMock.WeeklyArtistChart.Artist[0].Url)" {
+                $output[0].Url | Should -Be $contextMock.WeeklyArtistChart.Artist[0].Url
+            }
+
+            It "User weekly artist chart second artist should have url of $($contextMock.WeeklyArtistChart.Artist[1].Url)" {
+                $output[1].Url | Should -Be $contextMock.WeeklyArtistChart.Artist[1].Url
+            }
+
+            It "User weekly artist chart second artist should have an id with a value of $($contextMock.WeeklyArtistChart.Artist[1].Mbid)" {
+                $output[1].Id | Should -Be $contextMock.WeeklyArtistChart.Artist[1].Mbid
+            }
+
+            It "User weekly artist chart second artist should have a playcount of $($contextMock.WeeklyArtistChart.Artist[1].PlayCount)" {
+                $output[1].PlayCount | Should -Be $contextMock.WeeklyArtistChart.Artist[1].PlayCount
+            }
+
+            It 'User weekly artist chart should have two artists' {
+                $output.Artist | Should -HaveCount 2
+            }
+
+            It 'User weekly artist chart should not have more than two artists' {
+                $output.Artist | Should -Not -BeNullOrEmpty
+                $output.Artist | Should -Not -HaveCount 3
+            }
         }
     }
 }
 
 Describe 'Get-LFMUserWeeklyArtistChart: Integration' -Tag Integration {
 
+    It "Integration test" {
+        Set-ItResult -Skipped -Because 'the integration tests will be set up later'
+    }
 }

@@ -126,22 +126,114 @@ Describe 'Get-LFMUserWeeklyTrackChart: Interface' -Tag Interface {
 
 InModuleScope PowerLFM {
 
+    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+    $contextMock = $mocks.'Get-LFMUserWeeklyTrackChart'.UserWeeklyTrackChart
+
     Describe 'Get-LFMUserWeeklyTrackChart: Unit' -Tag Unit {
+
+        Mock Invoke-RestMethod
 
         Context 'Input' {
 
+            It "Should throw when username is null" {
+                {Get-LFMUserWeeklyTrackChart -UserName $null} | Should -Throw
+            }
         }
 
         Context 'Execution' {
 
+            Mock Foreach-Object
+
+            $testCases = @(
+                @{
+                    times = 4
+                    guwacParams = @{
+                        UserName = 'UserName'
+                    }
+                }
+                @{
+                    times = 5
+                    guwacParams = @{
+                        UserName = 'UserName'
+                        StartDate = '1 Jan 1970'
+                    }
+                }
+                @{
+                    times = 6
+                    guwacParams = @{
+                        UserName = 'UserName'
+                        StartDate = '1 Jan 1970'
+                        EndDate = '2 Jan 1970'
+                    }
+                }
+            )
+
+            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
+                param ($times, $guwacParams)
+
+                Get-LFMUserWeeklyTrackChart @guwacParams
+
+                $amParams = @{
+                    CommandName = 'Foreach-Object'
+                    Exactly = $true
+                    Times = $times
+                    Scope = 'It'
+                }
+                Assert-MockCalled @amParams
+            }
         }
 
         Context 'Output' {
 
+            Mock Invoke-RestMethod {$contextMock}
+
+            BeforeEach {
+                $script:output = Get-LFMUserWeeklyTrackChart -UserName camusicjunkie
+            }
+
+            It "User weekly track chart first track should have name of $($contextMock.WeeklyTrackChart.Track[0].Name)" {
+                $output[0].Track | Should -Be $contextMock.WeeklyTrackChart.Track[0].Name
+            }
+
+            It "User weekly track chart first track should have name of $($contextMock.WeeklyTrackChart.Track[0].Mbid)" {
+                $output[0].Id | Should -Be $contextMock.WeeklyTrackChart.Track[0].Mbid
+            }
+
+            It "User weekly track chart first track should have artist name of $($contextMock.WeeklyTrackChart.Track[0].Artist.'#Text')" {
+                $output[0].Artist | Should -Be $contextMock.WeeklyTrackChart.Track[0].Artist.'#Text'
+            }
+
+            It "User weekly track chart first track should have url of $($contextMock.WeeklyTrackChart.Track[0].Url)" {
+                $output[0].Url | Should -Be $contextMock.WeeklyTrackChart.Track[0].Url
+            }
+
+            It "User weekly track chart second track should have url of $($contextMock.WeeklyTrackChart.Track[1].Url)" {
+                $output[1].Url | Should -Be $contextMock.WeeklyTrackChart.Track[1].Url
+            }
+
+            It "User weekly track chart second track should have artist id with a value of $($contextMock.WeeklyTrackChart.Track[1].Artist.Mbid)" {
+                $output[1].ArtistId | Should -Be $contextMock.WeeklyTrackChart.Track[1].Artist.Mbid
+            }
+
+            It "User weekly track chart second track should have a playcount of $($contextMock.WeeklyTrackChart.Track[1].PlayCount)" {
+                $output[1].PlayCount | Should -Be $contextMock.WeeklyTrackChart.Track[1].PlayCount
+            }
+
+            It 'User weekly album chart should have two albums' {
+                $output.Album | Should -HaveCount 2
+            }
+
+            It 'User weekly album chart should not have more than two albums' {
+                $output.Album | Should -Not -BeNullOrEmpty
+                $output.Album | Should -Not -HaveCount 3
+            }
         }
     }
 }
 
 Describe 'Get-LFMUserWeeklyTrackChart: Integration' -Tag Integration {
 
+    It "Integration test" {
+        Set-ItResult -Skipped -Because 'the integration tests will be set up later'
+    }
 }

@@ -93,22 +93,84 @@ Describe 'Get-LFMUserTopTag: Interface' -Tag Interface {
 
 InModuleScope PowerLFM {
 
+    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+    $contextMock = $mocks.'Get-LFMUserTopTag'.UserTopTag
+
     Describe 'Get-LFMUserTopTag: Unit' -Tag Unit {
+
+        Mock Invoke-RestMethod
 
         Context 'Input' {
 
+            It "Should throw when username is null" {
+                {Get-LFMUserTopTag -UserName $null} | Should -Throw
+            }
         }
 
         Context 'Execution' {
 
+            Mock Foreach-Object
+
+            $testCases = @(
+                @{
+                    times = 5
+                    guttParams = @{
+                        UserName = 'UserName'
+                        Limit = '5'
+                    }
+                }
+            )
+
+            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
+                param ($times, $guttParams)
+
+                Get-LFMUserTopTag @guttParams
+
+                $amParams = @{
+                    CommandName = 'Foreach-Object'
+                    Exactly = $true
+                    Times = $times
+                    Scope = 'It'
+                }
+                Assert-MockCalled @amParams
+            }
         }
 
         Context 'Output' {
 
+            Mock Invoke-RestMethod {$contextMock}
+
+            BeforeEach {
+                $script:output = Get-LFMUserTopTag -UserName camusicjunkie
+            }
+
+            It "User first top tag should have name of $($contextMock.TopTags.Tag[0].Name)" {
+                $output[0].Tag | Should -Be $contextMock.TopTags.Tag[0].Name
+            }
+
+            It "User second top tag should have url of $($contextMock.TopTags.Tag[1].Url)" {
+                $output[1].TagUrl | Should -Be $contextMock.TopTags.Tag[1].Url
+            }
+
+            It "User second top tag should have a count of $($contextMock.TopTags.Tag[1].Count)" {
+                $output[1].Count | Should -Be $contextMock.TopTags.Tag[1].Count
+            }
+
+            It 'User should have two top tags' {
+                $output.Tag | Should -HaveCount 2
+            }
+
+            It 'User should not have more than two top tags' {
+                $output.Tag | Should -Not -BeNullOrEmpty
+                $output.Tag | Should -Not -HaveCount 3
+            }
         }
     }
 }
 
 Describe 'Get-LFMUserTopTag: Integration' -Tag Integration {
 
+    It "Integration test" {
+        Set-ItResult -Skipped -Because 'the integration tests will be set up later'
+    }
 }
