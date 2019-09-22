@@ -897,6 +897,167 @@
       }
     }
   ],
+  "Get-LFMUserTopTag": [
+    {
+      "UserTopTag": {
+        "toptags": {
+          "tag": [
+            {
+              "name": "Tag1",
+              "count": 1,
+              "url": "https://www.last.fake/user/toptag/tag1"
+            },
+            {
+              "name": "Tag2",
+              "count": 2,
+              "url": "https://www.last.fake/user/toptag/tag2"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Get-LFMUserTopTrack": [
+    {
+      "UserTopTrack": {
+        "toptracks": {
+          "track": [
+            {
+              "mbid": "12345678-1234-1234-1234-123456789011",
+              "name": "Track1",
+              "url": "https://www.last.fake/user/toptracks/track1",
+              "artist": {
+                "url": "https://www.last.fake/user/toptracks/artist1",
+                "name": "Artist1",
+                "mbid": "12345678-1234-1234-1234-123456789012"
+              },
+              "playcount": 199
+            },
+            {
+              "mbid": "12345678-1234-1234-1234-123456789013",
+              "name": "Track2",
+              "url": "https://www.last.fake/user/toptracks/track2",
+              "artist": {
+                "url": "https://www.last.fake/user/toptracks/artist2",
+                "name": "Artist2",
+                "mbid": "12345678-1234-1234-1234-123456789014"
+              },
+              "playcount": 200
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Get-LFMUserWeeklyAlbumChart": [
+    {
+      "UserWeeklyAlbumChart": {
+        "weeklyalbumchart": {
+          "album": [
+            {
+              "name": "Album1",
+              "url": "https://www.last.fake/user/weeklyalbumchart/album1",
+              "mbid": "12345678-1234-1234-1234-123456789011",
+              "artist": {
+                "#text": "Artist1",
+                "mbid": "12345678-1234-1234-1234-123456789012"
+              },
+              "playcount": 199
+            },
+            {
+              "name": "Album2",
+              "url": "https://www.last.fake/user/weeklyalbumchart/album2",
+              "mbid": "12345678-1234-1234-1234-123456789013",
+              "artist": {
+                "#text": "Artist2",
+                "mbid": "12345678-1234-1234-1234-123456789014"
+              },
+              "playcount": 200
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Get-LFMUserWeeklyArtistChart": [
+    {
+      "UserWeeklyArtistChart": {
+        "weeklyartistchart": {
+          "artist": [
+            {
+              "name": "Artist1",
+              "url": "https://www.last.fake/user/weeklyartistchart/artist1",
+              "mbid": "12345678-1234-1234-1234-123456789011",
+              "playcount": 199
+            },
+            {
+              "name": "Artist2",
+              "url": "https://www.last.fake/user/weeklyartistchart/artist2",
+              "mbid": "12345678-1234-1234-1234-123456789012",
+              "playcount": 200
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Get-LFMUserWeeklyChartList": [
+    {
+      "UserWeeklyChartList": {
+        "weeklychartlist": {
+          "chart": [
+            {
+              "from": 0,
+              "to": 60
+            },
+            {
+              "from": 60,
+              "to": 120
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Get-LFMUserWeeklyTrackChart": [
+    {
+      "UserWeeklyTrackChart": {
+        "weeklytrackchart": {
+          "track": [
+            {
+              "name": "Track1",
+              "url": "https://www.last.fake/user/weeklytrackchart/track1",
+              "mbid": "12345678-1234-1234-1234-123456789011",
+              "artist": {
+                "#text": "Artist1",
+                "mbid": "12345678-1234-1234-1234-123456789012"
+              },
+              "playcount": 199
+            },
+            {
+              "name": "Track2",
+              "url": "https://www.last.fake/user/weeklytrackchart/track2",
+              "mbid": "12345678-1234-1234-1234-123456789013",
+              "artist": {
+                "#text": "Artist2",
+                "mbid": "12345678-1234-1234-1234-123456789014"
+              },
+              "playcount": 200
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Request-LFMSession": [
+    {
+      "Session": {
+        "session": {
+          "key": "SessionKey"
+        }
+      }
+    }
+  ],
   "UnixTime": [
     {
       "from": "1 Jan 1970 12:00:00 AM",
