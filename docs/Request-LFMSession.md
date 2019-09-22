@@ -10,7 +10,7 @@ Request-LFMSession [-ApiKey] <String> [-Token] <String> [-SharedSecret] <String>
 ```
 
 ## DESCRIPTION
-Request a session key by sending the API key, an API signature, and the authentication token as arguments to the auth.getSession method call.
+Request a session key by sending the API key, shared secret, and the authentication token as arguments to the auth.getSession method call.
 
 ## EXAMPLES
 

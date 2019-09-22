@@ -10,7 +10,7 @@ Request-LFMToken [-ApiKey] <String> [-SharedSecret] <String> [<CommonParameters>
 ```
 
 ## DESCRIPTION
-Requests a token by sending the API key and API signature as arguments to the auth.getToken method call.
+Requests a token by sending the API key and shared secret as arguments to the auth.getToken method call.
 
 ## EXAMPLES
 
