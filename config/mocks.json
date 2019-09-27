@@ -1058,6 +1058,87 @@
       }
     }
   ],
+  "Request-LFMToken": [
+    {
+      "Token": {
+        "token": "Token"
+      }
+    }
+  ],
+  "Search-LFMAlbum": [
+    {
+      "Album": {
+        "results": {
+          "albummatches": {
+            "album": [
+              {
+                "name": "Album1",
+                "artist": "Artist1",
+                "url": "https://www.last.fake/search/album1",
+                "mbid": "12345678-1234-1234-1234-123456789011"
+              },
+              {
+                "name": "Album2",
+                "artist": "Artist2",
+                "url": "https://www.last.fake/search/album2",
+                "mbid": "12345678-1234-1234-1234-123456789012"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "Search-LFMArtist": [
+    {
+      "Artist": {
+        "results": {
+          "artistmatches": {
+            "artist": [
+              {
+                "name": "Artist1",
+                "url": "https://www.last.fake/search/artist1",
+                "mbid": "12345678-1234-1234-1234-123456789011",
+                "listeners": 1
+              },
+              {
+                "name": "Artist2",
+                "url": "https://www.last.fake/search/artist2",
+                "mbid": "12345678-1234-1234-1234-123456789012",
+                "listeners": 2
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "Search-LFMTrack": [
+    {
+      "Track": {
+        "results": {
+          "trackmatches": {
+            "track": [
+              {
+                "name": "Track1",
+                "artist": "Artist1",
+                "url": "https://www.last.fake/search/track1",
+                "listeners": 1,
+                "mbid": "12345678-1234-1234-1234-123456789011"
+              },
+              {
+                "name": "Track2",
+                "artist": "Artist2",
+                "url": "https://www.last.fake/search/track2",
+                "listeners": 2,
+                "mbid": "12345678-1234-1234-1234-123456789012"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
   "UnixTime": [
     {
       "from": "1 Jan 1970 12:00:00 AM",
