@@ -49,7 +49,7 @@ function Request-LFMToken {
 
         $obj = [PSCustomObject] @{
             'ApiKey' = $ApiKey
-            'Token' = $token.token
+            'Token' = $token.Token
             'SharedSecret' = $SharedSecret
         }
         Write-Output $obj
