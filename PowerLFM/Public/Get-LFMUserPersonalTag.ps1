@@ -4,10 +4,6 @@ function Get-LFMUserPersonalTag {
     [CmdletBinding()]
     [OutputType('PowerLFM.User.PersonalTag')]
     param (
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [ValidateNotNullOrEmpty()]
-        [string] $UserName,
-
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
@@ -18,6 +14,10 @@ function Get-LFMUserPersonalTag {
         [ValidateNotNullOrEmpty()]
         [ValidateSet('Artist', 'Album', 'Track')]
         [string] $TagType,
+
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [string] $UserName,
 
         [Parameter()]
         [ValidateRange(1,50)]

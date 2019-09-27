@@ -3,10 +3,6 @@ function Get-LFMUserRecentTrack {
     [OutputType('PowerLFM.User.RecentTrack')]
     param (
         [Parameter(ValueFromPipelineByPropertyName)]
-        [ValidateNotNullOrEmpty()]
-        [string] $UserName,
-
-        [Parameter(ValueFromPipelineByPropertyName)]
         [string] $StartDate,
 
         [Parameter(ValueFromPipelineByPropertyName)]
@@ -14,6 +10,10 @@ function Get-LFMUserRecentTrack {
 
         [Parameter()]
         [switch] $Extended,
+
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [string] $UserName,
 
         [Parameter()]
         [ValidateRange(1,50)]

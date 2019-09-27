@@ -5,14 +5,14 @@ function Get-LFMUserWeeklyAlbumChart {
     [OutputType('PowerLFM.User.WeeklyAlbumChart')]
     param (
         [Parameter(ValueFromPipelineByPropertyName)]
-        [ValidateNotNullOrEmpty()]
-        [string] $UserName,
-
-        [Parameter(ValueFromPipelineByPropertyName)]
         [string] $StartDate,
 
         [Parameter(ValueFromPipelineByPropertyName)]
-        [string] $EndDate
+        [string] $EndDate,
+
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [string] $UserName
     )
 
     begin {
