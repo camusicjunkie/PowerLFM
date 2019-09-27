@@ -93,22 +93,88 @@ Describe 'Request-LFMToken: Interface' -Tag Interface {
 
 InModuleScope PowerLFM {
 
+    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+    $contextMock = $mocks.'Request-LFMToken'.Token
+
     Describe 'Request-LFMToken: Unit' -Tag Unit {
+
+        Mock Invoke-RestMethod
+        Mock Get-LFMAuthSignature
+        Mock Start-Process { [pscustomobject] @{Id = 1} }
+        Mock Wait-Process
+        Mock Write-Verbose
+        Mock Write-Warning
 
         Context 'Input' {
 
+            It "Should throw when api key is null" {
+                {Request-LFMToken -ApiKey $null} | Should -Throw
+            }
+
+            It "Should throw when shared secret is null" {
+                {Request-LFMToken -SharedSecret $null} | Should -Throw
+            }
         }
 
         Context 'Execution' {
 
+            Mock Foreach-Object
+
+            $testCases = @(
+                @{
+                    times = 4
+                    rtParams = @{
+                        ApiKey = 'ApiKey'
+                        SharedSecret = 'SharedSecret'
+                    }
+                }
+            )
+
+            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
+                param ($times, $rtParams)
+
+                Request-LFMToken @rtParams
+
+                $amParams = @{
+                    CommandName = 'Foreach-Object'
+                    Exactly = $true
+                    Times = $times
+                    Scope = 'It'
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should create a signature' {
+                $amParams = @{
+                    CommandName = 'Get-LFMAuthSignature'
+                    Exactly = $true
+                    Times = 1
+                    ParameterFilter = {
+                        $ApiKey -eq 'ApiKey' -and
+                        $SharedSecret -eq 'SharedSecret' -and
+                        $Method -eq 'auth.getToken'
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
         }
 
         Context 'Output' {
 
+            Mock Invoke-RestMethod {$contextMock}
+
+            $output = Request-LFMToken -ApiKey 'ApiKey' -SharedSecret 'SharedSecret'
+
+            It "Token key should have a value of $($contextMock.Token)" {
+                $output.Token | Should -Be $contextMock.Token
+            }
         }
     }
 }
 
 Describe 'Request-LFMToken: Integration' -Tag Integration {
 
+    It "Integration test" {
+        Set-ItResult -Skipped -Because 'the integration tests will be set up later'
+    }
 }

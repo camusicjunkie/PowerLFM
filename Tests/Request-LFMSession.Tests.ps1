@@ -132,6 +132,7 @@ InModuleScope PowerLFM {
     Describe 'Request-LFMSession: Unit' -Tag Unit {
 
         Mock Invoke-RestMethod
+        Mock Get-LFMAuthSignature
 
         Context 'Input' {
 
@@ -154,7 +155,7 @@ InModuleScope PowerLFM {
 
             $testCases = @(
                 @{
-                    times = 8
+                    times = 5
                     rsParams = @{
                         ApiKey = 'ApiKey'
                         Token = 'Token'
@@ -177,6 +178,20 @@ InModuleScope PowerLFM {
                 Assert-MockCalled @amParams
             }
 
+            It 'Should create a signature' {
+                $amParams = @{
+                    CommandName = 'Get-LFMAuthSignature'
+                    Exactly = $true
+                    Times = 1
+                    ParameterFilter = {
+                        $ApiKey -eq 'ApiKey' -and
+                        $Token -eq 'Token' -and
+                        $SharedSecret -eq 'SharedSecret' -and
+                        $Method -eq 'auth.getSession'
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
         }
 
         Context 'Output' {
@@ -188,7 +203,7 @@ InModuleScope PowerLFM {
             }
 
             It "Session key should have a value of $($contextMock.Session.Key)" {
-                $output[0].SessionKey | Should -Be $contextMock.Session.Key
+                $output.SessionKey | Should -Be $contextMock.Session.Key
             }
         }
     }

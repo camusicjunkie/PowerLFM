@@ -126,22 +126,107 @@ Describe 'Search-LFMTrack: Interface' -Tag Interface {
 
 InModuleScope PowerLFM {
 
+    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+    $contextMock = $mocks.'Search-LFMTrack'.Track
+
     Describe 'Search-LFMTrack: Unit' -Tag Unit {
+
+        Mock Invoke-RestMethod
 
         Context 'Input' {
 
+            It "Should throw when track is null" {
+                {Search-LFMAlbum -Track $null} | Should -Throw
+            }
         }
 
         Context 'Execution' {
 
+            Mock Foreach-Object
+
+            $testCases = @(
+                @{
+                    times = 4
+                    stParams = @{
+                        Track = 'Track'
+                    }
+                }
+                @{
+                    times = 5
+                    stParams = @{
+                        Track = 'Track'
+                        Limit = '5'
+                    }
+                }
+                @{
+                    times = 6
+                    stParams = @{
+                        Track = 'Track'
+                        Limit = '5'
+                        Page = '1'
+                    }
+                }
+            )
+
+            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
+                param ($times, $stParams)
+
+                Search-LFMTrack @stParams
+
+                $amParams = @{
+                    CommandName = 'Foreach-Object'
+                    Exactly = $true
+                    Times = $times
+                    Scope = 'It'
+                }
+                Assert-MockCalled @amParams
+            }
         }
 
         Context 'Output' {
 
+            Mock Invoke-RestMethod {$contextMock}
+
+            $output = Search-LFMTrack -Track Track
+
+            It "Searched first track should have name of $($contextMock.Results.TrackMatches.Track[0].Name)" {
+                $output[0].Track | Should -Be $contextMock.Results.TrackMatches.Track[0].Name
+            }
+
+            It "Searched first track should have artist name of $($contextMock.Results.TrackMatches.Track[0].Artist)" {
+                $output[0].Artist | Should -Be $contextMock.Results.TrackMatches.Track[0].Artist
+            }
+
+            It "Searched first track should have url of $($contextMock.Results.TrackMatches.Track[0].Url)" {
+                $output[0].Url | Should -Be $contextMock.Results.TrackMatches.Track[0].Url
+            }
+
+            It "Searched first track should have $($contextMock.Results.TrackMatches.Track[0].Listeners) listener" {
+                $output[0].Listeners | Should -Be $contextMock.Results.TrackMatches.Track[0].Listeners
+            }
+
+            It "Searched second track should have url of $($contextMock.Results.TrackMatches.Track[1].Url)" {
+                $output[1].Url | Should -Be $contextMock.Results.TrackMatches.Track[1].Url
+            }
+
+            It "Searched second track should have artist id with a value of $($contextMock.Results.TrackMatches.Track[1].Mbid)" {
+                $output[1].Id | Should -Be $contextMock.Results.TrackMatches.Track[1].Mbid
+            }
+
+            It 'Searched result should have two tracks' {
+                $output | Should -HaveCount 2
+            }
+
+            It 'Searched result should not have more than two tracks' {
+                $output | Should -Not -HaveCount 3
+            }
         }
     }
 }
 
 Describe 'Search-LFMTrack: Integration' -Tag Integration {
 
+    It "Integration test" {
+        Set-ItResult -Skipped -Because 'the integration tests will be set up later'
+    }
 }
