@@ -18,7 +18,7 @@ function Get-LFMUserWeeklyChartList {
         }
     }
     process {
-        $apiParams.add('user', $UserName)
+        $apiParams.Add('user', $UserName)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
@@ -29,28 +29,11 @@ function Get-LFMUserWeeklyChartList {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        try {
-            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
-            if ($irm.error) {
-                [pscustomobject] @{
-                    'Error' = $irm.error
-                    'Message' = $irm.message
-                }
-                return
-            }
-        }
-        catch {
-            $response = $_.errorDetails.message | ConvertFrom-Json
+        $irm = Invoke-LFMApiUri -Uri $apiUrl
+        if ($irm.Error) {Write-Output $irm; return}
 
-            [pscustomobject] @{
-                'Error' = $response.error
-                'Message' = $response.message
-            }
-            return
-        }
-
-        $chartList = $irm.WeeklyChartList.Chart.GetEnumerator() |
-            Sort-Object {$_.From} -Descending
+        $chartList = $irm.WeeklyChartList.Chart |
+            Sort-Object -Property From -Descending
 
         foreach ($chart in $chartList) {
             $chartInfo = [pscustomobject] @{

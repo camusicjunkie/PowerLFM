@@ -6,6 +6,7 @@ function Get-LFMArtistSimilar {
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
+                   Position = 0,
                    ParameterSetName = 'artist')]
         [ValidateNotNullOrEmpty()]
         [string] $Artist,
@@ -30,13 +31,13 @@ function Get-LFMArtistSimilar {
         }
 
         switch ($PSBoundParameters.Keys) {
-            'AutoCorrect' {$apiParams.add('autocorrect', 1)}
+            'AutoCorrect' {$apiParams.Add('autocorrect', 1)}
         }
     }
     process {
         switch ($PSCmdlet.ParameterSetName) {
-            'artist' {$apiParams.add('artist', $Artist)}
-            'id'     {$apiParams.add('mbid', $Id)}
+            'artist' {$apiParams.Add('artist', $Artist)}
+            'id'     {$apiParams.Add('mbid', $Id)}
         }
 
         #Building string to append to base url
@@ -48,25 +49,8 @@ function Get-LFMArtistSimilar {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        try {
-            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
-            if ($irm.error) {
-                [pscustomobject] @{
-                    'Error' = $irm.error
-                    'Message' = $irm.message
-                }
-                return
-            }
-        }
-        catch {
-            $response = $_.errorDetails.message | ConvertFrom-Json
-
-            [pscustomobject] @{
-                'Error' = $response.error
-                'Message' = $response.message
-            }
-            return
-        }
+        $irm = Invoke-LFMApiUri -Uri $apiUrl
+        if ($irm.Error) {Write-Output $irm; return}
 
         foreach ($similar in $irm.SimilarArtists.Artist) {
             $similarInfo = [pscustomobject] @{
@@ -74,7 +58,7 @@ function Get-LFMArtistSimilar {
                 'Artist' = $similar.Name
                 'Id' = $similar.Mbid
                 'Url' = [uri] $similar.Url
-                'Match' = [int] $similar.Match
+                'Match' = [math]::Round($similar.Match, 2)
             }
 
             Write-Output $similarInfo

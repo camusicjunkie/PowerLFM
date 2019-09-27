@@ -1,4 +1,4 @@
-function New-LFMTrackSignature {
+function Get-LFMTrackSignature {
     [CmdletBinding(SupportsShouldProcess,
                    ConfirmImpact = 'Medium')]
     [OutputType('System.String')]
@@ -32,10 +32,10 @@ function New-LFMTrackSignature {
 
         if ($PSBoundParameters.ContainsKey('Tag')) {
             if ($Method -eq 'track.removeTag') {
-                $sigParams.add('tag', $Tag)
+                $sigParams.Add('tag', $Tag)
             }
             else {
-                $sigParams.add('tags', $Tag)
+                $sigParams.Add('tags', $Tag)
             }
         }
 

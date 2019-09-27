@@ -31,17 +31,17 @@ function Get-LFMUserRecentTrack {
         }
 
         switch ($PSBoundParameters.Keys) {
-            'Limit' {$apiParams.add('limit', $Limit)}
-            'Page' {$apiParams.add('page', $Page)}
+            'Limit' {$apiParams.Add('limit', $Limit)}
+            'Page' {$apiParams.Add('page', $Page)}
         }
     }
     process {
-        $apiParams.add('user', $UserName)
+        $apiParams.Add('user', $UserName)
 
         switch ($PSBoundParameters.Keys) {
-            'StartDate' {$apiParams.add('from', (ConvertTo-UnixTime -Date $StartDate))}
-            'EndDate' {$apiParams.add('to', (ConvertTo-UnixTime -Date $EndDate))}
-            'Extended' {$apiParams.add('extended', 1)}
+            'StartDate' {$apiParams.Add('from', (ConvertTo-UnixTime -Date $StartDate))}
+            'EndDate' {$apiParams.Add('to', (ConvertTo-UnixTime -Date $EndDate))}
+            'Extended' {$apiParams.Add('extended', 1)}
         }
 
         #Building string to append to base url
@@ -53,25 +53,8 @@ function Get-LFMUserRecentTrack {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        try {
-            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
-            if ($irm.error) {
-                [pscustomobject] @{
-                    'Error' = $irm.error
-                    'Message' = $irm.message
-                }
-                return
-            }
-        }
-        catch {
-            $response = $_.errorDetails.message | ConvertFrom-Json
-
-            [pscustomobject] @{
-                'Error' = $response.error
-                'Message' = $response.message
-            }
-            return
-        }
+        $irm = Invoke-LFMApiUri -Uri $apiUrl
+        if ($irm.Error) {Write-Output $irm; return}
 
         foreach ($track in $irm.RecentTracks.Track) {
             $trackInfo = @{
@@ -83,10 +66,10 @@ function Get-LFMUserRecentTrack {
 
             $scrobbleTime = ConvertFrom-UnixTime -UnixTime $track.Date.Uts -Local
             switch ($track.'@attr'.NowPlaying) {
-                $true {$trackInfo.add('NowPlaying', $true);
-                       $trackInfo.add('ScrobbleTime', $null)}
-                $null {$trackInfo.add('NowPlaying', $null);
-                       $trackInfo.add('ScrobbleTime', $scrobbleTime)}
+                $true {$trackInfo.Add('NowPlaying', $true);
+                       $trackInfo.Add('ScrobbleTime', $null)}
+                $null {$trackInfo.Add('NowPlaying', $null);
+                       $trackInfo.Add('ScrobbleTime', $scrobbleTime)}
             }
 
             if ($Extended) {
@@ -95,9 +78,9 @@ function Get-LFMUserRecentTrack {
                     '1' {$loved = 'Yes'}
                 }
 
-                $trackInfo.remove('Artist')
-                $trackInfo.add('Artist', $track.Artist.Name)
-                $trackInfo.add('Loved', $loved)
+                $trackInfo.Remove('Artist')
+                $trackInfo.Add('Artist', $track.Artist.Name)
+                $trackInfo.Add('Loved', $loved)
             }
 
             $trackInfo = [pscustomobject] $trackInfo

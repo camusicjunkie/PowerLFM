@@ -38,13 +38,13 @@ function Get-LFMUserTopAlbum {
         }
 
         switch ($PSBoundParameters.Keys) {
-            'Limit' {$apiParams.add('limit', $Limit)}
-            'Page' {$apiParams.add('page', $Page)}
-            'TimePeriod' {$apiParams.add('period', $period[$TimePeriod])}
+            'Limit' {$apiParams.Add('limit', $Limit)}
+            'Page' {$apiParams.Add('page', $Page)}
+            'TimePeriod' {$apiParams.Add('period', $period[$TimePeriod])}
         }
     }
     process {
-        $apiParams.add('user', $UserName)
+        $apiParams.Add('user', $UserName)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
@@ -55,25 +55,8 @@ function Get-LFMUserTopAlbum {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        try {
-            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
-            if ($irm.error) {
-                [pscustomobject] @{
-                    'Error' = $irm.error
-                    'Message' = $irm.message
-                }
-                return
-            }
-        }
-        catch {
-            $response = $_.errorDetails.message | ConvertFrom-Json
-
-            [pscustomobject] @{
-                'Error' = $response.error
-                'Message' = $response.message
-            }
-            return
-        }
+        $irm = Invoke-LFMApiUri -Uri $apiUrl
+        if ($irm.Error) {Write-Output $irm; return}
 
         foreach ($album in $irm.TopAlbums.Album) {
             $albumInfo = [pscustomobject] @{
@@ -83,9 +66,8 @@ function Get-LFMUserTopAlbum {
                 'AlbumUrl' = [uri] $album.Url
                 'Albumid' = $album.Mbid
                 'Artist' = $album.Artist.Name
-                'ArtistUrl' = [uri] $album.Artist.url
+                'ArtistUrl' = [uri] $album.Artist.Url
                 'ArtistId' = $album.Artist.Mbid
-                'ImageUrl' = $album.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 
             Write-Output $albumInfo

@@ -6,6 +6,7 @@ function Get-LFMArtistTopTrack {
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
+                   Position = 0,
                    ParameterSetName = 'artist')]
         [ValidateNotNullOrEmpty()]
         [string] $Artist,
@@ -33,15 +34,15 @@ function Get-LFMArtistTopTrack {
         }
 
         switch ($PSBoundParameters.Keys) {
-            'AutoCorrect' {$apiParams.add('autocorrect', 1)}
-            'Limit' {$apiParams.add('limit', $Limit)}
-            'Page' {$apiParams.add('page', $Page)}
+            'AutoCorrect' {$apiParams.Add('autocorrect', 1)}
+            'Limit' {$apiParams.Add('limit', $Limit)}
+            'Page' {$apiParams.Add('page', $Page)}
         }
     }
     process {
         switch ($PSCmdlet.ParameterSetName) {
-            'artist' {$apiParams.add('artist', $Artist)}
-            'id' {$apiParams.add('mbid', $Id)}
+            'artist' {$apiParams.Add('artist', $Artist)}
+            'id' {$apiParams.Add('mbid', $Id)}
         }
 
         #Building string to append to base url
@@ -53,25 +54,8 @@ function Get-LFMArtistTopTrack {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        try {
-            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
-            if ($irm.error) {
-                [pscustomobject] @{
-                    'Error' = $irm.error
-                    'Message' = $irm.message
-                }
-                return
-            }
-        }
-        catch {
-            $response = $_.errorDetails.message | ConvertFrom-Json
-
-            [pscustomobject] @{
-                'Error' = $response.error
-                'Message' = $response.message
-            }
-            return
-        }
+        $irm = Invoke-LFMApiUri -Uri $apiUrl
+        if ($irm.Error) {Write-Output $irm; return}
 
         foreach ($track in $irm.TopTracks.Track) {
             $trackInfo = [pscustomobject] @{

@@ -18,8 +18,8 @@ function Get-LFMUserInfo {
     }
     process {
         if ($PSBoundParameters.ContainsKey('UserName')) {
-            $apiParams.remove('sk')
-            $apiParams.add('user', $UserName)
+            $apiParams.Remove('sk')
+            $apiParams.Add('user', $UserName)
         }
 
         #Building string to append to base url
@@ -31,25 +31,8 @@ function Get-LFMUserInfo {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        try {
-            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
-            if ($irm.error) {
-                [pscustomobject] @{
-                    'Error' = $irm.error
-                    'Message' = $irm.message
-                }
-                return
-            }
-        }
-        catch {
-            $response = $_.errorDetails.message | ConvertFrom-Json
-
-            [pscustomobject] @{
-                'Error' = $response.error
-                'Message' = $response.message
-            }
-            return
-        }
+        $irm = Invoke-LFMApiUri -Uri $apiUrl
+        if ($irm.Error) {Write-Output $irm; return}
 
         $userInfo = [pscustomobject] @{
             'PSTypeName' = 'PowerLFM.User.Info'
@@ -60,7 +43,6 @@ function Get-LFMUserInfo {
             'Registered' = ConvertFrom-UnixTime -UnixTime $irm.User.Registered.UnixTime -Local
             'PlayCount' = [int] $irm.User.PlayCount
             'PlayLists' = [int] $irm.User.PlayLists
-            'ImageUrl' = $irm.User.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
         }
 
         Write-Output $userInfo

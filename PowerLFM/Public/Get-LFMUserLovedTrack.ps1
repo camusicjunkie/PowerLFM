@@ -24,12 +24,12 @@ function Get-LFMUserLovedTrack {
         }
 
         switch ($PSBoundParameters.Keys) {
-            'Limit' {$apiParams.add('limit', $Limit)}
-            'Page' {$apiParams.add('page', $Page)}
+            'Limit' {$apiParams.Add('limit', $Limit)}
+            'Page' {$apiParams.Add('page', $Page)}
         }
     }
     process {
-        $apiParams.add('user', $UserName)
+        $apiParams.Add('user', $UserName)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
@@ -40,25 +40,8 @@ function Get-LFMUserLovedTrack {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        try {
-            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
-            if ($irm.error) {
-                [pscustomobject] @{
-                    'Error' = $irm.error
-                    'Message' = $irm.message
-                }
-                return
-            }
-        }
-        catch {
-            $response = $_.errorDetails.message | ConvertFrom-Json
-
-            [pscustomobject] @{
-                'Error' = $response.error
-                'Message' = $response.message
-            }
-            return
-        }
+        $irm = Invoke-LFMApiUri -Uri $apiUrl
+        if ($irm.Error) {Write-Output $irm; return}
 
         foreach ($track in $irm.LovedTracks.Track) {
             $trackInfo = [pscustomobject] @{
@@ -67,10 +50,9 @@ function Get-LFMUserLovedTrack {
                 'TrackUrl' = [uri] $track.Url
                 'Trackid' = $track.Mbid
                 'Artist' = $track.Artist.Name
-                'ArtistUrl' = [uri] $track.Artist.url
+                'ArtistUrl' = [uri] $track.Artist.Url
                 'ArtistId' = $track.Artist.Mbid
                 'Date' = ConvertFrom-UnixTime -UnixTime $track.Date.Uts -Local
-                'ImageUrl' = $track.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 
             Write-Output $trackInfo

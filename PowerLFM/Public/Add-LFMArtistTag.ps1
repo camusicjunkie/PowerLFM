@@ -20,7 +20,7 @@ function Add-LFMArtistTag {
             'Tag' = $Tag
             'Method' = 'artist.addTags'
         }
-        $apiSig = New-LFMArtistSignature @apiSigParams
+        $apiSig = Get-LFMArtistSignature @apiSigParams
 
         $apiParams = @{
             'method' = 'artist.addTags'
@@ -29,8 +29,8 @@ function Add-LFMArtistTag {
             'api_sig' = $apiSig
         }
 
-        $apiParams.add('artist', $Artist)
-        $apiParams.add('tags', $Tag)
+        $apiParams.Add('artist', $Artist)
+        $apiParams.Add('tags', $Tag)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
@@ -41,7 +41,7 @@ function Add-LFMArtistTag {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        if ($PSCmdlet.ShouldProcess("Artist: $Artist", "Adding artist tag")) {
+        if ($PSCmdlet.ShouldProcess("Artist: $Artist", "Adding artist tag: $Tag")) {
             $iwr = Invoke-WebRequest -Uri $apiUrl -Method Post
             Write-Verbose "$($iwr.StatusCode) $($iwr.StatusDescription)"
         }

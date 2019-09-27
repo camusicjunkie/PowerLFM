@@ -6,6 +6,7 @@ function Get-LFMArtistInfo {
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
+                   Position = 0,
                    ParameterSetName = 'artist')]
         [ValidateNotNullOrEmpty()]
         [string] $Artist,
@@ -29,14 +30,14 @@ function Get-LFMArtistInfo {
         }
 
         switch ($PSBoundParameters.Keys) {
-            'UserName' {$apiParams.add('username', $UserName)}
-            'AutoCorrect' {$apiParams.add('autocorrect', 1)}
+            'UserName' {$apiParams.Add('username', $UserName)}
+            'AutoCorrect' {$apiParams.Add('autocorrect', 1)}
         }
     }
     process {
         switch ($PSCmdlet.ParameterSetName) {
-            'artist' {$apiParams.add('artist', $Artist)}
-            'id'     {$apiParams.add('mbid', $Id)}
+            'artist' {$apiParams.Add('artist', $Artist)}
+            'id'     {$apiParams.Add('mbid', $Id)}
         }
 
         #Building string to append to base url
@@ -48,25 +49,8 @@ function Get-LFMArtistInfo {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        try {
-            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
-            if ($irm.error) {
-                [pscustomobject] @{
-                    'Error' = $irm.error
-                    'Message' = $irm.message
-                }
-                return
-            }
-        }
-        catch {
-            $response = $_.errorDetails.message | ConvertFrom-Json
-
-            [pscustomobject] @{
-                'Error' = $response.error
-                'Message' = $response.message
-            }
-            return
-        }
+        $irm = Invoke-LFMApiUri -Uri $apiUrl
+        if ($irm.Error) {Write-Output $irm; return}
 
         $similarArtists = foreach ($similar in $irm.Artist.Similar.Artist) {
             $similarInfo = [pscustomobject] @{
@@ -108,7 +92,7 @@ function Get-LFMArtistInfo {
 
         $userPlayCount = [int] $irm.Artist.Stats.UserPlayCount
         if ($PSBoundParameters.ContainsKey('UserName')) {
-            $artistInfo.add('UserPlayCount', $userPlayCount)
+            $artistInfo.Add('UserPlayCount', $userPlayCount)
         }
 
         $artistInfo = [pscustomobject] $artistInfo

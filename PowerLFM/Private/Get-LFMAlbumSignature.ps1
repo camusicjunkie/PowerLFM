@@ -1,6 +1,5 @@
-function New-LFMAlbumSignature {
-    [CmdletBinding(SupportsShouldProcess,
-                   ConfirmImpact = 'Medium')]
+function Get-LFMAlbumSignature {
+    [CmdletBinding()]
     [OutputType('System.String')]
     param (
         [Parameter(Mandatory)]
@@ -33,7 +32,7 @@ function New-LFMAlbumSignature {
 
         if ($Method -eq 'album.removeTag') {
             $sigParams.Remove('tags')
-            $sigParams.add('tag', $Tag)
+            $sigParams.Add('tag', $Tag)
         }
 
         $keyValues = $sigParams.GetEnumerator() | Sort-Object Name | ForEach-Object {
@@ -42,9 +41,7 @@ function New-LFMAlbumSignature {
 
         $string = $keyValues -join ''
 
-        if ($PSCmdlet.ShouldProcess('Shared secret', 'Creating album signature')) {
-            Get-Md5Hash -String "$string$($LFMConfig.SharedSecret)"
-        }
+        Get-Md5Hash -String "$string$($LFMConfig.SharedSecret)"
         Write-Verbose "$string$($LFMConfig.SharedSecret)"
     }
     catch {

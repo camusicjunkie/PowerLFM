@@ -18,8 +18,8 @@ function Get-LFMChartTopTag {
     }
 
     switch ($PSBoundParameters.Keys) {
-        'Limit' {$apiParams.add('limit', $Limit)}
-        'Page' {$apiParams.add('page', $Page)}
+        'Limit' {$apiParams.Add('limit', $Limit)}
+        'Page' {$apiParams.Add('page', $Page)}
     }
 
     #Building string to append to base url
@@ -30,25 +30,8 @@ function Get-LFMChartTopTag {
 
     $apiUrl = "$baseUrl/?$string"
 
-    try {
-        $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
-        if ($irm.error) {
-            [pscustomobject] @{
-                'Error' = $irm.error
-                'Message' = $irm.message
-            }
-            return
-        }
-    }
-    catch {
-        $response = $_.errorDetails.message | ConvertFrom-Json
-
-        [pscustomobject] @{
-            'Error' = $response.error
-            'Message' = $response.message
-        }
-        return
-    }
+    $irm = Invoke-LFMApiUri -Uri $apiUrl
+    if ($irm.Error) {Write-Output $irm; return}
 
     foreach ($tag in $irm.Tags.Tag) {
         $tagInfo = [pscustomobject] @{

@@ -24,11 +24,11 @@ function Get-LFMUserWeeklyAlbumChart {
         }
     }
     process {
-        $apiParams.add('user', $UserName)
+        $apiParams.Add('user', $UserName)
 
         switch ($PSBoundParameters.Keys) {
-            'StartDate' {$apiParams.add('from', (ConvertTo-UnixTime -Date $StartDate))}
-            'EndDate' {$apiParams.add('to', (ConvertTo-UnixTime -Date $EndDate))}
+            'StartDate' {$apiParams.Add('from', (ConvertTo-UnixTime -Date $StartDate))}
+            'EndDate' {$apiParams.Add('to', (ConvertTo-UnixTime -Date $EndDate))}
         }
 
         #Building string to append to base url
@@ -40,25 +40,8 @@ function Get-LFMUserWeeklyAlbumChart {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        try {
-            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
-            if ($irm.error) {
-                [pscustomobject] @{
-                    'Error' = $irm.error
-                    'Message' = $irm.message
-                }
-                return
-            }
-        }
-        catch {
-            $response = $_.errorDetails.message | ConvertFrom-Json
-
-            [pscustomobject] @{
-                'Error' = $response.error
-                'Message' = $response.message
-            }
-            return
-        }
+        $irm = Invoke-LFMApiUri -Uri $apiUrl
+        if ($irm.Error) {Write-Output $irm; return}
 
         foreach ($album in $irm.WeeklyAlbumChart.Album) {
             $albumInfo = [pscustomobject] @{

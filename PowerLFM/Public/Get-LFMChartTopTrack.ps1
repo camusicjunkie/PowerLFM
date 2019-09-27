@@ -18,8 +18,8 @@ function Get-LFMChartTopTrack {
     }
 
     switch ($PSBoundParameters.Keys) {
-        'Limit' {$apiParams.add('limit', $Limit)}
-        'Page' {$apiParams.add('page', $Page)}
+        'Limit' {$apiParams.Add('limit', $Limit)}
+        'Page' {$apiParams.Add('page', $Page)}
     }
 
     #Building string to append to base url
@@ -30,29 +30,12 @@ function Get-LFMChartTopTrack {
 
     $apiUrl = "$baseUrl/?$string"
 
-    try {
-        $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
-        if ($irm.error) {
-            [pscustomobject] @{
-                'Error' = $irm.error
-                'Message' = $irm.message
-            }
-            return
-        }
-    }
-    catch {
-        $response = $_.errorDetails.message | ConvertFrom-Json
-
-        [pscustomobject] @{
-            'Error' = $response.error
-            'Message' = $response.message
-        }
-        return
-    }
+    $irm = Invoke-LFMApiUri -Uri $apiUrl
+    if ($irm.Error) {Write-Output $irm; return}
 
     foreach ($track in $irm.Tracks.Track) {
         $trackInfo = [pscustomobject] @{
-            'PSTypeName' = 'PowerLFM.Chart.TopArtists'
+            'PSTypeName' = 'PowerLFM.Chart.TopTracks'
             'Track' = $track.Name
             'TrackId' = $track.Mbid
             'TrackUrl' = [uri] $track.Url
@@ -62,7 +45,6 @@ function Get-LFMChartTopTrack {
             'Duration' = [int] $track.Duration
             'Listeners' = [int] $track.Listeners
             'PlayCount' = [int] $track.PlayCount
-            'ImageUrl' = $track.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
         }
 
         Write-Output $trackInfo

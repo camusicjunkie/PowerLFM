@@ -6,11 +6,14 @@ function Get-LFMTrackInfo {
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
+                   Position = 0,
                    ParameterSetName = 'track')]
         [ValidateNotNullOrEmpty()]
         [string] $Track,
 
         [Parameter(Mandatory,
+                   ValueFromPipelineByPropertyName,
+                   Position = 1,
                    ParameterSetName = 'track')]
         [ValidateNotNullOrEmpty()]
         [string] $Artist,
@@ -34,15 +37,15 @@ function Get-LFMTrackInfo {
         }
 
         switch ($PSBoundParameters.Keys) {
-            'UserName' {$apiParams.add('username', $UserName)}
-            'AutoCorrect' {$apiParams.add('autocorrect', 1)}
+            'UserName' {$apiParams.Add('username', $UserName)}
+            'AutoCorrect' {$apiParams.Add('autocorrect', 1)}
         }
     }
     process {
         switch ($PSCmdlet.ParameterSetName) {
-            'track' {$apiParams.add('track', $Track);
-                     $apiParams.add('artist', $Artist)}
-            'id'    {$apiParams.add('mbid', $Id)}
+            'track' {$apiParams.Add('track', $Track);
+                     $apiParams.Add('artist', $Artist)}
+            'id'    {$apiParams.Add('mbid', $Id)}
         }
 
         #Building string to append to base url
@@ -54,25 +57,8 @@ function Get-LFMTrackInfo {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        try {
-            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
-            if ($irm.error) {
-                [pscustomobject] @{
-                    'Error' = $irm.error
-                    'Message' = $irm.message
-                }
-                return
-            }
-        }
-        catch {
-            $response = $_.errorDetails.message | ConvertFrom-Json
-
-            [pscustomobject] @{
-                'Error' = $response.error
-                'Message' = $response.message
-            }
-            return
-        }
+        $irm = Invoke-LFMApiUri -Uri $apiUrl
+        if ($irm.Error) {Write-Output $irm; return}
 
         $tags = foreach ($tag in $irm.Track.TopTags.Tag) {
             $tagInfo = [pscustomobject] @{
@@ -102,8 +88,8 @@ function Get-LFMTrackInfo {
 
         $userPlayCount = [int] $irm.Track.UserPlayCount
         if ($PSBoundParameters.ContainsKey('UserName')) {
-            $trackInfo.add('UserPlayCount', $userPlayCount)
-            $trackInfo.add('Loved', $loved)
+            $trackInfo.Add('UserPlayCount', $userPlayCount)
+            $trackInfo.Add('Loved', $loved)
         }
 
         $trackInfo = [pscustomobject] $trackInfo

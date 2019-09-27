@@ -17,8 +17,7 @@ function Remove-LFMTrackTag {
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
-        [ValidateCount(1,10)]
-        [string[]] $Tag
+        [string] $Tag
     )
 
     process {
@@ -28,7 +27,7 @@ function Remove-LFMTrackTag {
             'Tag' = $Tag
             'Method' = 'track.removeTag'
         }
-        $apiSig = New-LFMTrackSignature @apiSigProps
+        $apiSig = Get-LFMTrackSignature @apiSigProps
 
         $apiParams = @{
             'method' = 'track.removeTag'
@@ -37,9 +36,9 @@ function Remove-LFMTrackTag {
             'api_sig' = $apiSig
         }
 
-        $apiParams.add('track', $Track)
-        $apiParams.add('artist', $Artist)
-        $apiParams.add('tag', $Tag)
+        $apiParams.Add('track', $Track)
+        $apiParams.Add('artist', $Artist)
+        $apiParams.Add('tag', $Tag)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
@@ -50,7 +49,7 @@ function Remove-LFMTrackTag {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        if ($PSCmdlet.ShouldProcess("Track: $Track", "Removing track tag")) {
+        if ($PSCmdlet.ShouldProcess("Track: $Track", "Removing track tag: $Tag")) {
             $iwr = Invoke-WebRequest -Uri $apiUrl -Method Post
             Write-Verbose "$($iwr.StatusCode) $($iwr.StatusDescription)"
         }

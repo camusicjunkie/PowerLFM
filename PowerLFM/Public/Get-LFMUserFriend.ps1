@@ -13,9 +13,7 @@ function Get-LFMUserFriend {
         [ValidateRange(1,50)]
         [string] $Limit,
 
-        [string] $Page,
-
-        [switch] $RecentTracks
+        [string] $Page
     )
 
     begin {
@@ -26,13 +24,13 @@ function Get-LFMUserFriend {
         }
 
         switch ($PSBoundParameters.Keys) {
-            'Limit' {$apiParams.add('limit', $Limit)}
-            'Page' {$apiParams.add('page', $Page)}
-            'RecentTracks' {$apiParams.add('recenttracks', 1)}
+            'Limit' {$apiParams.Add('limit', $Limit)}
+            'Page' {$apiParams.Add('page', $Page)}
+            'RecentTracks' {$apiParams.Add('recenttracks', 1)}
         }
     }
     process {
-        $apiParams.add('user', $UserName)
+        $apiParams.Add('user', $UserName)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
@@ -43,25 +41,8 @@ function Get-LFMUserFriend {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        try {
-            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
-            if ($irm.error) {
-                [pscustomobject] @{
-                    'Error' = $irm.error
-                    'Message' = $irm.message
-                }
-                return
-            }
-        }
-        catch {
-            $response = $_.errorDetails.message | ConvertFrom-Json
-
-            [pscustomobject] @{
-                'Error' = $response.error
-                'Message' = $response.message
-            }
-            return
-        }
+        $irm = Invoke-LFMApiUri -Uri $apiUrl
+        if ($irm.Error) {Write-Output $irm; return}
 
         foreach ($friend in $irm.Friends.User) {
             $userInfo = @{
@@ -72,7 +53,6 @@ function Get-LFMUserFriend {
                 'Country' = $friend.Country
                 'Registered' = ConvertFrom-UnixTime -UnixTime $friend.Registered.UnixTime -Local
                 'PlayLists' = [int] $friend.PlayLists
-                'ImageUrl' = $friend.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 
             $userInfo = [pscustomobject] $userInfo

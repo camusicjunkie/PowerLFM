@@ -19,7 +19,7 @@ function Request-LFMToken {
             'Method' = 'auth.getToken'
             'SharedSecret' = $SharedSecret
         }
-        $apiSig = New-LFMAuthSignature @sigParams
+        $apiSig = Get-LFMAuthSignature @sigParams
         Write-Verbose "Signature MD5 Hash: $apiSig"
 
         $apiParams = @{
@@ -49,7 +49,7 @@ function Request-LFMToken {
 
         $obj = [PSCustomObject] @{
             'ApiKey' = $ApiKey
-            'Token' = $token.token
+            'Token' = $token.Token
             'SharedSecret' = $SharedSecret
         }
         Write-Output $obj

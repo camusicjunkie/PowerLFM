@@ -6,12 +6,14 @@ function Get-LFMTrackTag {
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
+                   Position = 0,
                    ParameterSetName = 'track')]
         [ValidateNotNullOrEmpty()]
         [string] $Track,
 
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
+                   Position = 1,
                    ParameterSetName = 'track')]
         [ValidateNotNullOrEmpty()]
         [string] $Artist,
@@ -36,19 +38,19 @@ function Get-LFMTrackTag {
         }
 
         switch ($PSBoundParameters.Keys) {
-            'AutoCorrect' {$apiParams.add('autocorrect', 1)}
+            'AutoCorrect' {$apiParams.Add('autocorrect', 1)}
         }
     }
     process {
         switch ($PSCmdlet.ParameterSetName) {
-            'track' {$apiParams.add('track', $Track);
-                     $apiParams.add('artist', $Artist)}
-            'id'    {$apiParams.add('mbid', $Id)}
+            'track' {$apiParams.Add('track', $Track);
+                     $apiParams.Add('artist', $Artist)}
+            'id'    {$apiParams.Add('mbid', $Id)}
         }
 
         if ($PSBoundParameters.ContainsKey('UserName')) {
-            $apiParams.remove('sk')
-            $apiParams.add('user', $UserName)
+            $apiParams.Remove('sk')
+            $apiParams.Add('user', $UserName)
         }
 
         #Building string to append to base url
@@ -60,25 +62,8 @@ function Get-LFMTrackTag {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        try {
-            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
-            if ($irm.error) {
-                [pscustomobject] @{
-                    'Error' = $irm.error
-                    'Message' = $irm.message
-                }
-                return
-            }
-        }
-        catch {
-            $response = $_.errorDetails.message | ConvertFrom-Json
-
-            [pscustomobject] @{
-                'Error' = $response.error
-                'Message' = $response.message
-            }
-            return
-        }
+        $irm = Invoke-LFMApiUri -Uri $apiUrl
+        if ($irm.Error) {Write-Output $irm; return}
 
         foreach ($tag in $irm.Tags.Tag) {
             $tagInfo = [pscustomobject] @{

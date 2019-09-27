@@ -18,8 +18,8 @@ function Get-LFMChartTopArtist {
     }
 
     switch ($PSBoundParameters.Keys) {
-        'Limit' {$apiParams.add('limit', $Limit)}
-        'Page' {$apiParams.add('page', $Page)}
+        'Limit' {$apiParams.Add('limit', $Limit)}
+        'Page' {$apiParams.Add('page', $Page)}
     }
 
     #Building string to append to base url
@@ -30,25 +30,8 @@ function Get-LFMChartTopArtist {
 
     $apiUrl = "$baseUrl/?$string"
 
-    try {
-        $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
-        if ($irm.error) {
-            [pscustomobject] @{
-                'Error' = $irm.error
-                'Message' = $irm.message
-            }
-            return
-        }
-    }
-    catch {
-        $response = $_.errorDetails.message | ConvertFrom-Json
-
-        [pscustomobject] @{
-            'Error' = $response.error
-            'Message' = $response.message
-        }
-        return
-    }
+    $irm = Invoke-LFMApiUri -Uri $apiUrl
+    if ($irm.Error) {Write-Output $irm; return}
 
     foreach ($artist in $irm.Artists.Artist) {
         $artistInfo = [pscustomobject] @{
@@ -58,7 +41,6 @@ function Get-LFMChartTopArtist {
             'Url' = [uri] $artist.Url
             'Listeners' = [int] $artist.Listeners
             'PlayCount' = [int] $artist.PlayCount
-            'ImageUrl' = $artist.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
         }
 
         Write-Output $artistInfo

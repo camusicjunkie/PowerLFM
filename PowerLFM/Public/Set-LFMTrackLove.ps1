@@ -3,7 +3,6 @@ function Set-LFMTrackLove {
 
     [CmdletBinding(SupportsShouldProcess,
                    ConfirmImpact = 'High')]
-    [OutputType('PowerLFM.Track.Love')]
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
@@ -22,7 +21,7 @@ function Set-LFMTrackLove {
             'Track' = $Track
             'Method' = 'track.love'
         }
-        $apiSig = New-LFMTrackSignature @apiSigParams
+        $apiSig = Get-LFMTrackSignature @apiSigParams
 
         $apiParams = @{
             'method' = 'track.love'
@@ -31,8 +30,8 @@ function Set-LFMTrackLove {
             'api_sig' = $apiSig
         }
 
-        $apiParams.add('artist', $Artist)
-        $apiParams.add('track', $Track)
+        $apiParams.Add('artist', $Artist)
+        $apiParams.Add('track', $Track)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {

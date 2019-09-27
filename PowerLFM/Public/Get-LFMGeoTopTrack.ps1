@@ -28,15 +28,15 @@ function Get-LFMGeoTopTrack {
         }
 
         switch ($PSBoundParameters.Keys) {
-            'Limit' {$apiParams.add('limit', $Limit)}
-            'Page' {$apiParams.add('page', $Page)}
+            'Limit' {$apiParams.Add('limit', $Limit)}
+            'Page' {$apiParams.Add('page', $Page)}
         }
     }
     process {
-        $apiParams.add('country', $Country)
+        $apiParams.Add('country', $Country)
 
         switch ($PSBoundParameters.Keys) {
-            'City' {$apiParams.add('location', $City)}
+            'City' {$apiParams.Add('location', $City)}
         }
 
         #Building string to append to base url
@@ -48,25 +48,8 @@ function Get-LFMGeoTopTrack {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        try {
-            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
-            if ($irm.error) {
-                [pscustomobject] @{
-                    'Error' = $irm.error
-                    'Message' = $irm.message
-                }
-                return
-            }
-        }
-        catch {
-            $response = $_.errorDetails.message | ConvertFrom-Json
-
-            [pscustomobject] @{
-                'Error' = $response.error
-                'Message' = $response.message
-            }
-            return
-        }
+        $irm = Invoke-LFMApiUri -Uri $apiUrl
+        if ($irm.Error) {Write-Output $irm; return}
 
         foreach ($track in $irm.Tracks.Track) {
             $trackInfo = [pscustomobject] @{
@@ -77,9 +60,8 @@ function Get-LFMGeoTopTrack {
                 'Artist' = $track.Artist.Name
                 'ArtistId' = $track.Artist.Mbid
                 'ArtistUrl' = [uri] $track.Artist.Url
-                'Rank' = [int] $track.'@attr'.rank
+                'Rank' = [int] $track.'@attr'.Rank
                 'Listeners' = [int] $track.Listeners
-                'ImageUrl' = $track.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 
             Write-Output $trackInfo

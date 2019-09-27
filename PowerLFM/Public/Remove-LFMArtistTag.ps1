@@ -21,7 +21,7 @@ function Remove-LFMArtistTag {
             'Tag' = $Tag
             'Method' = 'artist.removeTag'
         }
-        $apiSig = New-LFMArtistSignature @apiSigParams
+        $apiSig = Get-LFMArtistSignature @apiSigParams
 
         $apiParams = @{
             'method' = 'artist.removeTag'
@@ -30,8 +30,8 @@ function Remove-LFMArtistTag {
             'api_sig' = $apiSig
         }
 
-        $apiParams.add('artist', $Artist)
-        $apiParams.add('tag', $Tag)
+        $apiParams.Add('artist', $Artist)
+        $apiParams.Add('tag', $Tag)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
@@ -42,7 +42,7 @@ function Remove-LFMArtistTag {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        if ($PSCmdlet.ShouldProcess("Artist: $Artist", "Removing artist tag")) {
+        if ($PSCmdlet.ShouldProcess("Artist: $Artist", "Removing artist tag: $Tag")) {
             $iwr = Invoke-WebRequest -Uri $apiUrl -Method Post
             Write-Verbose "$($iwr.StatusCode) $($iwr.StatusDescription)"
         }

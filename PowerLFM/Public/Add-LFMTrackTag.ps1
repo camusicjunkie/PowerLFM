@@ -27,7 +27,7 @@ function Add-LFMTrackTag {
             'Tag' = $Tag
             'Method' = 'track.addTags'
         }
-        $apiSig = New-LFMTrackSignature @apiSigParams
+        $apiSig = Get-LFMTrackSignature @apiSigParams
 
         $apiParams = @{
             'method' = 'track.addTags'
@@ -36,9 +36,9 @@ function Add-LFMTrackTag {
             'api_sig' = $apiSig
         }
 
-        $apiParams.add('track', $Track)
-        $apiParams.add('artist', $Artist)
-        $apiParams.add('tags', $Tag)
+        $apiParams.Add('track', $Track)
+        $apiParams.Add('artist', $Artist)
+        $apiParams.Add('tags', $Tag)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
@@ -49,7 +49,7 @@ function Add-LFMTrackTag {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        if ($PSCmdlet.ShouldProcess("Track: $Track", "Adding track tag")) {
+        if ($PSCmdlet.ShouldProcess("Track: $Track", "Adding track tag: $Tag")) {
             $iwr = Invoke-WebRequest -Uri $apiUrl -Method Post
             Write-Verbose "$($iwr.StatusCode) $($iwr.StatusDescription)"
         }

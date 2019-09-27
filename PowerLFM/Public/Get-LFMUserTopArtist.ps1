@@ -38,13 +38,13 @@ function Get-LFMUserTopArtist {
         }
 
         switch ($PSBoundParameters.Keys) {
-            'Limit' {$apiParams.add('limit', $Limit)}
-            'Page' {$apiParams.add('page', $Page)}
-            'TimePeriod' {$apiParams.add('period', $period[$TimePeriod])}
+            'Limit' {$apiParams.Add('limit', $Limit)}
+            'Page' {$apiParams.Add('page', $Page)}
+            'TimePeriod' {$apiParams.Add('period', $period[$TimePeriod])}
         }
     }
     process {
-        $apiParams.add('user', $UserName)
+        $apiParams.Add('user', $UserName)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
@@ -55,34 +55,16 @@ function Get-LFMUserTopArtist {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        try {
-            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
-            if ($irm.error) {
-                [pscustomobject] @{
-                    'Error' = $irm.error
-                    'Message' = $irm.message
-                }
-                return
-            }
-        }
-        catch {
-            $response = $_.errorDetails.message | ConvertFrom-Json
-
-            [pscustomobject] @{
-                'Error' = $response.error
-                'Message' = $response.message
-            }
-            return
-        }
+        $irm = Invoke-LFMApiUri -Uri $apiUrl
+        if ($irm.Error) {Write-Output $irm; return}
 
         foreach ($artist in $irm.TopArtists.Artist) {
             $artistInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.User.Artist'
                 'Artist' = $artist.Name
                 'PlayCount' = [int] $artist.PlayCount
-                'Url' = [uri] $artist.url
+                'Url' = [uri] $artist.Url
                 'Id' = $artist.Mbid
-                'ImageUrl' = $artist.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 
             Write-Output $artistInfo

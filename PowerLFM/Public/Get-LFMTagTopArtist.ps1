@@ -22,12 +22,12 @@ function Get-LFMTagTopArtist {
         }
 
         switch ($PSBoundParameters.Keys) {
-            'Limit' {$apiParams.add('limit', $Limit)}
-            'Page' {$apiParams.add('page', $Page)}
+            'Limit' {$apiParams.Add('limit', $Limit)}
+            'Page' {$apiParams.Add('page', $Page)}
         }
     }
     process {
-        $apiParams.add('tag', $Tag)
+        $apiParams.Add('tag', $Tag)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
@@ -38,25 +38,8 @@ function Get-LFMTagTopArtist {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        try {
-            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
-            if ($irm.error) {
-                [pscustomobject] @{
-                    'Error' = $irm.error
-                    'Message' = $irm.message
-                }
-                return
-            }
-        }
-        catch {
-            $response = $_.errorDetails.message | ConvertFrom-Json
-
-            [pscustomobject] @{
-                'Error' = $response.error
-                'Message' = $response.message
-            }
-            return
-        }
+        $irm = Invoke-LFMApiUri -Uri $apiUrl
+        if ($irm.Error) {Write-Output $irm; return}
 
         foreach ($artist in $irm.TopArtists.Artist) {
             $artistInfo = [pscustomobject] @{
@@ -64,8 +47,7 @@ function Get-LFMTagTopArtist {
                 'Artist' = $artist.Name
                 'ArtistId' = $artist.Mbid
                 'ArtistUrl' = [uri] $artist.Url
-                'Rank' = [int] $artist.'@attr'.rank
-                'ImageUrl' = $artist.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
+                'Rank' = [int] $artist.'@attr'.Rank
             }
 
             Write-Output $artistInfo

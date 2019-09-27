@@ -6,12 +6,14 @@ function Get-LFMTrackSimilar {
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
+                   Position = 0,
                    ParameterSetName = 'track')]
         [ValidateNotNullOrEmpty()]
         [string] $Track,
 
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName,
+                   Position = 1,
                    ParameterSetName = 'track')]
         [ValidateNotNullOrEmpty()]
         [string] $Artist,
@@ -36,14 +38,14 @@ function Get-LFMTrackSimilar {
         }
 
         switch ($PSBoundParameters.Keys) {
-            'AutoCorrect' {$apiParams.add('autocorrect', 1)}
+            'AutoCorrect' {$apiParams.Add('autocorrect', 1)}
         }
     }
     process {
         switch ($PSCmdlet.ParameterSetName) {
-            'track' {$apiParams.add('track', $Track);
-                     $apiParams.add('artist', $Artist)}
-            'id'    {$apiParams.add('mbid', $Id)}
+            'track' {$apiParams.Add('track', $Track);
+                     $apiParams.Add('artist', $Artist)}
+            'id'    {$apiParams.Add('mbid', $Id)}
         }
 
         #Building string to append to base url
@@ -55,25 +57,8 @@ function Get-LFMTrackSimilar {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        try {
-            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
-            if ($irm.error) {
-                [pscustomobject] @{
-                    'Error' = $irm.error
-                    'Message' = $irm.message
-                }
-                return
-            }
-        }
-        catch {
-            $response = $_.errorDetails.message | ConvertFrom-Json
-
-            [pscustomobject] @{
-                'Error' = $response.error
-                'Message' = $response.message
-            }
-            return
-        }
+        $irm = Invoke-LFMApiUri -Uri $apiUrl
+        if ($irm.Error) {Write-Output $irm; return}
 
         foreach ($similar in $irm.SimilarTracks.Track) {
             $similarInfo = [pscustomobject] @{
@@ -81,9 +66,9 @@ function Get-LFMTrackSimilar {
                 'Track' = $similar.Name
                 'Artist' = $similar.Artist.Name
                 'Id' = $similar.Mbid
-               'PlayCount' = [int] $similar.PlayCount
+                'PlayCount' = [int] $similar.PlayCount
                 'Url' = [uri] $similar.Url
-               'Match' = [int] $similar.Match
+                'Match' = [math]::Round($similar.Match, 2)
             }
 
             Write-Output $similarInfo

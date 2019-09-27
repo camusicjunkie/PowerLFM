@@ -28,7 +28,7 @@ function Request-LFMSession {
                 'SharedSecret' = $SharedSecret
                 'Token' = $Token
             }
-            $apiSig = New-LFMAuthSignature @sigParams
+            $apiSig = Get-LFMAuthSignature @sigParams
             Write-Verbose "Signature MD5 Hash: $apiSig"
 
             $apiParams = @{
@@ -47,11 +47,12 @@ function Request-LFMSession {
 
             $apiUrl = "$baseUrl/?$string"
 
-            $sessionKey = Invoke-RestMethod -Uri $apiUrl
+            $irm = Invoke-LFMApiUri -Uri $apiUrl
+            if ($irm.Error) {Write-Output $irm; return}
 
             $obj = [PSCustomObject] @{
                 'ApiKey' = $ApiKey
-                'SessionKey' = $sessionKey.session.key
+                'SessionKey' = $irm.Session.Key
                 'SharedSecret' = $SharedSecret
             }
             Write-Output $obj

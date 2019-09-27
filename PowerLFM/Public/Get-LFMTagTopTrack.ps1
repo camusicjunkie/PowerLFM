@@ -22,12 +22,12 @@ function Get-LFMTagTopTrack {
         }
 
         switch ($PSBoundParameters.Keys) {
-            'Limit' {$apiParams.add('limit', $Limit)}
-            'Page' {$apiParams.add('page', $Page)}
+            'Limit' {$apiParams.Add('limit', $Limit)}
+            'Page' {$apiParams.Add('page', $Page)}
         }
     }
     process {
-        $apiParams.add('tag', $Tag)
+        $apiParams.Add('tag', $Tag)
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
@@ -38,25 +38,8 @@ function Get-LFMTagTopTrack {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        try {
-            $irm = Invoke-RestMethod -Uri $apiUrl -ErrorAction Stop
-            if ($irm.error) {
-                [pscustomobject] @{
-                    'Error' = $irm.error
-                    'Message' = $irm.message
-                }
-                return
-            }
-        }
-        catch {
-            $response = $_.errorDetails.message | ConvertFrom-Json
-
-            [pscustomobject] @{
-                'Error' = $response.error
-                'Message' = $response.message
-            }
-            return
-        }
+        $irm = Invoke-LFMApiUri -Uri $apiUrl
+        if ($irm.Error) {Write-Output $irm; return}
 
         foreach ($track in $irm.Tracks.Track) {
             $trackInfo = [pscustomobject] @{
@@ -69,7 +52,6 @@ function Get-LFMTagTopTrack {
                 'ArtistUrl' = [uri] $track.Artist.Url
                 'Rank' = [int] $track.'@attr'.Rank
                 'Duration' = [int] $track.Duration
-                'ImageUrl' = $track.Image.Where({$_.Size -eq 'ExtraLarge'}).'#text'
             }
 
             Write-Output $trackInfo

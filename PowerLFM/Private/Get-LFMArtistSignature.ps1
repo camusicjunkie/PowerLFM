@@ -1,34 +1,34 @@
-function New-LFMAuthSignature {
+function Get-LFMArtistSignature {
     [CmdletBinding(SupportsShouldProcess,
                    ConfirmImpact = 'Medium')]
     [OutputType('System.String')]
     param (
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
-        [string] $ApiKey,
-
-        [Parameter(Mandatory)]
-        [ValidateNotNullOrEmpty()]
-        [ValidateSet('auth.getToken','auth.getSession')]
+        [ValidateSet('artist.addTags','artist.removeTag')]
         [string] $Method,
 
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
-        [string] $SharedSecret,
+        [string] $Artist,
 
-        [Parameter()]
+        [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
-        [string] $Token
+        [ValidateCount(1,10)]
+        [string[]] $Tag
     )
-
     try {
         $sigParams = @{
-            'api_key' = $ApiKey
             'method' = $Method
+            'api_key' = $LFMConfig.ApiKey
+            'sk' = $LFMConfig.SessionKey
+            'artist' = $Artist
+            'tags' = $Tag
         }
 
-        if ($PSBoundParameters.ContainsKey('Token')) {
-            $sigParams.Add('token', $Token)
+        if ($Method -eq 'artist.removeTag') {
+            $sigParams.Remove('tags')
+            $sigParams.Add('tag', $Tag)
         }
 
         $keyValues = $sigParams.GetEnumerator() | Sort-Object Name | ForEach-Object {
@@ -38,9 +38,9 @@ function New-LFMAuthSignature {
         $string = $keyValues -join ''
 
         if ($PSCmdlet.ShouldProcess('Shared secret', 'Creating artist signature')) {
-            Get-Md5Hash -String "$string$SharedSecret"
+            Get-Md5Hash -String "$string$($LFMConfig.SharedSecret)"
         }
-        Write-Verbose "$string$SharedSecret"
+        Write-Verbose "$string$($LFMConfig.SharedSecret)"
     }
     catch {
         Write-Error $_.Exception.Message
