@@ -4,8 +4,7 @@ function Get-LFMUserWeeklyTrackChart {
     [CmdletBinding()]
     [OutputType('PowerLFM.User.WeeklyTrackChart')]
     param (
-        [Parameter(Mandatory,
-                   ValueFromPipelineByPropertyName)]
+        [Parameter(ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
         [string] $UserName,
 
@@ -20,11 +19,15 @@ function Get-LFMUserWeeklyTrackChart {
         $apiParams = @{
             'method' = 'user.getWeeklyTrackChart'
             'api_key' = $LFMConfig.APIKey
+            'sk' = $LFMConfig.SessionKey
             'format' = 'json'
         }
     }
     process {
-        $apiParams.Add('user', $UserName)
+        if ($PSBoundParameters.ContainsKey('UserName')) {
+            $apiParams.Remove('sk')
+            $apiParams.Add('user', $UserName)
+        }
 
         switch ($PSBoundParameters.Keys) {
             'StartDate' {$apiParams.Add('from', (ConvertTo-UnixTime -Date $StartDate))}

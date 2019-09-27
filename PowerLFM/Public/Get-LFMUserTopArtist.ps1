@@ -4,8 +4,7 @@ function Get-LFMUserTopArtist {
     [CmdletBinding()]
     [OutputType('PowerLFM.User.TopArtist')]
     param (
-        [Parameter(Mandatory,
-                   ValueFromPipelineByPropertyName)]
+        [Parameter(ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
         [string] $UserName,
 
@@ -25,6 +24,7 @@ function Get-LFMUserTopArtist {
         $apiParams = @{
             'method' = 'user.getTopArtists'
             'api_key' = $LFMConfig.APIKey
+            'sk' = $LFMConfig.SessionKey
             'format' = 'json'
         }
 
@@ -44,7 +44,10 @@ function Get-LFMUserTopArtist {
         }
     }
     process {
-        $apiParams.Add('user', $UserName)
+        if ($PSBoundParameters.ContainsKey('UserName')) {
+            $apiParams.Remove('sk')
+            $apiParams.Add('user', $UserName)
+        }
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {

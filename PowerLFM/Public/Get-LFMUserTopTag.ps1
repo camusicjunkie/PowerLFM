@@ -4,8 +4,7 @@ function Get-LFMUserTopTag {
     [CmdletBinding()]
     [OutputType('PowerLFM.User.TopTag')]
     param (
-        [Parameter(Mandatory,
-                   ValueFromPipelineByPropertyName)]
+        [Parameter(ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
         [string] $UserName,
 
@@ -16,6 +15,7 @@ function Get-LFMUserTopTag {
         $apiParams = @{
             'method' = 'user.getTopTags'
             'api_key' = $LFMConfig.APIKey
+            'sk' = $LFMConfig.SessionKey
             'format' = 'json'
         }
 
@@ -24,7 +24,10 @@ function Get-LFMUserTopTag {
         }
     }
     process {
-        $apiParams.Add('user', $UserName)
+        if ($PSBoundParameters.ContainsKey('UserName')) {
+            $apiParams.Remove('sk')
+            $apiParams.Add('user', $UserName)
+        }
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {

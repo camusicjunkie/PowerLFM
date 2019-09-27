@@ -4,8 +4,7 @@ function Get-LFMUserPersonalTag {
     [CmdletBinding()]
     [OutputType('PowerLFM.User.PersonalTag')]
     param (
-        [Parameter(Mandatory,
-                   ValueFromPipelineByPropertyName)]
+        [Parameter(ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
         [string] $UserName,
 
@@ -31,6 +30,7 @@ function Get-LFMUserPersonalTag {
         $apiParams = @{
             'method' = 'user.getPersonalTags'
             'api_key' = $LFMConfig.APIKey
+            'sk' = $LFMConfig.SessionKey
             'format' = 'json'
         }
 
@@ -40,9 +40,12 @@ function Get-LFMUserPersonalTag {
         }
     }
     process {
-        $apiParams.Add('user', $UserName)
         $apiParams.Add('tag', $Tag)
         $apiParams.Add('taggingtype', $TagType.ToLower())
+        if ($PSBoundParameters.ContainsKey('UserName')) {
+            $apiParams.Remove('sk')
+            $apiParams.Add('user', $UserName)
+        }
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {

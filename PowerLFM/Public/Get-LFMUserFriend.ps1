@@ -4,8 +4,7 @@ function Get-LFMUserFriend {
     [CmdletBinding()]
     [OutputType('PowerLFM.User.Info')]
     param (
-        [Parameter(Mandatory,
-                   ValueFromPipelineByPropertyName)]
+        [Parameter(ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
         [string] $UserName,
 
@@ -20,6 +19,7 @@ function Get-LFMUserFriend {
         $apiParams = @{
             'method' = 'user.getFriends'
             'api_key' = $LFMConfig.APIKey
+            'sk' = $LFMConfig.SessionKey
             'format' = 'json'
         }
 
@@ -30,7 +30,10 @@ function Get-LFMUserFriend {
         }
     }
     process {
-        $apiParams.Add('user', $UserName)
+        if ($PSBoundParameters.ContainsKey('UserName')) {
+            $apiParams.Remove('sk')
+            $apiParams.Add('user', $UserName)
+        }
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {

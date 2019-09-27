@@ -2,8 +2,7 @@ function Get-LFMUserRecentTrack {
     [CmdletBinding()]
     [OutputType('PowerLFM.User.RecentTrack')]
     param (
-        [Parameter(Mandatory,
-                   ValueFromPipelineByPropertyName)]
+        [Parameter(ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
         [string] $UserName,
 
@@ -27,6 +26,7 @@ function Get-LFMUserRecentTrack {
         $apiParams = @{
             'method' = 'user.getRecentTracks'
             'api_key' = $LFMConfig.APIKey
+            'sk' = $LFMConfig.SessionKey
             'format' = 'json'
         }
 
@@ -36,7 +36,10 @@ function Get-LFMUserRecentTrack {
         }
     }
     process {
-        $apiParams.Add('user', $UserName)
+        if ($PSBoundParameters.ContainsKey('UserName')) {
+            $apiParams.Remove('sk')
+            $apiParams.Add('user', $UserName)
+        }
 
         switch ($PSBoundParameters.Keys) {
             'StartDate' {$apiParams.Add('from', (ConvertTo-UnixTime -Date $StartDate))}

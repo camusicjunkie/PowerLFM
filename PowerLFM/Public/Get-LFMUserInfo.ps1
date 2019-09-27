@@ -5,6 +5,7 @@ function Get-LFMUserInfo {
     [OutputType('PowerLFM.User.Info')]
     param (
         [Parameter(ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
         [string] $UserName
     )
 
