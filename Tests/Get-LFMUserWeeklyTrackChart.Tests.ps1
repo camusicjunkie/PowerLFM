@@ -36,7 +36,7 @@ Describe 'Get-LFMUserWeeklyTrackChart: Interface' -Tag Interface {
             }
 
             It 'Mandatory should be set to True' {
-                $parameter.IsMandatory | Should -BeTrue
+                $parameter.IsMandatory | Should -BeFalse
             }
 
             It 'ValueFromPipeline should be set to False' {
@@ -52,7 +52,7 @@ Describe 'Get-LFMUserWeeklyTrackChart: Interface' -Tag Interface {
             }
 
             It "Should have a position of 0" {
-                $parameter.Position | Should -Be 0
+                $parameter.Position | Should -Be 2
             }
         }
 
@@ -85,7 +85,7 @@ Describe 'Get-LFMUserWeeklyTrackChart: Interface' -Tag Interface {
             }
 
             It "Should have a position of 1" {
-                $parameter.Position | Should -Be 1
+                $parameter.Position | Should -Be 0
             }
         }
 
@@ -118,7 +118,7 @@ Describe 'Get-LFMUserWeeklyTrackChart: Interface' -Tag Interface {
             }
 
             It "Should have a position of 2" {
-                $parameter.Position | Should -Be 2
+                $parameter.Position | Should -Be 1
             }
         }
     }
