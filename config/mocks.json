@@ -949,6 +949,44 @@
       }
     }
   ],
+  "Get-LFMUserTrackScrobble": [
+    {
+      "UserTrackScrobble": {
+        "trackscrobbles": {
+          "track": [
+            {
+              "name": "Track1",
+              "url": "https://www.last.fake/trackscrobble/track1",
+              "mbid": "12345678-1234-1234-1234-123456789011",
+              "artist": {
+                "#text": "Artist1"
+              },
+              "album": {
+                "#text": "Album1"
+              },
+              "date": {
+                "uts": 0
+              }
+            },
+            {
+              "name": "Track2",
+              "url": "https://www.last.fake/trackscrobble/track2",
+              "mbid": "12345678-1234-1234-1234-123456789013",
+              "artist": {
+                "#text": "Artist2"
+              },
+              "album": {
+                "#text": "Album2"
+              },
+              "date": {
+                "uts": 60
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "Get-LFMUserWeeklyAlbumChart": [
     {
       "UserWeeklyAlbumChart": {
