@@ -42,6 +42,7 @@ function Get-LFMUserPersonalTag {
     process {
         $apiParams.Add('tag', $Tag)
         $apiParams.Add('taggingtype', $TagType.ToLower())
+
         if ($PSBoundParameters.ContainsKey('UserName')) {
             $apiParams.Remove('sk')
             $apiParams.Add('user', $UserName)
