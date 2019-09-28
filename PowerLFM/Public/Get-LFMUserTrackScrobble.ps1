@@ -66,7 +66,7 @@ function Get-LFMUserTrackScrobble {
                 'TrackUrl' = $scrobble.Url
                 'Artist' = $scrobble.Artist.'#text'
                 'Album' = $scrobble.Album.'#text'
-                'Date' = ConvertFrom-UnixTime -UnixTime $scrobble.Date.Uts
+                'Date' = ConvertFrom-UnixTime -UnixTime $scrobble.Date.Uts -Local
             }
         }
     }
