@@ -26,11 +26,11 @@ function Get-LFMArtistSimilar {
         $apiParams = @{
             'method' = 'artist.getSimilar'
             'api_key' = $LFMConfig.APIKey
-            'limit' = $Limit
             'format' = 'json'
         }
 
         switch ($PSBoundParameters.Keys) {
+            'Limit' {$apiParams.Add('limit', $Limit)}
             'AutoCorrect' {$apiParams.Add('autocorrect', 1)}
         }
     }
