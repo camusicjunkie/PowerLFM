@@ -4,8 +4,7 @@ function Get-LFMUserTopAlbum {
     [CmdletBinding()]
     [OutputType('PowerLFM.User.TopAlbum')]
     param (
-        [Parameter(Mandatory,
-                   ValueFromPipelineByPropertyName)]
+        [Parameter(ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
         [string] $UserName,
 
@@ -25,6 +24,7 @@ function Get-LFMUserTopAlbum {
         $apiParams = @{
             'method' = 'user.getTopAlbums'
             'api_key' = $LFMConfig.APIKey
+            'sk' = $LFMConfig.SessionKey
             'format' = 'json'
         }
 
@@ -44,7 +44,10 @@ function Get-LFMUserTopAlbum {
         }
     }
     process {
-        $apiParams.Add('user', $UserName)
+        if ($PSBoundParameters.ContainsKey('UserName')) {
+            $apiParams.Remove('sk')
+            $apiParams.Add('user', $UserName)
+        }
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {

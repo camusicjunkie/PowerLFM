@@ -7,11 +7,6 @@ function Get-LFMUserPersonalTag {
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
-        [string] $UserName,
-
-        [Parameter(Mandatory,
-                   ValueFromPipelineByPropertyName)]
-        [ValidateNotNullOrEmpty()]
         [string] $Tag,
 
         [Parameter(Mandatory,
@@ -19,6 +14,10 @@ function Get-LFMUserPersonalTag {
         [ValidateNotNullOrEmpty()]
         [ValidateSet('Artist', 'Album', 'Track')]
         [string] $TagType,
+
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [string] $UserName,
 
         [Parameter()]
         [ValidateRange(1,50)]
@@ -31,6 +30,7 @@ function Get-LFMUserPersonalTag {
         $apiParams = @{
             'method' = 'user.getPersonalTags'
             'api_key' = $LFMConfig.APIKey
+            'sk' = $LFMConfig.SessionKey
             'format' = 'json'
         }
 
@@ -40,9 +40,12 @@ function Get-LFMUserPersonalTag {
         }
     }
     process {
-        $apiParams.Add('user', $UserName)
         $apiParams.Add('tag', $Tag)
         $apiParams.Add('taggingtype', $TagType.ToLower())
+        if ($PSBoundParameters.ContainsKey('UserName')) {
+            $apiParams.Remove('sk')
+            $apiParams.Add('user', $UserName)
+        }
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {

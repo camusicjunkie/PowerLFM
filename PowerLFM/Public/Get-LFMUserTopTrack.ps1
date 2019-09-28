@@ -4,15 +4,14 @@ function Get-LFMUserTopTrack {
     [CmdletBinding()]
     [OutputType('PowerLFM.User.TopTrack')]
     param (
-        [Parameter(Mandatory,
-                   ValueFromPipelineByPropertyName)]
-        [ValidateNotNullOrEmpty()]
-        [string] $UserName,
-
         [Parameter()]
         [ValidateSet('Overall', '7 Days', '1 Month',
                      '3 Months', '6 Months', '1 Year')]
         [string] $TimePeriod,
+
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [string] $UserName,
 
         [Parameter()]
         [ValidateRange(1,50)]
@@ -25,6 +24,7 @@ function Get-LFMUserTopTrack {
         $apiParams = @{
             'method' = 'user.getTopTracks'
             'api_key' = $LFMConfig.APIKey
+            'sk' = $LFMConfig.SessionKey
             'format' = 'json'
         }
 
@@ -44,7 +44,10 @@ function Get-LFMUserTopTrack {
         }
     }
     process {
-        $apiParams.Add('user', $UserName)
+        if ($PSBoundParameters.ContainsKey('UserName')) {
+            $apiParams.Remove('sk')
+            $apiParams.Add('user', $UserName)
+        }
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {

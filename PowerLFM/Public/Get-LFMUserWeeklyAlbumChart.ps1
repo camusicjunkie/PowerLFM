@@ -4,27 +4,30 @@ function Get-LFMUserWeeklyAlbumChart {
     [CmdletBinding()]
     [OutputType('PowerLFM.User.WeeklyAlbumChart')]
     param (
-        [Parameter(Mandatory,
-                   ValueFromPipelineByPropertyName)]
-        [ValidateNotNullOrEmpty()]
-        [string] $UserName,
-
         [Parameter(ValueFromPipelineByPropertyName)]
         [string] $StartDate,
 
         [Parameter(ValueFromPipelineByPropertyName)]
-        [string] $EndDate
+        [string] $EndDate,
+
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [ValidateNotNullOrEmpty()]
+        [string] $UserName
     )
 
     begin {
         $apiParams = @{
             'method' = 'user.getWeeklyAlbumChart'
             'api_key' = $LFMConfig.APIKey
+            'sk' = $LFMConfig.SessionKey
             'format' = 'json'
         }
     }
     process {
-        $apiParams.Add('user', $UserName)
+        if ($PSBoundParameters.ContainsKey('UserName')) {
+            $apiParams.Remove('sk')
+            $apiParams.Add('user', $UserName)
+        }
 
         switch ($PSBoundParameters.Keys) {
             'StartDate' {$apiParams.Add('from', (ConvertTo-UnixTime -Date $StartDate))}
