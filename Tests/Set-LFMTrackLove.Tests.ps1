@@ -217,6 +217,8 @@ Describe 'Set-LFMTrackLove: Integration' -Tag Integration {
                 $i += .25
             } until ($track.loved -eq 'No' -or $i -eq 5)
 
+            if ($i -ge 5) {Set-ItResult -Inconclusive -Because 'the API call timed out'}
+
             $track.Loved | Should -Be 'No'
         }
 
@@ -229,6 +231,8 @@ Describe 'Set-LFMTrackLove: Integration' -Tag Integration {
                 $track = Get-LFMTrackInfo @gtiParams
                 $i += .25
             } until ($track.loved -eq 'Yes' -or $i -eq 5)
+
+            if ($i -ge 5) {Set-ItResult -Inconclusive -Because 'the API call timed out'}
 
             $track.Loved | Should -Be 'Yes'
         }

@@ -1,19 +1,18 @@
-function Get-LFMUserPersonalTag {
+function Get-LFMUserTrackScrobble {
     # .ExternalHelp PowerLFM.psm1-help.xml
 
     [CmdletBinding()]
-    [OutputType('PowerLFM.User.PersonalTag')]
+    [OutputType('PowerLFM.User.TrackScrobble')]
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
-        [string] $Tag,
+        [string] $Track,
 
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
-        [ValidateSet('Artist', 'Album', 'Track')]
-        [string] $TagType,
+        [string] $Artist,
 
         [Parameter(ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
@@ -28,7 +27,7 @@ function Get-LFMUserPersonalTag {
 
     begin {
         $apiParams = @{
-            'method' = 'user.getPersonalTags'
+            'method' = 'user.getTrackScrobbles'
             'api_key' = $LFMConfig.APIKey
             'sk' = $LFMConfig.SessionKey
             'format' = 'json'
@@ -40,8 +39,8 @@ function Get-LFMUserPersonalTag {
         }
     }
     process {
-        $apiParams.Add('tag', $Tag)
-        $apiParams.Add('taggingtype', $TagType.ToLower())
+        $apiParams.Add('track', $Track)
+        $apiParams.Add('artist', $Artist)
 
         if ($PSBoundParameters.ContainsKey('UserName')) {
             $apiParams.Remove('sk')
@@ -60,15 +59,15 @@ function Get-LFMUserPersonalTag {
         $irm = Invoke-LFMApiUri -Uri $apiUrl
         if ($irm.Error) {Write-Output $irm; return}
 
-        foreach ($userTag in $irm.Taggings.Artists.Artist) {
-            $userTagInfo = [pscustomobject] @{
-                'PSTypeName' = 'PowerLFM.User.PersonalTag'
-                'Artist' = $userTag.Name
-                'Id' = $userTag.Mbid
-                'Url' = [uri] $userTag.Url
+        foreach ($scrobble in $irm.Trackscrobbles.Track) {
+            [PSCustomObject] @{
+                'Track' = $scrobble.Name
+                'TrackId' = $scrobble.Mbid
+                'TrackUrl' = $scrobble.Url
+                'Artist' = $scrobble.Artist.'#text'
+                'Album' = $scrobble.Album.'#text'
+                'Date' = ConvertFrom-UnixTime -UnixTime $scrobble.Date.Uts -Local
             }
-
-            Write-Output $userTagInfo
         }
     }
 }

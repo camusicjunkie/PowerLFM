@@ -259,7 +259,7 @@ InModuleScope PowerLFM {
             $testCases = @(
                 @{
                     set = 'artist'
-                    times = 5
+                    times = 4
                     gasParams = @{
                         Artist = 'Artist'
                     }
@@ -283,7 +283,7 @@ InModuleScope PowerLFM {
                 }
                 @{
                     set = 'id'
-                    times = 5
+                    times = 4
                     gasParams = @{
                         Id = (New-Guid)
                     }

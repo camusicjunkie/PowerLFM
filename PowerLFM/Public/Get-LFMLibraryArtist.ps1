@@ -4,8 +4,7 @@ function Get-LFMLibraryArtist {
     [CmdletBinding()]
     [OutputType('PowerLFM.Library.Artist')]
     param (
-        [Parameter(Mandatory,
-                   ValueFromPipelineByPropertyName)]
+        [Parameter(ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
         [string] $UserName,
 
@@ -18,6 +17,7 @@ function Get-LFMLibraryArtist {
         $apiParams = @{
             'method' = 'library.getArtists'
             'api_key' = $LFMConfig.APIKey
+            'sk' = $LFMConfig.SessionKey
             'format' = 'json'
         }
 
@@ -27,7 +27,10 @@ function Get-LFMLibraryArtist {
         }
     }
     process {
-        $apiParams.Add('user', $UserName)
+        if ($PSBoundParameters.ContainsKey('UserName')) {
+            $apiParams.Remove('sk')
+            $apiParams.Add('user', $UserName)
+        }
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {

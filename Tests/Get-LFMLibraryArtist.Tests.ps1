@@ -36,7 +36,7 @@ Describe 'Get-LFMLibraryArtist: Interface' -Tag Interface {
             }
 
             It 'Mandatory should be set to True' {
-                $parameter.IsMandatory | Should -BeTrue
+                $parameter.IsMandatory | Should -BeFalse
             }
 
             It 'ValueFromPipeline should be set to False' {

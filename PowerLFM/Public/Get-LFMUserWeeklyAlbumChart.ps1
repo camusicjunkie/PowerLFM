@@ -24,14 +24,14 @@ function Get-LFMUserWeeklyAlbumChart {
         }
     }
     process {
-        if ($PSBoundParameters.ContainsKey('UserName')) {
-            $apiParams.Remove('sk')
-            $apiParams.Add('user', $UserName)
-        }
-
         switch ($PSBoundParameters.Keys) {
             'StartDate' {$apiParams.Add('from', (ConvertTo-UnixTime -Date $StartDate))}
             'EndDate' {$apiParams.Add('to', (ConvertTo-UnixTime -Date $EndDate))}
+        }
+
+        if ($PSBoundParameters.ContainsKey('UserName')) {
+            $apiParams.Remove('sk')
+            $apiParams.Add('user', $UserName)
         }
 
         #Building string to append to base url
