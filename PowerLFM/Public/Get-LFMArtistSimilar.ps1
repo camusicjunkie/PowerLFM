@@ -17,7 +17,7 @@ function Get-LFMArtistSimilar {
         [ValidateNotNullOrEmpty()]
         [string] $Id,
 
-        [string] $Limit = '5',
+        [string] $Limit,
 
         [switch] $AutoCorrect
     )
