@@ -30,7 +30,7 @@ function Get-LFMUserWeeklyAlbumChart {
         }
 
         if ($PSBoundParameters.ContainsKey('UserName')) {
-            $apiParams.d
+            $apiParams.Remove('sk')
             $apiParams.Add('user', $UserName)
         }
 
