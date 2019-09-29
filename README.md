@@ -51,7 +51,6 @@ $album.Tags
 * Track
   * [track.scrobble](https://www.last.fm/api/show/track.scrobble)
   * [track.updateNowPlaying](https://www.last.fm/api/show/track.updateNowPlaying)
-  * user.getTrackScrobbles
 
 ## Currently supported methods
 
@@ -114,6 +113,7 @@ $album.Tags
   * [user.getTopArtists](https://www.last.fm/api/show/user.getTopArtists)
   * [user.getTopTags](https://www.last.fm/api/show/user.getTopTags)
   * [user.getTopTracks](https://www.last.fm/api/show/user.getTopTracks)
+  * user.getTrackScrobbles
   * [user.getWeeklyAlbumChart](https://www.last.fm/api/show/user.getWeeklyAlbumChart)
   * [user.getWeeklyArtistChart](https://www.last.fm/api/show/user.get-WeeklyArtistChart)
   * [user.getWeeklyChartList](https://www.last.fm/api/show/user.getWeeklyChartList)
