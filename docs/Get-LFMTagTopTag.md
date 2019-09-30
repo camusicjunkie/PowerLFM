@@ -1,31 +1,32 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
+online version:
 schema: 2.0.0
 ---
 
-# Get-LFMConfiguration
+# Get-LFMTagTopTag
 
 ## SYNOPSIS
-Get the current configuration.
+{{ Fill in the Synopsis }}
 
 ## SYNTAX
 
 ```
-Get-LFMConfiguration [<CommonParameters>]
+Get-LFMTagTopTag [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Get the configuration from the Windows credential manager. This will add the ApiKey, SharedSecret, and SessionKey to the current session.
+{{ Fill in the Description }}
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Get-LFMConfiguration
+PS C:\> {{ Add example code here }}
 ```
 
-This will get the current configuration.
+{{ Add example description here }}
 
 ## PARAMETERS
 
@@ -38,7 +39,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### System.Object
+### PowerLFM.Tag.TopTags
+
 ## NOTES
 
 ## RELATED LINKS

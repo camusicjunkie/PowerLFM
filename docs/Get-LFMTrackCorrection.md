@@ -1,50 +1,59 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
+online version:
 schema: 2.0.0
 ---
 
-# Get-LFMUserInfo
+# Get-LFMTrackCorrection
 
 ## SYNOPSIS
-Get information about a user.
+{{ Fill in the Synopsis }}
 
 ## SYNTAX
 
 ```
-Get-LFMUserInfo [[-UserName] <String>] [<CommonParameters>]
+Get-LFMTrackCorrection [-Track] <String> [-Artist] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Get information about a user. This uses the user.getInfo method from the Last.fm API.
+{{ Fill in the Description }}
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Get-LFMUserInfo
+PS C:\> {{ Add example code here }}
 ```
 
-This will get the user information for the authenticated user.
-
-### Example 2
-```powershell
-PS C:\> Get-LFMUserInfo -UserName camusicjunkie
-```
-
-This will get the user information for camusicjunkie.
+{{ Add example description here }}
 
 ## PARAMETERS
 
-### -UserName
-Username for the context of the request. The information for this user is included in the response. Providing no user will use the currently authenticated user.
+### -Artist
+{{ Fill Artist Description }}
 
 ```yaml
 Type: String
 Parameter Sets: (All)
 Aliases:
 
-Required: False
+Required: True
+Position: 1
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -Track
+{{ Fill Track Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
 Position: 0
 Default value: None
 Accept pipeline input: True (ByPropertyName)
@@ -60,10 +69,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### PowerLFM.User.Info
+### PowerLFM.Track.Correction
 
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/user.getInfo](https://www.last.fm/api/show/user.getInfo)

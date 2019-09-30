@@ -1,36 +1,38 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
+online version:
 schema: 2.0.0
 ---
 
-# Add-LFMArtistTag
+# Remove-LFMTrackTag
 
 ## SYNOPSIS
-Tag an artist using a list of user supplied tags.
+{{ Fill in the Synopsis }}
 
 ## SYNTAX
 
 ```
-Add-LFMArtistTag [-Artist] <String> [-Tag] <String[]> [-WhatIf] [-Confirm] [<CommonParameters>]
+Remove-LFMTrackTag [-Track] <String> [-Artist] <String> [-Tag] <String> [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Tag an artist using a list of user supplied tags. This uses the artist.addTags method from the Last.fm API.
+{{ Fill in the Description }}
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Add-LFMArtistTag -Artist Deftones -Tag Rock
+PS C:\> {{ Add example code here }}
 ```
 
-This will add the rock tag to the artist Deftones
+{{ Add example description here }}
 
 ## PARAMETERS
 
 ### -Artist
-Name of the artist.
+{{ Fill Artist Description }}
 
 ```yaml
 Type: String
@@ -38,7 +40,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: 0
+Position: 1
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -60,15 +62,30 @@ Accept wildcard characters: False
 ```
 
 ### -Tag
-Tags to apply to this album. This parameter takes a maximum of ten tags.
+{{ Fill Tag Description }}
 
 ```yaml
-Type: String[]
+Type: String
 Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: 1
+Position: 2
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -Track
+{{ Fill Track Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 0
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -97,13 +114,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ### System.String
 
-### System.String[]
-
 ## OUTPUTS
 
 ### System.Object
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/artist.addTags](https://www.last.fm/api/show/artist.addTags)

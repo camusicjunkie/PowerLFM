@@ -1,36 +1,68 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
+online version:
 schema: 2.0.0
 ---
 
-# Add-LFMArtistTag
+# Get-LFMUserPersonalTag
 
 ## SYNOPSIS
-Tag an artist using a list of user supplied tags.
+{{ Fill in the Synopsis }}
 
 ## SYNTAX
 
 ```
-Add-LFMArtistTag [-Artist] <String> [-Tag] <String[]> [-WhatIf] [-Confirm] [<CommonParameters>]
+Get-LFMUserPersonalTag [-Tag] <String> [-TagType] <String> [[-UserName] <String>] [[-Limit] <String>]
+ [[-Page] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Tag an artist using a list of user supplied tags. This uses the artist.addTags method from the Last.fm API.
+{{ Fill in the Description }}
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Add-LFMArtistTag -Artist Deftones -Tag Rock
+PS C:\> {{ Add example code here }}
 ```
 
-This will add the rock tag to the artist Deftones
+{{ Add example description here }}
 
 ## PARAMETERS
 
-### -Artist
-Name of the artist.
+### -Limit
+{{ Fill Limit Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 3
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Page
+{{ Fill Page Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 4
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Tag
+{{ Fill Tag Description }}
 
 ```yaml
 Type: String
@@ -44,28 +76,14 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -Confirm
-Prompts you for confirmation before running the cmdlet.
+### -TagType
+{{ Fill TagType Description }}
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases: cf
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Tag
-Tags to apply to this album. This parameter takes a maximum of ten tags.
-
-```yaml
-Type: String[]
+Type: String
 Parameter Sets: (All)
 Aliases:
+Accepted values: Artist, Album, Track
 
 Required: True
 Position: 1
@@ -74,19 +92,18 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -WhatIf
-Shows what would happen if the cmdlet runs.
-The cmdlet is not run.
+### -UserName
+{{ Fill UserName Description }}
 
 ```yaml
-Type: SwitchParameter
+Type: String
 Parameter Sets: (All)
-Aliases: wi
+Aliases:
 
 Required: False
-Position: Named
+Position: 2
 Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
@@ -97,13 +114,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ### System.String
 
-### System.String[]
-
 ## OUTPUTS
 
-### System.Object
+### PowerLFM.User.PersonalTag
+
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/artist.addTags](https://www.last.fm/api/show/artist.addTags)

@@ -1,3 +1,9 @@
+---
+external help file: PowerLFM-help.xml
+Module Name: PowerLFM
+schema: 2.0.0
+---
+
 # Get-LFMAlbumTag
 
 ## SYNOPSIS
@@ -7,7 +13,7 @@ Get the tags applied to an album.
 
 ### album (Default)
 ```
-Get-LFMAlbumTag -Album <String> -Artist <String> [-UserName <String>] [-AutoCorrect] [<CommonParameters>]
+Get-LFMAlbumTag [-Album] <String> [-Artist] <String> [-UserName <String>] [-AutoCorrect] [<CommonParameters>]
 ```
 
 ### id
@@ -38,7 +44,7 @@ Parameter Sets: album
 Aliases:
 
 Required: True
-Position: Named
+Position: 0
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -53,7 +59,7 @@ Parameter Sets: album
 Aliases:
 
 Required: True
-Position: Named
+Position: 1
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -105,8 +111,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable.
-For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
@@ -114,7 +119,7 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 
 ## OUTPUTS
 
-### PowerLFM.Album.UserTag
+### PowerLFM.Album.Tag
 
 ## NOTES
 

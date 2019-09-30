@@ -1,51 +1,37 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
+online version:
 schema: 2.0.0
 ---
 
-# Search-LFMArtist
+# Get-LFMTagInfo
 
 ## SYNOPSIS
-Search for an artist by name.
+{{ Fill in the Synopsis }}
 
 ## SYNTAX
 
 ```
-Search-LFMArtist [-Artist] <String> [[-Limit] <String>] [[-Page] <String>] [<CommonParameters>]
+Get-LFMTagInfo [-Tag] <String> [[-Language] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Search for an artist by name. The results will be sorted by relevance. This uses the artist.search method from the Last.fm API.
+{{ Fill in the Description }}
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Search-LFMArtist -Artist Deftones
+PS C:\> {{ Add example code here }}
 ```
 
-This will search for artists that match Deftones.
+{{ Add example description here }}
 
 ## PARAMETERS
 
-### -Artist
-Name of the artist.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 0
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -Limit
-Limit the number of results per page.
+### -Language
+{{ Fill Language Description }}
 
 ```yaml
 Type: String
@@ -59,18 +45,18 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Page
-Page number to return. Defaults to the first page.
+### -Tag
+{{ Fill Tag Description }}
 
 ```yaml
 Type: String
 Parameter Sets: (All)
 Aliases:
 
-Required: False
-Position: 2
+Required: True
+Position: 0
 Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
@@ -83,10 +69,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## OUTPUTS
 
-### PowerLFM.Artist.Search
+### PowerLFM.Tag.Info
 
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/artist.search](https://www.last.fm/api/show/artist.search)
