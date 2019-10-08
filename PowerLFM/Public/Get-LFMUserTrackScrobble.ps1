@@ -59,7 +59,7 @@ function Get-LFMUserTrackScrobble {
         $irm = Invoke-LFMApiUri -Uri $apiUrl
         if ($irm.Error) {Write-Output $irm; return}
 
-        foreach ($scrobble in $irm.Trackscrobbles.Track) {
+        foreach ($scrobble in $irm.TrackScrobbles.Track) {
             [PSCustomObject] @{
                 'Track' = $scrobble.Name
                 'TrackId' = $scrobble.Mbid
