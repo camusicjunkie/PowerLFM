@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-LFMTagTopTrack
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Get the top tracks tagged by this tag, ordered by tag count.
 
 ## SYNTAX
 
@@ -17,21 +17,21 @@ Get-LFMTagTopTrack [-Tag] <String> [[-Limit] <String>] [[-Page] <String>] [<Comm
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Get the top artists tagged by this tag, ordered by tag count. This uses the tag.getTopTracks method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-LFMTagTopTrack -Tag rock
 ```
 
-{{ Add example description here }}
+This will get the top tracks with the tag rock, ordered by tag count.
 
 ## PARAMETERS
 
 ### -Limit
-{{ Fill Limit Description }}
+Limit the number of results per page.
 
 ```yaml
 Type: String
@@ -46,7 +46,7 @@ Accept wildcard characters: False
 ```
 
 ### -Page
-{{ Fill Page Description }}
+Page number to return. Defaults to the first page.
 
 ```yaml
 Type: String
@@ -61,7 +61,7 @@ Accept wildcard characters: False
 ```
 
 ### -Tag
-{{ Fill Tag Description }}
+Name of the tag.
 
 ```yaml
 Type: String

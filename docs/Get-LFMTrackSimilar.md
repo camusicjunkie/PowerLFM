@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-LFMTrackSimilar
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Get tracks similar to another track.
 
 ## SYNTAX
 
@@ -23,21 +23,21 @@ Get-LFMTrackSimilar -Id <String> [-Limit <String>] [-AutoCorrect] [<CommonParame
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Get tracks similar to other tracks. This uses the track.getSimilar method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-LFMTrackSimilar -Track Gore -Artist Deftones -Limit 10
 ```
 
-{{ Add example description here }}
+This will get ten tracks similar to the track Gore by Deftones.
 
 ## PARAMETERS
 
 ### -Artist
-{{ Fill Artist Description }}
+Name of the artist.
 
 ```yaml
 Type: String
@@ -52,7 +52,7 @@ Accept wildcard characters: False
 ```
 
 ### -AutoCorrect
-{{ Fill AutoCorrect Description }}
+Transform misspelled artist names into correct artist names.
 
 ```yaml
 Type: SwitchParameter
@@ -67,7 +67,7 @@ Accept wildcard characters: False
 ```
 
 ### -Id
-{{ Fill Id Description }}
+Musicbrainz id for the artist.
 
 ```yaml
 Type: String
@@ -82,7 +82,7 @@ Accept wildcard characters: False
 ```
 
 ### -Limit
-{{ Fill Limit Description }}
+Limit the number of results per page.
 
 ```yaml
 Type: String
@@ -97,7 +97,7 @@ Accept wildcard characters: False
 ```
 
 ### -Track
-{{ Fill Track Description }}
+Name of the track.
 
 ```yaml
 Type: String

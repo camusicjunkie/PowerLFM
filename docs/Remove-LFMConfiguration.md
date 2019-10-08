@@ -8,7 +8,7 @@ schema: 2.0.0
 # Remove-LFMConfiguration
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Removes the current configuration.
 
 ## SYNTAX
 
@@ -17,16 +17,16 @@ Remove-LFMConfiguration [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Removes the configuration from the Windows credential manager. This will remove the ApiKey, SharedSecret, and SessionKey from the current session.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Remove-LFMConfiguration
 ```
 
-{{ Add example description here }}
+This will remove the current configuration.
 
 ## PARAMETERS
 

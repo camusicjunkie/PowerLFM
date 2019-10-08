@@ -31,7 +31,7 @@ Get the metadata and biography for an artist using the artist name or a musicbra
 PS C:\> Get-LFMArtistInfo -Artist Deftones
 ```
 
-Get info for the artist Deftones.
+This will get info for the artist Deftones.
 
 ## PARAMETERS
 

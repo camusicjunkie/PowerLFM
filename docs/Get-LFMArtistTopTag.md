@@ -31,7 +31,7 @@ Get the top tags for an artist, ordered by popularity. This uses the artist.getT
 PS C:\> Get-LFMArtistTopTag -Artist Deftones
 ```
 
-This will get the top Deftones tags, ordered by popularity.
+This will get the top tags for the artist Deftones.
 
 ## PARAMETERS
 

@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-LFMTrackTag
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Get the tags applied to a track.
 
 ## SYNTAX
 
@@ -23,21 +23,21 @@ Get-LFMTrackTag -Id <String> [-UserName <String>] [-AutoCorrect] [<CommonParamet
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Get the tags applied to a track by an individual user. This uses the track.getTags method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-LFMTrackTag -Track Gore -Artist Deftones
 ```
 
-{{ Add example description here }}
+This will get tags for the track Gore by Deftones
 
 ## PARAMETERS
 
 ### -Artist
-{{ Fill Artist Description }}
+Name of the artist.
 
 ```yaml
 Type: String
@@ -52,7 +52,7 @@ Accept wildcard characters: False
 ```
 
 ### -AutoCorrect
-{{ Fill AutoCorrect Description }}
+Transform misspelled artist names into correct artist names.
 
 ```yaml
 Type: SwitchParameter
@@ -67,7 +67,7 @@ Accept wildcard characters: False
 ```
 
 ### -Id
-{{ Fill Id Description }}
+Musicbrainz id for the album.
 
 ```yaml
 Type: String
@@ -82,7 +82,7 @@ Accept wildcard characters: False
 ```
 
 ### -Track
-{{ Fill Track Description }}
+Name of the track.
 
 ```yaml
 Type: String
@@ -97,7 +97,7 @@ Accept wildcard characters: False
 ```
 
 ### -UserName
-{{ Fill UserName Description }}
+Username for the context of the request. The user tags for this track are included in the response. Providing no user will use the currently authenticated user.
 
 ```yaml
 Type: String

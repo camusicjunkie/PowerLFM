@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-LFMTagSimilar
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Get tags similar to the one specified.
 
 ## SYNTAX
 
@@ -17,21 +17,21 @@ Get-LFMTagSimilar [-Tag] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Get tags similar to the one specified. Returns tags ranked by similarity, based on listening data. This uses the tag.getSimilar method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-LFMTagSimilar -Tag rock
 ```
 
-{{ Add example description here }}
+Get similar tags to the rock tag.
 
 ## PARAMETERS
 
 ### -Tag
-{{ Fill Tag Description }}
+Name of the tag.
 
 ```yaml
 Type: String

@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-LFMTrackTopTag
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Get the top tags for a track.
 
 ## SYNTAX
 
@@ -23,21 +23,21 @@ Get-LFMTrackTopTag -Id <String> [-AutoCorrect] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Get the top tags for a track, ordered by tag count. This uses the track.getTopTags method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-LFMTrackTopTag -Track Gore -Artist Deftones
 ```
 
-{{ Add example description here }}
+This will get the top tags for the track Gore by Deftones.
 
 ## PARAMETERS
 
 ### -Artist
-{{ Fill Artist Description }}
+Name of the artist.
 
 ```yaml
 Type: String
@@ -52,7 +52,7 @@ Accept wildcard characters: False
 ```
 
 ### -AutoCorrect
-{{ Fill AutoCorrect Description }}
+Transform misspelled artist names into correct artist names.
 
 ```yaml
 Type: SwitchParameter
@@ -67,7 +67,7 @@ Accept wildcard characters: False
 ```
 
 ### -Id
-{{ Fill Id Description }}
+Musicbrainz id for the artist.
 
 ```yaml
 Type: String
@@ -82,7 +82,7 @@ Accept wildcard characters: False
 ```
 
 ### -Track
-{{ Fill Track Description }}
+Name of the track.
 
 ```yaml
 Type: String

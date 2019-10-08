@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-LFMUserTrackScrobble
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Get all the times a track has been scrobbled by a user.
 
 ## SYNTAX
 
@@ -18,21 +18,21 @@ Get-LFMUserTrackScrobble [-Track] <String> [-Artist] <String> [[-UserName] <Stri
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Get all the times a track has been scrobbled by a user. This uses the user.getTrackScrobbles method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-LFMUserTrackScrobble -Track Gore -Artist Deftones
 ```
 
-{{ Add example description here }}
+This will get all the times the track Gore by Deftones has been scrobbled by the currently authenticated user.
 
 ## PARAMETERS
 
 ### -Artist
-{{ Fill Artist Description }}
+Name of the artist.
 
 ```yaml
 Type: String
@@ -47,7 +47,7 @@ Accept wildcard characters: False
 ```
 
 ### -Limit
-{{ Fill Limit Description }}
+Limit the number of results per page.
 
 ```yaml
 Type: String
@@ -62,7 +62,7 @@ Accept wildcard characters: False
 ```
 
 ### -Page
-{{ Fill Page Description }}
+Page number to return. Defaults to the first page.
 
 ```yaml
 Type: String
@@ -77,7 +77,7 @@ Accept wildcard characters: False
 ```
 
 ### -Track
-{{ Fill Track Description }}
+Name of the track.
 
 ```yaml
 Type: String
@@ -92,7 +92,7 @@ Accept wildcard characters: False
 ```
 
 ### -UserName
-{{ Fill UserName Description }}
+Username for the context of the request. The scrobbled tracks of this user are included in the response. Providing no user will use the currently authenticated user.
 
 ```yaml
 Type: String

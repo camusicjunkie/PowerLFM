@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-LFMUserPersonalTag
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Get a list of personal tags for a user.
 
 ## SYNTAX
 
@@ -18,21 +18,21 @@ Get-LFMUserPersonalTag [-Tag] <String> [-TagType] <String> [[-UserName] <String>
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Get a list of personal tags for a user. This uses the user.getPersonalTags method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-LFMUserPersonalTag -Tag Heavy -TagType Artist
 ```
 
-{{ Add example description here }}
+This will get the user's personal tag heavy with a tag type of artist.
 
 ## PARAMETERS
 
 ### -Limit
-{{ Fill Limit Description }}
+Limit the number of results per page.
 
 ```yaml
 Type: String
@@ -47,7 +47,7 @@ Accept wildcard characters: False
 ```
 
 ### -Page
-{{ Fill Page Description }}
+Page number to return. Defaults to the first page.
 
 ```yaml
 Type: String
@@ -62,7 +62,7 @@ Accept wildcard characters: False
 ```
 
 ### -Tag
-{{ Fill Tag Description }}
+Name of the tag.
 
 ```yaml
 Type: String
@@ -77,7 +77,7 @@ Accept wildcard characters: False
 ```
 
 ### -TagType
-{{ Fill TagType Description }}
+Type of the tagged item.
 
 ```yaml
 Type: String
@@ -93,7 +93,7 @@ Accept wildcard characters: False
 ```
 
 ### -UserName
-{{ Fill UserName Description }}
+Username for the context of the request. The personal tags of this user are included in the response. Providing no user will use the currently authenticated user.
 
 ```yaml
 Type: String

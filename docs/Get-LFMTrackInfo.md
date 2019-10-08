@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-LFMTrackInfo
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Get the metadata for a track.
 
 ## SYNTAX
 
@@ -23,21 +23,21 @@ Get-LFMTrackInfo -Id <String> [-UserName <String>] [-AutoCorrect] [<CommonParame
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Get the metadata for a track using the artist and track name or a musicbrainz id. This uses the track.getInfo method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-LFMTrackInfo -Track Gore -Artist Deftones -UserName camusicjunkie
 ```
 
-{{ Add example description here }}
+This will get info for the track Gore by Deftones
 
 ## PARAMETERS
 
 ### -Artist
-{{ Fill Artist Description }}
+Name of the artist.
 
 ```yaml
 Type: String
@@ -52,7 +52,7 @@ Accept wildcard characters: False
 ```
 
 ### -AutoCorrect
-{{ Fill AutoCorrect Description }}
+Transform misspelled artist names into correct artist names.
 
 ```yaml
 Type: SwitchParameter
@@ -67,7 +67,7 @@ Accept wildcard characters: False
 ```
 
 ### -Id
-{{ Fill Id Description }}
+Musicbrainz id for the artist.
 
 ```yaml
 Type: String
@@ -82,7 +82,7 @@ Accept wildcard characters: False
 ```
 
 ### -Track
-{{ Fill Track Description }}
+Name of the track.
 
 ```yaml
 Type: String
@@ -97,7 +97,7 @@ Accept wildcard characters: False
 ```
 
 ### -UserName
-{{ Fill UserName Description }}
+Username for the context of the request. If used, the user's playcount for this track and whether they have loved the track is included in the response.
 
 ```yaml
 Type: String

@@ -27,13 +27,6 @@ PS C:\> Get-LFMUserFriend -UserName camusicjunkie
 
 This will get the friends for camusicjunkie
 
-### Example 2
-```powershell
-PS C:\> Get-LFMUserFriend -UserName camusicjunkie -RecentTracks
-```
-
-This will get the friends for camusicjunkie and their recent tracks.
-
 ## PARAMETERS
 
 ### -Limit

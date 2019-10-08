@@ -8,7 +8,7 @@ schema: 2.0.0
 # Search-LFMTrack
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Search for a track by name.
 
 ## SYNTAX
 
@@ -17,21 +17,21 @@ Search-LFMTrack [-Track] <String> [[-Limit] <String>] [[-Page] <String>] [<Commo
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Search for a track by name. The results will be sorted by relevance. This uses the track.search method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Search-LFMTrack -Track 'White Pony'
 ```
 
-{{ Add example description here }}
+This will search for tracks that match White Pony.
 
 ## PARAMETERS
 
 ### -Limit
-{{ Fill Limit Description }}
+Limit the number of results per page.
 
 ```yaml
 Type: String
@@ -46,7 +46,7 @@ Accept wildcard characters: False
 ```
 
 ### -Page
-{{ Fill Page Description }}
+Page number to return. Defaults to the first page.
 
 ```yaml
 Type: String
@@ -61,7 +61,7 @@ Accept wildcard characters: False
 ```
 
 ### -Track
-{{ Fill Track Description }}
+Name of the track.
 
 ```yaml
 Type: String

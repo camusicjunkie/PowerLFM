@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-LFMTagInfo
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Get the metadata for a tag.
 
 ## SYNTAX
 
@@ -17,21 +17,21 @@ Get-LFMTagInfo [-Tag] <String> [[-Language] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Get the metadata for a tag. This uses the tag.getInfo method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-LFMTagInfo -Tag rock -Language en
 ```
 
-{{ Add example description here }}
+Get info for the tag rock. The summary will be returned in the language specified.
 
 ## PARAMETERS
 
 ### -Language
-{{ Fill Language Description }}
+Language to return the wiki in, expressed as an ISO 639 alpha-2 code. Ex. 'en' for spanish.
 
 ```yaml
 Type: String
@@ -46,7 +46,7 @@ Accept wildcard characters: False
 ```
 
 ### -Tag
-{{ Fill Tag Description }}
+Name of the tag.
 
 ```yaml
 Type: String

@@ -1,121 +1,187 @@
+---
+Module Name: PowerLFM
+Module Guid: c8d0461c-325b-4b14-bd9c-dd5fa57fafeb
+Download Help Link: {{ Update Download Link }}
+Help Version: {{ Please enter version of help manually (X.X.X.X) format }}
+Locale: en-US
+---
+
 # PowerLFM Module
 ## Description
-PowerShell module to leverage the Last.fm API.
+{{ Fill in the Description }}
 
 ## PowerLFM Cmdlets
 ### [Add-LFMAlbumTag](Add-LFMAlbumTag.md)
-Tag an album using a list of user supplied tags.
+{{ Fill in the Description }}
 
 ### [Add-LFMArtistTag](Add-LFMArtistTag.md)
-Tag an artist using a list of user supplied tags.
+{{ Fill in the Description }}
 
 ### [Add-LFMConfiguration](Add-LFMConfiguration.md)
-Adds the token and keys to the credential manager.
+{{ Fill in the Description }}
+
+### [Add-LFMTrackTag](Add-LFMTrackTag.md)
+{{ Fill in the Description }}
 
 ### [Get-LFMAlbumInfo](Get-LFMAlbumInfo.md)
-Get the metadata and tracklist for an album.
+{{ Fill in the Description }}
 
 ### [Get-LFMAlbumTag](Get-LFMAlbumTag.md)
-Get the tags applied to an album.
+{{ Fill in the Description }}
 
 ### [Get-LFMAlbumTopTag](Get-LFMAlbumTopTag.md)
-Get the top tags for an album.
+{{ Fill in the Description }}
 
 ### [Get-LFMArtistCorrection](Get-LFMArtistCorrection.md)
-Check to see if there is a correction.
+{{ Fill in the Description }}
 
 ### [Get-LFMArtistInfo](Get-LFMArtistInfo.md)
-Get the metadata and biography for an artist.
+{{ Fill in the Description }}
 
 ### [Get-LFMArtistSimilar](Get-LFMArtistSimilar.md)
-Get artists similar to another artist.
+{{ Fill in the Description }}
 
 ### [Get-LFMArtistTag](Get-LFMArtistTag.md)
-Get the tags applied to an artist.
+{{ Fill in the Description }}
 
 ### [Get-LFMArtistTopAlbum](Get-LFMArtistTopAlbum.md)
-Get the top albums for an artist.
+{{ Fill in the Description }}
 
 ### [Get-LFMArtistTopTag](Get-LFMArtistTopTag.md)
-Get the top tags for an artist.
+{{ Fill in the Description }}
 
 ### [Get-LFMArtistTopTrack](Get-LFMArtistTopTrack.md)
-Get the top tracks for an artist.
+{{ Fill in the Description }}
 
 ### [Get-LFMChartTopArtist](Get-LFMChartTopArtist.md)
-Get the top artists chart.
+{{ Fill in the Description }}
 
 ### [Get-LFMChartTopTag](Get-LFMChartTopTag.md)
-Get the top tags chart.
+{{ Fill in the Description }}
 
 ### [Get-LFMChartTopTrack](Get-LFMChartTopTrack.md)
-Get the top tracks chart.
+{{ Fill in the Description }}
 
 ### [Get-LFMConfiguration](Get-LFMConfiguration.md)
-Get the current configuration.
+{{ Fill in the Description }}
 
 ### [Get-LFMGeoTopArtist](Get-LFMGeoTopArtist.md)
-Get the most popular artists by country.
+{{ Fill in the Description }}
 
 ### [Get-LFMGeoTopTrack](Get-LFMGeoTopTrack.md)
-Get the most popular tracks by country and city.
+{{ Fill in the Description }}
 
-### [Get-LFMUserArtistTrack](Get-LFMUserArtistTrack.md)
-Get a list of tracks by a given artist scrobbled by a user.
+### [Get-LFMLibraryArtist](Get-LFMLibraryArtist.md)
+{{ Fill in the Description }}
+
+### [Get-LFMTagInfo](Get-LFMTagInfo.md)
+{{ Fill in the Description }}
+
+### [Get-LFMTagSimilar](Get-LFMTagSimilar.md)
+{{ Fill in the Description }}
+
+### [Get-LFMTagTopAlbum](Get-LFMTagTopAlbum.md)
+{{ Fill in the Description }}
+
+### [Get-LFMTagTopArtist](Get-LFMTagTopArtist.md)
+{{ Fill in the Description }}
+
+### [Get-LFMTagTopTag](Get-LFMTagTopTag.md)
+{{ Fill in the Description }}
+
+### [Get-LFMTagTopTrack](Get-LFMTagTopTrack.md)
+{{ Fill in the Description }}
+
+### [Get-LFMTagWeeklyChartList](Get-LFMTagWeeklyChartList.md)
+{{ Fill in the Description }}
+
+### [Get-LFMTrackCorrection](Get-LFMTrackCorrection.md)
+{{ Fill in the Description }}
+
+### [Get-LFMTrackInfo](Get-LFMTrackInfo.md)
+{{ Fill in the Description }}
+
+### [Get-LFMTrackSimilar](Get-LFMTrackSimilar.md)
+{{ Fill in the Description }}
+
+### [Get-LFMTrackTag](Get-LFMTrackTag.md)
+{{ Fill in the Description }}
+
+### [Get-LFMTrackTopTag](Get-LFMTrackTopTag.md)
+{{ Fill in the Description }}
 
 ### [Get-LFMUserFriend](Get-LFMUserFriend.md)
-Get a list of friends for a user.
+{{ Fill in the Description }}
 
 ### [Get-LFMUserInfo](Get-LFMUserInfo.md)
-Get information about a user.
+{{ Fill in the Description }}
 
 ### [Get-LFMUserLovedTrack](Get-LFMUserLovedTrack.md)
-Get the tracks loved by a user.
+{{ Fill in the Description }}
+
+### [Get-LFMUserPersonalTag](Get-LFMUserPersonalTag.md)
+{{ Fill in the Description }}
+
+### [Get-LFMUserRecentTrack](Get-LFMUserRecentTrack.md)
+{{ Fill in the Description }}
 
 ### [Get-LFMUserTopAlbum](Get-LFMUserTopAlbum.md)
-Get the top albums scrobbled by a user.
+{{ Fill in the Description }}
 
 ### [Get-LFMUserTopArtist](Get-LFMUserTopArtist.md)
-Get the top artists scrobbled by a user.
+{{ Fill in the Description }}
 
 ### [Get-LFMUserTopTag](Get-LFMUserTopTag.md)
-Get the top tags set by a user.
+{{ Fill in the Description }}
 
 ### [Get-LFMUserTopTrack](Get-LFMUserTopTrack.md)
-Get the top tracks scrobbled by a user.
+{{ Fill in the Description }}
+
+### [Get-LFMUserTrackScrobble](Get-LFMUserTrackScrobble.md)
+{{ Fill in the Description }}
 
 ### [Get-LFMUserWeeklyAlbumChart](Get-LFMUserWeeklyAlbumChart.md)
-Get an album chart for a user.
+{{ Fill in the Description }}
 
 ### [Get-LFMUserWeeklyArtistChart](Get-LFMUserWeeklyArtistChart.md)
-Get an artist chart for a user.
+{{ Fill in the Description }}
 
 ### [Get-LFMUserWeeklyChartList](Get-LFMUserWeeklyChartList.md)
-Get a list of available charts for a user.
+{{ Fill in the Description }}
 
 ### [Get-LFMUserWeeklyTrackChart](Get-LFMUserWeeklyTrackChart.md)
-Get a track chart for a user.
+{{ Fill in the Description }}
 
 ### [Remove-LFMAlbumTag](Remove-LFMAlbumTag.md)
-Untag an album using a user supplied tag.
+{{ Fill in the Description }}
 
 ### [Remove-LFMArtistTag](Remove-LFMArtistTag.md)
-Untag an artist using a user supplied tag.
+{{ Fill in the Description }}
+
+### [Remove-LFMConfiguration](Remove-LFMConfiguration.md)
+{{ Fill in the Description }}
+
+### [Remove-LFMTrackTag](Remove-LFMTrackTag.md)
+{{ Fill in the Description }}
 
 ### [Request-LFMSession](Request-LFMSession.md)
-Request a session key from Last.fm.
+{{ Fill in the Description }}
 
 ### [Request-LFMToken](Request-LFMToken.md)
-Requests a token from Last.fm.
+{{ Fill in the Description }}
 
 ### [Search-LFMAlbum](Search-LFMAlbum.md)
-Search for an album by name.
+{{ Fill in the Description }}
 
 ### [Search-LFMArtist](Search-LFMArtist.md)
-Search for an artist by name.
+{{ Fill in the Description }}
+
+### [Search-LFMTrack](Search-LFMTrack.md)
+{{ Fill in the Description }}
 
 ### [Set-LFMTrackLove](Set-LFMTrackLove.md)
-Love a track for a user.
+{{ Fill in the Description }}
 
 ### [Set-LFMTrackUnlove](Set-LFMTrackUnlove.md)
-Unlove a track for a user.
+{{ Fill in the Description }}
+

@@ -31,7 +31,7 @@ Get artists similar to another artist. This uses the artist.getSimilar method fr
 PS C:\> Get-LFMArtistSimilar -Artist Deftones -Limit 10
 ```
 
-Gets ten artists similar to the Deftones.
+This will get ten artists similar to the Deftones.
 
 ## PARAMETERS
 

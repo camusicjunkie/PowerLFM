@@ -22,7 +22,7 @@ Get-LFMAlbumTag -Id <String> [-UserName <String>] [-AutoCorrect] [<CommonParamet
 ```
 
 ## DESCRIPTION
-Get the tags applied to an album. This uses the album.getTags method from the Last.fm API.
+Get the tags applied to an album by an individual user. This uses the album.getTags method from the Last.fm API.
 
 ## EXAMPLES
 
@@ -96,7 +96,7 @@ Accept wildcard characters: False
 ```
 
 ### -UserName
-Username for the context of the request. If used, the user's tags for this album are included in the response.
+Username for the context of the request. The user tags for this album are included in the response. Providing no user will use the currently authenticated user.
 
 ```yaml
 Type: String

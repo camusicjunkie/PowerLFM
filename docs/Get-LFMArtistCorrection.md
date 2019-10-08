@@ -7,7 +7,7 @@ schema: 2.0.0
 # Get-LFMArtistCorrection
 
 ## SYNOPSIS
-Check to see if there is a correction.
+Check to see if a correction can be made.
 
 ## SYNTAX
 
@@ -16,7 +16,7 @@ Get-LFMArtistCorrection [-Artist] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Checks the Last.fm database to see if a correction can be made. This uses the artist.getCorrection method from the Last.fm API.
+Checks to see if a correction can be made. This uses the artist.getCorrection method from the Last.fm API.
 
 ## EXAMPLES
 

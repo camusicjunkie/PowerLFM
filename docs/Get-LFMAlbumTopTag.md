@@ -31,7 +31,7 @@ Get the top tags for an album, ordered by popularity. This uses the album.getTop
 PS C:\> Get-LFMAlbumTopTag -Album Gore -Artist Deftones
 ```
 
-This will get top tags for the album Gore by Deftones
+This will get the top tags for the album Gore by Deftones
 
 ## PARAMETERS
 

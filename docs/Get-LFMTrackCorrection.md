@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-LFMTrackCorrection
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Gets the supplied track and sees if there is a correction to a canonical track.
 
 ## SYNTAX
 
@@ -17,21 +17,21 @@ Get-LFMTrackCorrection [-Track] <String> [-Artist] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Gets the supplied track and sees if there is a correction to a canonical track. The results can be pretty inconsistent. This is best used on tracks or artists when trying to correct a name with punctuation or accents. This uses the track.getCorrection method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-LFMTrackCorrection -Track Joga -Artist Bjork
 ```
 
-{{ Add example description here }}
+This will correct both the track and artist to their correct names as they both should include accents.
 
 ## PARAMETERS
 
 ### -Artist
-{{ Fill Artist Description }}
+Name of the artist that needs to be corrected.
 
 ```yaml
 Type: String
@@ -46,7 +46,7 @@ Accept wildcard characters: False
 ```
 
 ### -Track
-{{ Fill Track Description }}
+Name of the track that needs to be corrected.
 
 ```yaml
 Type: String

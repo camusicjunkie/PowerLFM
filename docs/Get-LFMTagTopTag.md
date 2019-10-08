@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-LFMTagTopTag
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Get the top tags, ordered by popularity.
 
 ## SYNTAX
 
@@ -17,16 +17,16 @@ Get-LFMTagTopTag [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Get the top tags, ordered by popularity. This uses the tag.getTopTags method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-LFMTagTopTag
 ```
 
-{{ Add example description here }}
+Gets the top tags.
 
 ## PARAMETERS
 

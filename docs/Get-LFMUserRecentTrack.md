@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-LFMUserRecentTrack
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Get a list of the recent tracks listened to by a user.
 
 ## SYNTAX
 
@@ -18,21 +18,21 @@ Get-LFMUserRecentTrack [[-StartDate] <String>] [[-EndDate] <String>] [-Extended]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Get a list of the recent tracks listened to by a user. Also includes the currently playing track with the now playing attribute if the user is currently listening to a track. This uses the user.getRecentTracks method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-LFMUserRecentTrack -Limit 10
 ```
 
-{{ Add example description here }}
+This will get the ten recent tracks for the currently authenticated user.
 
 ## PARAMETERS
 
 ### -EndDate
-{{ Fill EndDate Description }}
+Date to end the range.
 
 ```yaml
 Type: String
@@ -62,7 +62,7 @@ Accept wildcard characters: False
 ```
 
 ### -Limit
-{{ Fill Limit Description }}
+Limit the number of results per page.
 
 ```yaml
 Type: String
@@ -77,7 +77,7 @@ Accept wildcard characters: False
 ```
 
 ### -Page
-{{ Fill Page Description }}
+Page number to return. Defaults to the first page.
 
 ```yaml
 Type: String
@@ -92,7 +92,7 @@ Accept wildcard characters: False
 ```
 
 ### -StartDate
-{{ Fill StartDate Description }}
+Date to start the range.
 
 ```yaml
 Type: String
@@ -107,7 +107,7 @@ Accept wildcard characters: False
 ```
 
 ### -UserName
-{{ Fill UserName Description }}
+Username for the context of the request. The recent tracks of this user are included in the response. Providing no user will use the currently authenticated user.
 
 ```yaml
 Type: String

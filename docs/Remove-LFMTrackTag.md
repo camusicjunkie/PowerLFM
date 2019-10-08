@@ -8,7 +8,7 @@ schema: 2.0.0
 # Remove-LFMTrackTag
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Untag an track using a user supplied tag.
 
 ## SYNTAX
 
@@ -18,21 +18,21 @@ Remove-LFMTrackTag [-Track] <String> [-Artist] <String> [-Tag] <String> [-WhatIf
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Untag an track using a user supplied tag. This uses the track.removeTag method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Remove-LFMTrackTag -Track Gore -Artist Deftones -Tag Heavy
 ```
 
-{{ Add example description here }}
+This will remove the heavy tag from the track Gore by Deftones.
 
 ## PARAMETERS
 
 ### -Artist
-{{ Fill Artist Description }}
+Name of the artist.
 
 ```yaml
 Type: String
@@ -62,7 +62,7 @@ Accept wildcard characters: False
 ```
 
 ### -Tag
-{{ Fill Tag Description }}
+Name of the tag.
 
 ```yaml
 Type: String
@@ -77,7 +77,7 @@ Accept wildcard characters: False
 ```
 
 ### -Track
-{{ Fill Track Description }}
+Name of the track.
 
 ```yaml
 Type: String

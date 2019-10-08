@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-LFMTagWeeklyChartList
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Get a list of available charts for this tag, expressed as date ranges which can be sent to the chart services.
 
 ## SYNTAX
 
@@ -17,21 +17,21 @@ Get-LFMTagWeeklyChartList [-Tag] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Get a list of available charts for this tag, expressed as date ranges which can be sent to the chart services. This uses the tag.getTagWeeklyChartList method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Get-LFMTagWeeklyChartList -Tag rock
 ```
 
-{{ Add example description here }}
+This gets the available charts for the tag rock as a date range.
 
 ## PARAMETERS
 
 ### -Tag
-{{ Fill Tag Description }}
+Name of the tag. This is currently required but doesn't make a difference on the response. Considering hard coding the value and removing this parameter.
 
 ```yaml
 Type: String
