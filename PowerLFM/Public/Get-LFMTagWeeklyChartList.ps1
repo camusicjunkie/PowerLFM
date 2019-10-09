@@ -1,5 +1,5 @@
 function Get-LFMTagWeeklyChartList {
-    # .ExternalHelp PowerLFM.psm1-help.xml
+    # .ExternalHelp PowerLFM-help.xml
 
     [CmdletBinding()]
     [OutputType('PowerLFM.Tag.WeeklyChartList')]

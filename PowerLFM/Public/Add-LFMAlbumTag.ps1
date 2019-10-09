@@ -1,5 +1,5 @@
 function Add-LFMAlbumTag {
-    # .ExternalHelp PowerLFM.psm1-help.xml
+    # .ExternalHelp PowerLFM-help.xml
 
     [CmdletBinding(SupportsShouldProcess,
                    ConfirmImpact = 'Medium')]

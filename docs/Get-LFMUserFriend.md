@@ -1,3 +1,9 @@
+---
+external help file: PowerLFM-help.xml
+Module Name: PowerLFM
+schema: 2.0.0
+---
+
 # Get-LFMUserFriend
 
 ## SYNOPSIS
@@ -6,8 +12,7 @@ Get a list of friends for a user.
 ## SYNTAX
 
 ```
-Get-LFMUserFriend [-UserName] <String> [[-Limit] <String>] [[-Page] <String>] [-RecentTracks]
- [<CommonParameters>]
+Get-LFMUserFriend [[-UserName] <String>] [[-Limit] <String>] [[-Page] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -21,13 +26,6 @@ PS C:\> Get-LFMUserFriend -UserName camusicjunkie
 ```
 
 This will get the friends for camusicjunkie
-
-### Example 2
-```powershell
-PS C:\> Get-LFMUserFriend -UserName camusicjunkie -RecentTracks
-```
-
-This will get the friends for camusicjunkie and their recent tracks.
 
 ## PARAMETERS
 
@@ -61,30 +59,15 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -RecentTracks
-Show recent tracks scrobbled by user's friends.
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -UserName
-Username for the context of the request. The friends of this user are included in the response.
+Username for the context of the request. The friends of this user are included in the response. Providing no user will use the currently authenticated user.
 
 ```yaml
 Type: String
 Parameter Sets: (All)
 Aliases:
 
-Required: True
+Required: False
 Position: 0
 Default value: None
 Accept pipeline input: True (ByPropertyName)
@@ -92,8 +75,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable.
-For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
@@ -101,7 +83,7 @@ For more information, see about_CommonParameters (http://go.microsoft.com/fwlink
 
 ## OUTPUTS
 
-### PowerLFM.User.Friend
+### PowerLFM.User.Info
 
 ## NOTES
 

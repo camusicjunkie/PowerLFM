@@ -1,5 +1,5 @@
 function Remove-LFMTrackTag {
-    # .ExternalHelp PowerLFM.psm1-help.xml
+    # .ExternalHelp PowerLFM-help.xml
 
     [CmdletBinding(SupportsShouldProcess,
                    ConfirmImpact = 'High')]

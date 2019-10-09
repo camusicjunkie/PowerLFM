@@ -1,5 +1,5 @@
 function Get-LFMUserTrackScrobble {
-    # .ExternalHelp PowerLFM.psm1-help.xml
+    # .ExternalHelp PowerLFM-help.xml
 
     [CmdletBinding()]
     [OutputType('PowerLFM.User.TrackScrobble')]
@@ -59,7 +59,7 @@ function Get-LFMUserTrackScrobble {
         $irm = Invoke-LFMApiUri -Uri $apiUrl
         if ($irm.Error) {Write-Output $irm; return}
 
-        foreach ($scrobble in $irm.Trackscrobbles.Track) {
+        foreach ($scrobble in $irm.TrackScrobbles.Track) {
             [PSCustomObject] @{
                 'Track' = $scrobble.Name
                 'TrackId' = $scrobble.Mbid

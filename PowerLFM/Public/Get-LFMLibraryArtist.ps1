@@ -1,5 +1,5 @@
 function Get-LFMLibraryArtist {
-    # .ExternalHelp PowerLFM.psm1-help.xml
+    # .ExternalHelp PowerLFM-help.xml
 
     [CmdletBinding()]
     [OutputType('PowerLFM.Library.Artist')]

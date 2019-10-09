@@ -1,5 +1,5 @@
 function Get-LFMConfiguration {
-    # .ExternalHelp PowerLFM.psm1-help.xml
+    # .ExternalHelp PowerLFM-help.xml
 
     [CmdletBinding()]
     param ()

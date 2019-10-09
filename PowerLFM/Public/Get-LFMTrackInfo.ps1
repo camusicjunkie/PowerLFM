@@ -1,5 +1,5 @@
 function Get-LFMTrackInfo {
-    # .ExternalHelp PowerLFM.psm1-help.xml
+    # .ExternalHelp PowerLFM-help.xml
 
     [CmdletBinding(DefaultParameterSetName = 'track')]
     [OutputType('PowerLFM.Track.Info')]

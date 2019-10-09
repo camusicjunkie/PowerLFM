@@ -1,3 +1,9 @@
+---
+external help file: PowerLFM-help.xml
+Module Name: PowerLFM
+schema: 2.0.0
+---
+
 # Get-LFMUserInfo
 
 ## SYNOPSIS
@@ -31,14 +37,14 @@ This will get the user information for camusicjunkie.
 ## PARAMETERS
 
 ### -UserName
-Username for the context of the request. The information for this user is included in the response.
+Username for the context of the request. The information for this user is included in the response. Providing no user will use the currently authenticated user.
 
 ```yaml
 Type: String
 Parameter Sets: (All)
 Aliases:
 
-Required: True
+Required: False
 Position: 0
 Default value: None
 Accept pipeline input: True (ByPropertyName)
@@ -46,8 +52,7 @@ Accept wildcard characters: False
 ```
 
 ### CommonParameters
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable.
-For more information, see about_CommonParameters (http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 

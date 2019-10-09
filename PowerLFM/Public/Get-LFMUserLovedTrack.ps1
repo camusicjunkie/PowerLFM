@@ -1,5 +1,5 @@
 function Get-LFMUserLovedTrack {
-    # .ExternalHelp PowerLFM.psm1-help.xml
+    # .ExternalHelp PowerLFM-help.xml
 
     [CmdletBinding()]
     [OutputType('PowerLFM.User.Track')]
@@ -51,7 +51,7 @@ function Get-LFMUserLovedTrack {
                 'PSTypeName' = 'PowerLFM.User.Track'
                 'Track' = $track.Name
                 'TrackUrl' = [uri] $track.Url
-                'Trackid' = $track.Mbid
+                'TrackId' = $track.Mbid
                 'Artist' = $track.Artist.Name
                 'ArtistUrl' = [uri] $track.Artist.Url
                 'ArtistId' = $track.Artist.Mbid

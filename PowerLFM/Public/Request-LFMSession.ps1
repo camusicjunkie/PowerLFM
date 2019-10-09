@@ -1,5 +1,5 @@
 function Request-LFMSession {
-    # .ExternalHelp PowerLFM.psm1-help.xml
+    # .ExternalHelp PowerLFM-help.xml
 
     [CmdletBinding()]
     [OutputType('System.String')]

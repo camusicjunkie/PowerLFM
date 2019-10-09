@@ -1,5 +1,5 @@
 function Remove-LFMConfiguration {
-    # .ExternalHelp PowerLFM.psm1-help.xml
+    # .ExternalHelp PowerLFM-help.xml
 
     [CmdletBinding(SupportsShouldProcess,
                    ConfirmImpact = 'High')]
