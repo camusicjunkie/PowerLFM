@@ -44,3 +44,5 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
+
+[https://www.last.fm/api/show/tag.getTopTags](https://www.last.fm/api/show/tag.getTopTags)

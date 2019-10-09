@@ -125,3 +125,5 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
+
+[https://www.last.fm/api/show/track.getInfo](https://www.last.fm/api/show/track.getInfo)

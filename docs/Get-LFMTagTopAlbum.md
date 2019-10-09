@@ -89,3 +89,5 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
+
+[https://www.last.fm/api/show/tag.getTopAlbums](https://www.last.fm/api/show/tag.getTopAlbums)
