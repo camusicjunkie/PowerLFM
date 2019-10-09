@@ -1,5 +1,5 @@
 function Get-LFMTrackSimilar {
-    # .ExternalHelp PowerLFM.psm1-help.xml
+    # .ExternalHelp PowerLFM-help.xml
 
     [CmdletBinding(DefaultParameterSetName = 'track')]
     [OutputType('PowerLFM.Track.Similar')]

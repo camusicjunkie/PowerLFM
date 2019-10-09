@@ -1,5 +1,5 @@
 function Get-LFMTrackTopTag {
-    # .ExternalHelp PowerLFM.psm1-help.xml
+    # .ExternalHelp PowerLFM-help.xml
 
     [CmdletBinding(DefaultParameterSetName = 'track')]
     [OutputType('PowerLFM.Track.TopTag')]

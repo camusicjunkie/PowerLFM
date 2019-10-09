@@ -1,5 +1,5 @@
 function Get-LFMArtistTag {
-    # .ExternalHelp PowerLFM.psm1-help.xml
+    # .ExternalHelp PowerLFM-help.xml
 
     [CmdletBinding(DefaultParameterSetName = 'artist')]
     [OutputType('PowerLFM.Artist.Tag')]
