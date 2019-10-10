@@ -8,9 +8,6 @@ function Get-LFMUserRecentTrack {
         [Parameter(ValueFromPipelineByPropertyName)]
         [string] $EndDate,
 
-        [Parameter()]
-        [switch] $Extended,
-
         [Parameter(ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
         [string] $UserName,
@@ -27,6 +24,7 @@ function Get-LFMUserRecentTrack {
             'method' = 'user.getRecentTracks'
             'api_key' = $LFMConfig.APIKey
             'sk' = $LFMConfig.SessionKey
+            'extended' = 1
             'format' = 'json'
         }
 
@@ -39,7 +37,6 @@ function Get-LFMUserRecentTrack {
         switch ($PSBoundParameters.Keys) {
             'StartDate' {$apiParams.Add('from', (ConvertTo-UnixTime -Date $StartDate))}
             'EndDate' {$apiParams.Add('to', (ConvertTo-UnixTime -Date $EndDate))}
-            'Extended' {$apiParams.Add('extended', 1)}
         }
 
         if ($PSBoundParameters.ContainsKey('UserName')) {
@@ -60,30 +57,27 @@ function Get-LFMUserRecentTrack {
         if ($irm.Error) {Write-Output $irm; return}
 
         foreach ($track in $irm.RecentTracks.Track) {
+            switch ($track.Loved) {
+                '0' {$loved = 'No'}
+                '1' {$loved = 'Yes'}
+            }
+
             $trackInfo = @{
                 'PSTypeName' = 'PowerLFM.User.RecentTrack'
                 'Track' = $track.Name
-                'Artist' = $track.Artist.'#text'
+                'Artist' = $track.Artist.Name
                 'Album' = $track.Album.'#text'
+                'Loved' = $loved
             }
 
             $scrobbleTime = ConvertFrom-UnixTime -UnixTime $track.Date.Uts -Local
             switch ($track.'@attr'.NowPlaying) {
-                $true {$trackInfo.Add('NowPlaying', $true);
-                       $trackInfo.Add('ScrobbleTime', $null)}
-                $null {$trackInfo.Add('NowPlaying', $null);
-                       $trackInfo.Add('ScrobbleTime', $scrobbleTime)}
+                $true {$trackInfo.Add('ScrobbleTime', 'Now Playing')}
+                $null {$trackInfo.Add('ScrobbleTime', $scrobbleTime)}
             }
 
-            if ($Extended) {
-                switch ($track.Loved) {
-                    '0' {$loved = 'No'}
-                    '1' {$loved = 'Yes'}
-                }
-
-                $trackInfo.Remove('Artist')
-                $trackInfo.Add('Artist', $track.Artist.Name)
-                $trackInfo.Add('Loved', $loved)
+            if ($PSBoundParameters.ContainsKey('EndDate') -and $track.'@attr'.NowPlaying -eq 'true') {
+                $trackInfo = $trackInfo[1]
             }
 
             $trackInfo = [pscustomobject] $trackInfo

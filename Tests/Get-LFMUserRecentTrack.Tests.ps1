@@ -122,39 +122,6 @@ Describe 'Get-LFMUserRecentTrack: Interface' -Tag Interface {
             }
         }
 
-        Context 'Parameter [Extended] attribute validation' {
-
-            $parameter = $parameterSet.Parameters | Where-Object Name -eq Extended
-
-            It 'Should not be null or empty' {
-                $parameter | Should -Not -BeNullOrEmpty
-            }
-
-            It "Should be of type System.Management.Automation.SwitchParameter" {
-                $parameter.ParameterType.ToString() | Should -Be System.Management.Automation.SwitchParameter
-            }
-
-            It 'Mandatory should be set to False' {
-                $parameter.IsMandatory | Should -BeFalse
-            }
-
-            It 'ValueFromPipeline should be set to False' {
-                $parameter.ValueFromPipeline | Should -BeFalse
-            }
-
-            It 'ValueFromPipelineByPropertyName should be set to False' {
-                $parameter.ValueFromPipelineByPropertyName | Should -BeFalse
-            }
-
-            It 'ValueFromReminingArguments should be set to False' {
-                $parameter.ValueFromRemainingArguments | Should -BeFalse
-            }
-
-            It "Should have a position of -2147483648" {
-                $parameter.Position | Should -Be -2147483648
-            }
-        }
-
         Context 'Parameter [Limit] attribute validation' {
 
             $parameter = $parameterSet.Parameters | Where-Object Name -eq Limit
@@ -265,16 +232,9 @@ InModuleScope PowerLFM {
 
             $testCases = @(
                 @{
-                    times = 4
-                    gurtParams = @{
-                        UserName = 'UserName'
-                    }
-                }
-                @{
                     times = 5
                     gurtParams = @{
                         UserName = 'UserName'
-                        StartDate = '1 Jan 1970'
                     }
                 }
                 @{
@@ -282,7 +242,6 @@ InModuleScope PowerLFM {
                     gurtParams = @{
                         UserName = 'UserName'
                         StartDate = '1 Jan 1970'
-                        EndDate = '2 Jan 1970'
                     }
                 }
                 @{
@@ -291,7 +250,6 @@ InModuleScope PowerLFM {
                         UserName = 'UserName'
                         StartDate = '1 Jan 1970'
                         EndDate = '2 Jan 1970'
-                        Limit = '5'
                     }
                 }
                 @{
@@ -301,7 +259,6 @@ InModuleScope PowerLFM {
                         StartDate = '1 Jan 1970'
                         EndDate = '2 Jan 1970'
                         Limit = '5'
-                        Page = '1'
                     }
                 }
                 @{
@@ -312,7 +269,6 @@ InModuleScope PowerLFM {
                         EndDate = '2 Jan 1970'
                         Limit = '5'
                         Page = '1'
-                        Extended = $true
                     }
                 }
             )
@@ -340,18 +296,16 @@ InModuleScope PowerLFM {
             $output = Get-LFMUserRecentTrack -UserName camusicjunkie
 
             It "User first recent track should be playing now" {
-                $output[0].NowPlaying | Should -BeTrue
+                $output[0].ScrobbleTime | Should -Be 'Now Playing'
             }
 
             It "User first recent track should have a name of $($contextMock.RecentTracks.Track[0].Name)" {
                 $output[0].Track | Should -Be $contextMock.RecentTracks.Track[0].Name
             }
 
-            It "User first recent track should have an artist name of $($contextMock.RecentTracks.Track[0].Artist.'#Text')" {
-                $output[0].Artist | Should -Be $contextMock.RecentTracks.Track[0].Artist.'#Text'
+            It "User first recent track should have an artist name of $($contextMock.RecentTracks.Track[0].Artist.Name)" {
+                $output[0].Artist | Should -Be $contextMock.RecentTracks.Track[0].Artist.Name
             }
-
-            $output = Get-LFMUserRecentTrack -UserName camusicjunkie -Extended
 
             It "User second recent track should have an album name of $($contextMock.RecentTracks.Track[1].Album.'#Text')" {
                 $output[1].Album | Should -Be $contextMock.RecentTracks.Track[1].Album.'#Text'
@@ -361,12 +315,21 @@ InModuleScope PowerLFM {
                 $output[1].ScrobbleTime | Should -Be $mocks.UnixTime.From
             }
 
-            It "User extended second recent track should be loved" {
+            It "User second recent track should be loved" {
                 $output[1].Loved | Should -Be 'Yes'
             }
 
-            It "User extended third recent track should have an artist name of $($contextMock.RecentTracks.Track[2].Artist.Name)" {
+            It "User third recent track should have an artist name of $($contextMock.RecentTracks.Track[2].Artist.Name)" {
                 $output[2].Artist | Should -Be $contextMock.RecentTracks.Track[2].Artist.Name
+            }
+
+            It 'User should have two recent tracks' {
+                $output | Should -HaveCount 2
+            }
+
+            It 'User should not have more than two recent tracks' {
+                $output | Should -Not -BeNullOrEmpty
+                $output | Should -Not -HaveCount 3
             }
         }
     }

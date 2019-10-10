@@ -806,7 +806,7 @@
               },
               "name": "Track1",
               "artist": {
-                "#text": "Artist1"
+                "name": "Artist1"
               },
               "album": {
                 "#text": "Album1"
@@ -825,18 +825,6 @@
                 "uts": 0
               },
               "loved": 1
-            },
-            {
-              "name": "Track3",
-              "artist": {
-                "name": "Artist3"
-              },
-              "album": {
-                "#text": "Album3"
-              },
-              "date": {
-                "uts": 60
-              }
             }
           ]
         }
