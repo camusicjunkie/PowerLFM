@@ -13,8 +13,8 @@ Get a list of the recent tracks listened to by a user.
 ## SYNTAX
 
 ```
-Get-LFMUserRecentTrack [[-StartDate] <String>] [[-EndDate] <String>] [-Extended] [[-UserName] <String>]
- [[-Limit] <String>] [[-Page] <String>] [<CommonParameters>]
+Get-LFMUserRecentTrack [[-StartDate] <String>] [[-EndDate] <String>] [[-UserName] <String>] [[-Limit] <String>]
+ [[-Page] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -43,21 +43,6 @@ Required: False
 Position: 1
 Default value: None
 Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -Extended
-{{ Fill Extended Description }}
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
