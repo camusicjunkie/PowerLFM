@@ -23,15 +23,9 @@ function Add-LFMConfiguration {
     process {
         if ($PSCmdlet.ShouldProcess('Add key to vault', 'Adding configuration')) {
 
-            $i = 1
-            foreach ($param in $PSBoundParameters.Keys) {
-                if ($param -in @('ApiKey', 'SessionKey', 'SharedSecret')) {
-                    do {
-                        Add-LFMVaultPass -UserName $param -Pass $PSBoundParameters[$param]
-                        $i++
-                    }
-                    until ($i = 3)
-                }
+            $keys = $PSBoundParameters.Keys.Where({$_ -in  @('ApiKey', 'SessionKey', 'SharedSecret')})
+            foreach ($param in $keys) {
+                Add-LFMVaultPass -UserName $param -Pass $PSBoundParameters[$param]
             }
         }
     }
