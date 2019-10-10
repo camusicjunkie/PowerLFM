@@ -51,7 +51,7 @@ Describe 'Get-LFMAlbumTopTag: Interface' -Tag Interface {
                 $parameter.ValueFromPipelineByPropertyName | Should -BeTrue
             }
 
-            It 'ValueFromReminingArguments should be set to False' {
+            It 'ValueFromRemainingArguments should be set to False' {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
@@ -84,7 +84,7 @@ Describe 'Get-LFMAlbumTopTag: Interface' -Tag Interface {
                 $parameter.ValueFromPipelineByPropertyName | Should -BeTrue
             }
 
-            It 'ValueFromReminingArguments should be set to False' {
+            It 'ValueFromRemainingArguments should be set to False' {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
@@ -117,7 +117,7 @@ Describe 'Get-LFMAlbumTopTag: Interface' -Tag Interface {
                 $parameter.ValueFromPipelineByPropertyName | Should -BeFalse
             }
 
-            It 'ValueFromReminingArguments should be set to False' {
+            It 'ValueFromRemainingArguments should be set to False' {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
@@ -159,7 +159,7 @@ Describe 'Get-LFMAlbumTopTag: Interface' -Tag Interface {
                 $parameter.ValueFromPipelineByPropertyName | Should -BeTrue
             }
 
-            It 'ValueFromReminingArguments should be set to False' {
+            It 'ValueFromRemainingArguments should be set to False' {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
@@ -192,7 +192,7 @@ Describe 'Get-LFMAlbumTopTag: Interface' -Tag Interface {
                 $parameter.ValueFromPipelineByPropertyName | Should -BeFalse
             }
 
-            It 'ValueFromReminingArguments should be set to False' {
+            It 'ValueFromRemainingArguments should be set to False' {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
