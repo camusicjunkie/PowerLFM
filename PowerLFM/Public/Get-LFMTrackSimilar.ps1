@@ -22,9 +22,9 @@ function Get-LFMTrackSimilar {
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'id')]
         [ValidateNotNullOrEmpty()]
-        [string] $Id,
+        [guid] $Id,
 
-        [string] $Limit = '5',
+        [int] $Limit = '5',
 
         [switch] $AutoCorrect
     )

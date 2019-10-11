@@ -9,9 +9,9 @@ function Get-LFMTagTopArtist {
         [ValidateNotNullOrEmpty()]
         [string] $Tag,
 
-        [string] $Limit,
+        [int] $Limit,
 
-        [string] $Page
+        [int] $Page
     )
 
     begin {

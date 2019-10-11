@@ -3,10 +3,10 @@ function Get-LFMUserRecentTrack {
     [OutputType('PowerLFM.User.RecentTrack')]
     param (
         [Parameter(ValueFromPipelineByPropertyName)]
-        [string] $StartDate,
+        [datetime] $StartDate,
 
         [Parameter(ValueFromPipelineByPropertyName)]
-        [string] $EndDate,
+        [datetime] $EndDate,
 
         [Parameter(ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
@@ -14,9 +14,9 @@ function Get-LFMUserRecentTrack {
 
         [Parameter()]
         [ValidateRange(1,50)]
-        [string] $Limit,
+        [int] $Limit,
 
-        [string] $Page
+        [int] $Page
     )
 
     begin {

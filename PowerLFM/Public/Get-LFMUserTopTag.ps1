@@ -8,7 +8,7 @@ function Get-LFMUserTopTag {
         [ValidateNotNullOrEmpty()]
         [string] $UserName,
 
-        [string] $Limit
+        [int] $Limit
     )
 
     begin {

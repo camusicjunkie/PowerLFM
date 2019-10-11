@@ -5,10 +5,10 @@ function Get-LFMUserWeeklyTrackChart {
     [OutputType('PowerLFM.User.WeeklyTrackChart')]
     param (
         [Parameter(ValueFromPipelineByPropertyName)]
-        [string] $StartDate,
+        [datetime] $StartDate,
 
         [Parameter(ValueFromPipelineByPropertyName)]
-        [string] $EndDate,
+        [datetime] $EndDate,
 
         [Parameter(ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]

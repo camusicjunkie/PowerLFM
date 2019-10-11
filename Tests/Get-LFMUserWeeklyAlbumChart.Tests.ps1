@@ -64,8 +64,8 @@ Describe 'Get-LFMUserWeeklyAlbumChart: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
-                $parameter.ParameterType.ToString() | Should -Be System.String
+            It "Should be of type System.DateTime" {
+                $parameter.ParameterType.ToString() | Should -Be System.DateTime
             }
 
             It 'Mandatory should be set to False' {
@@ -97,8 +97,8 @@ Describe 'Get-LFMUserWeeklyAlbumChart: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
-                $parameter.ParameterType.ToString() | Should -Be System.String
+            It "Should be of type System.DateTime" {
+                $parameter.ParameterType.ToString() | Should -Be System.DateTime
             }
 
             It 'Mandatory should be set to False' {

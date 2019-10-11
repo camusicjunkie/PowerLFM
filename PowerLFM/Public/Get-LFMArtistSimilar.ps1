@@ -15,9 +15,9 @@ function Get-LFMArtistSimilar {
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'id')]
         [ValidateNotNullOrEmpty()]
-        [string] $Id,
+        [guid] $Id,
 
-        [string] $Limit,
+        [int] $Limit,
 
         [switch] $AutoCorrect
     )

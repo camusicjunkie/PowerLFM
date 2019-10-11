@@ -101,8 +101,8 @@ Describe 'Get-LFMTrackSimilar: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
-                $parameter.ParameterType.ToString() | Should -Be System.String
+            It "Should be of type System.Int32" {
+                $parameter.ParameterType.ToString() | Should -Be System.Int32
             }
 
             It 'Mandatory should be set to False' {
@@ -176,8 +176,8 @@ Describe 'Get-LFMTrackSimilar: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
-                $parameter.ParameterType.ToString() | Should -Be System.String
+            It "Should be of type System.Guid" {
+                $parameter.ParameterType.ToString() | Should -Be System.Guid
             }
 
             It 'Mandatory should be set to True' {
@@ -209,8 +209,8 @@ Describe 'Get-LFMTrackSimilar: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
-                $parameter.ParameterType.ToString() | Should -Be System.String
+            It "Should be of type System.Int32" {
+                $parameter.ParameterType.ToString() | Should -Be System.Int32
             }
 
             It 'Mandatory should be set to False' {
@@ -379,7 +379,7 @@ InModuleScope PowerLFM {
             }
 
             It "Track should return two similar tracks when id parameter is used" {
-                $output = Get-LFMTrackSimilar -Id 1
+                $output = Get-LFMTrackSimilar -Id (New-Guid)
                 $output.Track | Should -HaveCount 2
             }
         }

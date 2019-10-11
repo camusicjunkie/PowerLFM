@@ -22,7 +22,7 @@ function Get-LFMAlbumTag {
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'id')]
         [ValidateNotNullOrEmpty()]
-        [string] $Id,
+        [guid] $Id,
 
         [string] $UserName,
 

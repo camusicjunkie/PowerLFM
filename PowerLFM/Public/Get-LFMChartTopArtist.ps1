@@ -6,9 +6,9 @@ function Get-LFMChartTopArtist {
     param (
         [Parameter()]
         [ValidateRange(1,119)]
-        [string] $Limit,
+        [int] $Limit,
 
-        [string] $Page
+        [int] $Page
     )
 
     $apiParams = @{
