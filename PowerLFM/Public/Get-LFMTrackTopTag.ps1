@@ -22,7 +22,7 @@ function Get-LFMTrackTopTag {
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'id')]
         [ValidateNotNullOrEmpty()]
-        [string] $Id,
+        [guid] $Id,
 
         [switch] $AutoCorrect
     )

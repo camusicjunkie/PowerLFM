@@ -8,9 +8,9 @@ function Get-LFMLibraryArtist {
         [ValidateNotNullOrEmpty()]
         [string] $UserName,
 
-        [string] $Limit,
+        [int] $Limit,
 
-        [string] $Page
+        [int] $Page
     )
 
     begin {

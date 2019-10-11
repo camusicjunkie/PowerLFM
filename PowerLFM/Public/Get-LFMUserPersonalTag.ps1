@@ -21,9 +21,9 @@ function Get-LFMUserPersonalTag {
 
         [Parameter()]
         [ValidateRange(1,50)]
-        [string] $Limit,
+        [int] $Limit,
 
-        [string] $Page
+        [int] $Page
     )
 
     begin {

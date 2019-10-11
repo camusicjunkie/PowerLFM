@@ -15,13 +15,13 @@ function Get-LFMArtistTopAlbum {
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'id')]
         [ValidateNotNullOrEmpty()]
-        [string] $Id,
+        [guid] $Id,
 
         [Parameter()]
         [ValidateRange(1,50)]
-        [string] $Limit,
+        [int] $Limit,
 
-        [string] $Page,
+        [int] $Page,
 
         [switch] $AutoCorrect
     )

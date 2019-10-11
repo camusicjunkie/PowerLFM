@@ -110,8 +110,8 @@ Describe 'Get-LFMArtistTopTag: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
-                $parameter.ParameterType.ToString() | Should -Be System.String
+            It "Should be of type System.Guid" {
+                $parameter.ParameterType.ToString() | Should -Be System.Guid
             }
 
             It 'Mandatory should be set to True' {
@@ -264,7 +264,7 @@ InModuleScope PowerLFM {
             }
 
             It "Artist should have two tags when id parameter is used" {
-                $output = Get-LFMArtistTopTag -Id 1
+                $output = Get-LFMArtistTopTag -Id (New-Guid)
                 $output.Tag | Should -HaveCount 2
             }
         }

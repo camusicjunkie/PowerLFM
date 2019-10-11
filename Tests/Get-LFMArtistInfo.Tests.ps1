@@ -143,8 +143,8 @@ Describe 'Get-LFMArtistInfo: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
-                $parameter.ParameterType.ToString() | Should -Be System.String
+            It "Should be of type System.Guid" {
+                $parameter.ParameterType.ToString() | Should -Be System.Guid
             }
 
             It 'Mandatory should be set to True' {
@@ -378,7 +378,7 @@ InModuleScope PowerLFM {
             }
 
             It "Artist should have two similar artists when id parameter is used" {
-                $output = Get-LFMArtistInfo -Id 1
+                $output = Get-LFMArtistInfo -Id (New-Guid)
                 $output.SimilarArtists | Should -HaveCount 2
             }
         }

@@ -15,7 +15,7 @@ function Get-LFMArtistTag {
                    ValueFromPipelineByPropertyName,
                    ParameterSetName = 'id')]
         [ValidateNotNullOrEmpty()]
-        [string] $Id,
+        [guid] $Id,
 
         [string] $UserName,
 

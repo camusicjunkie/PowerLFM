@@ -176,8 +176,8 @@ Describe 'Get-LFMTrackTag: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
-                $parameter.ParameterType.ToString() | Should -Be System.String
+            It "Should be of type System.Guid" {
+                $parameter.ParameterType.ToString() | Should -Be System.Guid
             }
 
             It 'Mandatory should be set to True' {
@@ -367,7 +367,7 @@ InModuleScope PowerLFM {
             }
 
             It "Track should have two tags when id parameter is used" {
-                $output = Get-LFMTrackTag -Id 1
+                $output = Get-LFMTrackTag -Id (New-Guid)
                 $output.Tags | Should -HaveCount 2
             }
         }

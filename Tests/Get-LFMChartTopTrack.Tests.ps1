@@ -31,8 +31,8 @@ Describe 'Get-LFMChartTopTrack: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
-                $parameter.ParameterType.ToString() | Should -Be System.String
+            It "Should be of type System.Int32" {
+                $parameter.ParameterType.ToString() | Should -Be System.Int32
             }
 
             It 'Mandatory should be set to False' {
@@ -64,8 +64,8 @@ Describe 'Get-LFMChartTopTrack: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
-                $parameter.ParameterType.ToString() | Should -Be System.String
+            It "Should be of type System.Int32" {
+                $parameter.ParameterType.ToString() | Should -Be System.Int32
             }
 
             It 'Mandatory should be set to False' {
