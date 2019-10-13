@@ -100,8 +100,7 @@ InModuleScope PowerLFM {
 
         Mock Invoke-RestMethod
         Mock Get-LFMAuthSignature
-        Mock Start-Process { [pscustomobject] @{Id = 1} }
-        Mock Wait-Process
+        Mock Show-LFMAuthWindow
         Mock Write-Verbose
         Mock Write-Warning
 
