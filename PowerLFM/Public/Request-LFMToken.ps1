@@ -38,18 +38,14 @@ function Request-LFMToken {
         $apiUrl = "$baseUrl/?$string"
 
         Write-Verbose "Requesting token from $baseUrl"
-        $token = Invoke-RestMethod -Uri $apiUrl
+        $token = (Invoke-RestMethod -Uri $apiUrl).Token
 
         Write-Verbose "Authorizing application with requested token on account"
-        $authUrl = "http://www.last.fm/api/auth/?api_key=$ApiKey&token=$($token.token)"
-
-        $id = Start-Process -FilePath IExplore -ArgumentList $authUrl -PassThru | Select-Object -ExpandProperty Id
-        Write-Warning "Close the browser once $projectName is authorized"
-        Wait-Process -Id $id
+        Show-LFMAuthWindow -Url "http://www.last.fm/api/auth/?api_key=$ApiKey&token=$token"
 
         $obj = [PSCustomObject] @{
             'ApiKey' = $ApiKey
-            'Token' = $token.Token
+            'Token' = $token
             'SharedSecret' = $SharedSecret
         }
         Write-Output $obj
