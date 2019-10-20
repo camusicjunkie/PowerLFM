@@ -6,7 +6,8 @@ function Get-LFMTrackSignature {
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
         [ValidateSet('track.addTags','track.removeTag',
-                     'track.love','track.unlove')]
+                     'track.love','track.unlove',
+                     'track.updateNowPlaying', 'track.scrobble')]
         [string] $Method,
 
         [Parameter(Mandatory)]
@@ -19,7 +20,19 @@ function Get-LFMTrackSignature {
 
         [Parameter()]
         [ValidateNotNullOrEmpty()]
-        [string[]] $Tag
+        [string[]] $Tag,
+
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        [string] $Album,
+
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        [string] $Id,
+
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        [int] $Duration
     )
     try {
         $sigParams = @{
@@ -37,6 +50,12 @@ function Get-LFMTrackSignature {
             else {
                 $sigParams.Add('tags', $Tag)
             }
+        }
+
+        switch ($PSBoundParameters.Keys) {
+            'Album' {$sigParams.Add('album', $Album)}
+            'Id' {$sigParams.Add('mbid', $Id)}
+            'Duration' {$sigParams.Add('duration', $Duration)}
         }
 
         $keyValues = $sigParams.GetEnumerator() | Sort-Object Name | ForEach-Object {
