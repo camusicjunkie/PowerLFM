@@ -1,4 +1,4 @@
-function Set-LFMTrackUpdateNowPlaying {
+function Set-LFMTrackNowPlaying {
     # .ExternalHelp PowerLFM-help.xml
 
     [CmdletBinding(SupportsShouldProcess,

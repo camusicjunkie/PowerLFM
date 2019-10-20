@@ -90,7 +90,7 @@ FunctionsToExport = 'Add-LFMAlbumTag', 'Add-LFMArtistTag', 'Add-LFMConfiguration
                'Get-LFMTagInfo', 'Get-LFMTagSimilar', 'Get-LFMTagTopAlbum',
                'Get-LFMTagTopArtist', 'Get-LFMTagTopTag', 'Get-LFMTagTopTrack',
                'Get-LFMTagWeeklyChartList', 'Remove-LFMConfiguration', 'Get-LFMUserTrackScrobble',
-               'Set-LFMTrackUpdateNowPlaying'
+               'Set-LFMTrackNowPlaying'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
