@@ -24,7 +24,10 @@ function Set-LFMTrackNowPlaying {
 
         [Parameter(ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
-        [int] $Duration
+        [int] $Duration,
+
+        [Parameter()]
+        [switch] $PassThru
     )
 
     process {
@@ -38,6 +41,7 @@ function Set-LFMTrackNowPlaying {
             'method' = 'track.updateNowPlaying'
             'api_key' = $LFMConfig.APIKey
             'sk' = $LFMConfig.SessionKey
+            'format' = 'json'
         }
 
         switch ($PSBoundParameters.Keys) {
@@ -71,8 +75,26 @@ function Set-LFMTrackNowPlaying {
     }
     end {
         if ($PSCmdlet.ShouldProcess("Track: $Track", "Setting track to now playing")) {
-            #$iwr = Invoke-WebRequest -Uri $apiUrl -Method Post
-            Write-Verbose "$($iwr.StatusCode) $($iwr.StatusDescription)"
+            $irm = Invoke-LFMApiUri -Uri $apiUrl -Method Post
+            if ($irm.Error) {Write-Output $irm; return}
+
+            $code = Get-LFMIgnoredMessage -Code $irm.NowPlaying.IgnoredMessage.Code
+            if ($code.Code -ne 0) {
+                Write-Verbose 'Request has been filtered because of bad meta data'
+                Write-Output $code
+                return
+            }
+            else {
+                Write-Verbose "$($code.Message)"
+            }
+
+            if ($PassThru) {
+                [pscustomobject] @{
+                    Artist = $irm.NowPlaying.Artist.'#text'
+                    Album = $irm.NowPlaying.Album.'#text'
+                    Track = $irm.NowPlaying.Track.'#text'
+                }
+            }
         }
     }
 }

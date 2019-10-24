@@ -1,29 +1,29 @@
 function Invoke-LFMApiUri {
-    [CmdletBinding()]
     param (
-        [Parameter(Mandatory)]
-        [uri] $Uri
+        [uri] $Uri,
+
+        [ValidateSet('Get', 'Post')]
+        [string] $Method = 'Get'
     )
 
     try {
-        $irm = Invoke-RestMethod -Uri $Uri -ErrorAction Stop
+        $irm = Invoke-RestMethod -Method $Method -Uri $Uri -ErrorAction Stop
 
         if ($irm.Error) {
-            [pscustomobject] @{
-                'Error' = $irm.Error
-                'Message' = [char]::ToUpper($irm.Message[0]) + $irm.Message.Substring(1)
-            }
+            throw $irm
         }
-        else {
-            Write-Output $irm
-        }
+
+        Write-Output $irm
     }
     catch {
-        $response = $_.ErrorDetails.Message | ConvertFrom-Json
-
-        [pscustomobject] @{
-            'Error' = $response.Error
-            'Message' = [char]::ToUpper($response.Message[0]) + $response.Message.Substring(1)
+        $response = if ($null -ne $_.ErrorDetails) {
+            $_.ErrorDetails.Message | ConvertFrom-Json
         }
+        else {
+            $_.TargetObject
+        }
+
+        $message = [char]::ToUpper($response.Message[0]) + $response.Message.Substring(1)
+        throw "$message"
     }
 }
