@@ -221,22 +221,128 @@ Describe 'Set-LFMTrackNowPlaying: Interface' -Tag Interface {
 
 InModuleScope PowerLFM {
 
+    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+    $contextMock = $mocks.'Set-LFMTrackNowPlaying'.TrackNowPlaying
+
     Describe 'Set-LFMTrackNowPlaying: Unit' -Tag Unit {
+
+        Mock Get-LFMTrackSignature
+        Mock Invoke-RestMethod
+        Mock Get-LFMIgnoredMessage { @{Code = 0 } }
+        Mock Write-Verbose
 
         Context 'Input' {
 
+            It 'Should throw when artist is null' {
+                {Set-LFMTrackNowPlaying -Artist $null} | Should -Throw
+            }
+
+            It 'Should throw when track is null' {
+                {Set-LFMTrackNowPlaying -Track $null} | Should -Throw
+            }
         }
 
         Context 'Execution' {
 
+            Mock Foreach-Object
+
+            $testCases = @(
+                @{
+                    times = 7
+                    stnpParams = @{
+                        Artist = 'Artist'
+                        Track = 'Track'
+                    }
+                }
+                @{
+                    times = 8
+                    stnpParams = @{
+                        Artist = 'Artist'
+                        Track = 'Track'
+                        Album = 'Album'
+                    }
+                }
+                @{
+                    times = 9
+                    stnpParams = @{
+                        Artist = 'Artist'
+                        Track = 'Track'
+                        Album = 'Album'
+                        Id = 'Id'
+                    }
+                }
+                @{
+                    times = 10
+                    stnpParams = @{
+                        Artist = 'Artist'
+                        Track = 'Track'
+                        Album = 'Album'
+                        Id = 'Id'
+                        Duration = 60
+                    }
+                }
+            )
+
+            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
+                param ($times, $stnpParams)
+
+                Set-LFMTrackNowPlaying @stnpParams
+
+                $amParams = @{
+                    CommandName = 'Foreach-Object'
+                    Exactly = $true
+                    Times = $times
+                    Scope = 'It'
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should create a signature from the parameters passed in' {
+                Set-LFMTrackNowPlaying -Artist Artist -Track Track
+
+                $amParams = @{
+                    CommandName = 'Get-LFMTrackSignature'
+                    Exactly = $true
+                    Times = 1
+                    Scope = 'It'
+                    ParameterFilter = {
+                        $Artist -eq 'Artist' -and
+                        $Track -eq 'Track' -and
+                        $Method -eq 'track.updateNowPlaying'
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
         }
 
         Context 'Output' {
 
+            It 'Should send proper output when -Whatif is used' {
+                $output = Set-LFMTrackNowPlaying -Artist Artist -Track Track -Verbose 4>&1
+                $output[0] | Should -Match 'Performing the operation "Setting track to now playing" on target "Track: Track".'
+            }
+
+            It "Should output an object when -PassThru is used" {
+                Mock Invoke-RestMethod {$contextMock}
+
+                $output = Set-LFMTrackNowPlaying -Artist Artist -Track Track -PassThru
+                $output.Artist | Should -Be $contextMock.NowPlaying.Artist.'#text'
+                $output.Album | Should -Be $contextMock.NowPlaying.Album.'#text'
+                $output.Track | Should -Be $contextMock.NowPlaying.Track.'#text'
+            }
+
+            It "Should throw when ignored message code is 1" {
+                Mock Get-LFMIgnoredMessage {@{Code = 1}}
+
+                {Set-LFMTrackNowPlaying -Artist Artist -Track Track} | Should -Throw
+            }
         }
     }
 }
 
 Describe 'Set-LFMTrackNowPlaying: Integration' -Tag Integration {
 
+    It "Integration test" {
+        Set-ItResult -Skipped -Because 'the integration tests will be set up later'
+    }
 }

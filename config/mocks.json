@@ -1165,6 +1165,23 @@
       }
     }
   ],
+  "Set-LFMTrackNowPlaying": [
+    {
+      "TrackNowPlaying": {
+        "nowplaying": {
+          "artist": {
+            "#text": "Artist"
+          },
+          "album": {
+            "#text": "Album"
+          },
+          "track": {
+            "#text": "Track"
+          }
+        }
+      }
+    }
+  ],
   "UnixTime": [
     {
       "from": "1 Jan 1970 12:00:00 AM",
