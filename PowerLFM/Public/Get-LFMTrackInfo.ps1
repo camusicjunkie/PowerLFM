@@ -57,42 +57,47 @@ function Get-LFMTrackInfo {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $irm = Invoke-LFMApiUri -Uri $apiUrl
-        if ($irm.Error) {Write-Output $irm; return}
+        try {
+            $irm = Invoke-LFMApiUri -Uri $apiUrl
+            if ($irm.Error) {Write-Output $irm; return}
 
-        $tags = foreach ($tag in $irm.Track.TopTags.Tag) {
-            $tagInfo = [pscustomobject] @{
-                'PSTypeName' = 'PowerLFM.Album.Tag'
-                'Tag' = $tag.Name
-                'Url' = [uri] $tag.Url
+            $tags = foreach ($tag in $irm.Track.TopTags.Tag) {
+                $tagInfo = [pscustomobject] @{
+                    'PSTypeName' = 'PowerLFM.Album.Tag'
+                    'Tag' = $tag.Name
+                    'Url' = [uri] $tag.Url
+                }
+                Write-Output $tagInfo
             }
-            Write-Output $tagInfo
-        }
 
-        switch ($irm.Track.UserLoved) {
-            '0' {$loved = 'No'}
-            '1' {$loved = 'Yes'}
-        }
+            switch ($irm.Track.UserLoved) {
+                '0' {$loved = 'No'}
+                '1' {$loved = 'Yes'}
+            }
 
-        $trackInfo = @{
-            'PSTypeName' = 'PowerLFM.Album.Info'
-            'Track' = $irm.Track.Name
-            'Artist' = $irm.Track.Artist.Name
-            'Album' = $irm.Track.Album.Title
-            'Id' = $irm.Track.Mbid
-            'Listeners' = [int] $irm.Track.Listeners
-            'PlayCount' = [int] $irm.Track.PlayCount
-            'Url' = [uri] $irm.Track.Url
-            'Tags' = $tags
-        }
+            $trackInfo = @{
+                'PSTypeName' = 'PowerLFM.Album.Info'
+                'Track' = $irm.Track.Name
+                'Artist' = $irm.Track.Artist.Name
+                'Album' = $irm.Track.Album.Title
+                'Id' = $irm.Track.Mbid
+                'Listeners' = [int] $irm.Track.Listeners
+                'PlayCount' = [int] $irm.Track.PlayCount
+                'Url' = [uri] $irm.Track.Url
+                'Tags' = $tags
+            }
 
-        $userPlayCount = [int] $irm.Track.UserPlayCount
-        if ($PSBoundParameters.ContainsKey('UserName')) {
-            $trackInfo.Add('UserPlayCount', $userPlayCount)
-            $trackInfo.Add('Loved', $loved)
-        }
+            $userPlayCount = [int] $irm.Track.UserPlayCount
+            if ($PSBoundParameters.ContainsKey('UserName')) {
+                $trackInfo.Add('UserPlayCount', $userPlayCount)
+                $trackInfo.Add('Loved', $loved)
+            }
 
-        $trackInfo = [pscustomobject] $trackInfo
-        Write-Output $trackInfo
+            $trackInfo = [pscustomobject] $trackInfo
+            Write-Output $trackInfo
+        }
+        catch {
+            throw $_
+        }
     }
 }

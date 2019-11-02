@@ -29,17 +29,22 @@ function Get-LFMArtistCorrection {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $irm = Invoke-LFMApiUri -Uri $apiUrl
-        if ($irm.Error) {Write-Output $irm; return}
+        try {
+            $irm = Invoke-LFMApiUri -Uri $apiUrl
+            if ($irm.Error) {Write-Output $irm; return}
 
-        $correction = $irm.Corrections.Correction.Artist
-        $correctedArtistInfo = [pscustomobject] @{
-            'PSTypeName' = 'PowerLFM.Artist.Correction'
-            'Artist' = $correction.Name
-            'Id' = $correction.Mbid
-            'Url' = [uri] $correction.Url
+            $correction = $irm.Corrections.Correction.Artist
+            $correctedArtistInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.Artist.Correction'
+                'Artist' = $correction.Name
+                'Id' = $correction.Mbid
+                'Url' = [uri] $correction.Url
+            }
+
+            Write-Output $correctedArtistInfo
         }
-
-        Write-Output $correctedArtistInfo
+        catch {
+            throw $_
+        }
     }
 }

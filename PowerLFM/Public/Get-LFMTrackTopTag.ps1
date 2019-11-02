@@ -54,18 +54,23 @@ function Get-LFMTrackTopTag {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $irm = Invoke-LFMApiUri -Uri $apiUrl
-        if ($irm.Error) {Write-Output $irm; return}
+        try {
+            $irm = Invoke-LFMApiUri -Uri $apiUrl
+            if ($irm.Error) {Write-Output $irm; return}
 
-        foreach ($tag in $irm.TopTags.Tag) {
-            $tagInfo = [pscustomobject] @{
-                'PSTypeName' = 'PowerLFM.Track.Tag'
-                'Tag' = $tag.Name
-                'Url' = [uri] $tag.Url
-                'Match' = [int] $tag.Count
+            foreach ($tag in $irm.TopTags.Tag) {
+                $tagInfo = [pscustomobject] @{
+                    'PSTypeName' = 'PowerLFM.Track.Tag'
+                    'Tag' = $tag.Name
+                    'Url' = [uri] $tag.Url
+                    'Match' = [int] $tag.Count
+                }
+
+                Write-Output $tagInfo
             }
-
-            Write-Output $tagInfo
+        }
+        catch {
+            throw $_
         }
     }
 }

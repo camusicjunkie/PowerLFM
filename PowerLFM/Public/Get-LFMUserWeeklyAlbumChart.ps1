@@ -43,23 +43,28 @@ function Get-LFMUserWeeklyAlbumChart {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $irm = Invoke-LFMApiUri -Uri $apiUrl
-        if ($irm.Error) {Write-Output $irm; return}
+        try {
+            $irm = Invoke-LFMApiUri -Uri $apiUrl
+            if ($irm.Error) {Write-Output $irm; return}
 
-        foreach ($album in $irm.WeeklyAlbumChart.Album) {
-            $albumInfo = [pscustomobject] @{
-                'PSTypeName' = 'PowerLFM.User.WeeklyChartList'
-                'Album' = $album.Name
-                'Url' = [uri] $album.Url
-                'Id' = $album.Mbid
-                'Artist' = $album.Artist.'#text'
-                'ArtistId' = $album.Artist.Mbid
-                'PlayCount' = [int] $album.PlayCount
-                'StartDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyAlbumChart.'@attr'.From -Local
-                'EndDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyAlbumChart.'@attr'.To -Local
+            foreach ($album in $irm.WeeklyAlbumChart.Album) {
+                $albumInfo = [pscustomobject] @{
+                    'PSTypeName' = 'PowerLFM.User.WeeklyChartList'
+                    'Album' = $album.Name
+                    'Url' = [uri] $album.Url
+                    'Id' = $album.Mbid
+                    'Artist' = $album.Artist.'#text'
+                    'ArtistId' = $album.Artist.Mbid
+                    'PlayCount' = [int] $album.PlayCount
+                    'StartDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyAlbumChart.'@attr'.From -Local
+                    'EndDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyAlbumChart.'@attr'.To -Local
+                }
+
+                Write-Output $albumInfo
             }
-
-            Write-Output $albumInfo
+        }
+        catch {
+            throw $_
         }
     }
 }

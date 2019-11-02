@@ -62,17 +62,22 @@ function Get-LFMAlbumTag {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $irm = Invoke-LFMApiUri -Uri $apiUrl
-        if ($irm.Error) {Write-Output $irm; return}
+        try {
+            $irm = Invoke-LFMApiUri -Uri $apiUrl
+            if ($irm.Error) {Write-Output $irm; return}
 
-        foreach ($tag in $irm.Tags.Tag) {
-            $tagInfo = [pscustomobject] @{
-                'PSTypeName' = 'PowerLFM.Album.Tag'
-                'Tag' = $tag.Name
-                'Url' = [uri] $tag.Url
+            foreach ($tag in $irm.Tags.Tag) {
+                $tagInfo = [pscustomobject] @{
+                    'PSTypeName' = 'PowerLFM.Album.Tag'
+                    'Tag' = $tag.Name
+                    'Url' = [uri] $tag.Url
+                }
+
+                Write-Output $tagInfo
             }
-
-            Write-Output $tagInfo
+        }
+        catch {
+            throw $_
         }
     }
 }

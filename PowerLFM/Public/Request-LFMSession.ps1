@@ -21,32 +21,32 @@ function Request-LFMSession {
     )
 
     process {
+        $sigParams = @{
+            'ApiKey' = $ApiKey
+            'Method' = 'auth.getSession'
+            'SharedSecret' = $SharedSecret
+            'Token' = $Token
+        }
+        $apiSig = Get-LFMAuthSignature @sigParams
+        Write-Verbose "Signature MD5 Hash: $apiSig"
+
+        $apiParams = @{
+            'method' = 'auth.getSession'
+            'api_key' = $APIKey
+            'token' = $Token
+            'api_sig' = $apiSig
+            'format' = 'json'
+        }
+
+        #Building string to append to base url
+        $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
+            "$($_.Name)=$($_.Value)"
+        }
+        $string = $keyValues -join '&'
+
+        $apiUrl = "$baseUrl/?$string"
+
         try {
-            $sigParams = @{
-                'ApiKey' = $ApiKey
-                'Method' = 'auth.getSession'
-                'SharedSecret' = $SharedSecret
-                'Token' = $Token
-            }
-            $apiSig = Get-LFMAuthSignature @sigParams
-            Write-Verbose "Signature MD5 Hash: $apiSig"
-
-            $apiParams = @{
-                'method' = 'auth.getSession'
-                'api_key' = $APIKey
-                'token' = $Token
-                'api_sig' = $apiSig
-                'format' = 'json'
-            }
-
-            #Building string to append to base url
-            $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
-                "$($_.Name)=$($_.Value)"
-            }
-            $string = $keyValues -join '&'
-
-            $apiUrl = "$baseUrl/?$string"
-
             $irm = Invoke-LFMApiUri -Uri $apiUrl
             if ($irm.Error) {Write-Output $irm; return}
 
@@ -58,7 +58,7 @@ function Request-LFMSession {
             Write-Output $obj
         }
         catch {
-            Write-Error $_.Exception.Message
+            throw $_
         }
     }
 }

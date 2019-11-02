@@ -38,19 +38,24 @@ function Get-LFMTagTopArtist {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $irm = Invoke-LFMApiUri -Uri $apiUrl
-        if ($irm.Error) {Write-Output $irm; return}
+        try {
+            $irm = Invoke-LFMApiUri -Uri $apiUrl
+            if ($irm.Error) {Write-Output $irm; return}
 
-        foreach ($artist in $irm.TopArtists.Artist) {
-            $artistInfo = [pscustomobject] @{
-                'PSTypeName' = 'PowerLFM.Tag.TopArtists'
-                'Artist' = $artist.Name
-                'ArtistId' = $artist.Mbid
-                'ArtistUrl' = [uri] $artist.Url
-                'Rank' = [int] $artist.'@attr'.Rank
+            foreach ($artist in $irm.TopArtists.Artist) {
+                $artistInfo = [pscustomobject] @{
+                    'PSTypeName' = 'PowerLFM.Tag.TopArtists'
+                    'Artist' = $artist.Name
+                    'ArtistId' = $artist.Mbid
+                    'ArtistUrl' = [uri] $artist.Url
+                    'Rank' = [int] $artist.'@attr'.Rank
+                }
+
+                Write-Output $artistInfo
             }
-
-            Write-Output $artistInfo
+        }
+        catch {
+            throw $_
         }
     }
 }

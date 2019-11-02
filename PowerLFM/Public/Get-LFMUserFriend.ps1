@@ -44,22 +44,27 @@ function Get-LFMUserFriend {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $irm = Invoke-LFMApiUri -Uri $apiUrl
-        if ($irm.Error) {Write-Output $irm; return}
+        try {
+            $irm = Invoke-LFMApiUri -Uri $apiUrl
+            if ($irm.Error) {Write-Output $irm; return}
 
-        foreach ($friend in $irm.Friends.User) {
-            $userInfo = @{
-                'PSTypeName' = 'PowerLFM.User.Info'
-                'UserName' = $friend.Name
-                'RealName' = $friend.RealName
-                'Url' = [uri] $friend.Url
-                'Country' = $friend.Country
-                'Registered' = ConvertFrom-UnixTime -UnixTime $friend.Registered.UnixTime -Local
-                'PlayLists' = [int] $friend.PlayLists
+            foreach ($friend in $irm.Friends.User) {
+                $userInfo = @{
+                    'PSTypeName' = 'PowerLFM.User.Info'
+                    'UserName' = $friend.Name
+                    'RealName' = $friend.RealName
+                    'Url' = [uri] $friend.Url
+                    'Country' = $friend.Country
+                    'Registered' = ConvertFrom-UnixTime -UnixTime $friend.Registered.UnixTime -Local
+                    'PlayLists' = [int] $friend.PlayLists
+                }
+
+                $userInfo = [pscustomobject] $userInfo
+                Write-Output $userInfo
             }
-
-            $userInfo = [pscustomobject] $userInfo
-            Write-Output $userInfo
+        }
+        catch {
+            throw $_
         }
     }
 }

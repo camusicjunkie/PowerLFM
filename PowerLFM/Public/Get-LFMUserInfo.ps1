@@ -32,20 +32,25 @@ function Get-LFMUserInfo {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $irm = Invoke-LFMApiUri -Uri $apiUrl
-        if ($irm.Error) {Write-Output $irm; return}
+        try {
+            $irm = Invoke-LFMApiUri -Uri $apiUrl
+            if ($irm.Error) {Write-Output $irm; return}
 
-        $userInfo = [pscustomobject] @{
-            'PSTypeName' = 'PowerLFM.User.Info'
-            'UserName' = $irm.User.Name
-            'RealName' = $irm.User.RealName
-            'Url' = [uri] $irm.User.Url
-            'Country' = $irm.User.Country
-            'Registered' = ConvertFrom-UnixTime -UnixTime $irm.User.Registered.UnixTime -Local
-            'PlayCount' = [int] $irm.User.PlayCount
-            'PlayLists' = [int] $irm.User.PlayLists
+            $userInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.User.Info'
+                'UserName' = $irm.User.Name
+                'RealName' = $irm.User.RealName
+                'Url' = [uri] $irm.User.Url
+                'Country' = $irm.User.Country
+                'Registered' = ConvertFrom-UnixTime -UnixTime $irm.User.Registered.UnixTime -Local
+                'PlayCount' = [int] $irm.User.PlayCount
+                'PlayLists' = [int] $irm.User.PlayLists
+            }
+
+            Write-Output $userInfo
         }
-
-        Write-Output $userInfo
+        catch {
+            throw $_
+        }
     }
 }

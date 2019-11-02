@@ -49,19 +49,24 @@ function Get-LFMArtistSimilar {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $irm = Invoke-LFMApiUri -Uri $apiUrl
-        if ($irm.Error) {Write-Output $irm; return}
+        try {
+            $irm = Invoke-LFMApiUri -Uri $apiUrl
+            if ($irm.Error) {Write-Output $irm; return}
 
-        foreach ($similar in $irm.SimilarArtists.Artist) {
-            $similarInfo = [pscustomobject] @{
-                'PSTypeName' = 'PowerLFM.Artist.Similar'
-                'Artist' = $similar.Name
-                'Id' = $similar.Mbid
-                'Url' = [uri] $similar.Url
-                'Match' = [math]::Round($similar.Match, 2)
+            foreach ($similar in $irm.SimilarArtists.Artist) {
+                $similarInfo = [pscustomobject] @{
+                    'PSTypeName' = 'PowerLFM.Artist.Similar'
+                    'Artist' = $similar.Name
+                    'Id' = $similar.Mbid
+                    'Url' = [uri] $similar.Url
+                    'Match' = [math]::Round($similar.Match, 2)
+                }
+
+                Write-Output $similarInfo
             }
-
-            Write-Output $similarInfo
+        }
+        catch {
+            throw $_
         }
     }
 }

@@ -43,21 +43,26 @@ function Get-LFMUserWeeklyArtistChart {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $irm = Invoke-LFMApiUri -Uri $apiUrl
-        if ($irm.Error) {Write-Output $irm; return}
+        try {
+            $irm = Invoke-LFMApiUri -Uri $apiUrl
+            if ($irm.Error) {Write-Output $irm; return}
 
-        foreach ($artist in $irm.WeeklyArtistChart.Artist) {
-            $artistInfo = [pscustomobject] @{
-                'PSTypeName' = 'PowerLFM.User.WeeklyArtistChart'
-                'Artist' = $artist.Name
-                'Url' = [uri] $artist.Url
-                'Id' = $artist.Mbid
-                'PlayCount' = [int] $artist.PlayCount
-                'StartDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyArtistChart.'@attr'.From -Local
-                'EndDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyArtistChart.'@attr'.To -Local
+            foreach ($artist in $irm.WeeklyArtistChart.Artist) {
+                $artistInfo = [pscustomobject] @{
+                    'PSTypeName' = 'PowerLFM.User.WeeklyArtistChart'
+                    'Artist' = $artist.Name
+                    'Url' = [uri] $artist.Url
+                    'Id' = $artist.Mbid
+                    'PlayCount' = [int] $artist.PlayCount
+                    'StartDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyArtistChart.'@attr'.From -Local
+                    'EndDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyArtistChart.'@attr'.To -Local
+                }
+
+                Write-Output $artistInfo
             }
-
-            Write-Output $artistInfo
+        }
+        catch {
+            throw $_
         }
     }
 }
