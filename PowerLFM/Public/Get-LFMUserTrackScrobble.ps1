@@ -58,7 +58,6 @@ function Get-LFMUserTrackScrobble {
     end {
         try {
             $irm = Invoke-LFMApiUri -Uri $apiUrl
-            if ($irm.Error) {Write-Output $irm; return}
 
             foreach ($scrobble in $irm.TrackScrobbles.Track) {
                 [PSCustomObject] @{

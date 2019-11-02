@@ -30,7 +30,6 @@ function Get-LFMTagSimilar {
     end {
         try {
             $irm = Invoke-LFMApiUri -Uri $apiUrl
-            if ($irm.Error) {Write-Output $irm; return}
 
             $tagInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.Tag.Similar'

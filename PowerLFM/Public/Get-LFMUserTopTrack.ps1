@@ -60,7 +60,6 @@ function Get-LFMUserTopTrack {
     end {
         try {
             $irm = Invoke-LFMApiUri -Uri $apiUrl
-            if ($irm.Error) {Write-Output $irm; return}
 
             foreach ($track in $irm.TopTracks.Track) {
                 $trackInfo = [pscustomobject] @{

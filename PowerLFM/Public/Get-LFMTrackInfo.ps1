@@ -59,7 +59,6 @@ function Get-LFMTrackInfo {
     end {
         try {
             $irm = Invoke-LFMApiUri -Uri $apiUrl
-            if ($irm.Error) {Write-Output $irm; return}
 
             $tags = foreach ($tag in $irm.Track.TopTags.Tag) {
                 $tagInfo = [pscustomobject] @{

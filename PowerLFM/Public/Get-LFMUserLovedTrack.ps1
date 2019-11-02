@@ -45,7 +45,6 @@ function Get-LFMUserLovedTrack {
     end {
         try {
             $irm = Invoke-LFMApiUri -Uri $apiUrl
-            if ($irm.Error) {Write-Output $irm; return}
 
             foreach ($track in $irm.LovedTracks.Track) {
                 $trackInfo = [pscustomobject] @{

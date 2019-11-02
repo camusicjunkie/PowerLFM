@@ -34,7 +34,6 @@ function Get-LFMUserInfo {
     end {
         try {
             $irm = Invoke-LFMApiUri -Uri $apiUrl
-            if ($irm.Error) {Write-Output $irm; return}
 
             $userInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.User.Info'

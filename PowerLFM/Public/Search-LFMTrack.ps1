@@ -41,7 +41,6 @@ function Search-LFMTrack {
     end {
         try {
             $irm = Invoke-LFMApiUri -Uri $apiUrl
-            if ($irm.Error) {Write-Output $irm; return}
 
             foreach ($match in $irm.Results.TrackMatches.Track) {
                 $matchInfo = [pscustomobject] @{

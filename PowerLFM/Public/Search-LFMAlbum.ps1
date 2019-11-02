@@ -41,7 +41,6 @@ function Search-LFMAlbum {
     end {
         try {
             $irm = Invoke-LFMApiUri -Uri $apiUrl
-            if ($irm.Error) {Write-Output $irm; return}
 
             foreach ($match in $irm.Results.AlbumMatches.Album) {
                 $matchInfo = [pscustomobject] @{

@@ -34,7 +34,6 @@ function Get-LFMUserWeeklyChartList {
     end {
         try {
             $irm = Invoke-LFMApiUri -Uri $apiUrl
-            if ($irm.Error) {Write-Output $irm; return}
 
             $chartList = $irm.WeeklyChartList.Chart |
                 Sort-Object -Property From -Descending

@@ -48,7 +48,6 @@ function Request-LFMSession {
 
         try {
             $irm = Invoke-LFMApiUri -Uri $apiUrl
-            if ($irm.Error) {Write-Output $irm; return}
 
             $obj = [PSCustomObject] @{
                 'ApiKey' = $ApiKey

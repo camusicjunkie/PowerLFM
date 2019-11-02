@@ -43,7 +43,6 @@ function Get-LFMGeoTopArtist {
     end {
         try {
             $irm = Invoke-LFMApiUri -Uri $apiUrl
-            if ($irm.Error) {Write-Output $irm; return}
 
             foreach ($artist in $irm.TopArtists.Artist) {
                 $artistInfo = [pscustomobject] @{

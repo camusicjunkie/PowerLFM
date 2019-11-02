@@ -31,7 +31,6 @@ function Get-LFMArtistCorrection {
     end {
         try {
             $irm = Invoke-LFMApiUri -Uri $apiUrl
-            if ($irm.Error) {Write-Output $irm; return}
 
             $correction = $irm.Corrections.Correction.Artist
             $correctedArtistInfo = [pscustomobject] @{

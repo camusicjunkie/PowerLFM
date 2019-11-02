@@ -55,7 +55,6 @@ function Get-LFMUserRecentTrack {
     end {
         try {
             $irm = Invoke-LFMApiUri -Uri $apiUrl
-            if ($irm.Error) {Write-Output $irm; return}
 
             foreach ($track in $irm.RecentTracks.Track) {
                 switch ($track.Loved) {

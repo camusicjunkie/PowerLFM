@@ -31,7 +31,6 @@ function Get-LFMTagWeeklyChartList {
     end {
         try {
             $irm = Invoke-LFMApiUri -Uri $apiUrl
-            if ($irm.Error) {Write-Output $irm; return}
 
             $chartList = $irm.WeeklyChartList.Chart.GetEnumerator() |
                 Sort-Object {$_.From} -Descending

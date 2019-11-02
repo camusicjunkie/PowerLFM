@@ -37,7 +37,6 @@ function Get-LFMTrackCorrection {
     end {
         try {
             $irm = Invoke-LFMApiUri -Uri $apiUrl
-            if ($irm.Error) {Write-Output $irm; return}
 
             $correction = $irm.Corrections.Correction.Track
             $correctedTrackInfo = [pscustomobject] @{

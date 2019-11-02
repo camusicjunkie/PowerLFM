@@ -59,7 +59,6 @@ function Get-LFMTrackSimilar {
     end {
         try {
             $irm = Invoke-LFMApiUri -Uri $apiUrl
-            if ($irm.Error) {Write-Output $irm; return}
 
             foreach ($similar in $irm.SimilarTracks.Track) {
                 $similarInfo = [pscustomobject] @{

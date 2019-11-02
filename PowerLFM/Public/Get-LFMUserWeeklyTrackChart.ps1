@@ -45,7 +45,6 @@ function Get-LFMUserWeeklyTrackChart {
     end {
         try {
             $irm = Invoke-LFMApiUri -Uri $apiUrl
-            if ($irm.Error) {Write-Output $irm; return}
 
             foreach ($track in $irm.WeeklyTrackChart.Track) {
                 $trackInfo = [pscustomobject] @{

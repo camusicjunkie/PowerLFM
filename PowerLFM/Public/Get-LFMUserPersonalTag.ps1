@@ -59,7 +59,6 @@ function Get-LFMUserPersonalTag {
     end {
         try {
             $irm = Invoke-LFMApiUri -Uri $apiUrl
-            if ($irm.Error) {Write-Output $irm; return}
 
             foreach ($userTag in $irm.Taggings.Artists.Artist) {
                 $userTagInfo = [pscustomobject] @{

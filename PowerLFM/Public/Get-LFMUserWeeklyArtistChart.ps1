@@ -45,7 +45,6 @@ function Get-LFMUserWeeklyArtistChart {
     end {
         try {
             $irm = Invoke-LFMApiUri -Uri $apiUrl
-            if ($irm.Error) {Write-Output $irm; return}
 
             foreach ($artist in $irm.WeeklyArtistChart.Artist) {
                 $artistInfo = [pscustomobject] @{

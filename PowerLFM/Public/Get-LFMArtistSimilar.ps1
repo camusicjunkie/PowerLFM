@@ -51,7 +51,6 @@ function Get-LFMArtistSimilar {
     end {
         try {
             $irm = Invoke-LFMApiUri -Uri $apiUrl
-            if ($irm.Error) {Write-Output $irm; return}
 
             foreach ($similar in $irm.SimilarArtists.Artist) {
                 $similarInfo = [pscustomobject] @{
