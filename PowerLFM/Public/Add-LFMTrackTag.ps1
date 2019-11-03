@@ -50,8 +50,13 @@ function Add-LFMTrackTag {
     }
     end {
         if ($PSCmdlet.ShouldProcess("Track: $Track", "Adding track tag: $Tag")) {
-            $iwr = Invoke-WebRequest -Uri $apiUrl -Method Post
-            Write-Verbose "$($iwr.StatusCode) $($iwr.StatusDescription)"
+            try {
+                $irm = Invoke-LFMApiUri -Uri $apiUrl -Method Post
+                if ($irm.Lfm.Status -eq 'ok') {Write-Verbose "Tag: $Tag has been added"}
+            }
+            catch {
+                throw $_
+            }
         }
     }
 }

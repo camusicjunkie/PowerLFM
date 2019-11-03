@@ -77,7 +77,6 @@ function Set-LFMTrackNowPlaying {
         if ($PSCmdlet.ShouldProcess("Track: $Track", "Setting track to now playing")) {
             try {
                 $irm = Invoke-LFMApiUri -Uri $apiUrl -Method Post
-                if ($irm.Error) {Write-Output $irm; return}
 
                 $code = Get-LFMIgnoredMessage -Code $irm.NowPlaying.IgnoredMessage.Code
                 if ($code.Code -ne 0) {

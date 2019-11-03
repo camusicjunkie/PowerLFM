@@ -34,15 +34,17 @@ function Invoke-LFMApiUri {
             $_.TargetObject
             $errorId = 'PowerLFM.ResourceNotFound'
             $errorCategory = 'ObjectNotFound'
+            $messagePart = 'This is not a valid request.'
         }
 
         # Constructing error message from response object.
         # Capitalizing first letter in sentence.
-        $message = [char]::ToUpper($response.Message[0]) + $response.Message.Substring(1)
-        if ($message -like 'Invalid API key*') {$message = $message + '. Run Get-LFMConfiguration.'}
+        $responseMessage = [char]::ToUpper($response.Message[0]) + $response.Message.Substring(1)
+        if ($responseMessage -like 'Invalid API key*') {$errorMessage = $responseMessage + '. Run Get-LFMConfiguration.'}
+        else {$errorMessage = "$messagePart $responseMessage."}
 
         $PSCmdlet.ThrowTerminatingError([ErrorRecord]::new(
-            $message,
+            $errorMessage,
             $errorId,
             $errorCategory,
             $MyInvocation.MyCommand.Name

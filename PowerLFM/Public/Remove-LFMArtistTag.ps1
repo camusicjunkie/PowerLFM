@@ -43,8 +43,13 @@ function Remove-LFMArtistTag {
     }
     end {
         if ($PSCmdlet.ShouldProcess("Artist: $Artist", "Removing artist tag: $Tag")) {
-            $iwr = Invoke-WebRequest -Uri $apiUrl -Method Post
-            Write-Verbose "$($iwr.StatusCode) $($iwr.StatusDescription)"
+            try {
+                $irm = Invoke-LFMApiUri -Uri $apiUrl -Method Post
+                if ($irm.Lfm.Status -eq 'ok') {Write-Verbose "Tag: $Tag has been removed"}
+            }
+            catch {
+                throw $_
+            }
         }
     }
 }
