@@ -43,23 +43,27 @@ function Get-LFMUserWeeklyTrackChart {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $irm = Invoke-LFMApiUri -Uri $apiUrl
-        if ($irm.Error) {Write-Output $irm; return}
+        try {
+            $irm = Invoke-LFMApiUri -Uri $apiUrl
 
-        foreach ($track in $irm.WeeklyTrackChart.Track) {
-            $trackInfo = [pscustomobject] @{
-                'PSTypeName' = 'PowerLFM.User.WeeklyTrackChart'
-                'Track' = $track.Name
-                'Url' = [uri] $track.Url
-                'Id' = $track.Mbid
-                'Artist' = $track.Artist.'#text'
-                'ArtistId' = $track.Artist.Mbid
-                'PlayCount' = [int] $track.PlayCount
-                'StartDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyTrackChart.'@attr'.From -Local
-                'EndDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyTrackChart.'@attr'.To -Local
+            foreach ($track in $irm.WeeklyTrackChart.Track) {
+                $trackInfo = [pscustomobject] @{
+                    'PSTypeName' = 'PowerLFM.User.WeeklyTrackChart'
+                    'Track' = $track.Name
+                    'Url' = [uri] $track.Url
+                    'Id' = $track.Mbid
+                    'Artist' = $track.Artist.'#text'
+                    'ArtistId' = $track.Artist.Mbid
+                    'PlayCount' = [int] $track.PlayCount
+                    'StartDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyTrackChart.'@attr'.From -Local
+                    'EndDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyTrackChart.'@attr'.To -Local
+                }
+
+                Write-Output $trackInfo
             }
-
-            Write-Output $trackInfo
+        }
+        catch {
+            throw $_
         }
     }
 }

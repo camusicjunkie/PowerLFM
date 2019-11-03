@@ -48,23 +48,27 @@ function Get-LFMGeoTopTrack {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $irm = Invoke-LFMApiUri -Uri $apiUrl
-        if ($irm.Error) {Write-Output $irm; return}
+        try {
+            $irm = Invoke-LFMApiUri -Uri $apiUrl
 
-        foreach ($track in $irm.Tracks.Track) {
-            $trackInfo = [pscustomobject] @{
-                'PSTypeName' = 'PowerLFM.Geo.TopTracks'
-                'Track' = $track.Name
-                'TrackId' = $track.Mbid
-                'TrackUrl' = [uri] $track.Url
-                'Artist' = $track.Artist.Name
-                'ArtistId' = $track.Artist.Mbid
-                'ArtistUrl' = [uri] $track.Artist.Url
-                'Rank' = [int] $track.'@attr'.Rank
-                'Listeners' = [int] $track.Listeners
+            foreach ($track in $irm.Tracks.Track) {
+                $trackInfo = [pscustomobject] @{
+                    'PSTypeName' = 'PowerLFM.Geo.TopTracks'
+                    'Track' = $track.Name
+                    'TrackId' = $track.Mbid
+                    'TrackUrl' = [uri] $track.Url
+                    'Artist' = $track.Artist.Name
+                    'ArtistId' = $track.Artist.Mbid
+                    'ArtistUrl' = [uri] $track.Artist.Url
+                    'Rank' = [int] $track.'@attr'.Rank
+                    'Listeners' = [int] $track.Listeners
+                }
+
+                Write-Output $trackInfo
             }
-
-            Write-Output $trackInfo
+        }
+        catch {
+            throw $_
         }
     }
 }

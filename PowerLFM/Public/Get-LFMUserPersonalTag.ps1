@@ -57,18 +57,22 @@ function Get-LFMUserPersonalTag {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $irm = Invoke-LFMApiUri -Uri $apiUrl
-        if ($irm.Error) {Write-Output $irm; return}
+        try {
+            $irm = Invoke-LFMApiUri -Uri $apiUrl
 
-        foreach ($userTag in $irm.Taggings.Artists.Artist) {
-            $userTagInfo = [pscustomobject] @{
-                'PSTypeName' = 'PowerLFM.User.PersonalTag'
-                'Artist' = $userTag.Name
-                'Id' = $userTag.Mbid
-                'Url' = [uri] $userTag.Url
+            foreach ($userTag in $irm.Taggings.Artists.Artist) {
+                $userTagInfo = [pscustomobject] @{
+                    'PSTypeName' = 'PowerLFM.User.PersonalTag'
+                    'Artist' = $userTag.Name
+                    'Id' = $userTag.Mbid
+                    'Url' = [uri] $userTag.Url
+                }
+
+                Write-Output $userTagInfo
             }
-
-            Write-Output $userTagInfo
+        }
+        catch {
+            throw $_
         }
     }
 }

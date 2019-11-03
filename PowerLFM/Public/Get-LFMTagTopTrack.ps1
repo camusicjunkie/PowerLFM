@@ -38,23 +38,27 @@ function Get-LFMTagTopTrack {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $irm = Invoke-LFMApiUri -Uri $apiUrl
-        if ($irm.Error) {Write-Output $irm; return}
+        try {
+            $irm = Invoke-LFMApiUri -Uri $apiUrl
 
-        foreach ($track in $irm.Tracks.Track) {
-            $trackInfo = [pscustomobject] @{
-                'PSTypeName' = 'PowerLFM.Tag.TopTracks'
-                'Track' = $track.Name
-                'TrackId' = $track.Mbid
-                'TrackUrl' = [uri] $track.Url
-                'Artist' = $track.Artist.Name
-                'ArtistId' = $track.Artist.Mbid
-                'ArtistUrl' = [uri] $track.Artist.Url
-                'Rank' = [int] $track.'@attr'.Rank
-                'Duration' = [int] $track.Duration
+            foreach ($track in $irm.Tracks.Track) {
+                $trackInfo = [pscustomobject] @{
+                    'PSTypeName' = 'PowerLFM.Tag.TopTracks'
+                    'Track' = $track.Name
+                    'TrackId' = $track.Mbid
+                    'TrackUrl' = [uri] $track.Url
+                    'Artist' = $track.Artist.Name
+                    'ArtistId' = $track.Artist.Mbid
+                    'ArtistUrl' = [uri] $track.Artist.Url
+                    'Rank' = [int] $track.'@attr'.Rank
+                    'Duration' = [int] $track.Duration
+                }
+
+                Write-Output $trackInfo
             }
-
-            Write-Output $trackInfo
+        }
+        catch {
+            throw $_
         }
     }
 }

@@ -43,8 +43,13 @@ function Set-LFMTrackUnlove {
     }
     end {
         if ($PSCmdlet.ShouldProcess("Track: $Track", "Removing love")) {
-            $iwr = Invoke-WebRequest -Uri $apiUrl -Method Post
-            Write-Verbose "$($iwr.StatusCode) $($iwr.StatusDescription)"
+            try {
+                $irm = Invoke-LFMApiUri -Uri $apiUrl -Method Post
+                if ($irm.Lfm.Status -eq 'ok') {Write-Verbose "Track: $Track has been unloved"}
+            }
+            catch {
+                throw $_
+            }
         }
     }
 }

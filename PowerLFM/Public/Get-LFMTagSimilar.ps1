@@ -28,17 +28,21 @@ function Get-LFMTagSimilar {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $irm = Invoke-LFMApiUri -Uri $apiUrl
-        if ($irm.Error) {Write-Output $irm; return}
+        try {
+            $irm = Invoke-LFMApiUri -Uri $apiUrl
 
-        $tagInfo = [pscustomobject] @{
-            'PSTypeName' = 'PowerLFM.Tag.Similar'
-            'Tag' = $irm.Tag.Name
-            'Url' = [uri] $irm.Tag.Url
+            $tagInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.Tag.Similar'
+                'Tag' = $irm.Tag.Name
+                'Url' = [uri] $irm.Tag.Url
+            }
+
+            # This api method seems broken at the moment.
+            # It does not return anything.
+            Write-Output $tagInfo
         }
-
-        # This api method seems broken at the moment.
-        # It does not return anything.
-        Write-Output $tagInfo
+        catch {
+            throw $_
+        }
     }
 }

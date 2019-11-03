@@ -89,10 +89,12 @@ Describe 'Remove-LFMArtistTag: Interface' -Tag Interface {
 
 InModuleScope PowerLFM {
 
+    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+
     Describe 'Remove-LFMArtistTag: Unit' -Tag Unit {
 
         Mock Get-LFMArtistSignature
-        Mock Invoke-WebRequest
+        Mock Invoke-RestMethod
         Mock Write-Verbose
 
         Context 'Input' {
@@ -157,7 +159,7 @@ InModuleScope PowerLFM {
                 Remove-LFMArtistTag @aatParams
 
                 $amParams = @{
-                    CommandName = 'Invoke-WebRequest'
+                    CommandName = 'Invoke-RestMethod'
                     Exactly = $true
                     Times = 1
                     Scope = 'It'
@@ -174,6 +176,8 @@ InModuleScope PowerLFM {
             }
 
             It 'Should send verbose output when -Verbose is used' {
+                Mock Invoke-RestMethod {$mocks}
+
                 Remove-LFMArtistTag @aatParams -Verbose 4>&1
 
                 $amParams = @{

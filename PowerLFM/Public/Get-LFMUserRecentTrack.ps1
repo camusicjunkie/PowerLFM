@@ -53,35 +53,39 @@ function Get-LFMUserRecentTrack {
         $apiUrl = "$baseUrl/?$string"
     }
     end {
-        $irm = Invoke-LFMApiUri -Uri $apiUrl
-        if ($irm.Error) {Write-Output $irm; return}
+        try {
+            $irm = Invoke-LFMApiUri -Uri $apiUrl
 
-        foreach ($track in $irm.RecentTracks.Track) {
-            switch ($track.Loved) {
-                '0' {$loved = 'No'}
-                '1' {$loved = 'Yes'}
+            foreach ($track in $irm.RecentTracks.Track) {
+                switch ($track.Loved) {
+                    '0' {$loved = 'No'}
+                    '1' {$loved = 'Yes'}
+                }
+
+                $trackInfo = @{
+                    'PSTypeName' = 'PowerLFM.User.RecentTrack'
+                    'Track' = $track.Name
+                    'Artist' = $track.Artist.Name
+                    'Album' = $track.Album.'#text'
+                    'Loved' = $loved
+                }
+
+                $scrobbleTime = ConvertFrom-UnixTime -UnixTime $track.Date.Uts -Local
+                switch ($track.'@attr'.NowPlaying) {
+                    $true {$trackInfo.Add('ScrobbleTime', 'Now Playing')}
+                    $null {$trackInfo.Add('ScrobbleTime', $scrobbleTime)}
+                }
+
+                if ($PSBoundParameters.ContainsKey('EndDate') -and $track.'@attr'.NowPlaying -eq 'true') {
+                    $trackInfo = $trackInfo[1]
+                }
+
+                $trackInfo = [pscustomobject] $trackInfo
+                Write-Output $trackInfo
             }
-
-            $trackInfo = @{
-                'PSTypeName' = 'PowerLFM.User.RecentTrack'
-                'Track' = $track.Name
-                'Artist' = $track.Artist.Name
-                'Album' = $track.Album.'#text'
-                'Loved' = $loved
-            }
-
-            $scrobbleTime = ConvertFrom-UnixTime -UnixTime $track.Date.Uts -Local
-            switch ($track.'@attr'.NowPlaying) {
-                $true {$trackInfo.Add('ScrobbleTime', 'Now Playing')}
-                $null {$trackInfo.Add('ScrobbleTime', $scrobbleTime)}
-            }
-
-            if ($PSBoundParameters.ContainsKey('EndDate') -and $track.'@attr'.NowPlaying -eq 'true') {
-                $trackInfo = $trackInfo[1]
-            }
-
-            $trackInfo = [pscustomobject] $trackInfo
-            Write-Output $trackInfo
+        }
+        catch {
+            throw $_
         }
     }
 }
