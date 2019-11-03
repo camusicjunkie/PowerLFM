@@ -32,7 +32,6 @@ function Get-LFMChartTopArtist {
 
     try {
         $irm = Invoke-LFMApiUri -Uri $apiUrl
-        if ($irm.Error) {Write-Output $irm; return}
 
         foreach ($artist in $irm.Artists.Artist) {
             $artistInfo = [pscustomobject] @{

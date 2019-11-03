@@ -32,7 +32,6 @@ function Get-LFMChartTopTag {
 
     try {
         $irm = Invoke-LFMApiUri -Uri $apiUrl
-        if ($irm.Error) {Write-Output $irm; return}
 
         foreach ($tag in $irm.Tags.Tag) {
             $tagInfo = [pscustomobject] @{
