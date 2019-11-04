@@ -1,6 +1,5 @@
 function Get-LFMArtistSignature {
-    [CmdletBinding(SupportsShouldProcess,
-                   ConfirmImpact = 'Medium')]
+    [CmdletBinding()]
     [OutputType('System.String')]
     param (
         [Parameter(Mandatory)]
@@ -37,9 +36,7 @@ function Get-LFMArtistSignature {
 
         $string = $keyValues -join ''
 
-        if ($PSCmdlet.ShouldProcess('Shared secret', 'Creating artist signature')) {
-            Get-Md5Hash -String "$string$($LFMConfig.SharedSecret)"
-        }
+        Get-Md5Hash -String "$string$($LFMConfig.SharedSecret)"
         Write-Verbose "$string$($LFMConfig.SharedSecret)"
     }
     catch {
