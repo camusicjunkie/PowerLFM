@@ -289,20 +289,136 @@ InModuleScope PowerLFM {
 
     Describe 'Set-LFMTrackScrobble: Unit' -Tag Unit {
 
-        Context 'Input' {
+        Mock Get-LFMTrackSignature -RemoveParameterType 'Timestamp'
+        Mock ConvertTo-UnixTime
+        Mock Invoke-RestMethod
+        Mock Get-LFMIgnoredMessage { @{Code = 0 } }
+        Mock Write-Verbose
 
+        Context 'Input' {
+            It 'Should throw when artist is null' {
+                {Set-LFMTrackScrobble -Artist $null} | Should -Throw
+            }
+
+            It 'Should throw when track is null' {
+                {Set-LFMTrackScrobble -Track $null} | Should -Throw
+            }
         }
 
         Context 'Execution' {
 
+            Mock Foreach-Object
+
+            $testCases = @(
+                @{
+                    times = 8
+                    stsParams = @{
+                        Artist = 'Artist'
+                        Track = 'Track'
+                        Timestamp = (Get-Date)
+                    }
+                }
+                @{
+                    times = 9
+                    stsParams = @{
+                        Artist = 'Artist'
+                        Track = 'Track'
+                        Timestamp = (Get-Date)
+                        Album = 'Album'
+                    }
+                }
+                @{
+                    times = 10
+                    stsParams = @{
+                        Artist = 'Artist'
+                        Track = 'Track'
+                        Timestamp = (Get-Date)
+                        Album = 'Album'
+                        Id = (New-Guid)
+                    }
+                }
+                @{
+                    times = 11
+                    stsParams = @{
+                        Artist = 'Artist'
+                        Track = 'Track'
+                        Timestamp = (Get-Date)
+                        Album = 'Album'
+                        Id = (New-Guid)
+                        TrackNumber = 1
+                    }
+                }
+                @{
+                    times = 12
+                    stsParams = @{
+                        Artist = 'Artist'
+                        Track = 'Track'
+                        Timestamp = (Get-Date)
+                        Album = 'Album'
+                        Id = (New-Guid)
+                        TrackNumber = 1
+                        Duration = 60
+                    }
+                }
+            )
+
+            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
+                param ($times, $stsParams)
+
+                Set-LFMTrackScrobble @stsParams
+
+                $amParams = @{
+                    CommandName = 'Foreach-Object'
+                    Exactly = $true
+                    Times = $times
+                    Scope = 'It'
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should create a signature from the parameters passed in' {
+                Set-LFMTrackScrobble -Artist Artist -Track Track -Timestamp (Get-Date)
+
+                $amParams = @{
+                    CommandName = 'Get-LFMTrackSignature'
+                    Exactly = $true
+                    Times = 1
+                    Scope = 'It'
+                    ParameterFilter = {
+                        $Artist -eq 'Artist' -and
+                        $Track -eq 'Track' -and
+                        $Method -eq 'track.scrobble'
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
         }
 
         Context 'Output' {
 
+            $stsParams = @{
+                Artist = 'Artist'
+                Track = 'Track'
+                Timestamp = (Get-Date)
+            }
+
+            It 'Should send proper output when -Whatif is used' {
+                $output = Set-LFMTrackScrobble @stsParams -Verbose 4>&1
+                $output | Should -Match 'Performing the operation "Setting track to now playing" on target "Track: Track".'
+            }
+
+            It "Should throw when ignored message code is 1" {
+                Mock Get-LFMIgnoredMessage {@{Code = 1}}
+
+                {Set-LFMTrackScrobble @stsParams} | Should -Throw
+            }
         }
     }
 }
 
 Describe 'Set-LFMTrackScrobble: Integration' -Tag Integration {
 
+    It "Integration test" {
+        Set-ItResult -Skipped -Because 'the integration tests will be set up later'
+    }
 }
