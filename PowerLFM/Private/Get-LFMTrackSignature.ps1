@@ -19,6 +19,10 @@ function Get-LFMTrackSignature {
 
         [Parameter()]
         [ValidateNotNullOrEmpty()]
+        [double] $Timestamp,
+
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
         [string[]] $Tag,
 
         [Parameter()]
@@ -27,7 +31,11 @@ function Get-LFMTrackSignature {
 
         [Parameter()]
         [ValidateNotNullOrEmpty()]
-        [string] $Id,
+        [guid] $Id,
+
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        [int] $TrackNumber,
 
         [Parameter()]
         [ValidateNotNullOrEmpty()]
