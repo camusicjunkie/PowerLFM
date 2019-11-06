@@ -7,12 +7,12 @@ function Set-LFMTrackNowPlaying {
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
-        [string] $Artist,
+        [string] $Track,
 
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
-        [string] $Track,
+        [string] $Artist,
 
         [Parameter(ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
@@ -20,7 +20,7 @@ function Set-LFMTrackNowPlaying {
 
         [Parameter(ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
-        [string] $Id,
+        [guid] $Id,
 
         [Parameter(ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
