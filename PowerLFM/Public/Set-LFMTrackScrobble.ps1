@@ -65,8 +65,8 @@ function Set-LFMTrackScrobble {
                 $apiParams.Add('mbid', $Id)
             }
             'TrackNumber' {
-                $apiSigParams.Add('TrackNumber', $Id)
-                $apiParams.Add('trackNumber', $Id)
+                $apiSigParams.Add('TrackNumber', $TrackNumber)
+                $apiParams.Add('trackNumber', $TrackNumber)
             }
             'Duration' {
                 $apiSigParams.Add('Duration', $Duration)
@@ -79,7 +79,7 @@ function Set-LFMTrackScrobble {
         $apiParams.Add('api_sig', $apiSig)
         $apiParams.Add('artist', $Artist)
         $apiParams.Add('track', $Track)
-        $apiParams.Add('timestamp', $Timestamp)
+        $apiParams.Add('timestamp', (ConvertTo-UnixTime -Date $Timestamp))
 
         #Building string to append to base url
         $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
