@@ -14,7 +14,7 @@ function ConvertTo-UnixTime {
         if ($Date.Kind -eq 'Local') {
             $Date = $Date.ToUniversalTime()
         }
-        
+
         (New-TimeSpan -Start $epoch -End $Date).TotalSeconds
     }
 }
