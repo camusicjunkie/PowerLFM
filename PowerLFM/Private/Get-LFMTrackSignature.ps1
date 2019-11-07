@@ -46,33 +46,39 @@ function Get-LFMTrackSignature {
             'method' = $Method
             'api_key' = $LFMConfig.ApiKey
             'sk' = $LFMConfig.SessionKey
-            'artist' = $Artist
-            'track' = $Track
+            #'artist' = $Artist
+            #'track' = $Track
         }
 
-        if ($PSBoundParameters.ContainsKey('Tag')) {
-            if ($Method -eq 'track.removeTag') {
-                $sigParams.Add('tag', $Tag)
-            }
-            else {
-                $sigParams.Add('tags', $Tag)
-            }
-        }
+        $null = $PSBoundParameters.Remove('Method')
 
-        switch ($PSBoundParameters.Keys) {
-            'Album' {$sigParams.Add('album', $Album)}
-            'Id' {$sigParams.Add('mbid', $Id)}
-            'Duration' {$sigParams.Add('duration', $Duration)}
-        }
+        $convertedParams = ConvertTo-LFMParameter ([hashtable] $PSBoundParameters)
+        $query = New-LFMApiQuery -InputObject ($convertedParams + $sigParams)
 
-        $keyValues = $sigParams.GetEnumerator() | Sort-Object Name | ForEach-Object {
-            "$($_.Key)$($_.Value)"
-        }
+        #if ($PSBoundParameters.ContainsKey('Tag')) {
+        #    if ($Method -eq 'track.removeTag') {
+        #        $sigParams.Add('tag', $Tag)
+        #    }
+        #    else {
+        #        $sigParams.Add('tags', $Tag)
+        #    }
+        #}
 
-        $string = $keyValues -join ''
+        #switch ($PSBoundParameters.Keys) {
+        #    'Album' {$sigParams.Add('album', $Album)}
+        #    'Id' {$sigParams.Add('mbid', $Id)}
+        #    'TrackNumber' {$sigParams.Add('trackNumber', $TrackNumber)}
+        #    'Duration' {$sigParams.Add('duration', $Duration)}
+        #}
+#
+        #$keyValues = $sigParams.GetEnumerator() | Sort-Object Name | ForEach-Object {
+        #    "$($_.Key)$($_.Value)"
+        #}
+#
+        #$string = $keyValues -join ''
 
-        Get-Md5Hash -String "$string$($LFMConfig.SharedSecret)"
-        Write-Verbose "$string$($LFMConfig.SharedSecret)"
+        Get-Md5Hash -String "$query$($LFMConfig.SharedSecret)"
+        Write-Verbose "$query$($LFMConfig.SharedSecret)"
     }
     catch {
         Write-Error $_.Exception.Message

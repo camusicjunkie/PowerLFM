@@ -226,10 +226,17 @@ InModuleScope PowerLFM {
 
     Describe 'Set-LFMTrackNowPlaying: Unit' -Tag Unit {
 
+        Mock Remove-CommonParameter {
+            [pscustomobject] @{
+                Track = 'Track'
+                Artist = 'Artist'
+            }
+        }
+        Mock ConvertTo-LFMParameter { $InputObject }
         Mock Get-LFMTrackSignature
         Mock Invoke-RestMethod
         Mock Get-LFMIgnoredMessage { @{Code = 0 } }
-        Mock Write-Verbose
+        #Mock Write-Verbose
 
         Context 'Input' {
 
@@ -244,54 +251,14 @@ InModuleScope PowerLFM {
 
         Context 'Execution' {
 
-            Mock Foreach-Object
+            Set-LFMTrackNowPlaying -Artist Artist -Track Track
 
-            $testCases = @(
-                @{
-                    times = 7
-                    stnpParams = @{
-                        Artist = 'Artist'
-                        Track = 'Track'
-                    }
-                }
-                @{
-                    times = 8
-                    stnpParams = @{
-                        Artist = 'Artist'
-                        Track = 'Track'
-                        Album = 'Album'
-                    }
-                }
-                @{
-                    times = 9
-                    stnpParams = @{
-                        Artist = 'Artist'
-                        Track = 'Track'
-                        Album = 'Album'
-                        Id = (New-Guid)
-                    }
-                }
-                @{
-                    times = 10
-                    stnpParams = @{
-                        Artist = 'Artist'
-                        Track = 'Track'
-                        Album = 'Album'
-                        Id = (New-Guid)
-                        Duration = 60
-                    }
-                }
-            )
-
-            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
-                param ($times, $stnpParams)
-
-                Set-LFMTrackNowPlaying @stnpParams
+            It "Should remove common parameters from bound parameters" {
 
                 $amParams = @{
-                    CommandName = 'Foreach-Object'
+                    CommandName = 'Remove-CommonParameter'
                     Exactly = $true
-                    Times = $times
+                    Times = 1
                     Scope = 'It'
                 }
                 Assert-MockCalled @amParams

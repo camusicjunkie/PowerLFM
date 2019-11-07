@@ -30,48 +30,23 @@ function Set-LFMTrackNowPlaying {
         [switch] $PassThru
     )
 
-    process {
-        $apiSigParams = @{
-            'Artist' = $Artist
-            'Track' = $Track
-            'Method' = 'track.updateNowPlaying'
-        }
-
+    begin {
         $apiParams = @{
             'method' = 'track.updateNowPlaying'
-            'api_key' = $LFMConfig.APIKey
+            'api_key' = $LFMConfig.ApiKey
             'sk' = $LFMConfig.SessionKey
             'format' = 'json'
         }
+    }
+    process {
+        $noCommonParams = Remove-CommonParameter -InputObject $PSBoundParameters
+        $convertedParams = $noCommonParams | ConvertTo-LFMParameter
 
-        switch ($PSBoundParameters.Keys) {
-            'Album' {
-                $apiSigParams.Add('Album', $Album),
-                $apiParams.Add('album', $Album)
-            }
-            'Id' {
-                $apiSigParams.Add('Id', $Id)
-                $apiParams.Add('mbid', $Id)
-            }
-            'Duration' {
-                $apiSigParams.Add('Duration', $Duration)
-                $apiParams.Add('duration', $Duration)
-            }
-        }
-
-        $apiSig = Get-LFMTrackSignature @apiSigParams
-
+        $apiSig = Get-LFMTrackSignature -Method $apiParams.Method @convertedParams
         $apiParams.Add('api_sig', $apiSig)
-        $apiParams.Add('artist', $Artist)
-        $apiParams.Add('track', $Track)
 
-        #Building string to append to base url
-        $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
-            "$($_.Name)=$($_.Value)"
-        }
-        $string = $keyValues -join '&'
-
-        $apiUrl = "$baseUrl/?$string"
+        $query = New-LFMApiQuery -InputObject ($convertedParams + $apiParams)
+        $apiUrl = "$baseUrl/?$query"
     }
     end {
         if ($PSCmdlet.ShouldProcess("Track: $Track", "Setting track to now playing")) {

@@ -40,21 +40,3 @@ function ConvertTo-LFMParameter {
         Write-Output $hash
     }
 }
-
-#Album
-#Artist
-#Tag - tag, tags
-#Track
-#Id - mbid
-#UserName - username (get-lfm*info), user (all others)
-#AutoCorrect
-#Limit
-#Page
-#Country
-#City - location
-#Language - lang
-#TagType - taggingtype
-#StartDate - from
-#EndDate - to
-#TimePeriod - period
-#Duration

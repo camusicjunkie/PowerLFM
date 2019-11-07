@@ -7,12 +7,14 @@ function Remove-CommonParameter {
     $commonParams = [System.Management.Automation.PSCmdlet]::CommonParameters +
                     [System.Management.Automation.PSCmdlet]::OptionalCommonParameters
 
-    $hash = @{}
+    #$hash = @{}
 
-    $filtered = $InputObject.GetEnumerator().Where({$_.Name -notin $commonParams})
-    foreach ($parameter in $filtered) {
-        $hash.Add($parameter.Key, $parameter.Value)
-    }
+    #$filtered = $InputObject.GetEnumerator().Where({$_.Name -notin $commonParams})
+    $keysToRemove = $InputObject.Keys.Where({$_ -in $commonParams})
+    $keysToRemove | ForEach-Object {$InputObject.Remove($_)}
+    #foreach ($parameter in $filtered) {
+    #    $hash.Add($parameter.Key, $parameter.Value)
+    #}
 
-    Write-Output $hash
+    Write-Output ([hashtable] $InputObject)
 }
