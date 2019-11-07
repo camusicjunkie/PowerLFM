@@ -3,6 +3,7 @@ function Set-LFMTrackNowPlaying {
 
     [CmdletBinding(SupportsShouldProcess,
                    ConfirmImpact = 'Medium')]
+    [OutputType('PowerLFM.Track.NowPlaying')]
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
@@ -60,6 +61,7 @@ function Set-LFMTrackNowPlaying {
 
                 if ($PassThru) {
                     [pscustomobject] @{
+                        PSTypeName = 'PowerLFM.Track.NowPlaying'
                         Artist = $irm.NowPlaying.Artist.'#text'
                         Album = $irm.NowPlaying.Album.'#text'
                         Track = $irm.NowPlaying.Track.'#text'

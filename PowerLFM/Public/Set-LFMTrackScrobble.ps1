@@ -3,6 +3,7 @@ function Set-LFMTrackScrobble {
 
     [CmdletBinding(SupportsShouldProcess,
                    ConfirmImpact = 'Medium')]
+    [OutputType('PowerLFM.Track.Scrobble')]
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
@@ -101,6 +102,7 @@ function Set-LFMTrackScrobble {
 
                 #if ($PassThru) {
                 #    [pscustomobject] @{
+                #        PSTypeName = 'PowerLFM.Track.Scrobble'
                 #        Artist = $irm.NowPlaying.Artist.'#text'
                 #        Album = $irm.NowPlaying.Album.'#text'
                 #        Track = $irm.NowPlaying.Track.'#text'
