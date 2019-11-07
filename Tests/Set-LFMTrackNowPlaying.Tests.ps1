@@ -227,7 +227,7 @@ InModuleScope PowerLFM {
     Describe 'Set-LFMTrackNowPlaying: Unit' -Tag Unit {
 
         Mock Remove-CommonParameter {
-            [pscustomobject] @{
+            [hashtable] @{
                 Track = 'Track'
                 Artist = 'Artist'
             }
@@ -236,7 +236,7 @@ InModuleScope PowerLFM {
         Mock Get-LFMTrackSignature
         Mock Invoke-RestMethod
         Mock Get-LFMIgnoredMessage { @{Code = 0 } }
-        #Mock Write-Verbose
+        Mock Write-Verbose
 
         Context 'Input' {
 
@@ -251,12 +251,23 @@ InModuleScope PowerLFM {
 
         Context 'Execution' {
 
-            Set-LFMTrackNowPlaying -Artist Artist -Track Track
-
             It "Should remove common parameters from bound parameters" {
+                Set-LFMTrackNowPlaying -Artist Artist -Track Track
 
                 $amParams = @{
                     CommandName = 'Remove-CommonParameter'
+                    Exactly = $true
+                    Times = 1
+                    Scope = 'It'
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It "Should convert parameters to format API expects before signing" {
+                Set-LFMTrackNowPlaying -Artist Artist -Track Track
+
+                $amParams = @{
+                    CommandName = 'ConvertTo-LFMParameter'
                     Exactly = $true
                     Times = 1
                     Scope = 'It'
@@ -290,7 +301,7 @@ InModuleScope PowerLFM {
             }
 
             It "Should output an object when -PassThru is used" {
-                Mock Invoke-RestMethod {$contextMock}
+                Mock Invoke-LFMApiUri {$contextMock}
 
                 $output = Set-LFMTrackNowPlaying -Artist Artist -Track Track -PassThru
                 $output.Artist | Should -Be $contextMock.NowPlaying.Artist.'#text'
