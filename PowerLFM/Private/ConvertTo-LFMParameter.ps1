@@ -1,42 +1,38 @@
 function ConvertTo-LFMParameter {
-    [CmdletBinding()]
     param (
-        [Parameter(ValueFromPipeline)]
         [psobject] $InputObject
     )
 
-    begin {
-        $lfmParameter = @{
-            'Album'       = 'album'
-            'Artist'      = 'artist'
-            'AutoCorrect' = 'autocorrect'
-            'City'        = 'location'
-            'Country'     = 'country'
-            'Duration'    = 'duration'
-            'EndDate'     = 'to'
-            'Id'          = 'mbid'
-            'Language'    = 'lang'
-            'Limit'       = 'limit'
-            'Page'        = 'page'
-            'StartDate'   = 'from'
-            'Tag'         = 'tag'
-            'TagType'     = 'taggingtype'
-            'TimePeriod'  = 'period'
-            'Track'       = 'track'
-            'UserName'    = 'user'
-        }
-
-        $callingCommand = (Get-PSCallStack)[-2].Command
-        if ($callingCommand -like 'Get-LFM*Info') {$lfmParameter['Username'] = 'username'}
-        if ($callingCommand -like 'Remove-LFM*Tag') {$lfmParameter['Tag'] = 'tags'}
+    $lfmParameter = @{
+        'Album'       = 'album'
+        'Artist'      = 'artist'
+        'AutoCorrect' = 'autocorrect'
+        'City'        = 'location'
+        'Country'     = 'country'
+        'Duration'    = 'duration'
+        'EndDate'     = 'to'
+        'Id'          = 'mbid'
+        'Language'    = 'lang'
+        'Limit'       = 'limit'
+        'Page'        = 'page'
+        'StartDate'   = 'from'
+        'Tag'         = 'tag'
+        'TagType'     = 'taggingtype'
+        'TimePeriod'  = 'period'
+        'Track'       = 'track'
+        'UserName'    = 'user'
     }
-    process {
-        $hash = @{}
 
-        foreach ($key in $InputObject.Keys) {
-            $hash.Add($lfmParameter[$key], $InputObject[$key])
-        }
+    $callingCommand = (Get-PSCallStack)[-2].Command
+    if ($callingCommand -like 'Get-LFM*Info') {$lfmParameter['Username'] = 'username'}
+    if ($callingCommand -like 'Remove-LFM*Tag') {$lfmParameter['Tag'] = 'tags'}
 
-        Write-Output $hash
+    If ($InputObject.ContainsKey('PassThru')) {$InputObject.Remove('PassThru')}
+
+    $hash = @{}
+    foreach ($key in $InputObject.Keys) {
+        $hash.Add($lfmParameter[$key], $InputObject[$key])
     }
+
+    Write-Output $hash
 }

@@ -1,7 +1,5 @@
 function New-LFMApiQuery {
-    [CmdletBinding()]
     param (
-        [Parameter()]
         [psobject] $InputObject
     )
 
