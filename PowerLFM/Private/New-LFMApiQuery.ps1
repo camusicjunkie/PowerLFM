@@ -1,4 +1,6 @@
 function New-LFMApiQuery {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseShouldProcessForStateChangingFunctions", "")]
+
     param (
         [psobject] $InputObject
     )

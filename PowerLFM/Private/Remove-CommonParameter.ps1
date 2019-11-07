@@ -1,4 +1,6 @@
 function Remove-CommonParameter {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseShouldProcessForStateChangingFunctions", "")]
+
     param (
         [psobject] $InputObject
     )
