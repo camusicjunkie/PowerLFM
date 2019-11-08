@@ -26,14 +26,18 @@ function ConvertTo-LFMParameter {
     }
 
     $callingCommand = (Get-PSCallStack)[-2].Command
-    if ($callingCommand -like 'Get-LFM*Info') {$lfmParameter['Username'] = 'username'}
-    if ($callingCommand -like 'Remove-LFM*Tag') {$lfmParameter['Tag'] = 'tag'}
+    if ($callingCommand -like 'Get-LFM*Info') { $lfmParameter['Username'] = 'username' }
+    if ($callingCommand -like 'Remove-LFM*Tag') { $lfmParameter['Tag'] = 'tag' }
 
-    $null = if ($InputObject.ContainsKey('Method')) {$InputObject.Remove('Method')}
-    $null = If ($InputObject.ContainsKey('SharedSecret')) {$InputObject.Remove('SharedSecret')}
-    $null = If ($InputObject.ContainsKey('PassThru')) {$InputObject.Remove('PassThru')}
+    if ($InputObject.ContainsKey('Timestamp')) { $InputObject['Timestamp'] = (ConvertTo-UnixTime -Date $Timestamp) }
+    if ($InputObject.ContainsKey('StartDate')) { $InputObject['StartDate'] = (ConvertTo-UnixTime -Date $StartDate) }
+    if ($InputObject.ContainsKey('EndDate')) { $InputObject['EndDate'] = (ConvertTo-UnixTime -Date $EndDate) }
 
-    $hash = @{}
+    $null = if ($InputObject.ContainsKey('Method')) { $InputObject.Remove('Method') }
+    $null = If ($InputObject.ContainsKey('SharedSecret')) { $InputObject.Remove('SharedSecret') }
+    $null = If ($InputObject.ContainsKey('PassThru')) { $InputObject.Remove('PassThru') }
+
+    $hash = @{ }
     foreach ($key in $InputObject.Keys) {
         $hash.Add($lfmParameter[$key], $InputObject[$key])
     }
