@@ -233,8 +233,8 @@ InModuleScope PowerLFM {
             }
         }
         Mock ConvertTo-LFMParameter { $InputObject }
-        Mock Get-LFMTrackSignature
-        Mock Invoke-RestMethod
+        Mock Get-LFMSignature
+        Mock Invoke-LFMApiUri
         Mock Get-LFMIgnoredMessage { @{ Code = 0 } }
         Mock Write-Verbose
 
@@ -263,7 +263,7 @@ InModuleScope PowerLFM {
                 Assert-MockCalled @amParams
             }
 
-            It "Should convert parameters to format API expects before signing" {
+            It "Should convert parameters to format API expects after signing" {
                 Set-LFMTrackNowPlaying -Artist Artist -Track Track
 
                 $amParams = @{
@@ -279,7 +279,7 @@ InModuleScope PowerLFM {
                 Set-LFMTrackNowPlaying -Artist Artist -Track Track
 
                 $amParams = @{
-                    CommandName     = 'Get-LFMTrackSignature'
+                    CommandName     = 'Get-LFMSignature'
                     Exactly         = $true
                     Times           = 1
                     Scope           = 'It'
