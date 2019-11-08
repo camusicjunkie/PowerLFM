@@ -22,26 +22,13 @@ function Get-LFMUserFriend {
             'sk' = $LFMConfig.SessionKey
             'format' = 'json'
         }
-
-        switch ($PSBoundParameters.Keys) {
-            'Limit' {$apiParams.Add('limit', $Limit)}
-            'Page' {$apiParams.Add('page', $Page)}
-            'RecentTracks' {$apiParams.Add('recenttracks', 1)}
-        }
     }
     process {
-        if ($PSBoundParameters.ContainsKey('UserName')) {
-            $apiParams.Remove('sk')
-            $apiParams.Add('user', $UserName)
-        }
+        $noCommonParams = Remove-CommonParameter $PSBoundParameters
+        $convertedParams = ConvertTo-LFMParameter $noCommonParams
 
-        #Building string to append to base url
-        $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
-            "$($_.Name)=$($_.Value)"
-        }
-        $string = $keyValues -join '&'
-
-        $apiUrl = "$baseUrl/?$string"
+        $query = New-LFMApiQuery ($convertedParams + $apiParams)
+        $apiUrl = "$baseUrl/?$query"
     }
     end {
         try {

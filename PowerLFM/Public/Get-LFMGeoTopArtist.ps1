@@ -23,22 +23,13 @@ function Get-LFMGeoTopArtist {
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
         }
-
-        switch ($PSBoundParameters.Keys) {
-            'Limit' {$apiParams.Add('limit', $Limit)}
-            'Page' {$apiParams.Add('page', $Page)}
-        }
     }
     process {
-        $apiParams.Add('country', $Country)
+        $noCommonParams = Remove-CommonParameter $PSBoundParameters
+        $convertedParams = ConvertTo-LFMParameter $noCommonParams
 
-        #Building string to append to base url
-        $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
-            "$($_.Name)=$($_.Value)"
-        }
-        $string = $keyValues -join '&'
-
-        $apiUrl = "$baseUrl/?$string"
+        $query = New-LFMApiQuery ($convertedParams + $apiParams)
+        $apiUrl = "$baseUrl/?$query"
     }
     end {
         try {

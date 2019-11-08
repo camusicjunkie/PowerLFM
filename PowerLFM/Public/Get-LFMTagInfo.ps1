@@ -18,21 +18,13 @@ function Get-LFMTagInfo {
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
         }
-
-        switch ($PSBoundParameters.Keys) {
-            'Language' {$apiParams.Add('lang', $Language)}
-        }
     }
     process {
-        $apiParams.Add('tag', $Tag)
+        $noCommonParams = Remove-CommonParameter $PSBoundParameters
+        $convertedParams = ConvertTo-LFMParameter $noCommonParams
 
-        #Building string to append to base url
-        $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
-            "$($_.Name)=$($_.Value)"
-        }
-        $string = $keyValues -join '&'
-
-        $apiUrl = "$baseUrl/?$string"
+        $query = New-LFMApiQuery ($convertedParams + $apiParams)
+        $apiUrl = "$baseUrl/?$query"
     }
     end {
         try {

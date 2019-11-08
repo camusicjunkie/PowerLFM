@@ -20,33 +20,21 @@ function Remove-LFMTrackTag {
         [string] $Tag
     )
 
-    process {
-        $apiSigProps = @{
-            'Track' = $Track
-            'Artist' = $Artist
-            'Tag' = $Tag
-            'Method' = 'track.removeTag'
-        }
-        $apiSig = Get-LFMTrackSignature @apiSigProps
-
+    begin {
         $apiParams = @{
             'method' = 'track.removeTag'
             'api_key' = $LFMConfig.APIKey
             'sk' = $LFMConfig.SessionKey
-            'api_sig' = $apiSig
         }
+    }
+    process {
+        $noCommonParams = Remove-CommonParameter $PSBoundParameters
+        $apiSig = Get-LFMSignature -Method $apiParams.Method @noCommonParams
+        $apiParams.Add('api_sig', $apiSig)
 
-        $apiParams.Add('track', $Track)
-        $apiParams.Add('artist', $Artist)
-        $apiParams.Add('tag', $Tag)
-
-        #Building string to append to base url
-        $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
-            "$($_.Name)=$($_.Value)"
-        }
-        $string = $keyValues -join '&'
-
-        $apiUrl = "$baseUrl/?$string"
+        $convertedParams = ConvertTo-LFMParameter $noCommonParams
+        $query = New-LFMApiQuery ($convertedParams + $apiParams)
+        $apiUrl = "$baseUrl/?$query"
     }
     end {
         if ($PSCmdlet.ShouldProcess("Track: $Track", "Removing track tag: $Tag")) {

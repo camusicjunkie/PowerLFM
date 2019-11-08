@@ -32,26 +32,13 @@ function Get-LFMArtistTopAlbum {
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
         }
-
-        switch ($PSBoundParameters.Keys) {
-            'AutoCorrect' {$apiParams.Add('autocorrect', 1)}
-            'Limit' {$apiParams.Add('limit', $Limit)}
-            'Page' {$apiParams.Add('page', $Page)}
-        }
     }
     process {
-        switch ($PSCmdlet.ParameterSetName) {
-            'artist' {$apiParams.Add('artist', $Artist)}
-            'id' {$apiParams.Add('mbid', $Id)}
-        }
+        $noCommonParams = Remove-CommonParameter $PSBoundParameters
+        $convertedParams = ConvertTo-LFMParameter $noCommonParams
 
-        #Building string to append to base url
-        $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
-            "$($_.Name)=$($_.Value)"
-        }
-        $string = $keyValues -join '&'
-
-        $apiUrl = "$baseUrl/?$string"
+        $query = New-LFMApiQuery ($convertedParams + $apiParams)
+        $apiUrl = "$baseUrl/?$query"
     }
     end {
         try {

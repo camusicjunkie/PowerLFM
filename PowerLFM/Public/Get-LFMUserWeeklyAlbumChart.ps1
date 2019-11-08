@@ -24,23 +24,11 @@ function Get-LFMUserWeeklyAlbumChart {
         }
     }
     process {
-        switch ($PSBoundParameters.Keys) {
-            'StartDate' {$apiParams.Add('from', (ConvertTo-UnixTime -Date $StartDate))}
-            'EndDate' {$apiParams.Add('to', (ConvertTo-UnixTime -Date $EndDate))}
-        }
+        $noCommonParams = Remove-CommonParameter $PSBoundParameters
+        $convertedParams = ConvertTo-LFMParameter $noCommonParams
 
-        if ($PSBoundParameters.ContainsKey('UserName')) {
-            $apiParams.Remove('sk')
-            $apiParams.Add('user', $UserName)
-        }
-
-        #Building string to append to base url
-        $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
-            "$($_.Name)=$($_.Value)"
-        }
-        $string = $keyValues -join '&'
-
-        $apiUrl = "$baseUrl/?$string"
+        $query = New-LFMApiQuery ($convertedParams + $apiParams)
+        $apiUrl = "$baseUrl/?$query"
     }
     end {
         try {
