@@ -228,24 +228,24 @@ InModuleScope PowerLFM {
 
         Mock Remove-CommonParameter {
             [hashtable] @{
-                Track = 'Track'
+                Track  = 'Track'
                 Artist = 'Artist'
             }
         }
         Mock ConvertTo-LFMParameter { $InputObject }
         Mock Get-LFMTrackSignature
         Mock Invoke-RestMethod
-        Mock Get-LFMIgnoredMessage { @{Code = 0 } }
+        Mock Get-LFMIgnoredMessage { @{ Code = 0 } }
         Mock Write-Verbose
 
         Context 'Input' {
 
             It 'Should throw when artist is null' {
-                {Set-LFMTrackNowPlaying -Artist $null} | Should -Throw
+                { Set-LFMTrackNowPlaying -Artist $null } | Should -Throw
             }
 
             It 'Should throw when track is null' {
-                {Set-LFMTrackNowPlaying -Track $null} | Should -Throw
+                { Set-LFMTrackNowPlaying -Track $null } | Should -Throw
             }
         }
 
@@ -256,9 +256,9 @@ InModuleScope PowerLFM {
 
                 $amParams = @{
                     CommandName = 'Remove-CommonParameter'
-                    Exactly = $true
-                    Times = 1
-                    Scope = 'It'
+                    Exactly     = $true
+                    Times       = 1
+                    Scope       = 'It'
                 }
                 Assert-MockCalled @amParams
             }
@@ -268,9 +268,9 @@ InModuleScope PowerLFM {
 
                 $amParams = @{
                     CommandName = 'ConvertTo-LFMParameter'
-                    Exactly = $true
-                    Times = 1
-                    Scope = 'It'
+                    Exactly     = $true
+                    Times       = 1
+                    Scope       = 'It'
                 }
                 Assert-MockCalled @amParams
             }
@@ -279,10 +279,10 @@ InModuleScope PowerLFM {
                 Set-LFMTrackNowPlaying -Artist Artist -Track Track
 
                 $amParams = @{
-                    CommandName = 'Get-LFMTrackSignature'
-                    Exactly = $true
-                    Times = 1
-                    Scope = 'It'
+                    CommandName     = 'Get-LFMTrackSignature'
+                    Exactly         = $true
+                    Times           = 1
+                    Scope           = 'It'
                     ParameterFilter = {
                         $Artist -eq 'Artist' -and
                         $Track -eq 'Track' -and
@@ -301,7 +301,7 @@ InModuleScope PowerLFM {
             }
 
             It "Should output an object when -PassThru is used" {
-                Mock Invoke-LFMApiUri {$contextMock}
+                Mock Invoke-LFMApiUri { $contextMock }
 
                 $output = Set-LFMTrackNowPlaying -Artist Artist -Track Track -PassThru
                 $output.Artist | Should -Be $contextMock.NowPlaying.Artist.'#text'
@@ -310,9 +310,9 @@ InModuleScope PowerLFM {
             }
 
             It "Should throw when ignored message code is 1" {
-                Mock Get-LFMIgnoredMessage {@{Code = 1}}
+                Mock Get-LFMIgnoredMessage { @{ Code = 1 } }
 
-                {Set-LFMTrackNowPlaying -Artist Artist -Track Track} | Should -Throw
+                { Set-LFMTrackNowPlaying -Artist Artist -Track Track } | Should -Throw
             }
         }
     }
