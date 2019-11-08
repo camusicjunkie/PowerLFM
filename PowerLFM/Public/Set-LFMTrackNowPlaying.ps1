@@ -41,11 +41,10 @@ function Set-LFMTrackNowPlaying {
     }
     process {
         $noCommonParams = Remove-CommonParameter $PSBoundParameters
-        $convertedParams = ConvertTo-LFMParameter $noCommonParams
-
-        $apiSig = Get-LFMTrackSignature -Method $apiParams.Method @convertedParams
+        $apiSig = Get-LFMSignature -Method $apiParams.Method @noCommonParams
         $apiParams.Add('api_sig', $apiSig)
 
+        $convertedParams = ConvertTo-LFMParameter $noCommonParams
         $query = New-LFMApiQuery ($convertedParams + $apiParams)
         $apiUrl = "$baseUrl/?$query"
     }

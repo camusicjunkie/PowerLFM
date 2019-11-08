@@ -13,44 +13,33 @@ function Request-LFMToken {
         [string] $SharedSecret
     )
 
+    $apiParams = @{
+        'method' = 'auth.getToken'
+        'api_key' = $ApiKey
+        'format' = 'json'
+    }
+
+    $noCommonParams = Remove-CommonParameter $PSBoundParameters
+    $apiSig = Get-LFMAuthSignature -Method $apiParams.Method @noCommonParams
+    $apiParams.Add('api_sig', $apiSig)
+
+    $query = New-LFMApiQuery $apiParams
+    $apiUrl = "$baseUrl/?$query"
+
     try {
-        $sigParams = @{
-            'ApiKey' = $ApiKey
-            'Method' = 'auth.getToken'
-            'SharedSecret' = $SharedSecret
-        }
-        $apiSig = Get-LFMAuthSignature @sigParams
-        Write-Verbose "Signature MD5 Hash: $apiSig"
-
-        $apiParams = @{
-            'method' = 'auth.getToken'
-            'api_key' = $APIKey
-            'api_sig' = $apiSig
-            'format' = 'json'
-        }
-
-        #Building string to append to base url
-        $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
-            "$($_.Name)=$($_.Value)"
-        }
-        $string = $keyValues -join '&'
-
-        $apiUrl = "$baseUrl/?$string"
-
         Write-Verbose "Requesting token from $baseUrl"
-        $token = (Invoke-RestMethod -Uri $apiUrl).Token
+        $token = (Invoke-LFMApiUri -Uri $apiUrl).Token
 
         Write-Verbose "Authorizing application with requested token on account"
         Show-LFMAuthWindow -Url "http://www.last.fm/api/auth/?api_key=$ApiKey&token=$token"
 
-        $obj = [PSCustomObject] @{
+        $obj = [pscustomobject] @{
             'ApiKey' = $ApiKey
             'Token' = $token
             'SharedSecret' = $SharedSecret
         }
         Write-Output $obj
-    }
-    catch {
-        Write-Error $_.Exception.Message
+    } catch {
+        throw $_
     }
 }
