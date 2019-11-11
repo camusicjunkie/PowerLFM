@@ -14,10 +14,11 @@ function Get-LFMSignature {
         [string] $Artist,
         [string[]] $Tag,
         [string] $Track,
-        [double] $Timestamp,
+        [datetime] $Timestamp,
         [int] $TrackNumber,
         [int] $Duration,
         [guid] $Id,
+        [switch] $Passthru,
         [string] $ApiKey,
         [string] $SharedSecret,
         [string] $Token
