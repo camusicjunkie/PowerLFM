@@ -62,19 +62,19 @@ function Set-LFMTrackScrobble {
             try {
                 $irm = Invoke-LFMApiUri -Uri $apiUrl -Method Post
 
-                $code = Get-LFMIgnoredMessage -Code $irm.NowPlaying.IgnoredMessage.Code
+                $code = Get-LFMIgnoredMessage -Code $irm.Scrobbles.Scrobble.IgnoredMessage.Code
                 if ($code.Code -ne 0) {
                     throw "Request has been filtered because of bad meta data. $($code.Message)."
                 }
 
-                #if ($PassThru) {
-                #    [pscustomobject] @{
-                #        PSTypeName = 'PowerLFM.Track.Scrobble'
-                #        Artist = $irm.NowPlaying.Artist.'#text'
-                #        Album = $irm.NowPlaying.Album.'#text'
-                #        Track = $irm.NowPlaying.Track.'#text'
-                #    }
-                #}
+                if ($PassThru) {
+                    [pscustomobject] @{
+                        PSTypeName = 'PowerLFM.Track.Scrobble'
+                        Artist = $irm.Scrobbles.Scrobble.Artist.'#text'
+                        Album = $irm.Scrobbles.Scrobble.Album.'#text'
+                        Track = $irm.Scrobbles.Scrobble.Track.'#text'
+                    }
+                }
             }
             catch {
                 throw $_
