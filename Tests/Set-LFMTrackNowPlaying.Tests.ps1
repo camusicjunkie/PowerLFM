@@ -232,11 +232,11 @@ InModuleScope PowerLFM {
                 Artist = 'Artist'
             }
         }
-        Mock ConvertTo-LFMParameter { $InputObject }
+        Mock ConvertTo-LFMParameter
         Mock Get-LFMSignature
+        Mock New-LFMApiQuery
         Mock Invoke-LFMApiUri
         Mock Get-LFMIgnoredMessage { @{ Code = 0 } }
-        Mock Write-Verbose
 
         Context 'Input' {
 
@@ -251,38 +251,25 @@ InModuleScope PowerLFM {
 
         Context 'Execution' {
 
-            It "Should remove common parameters from bound parameters" {
-                Set-LFMTrackNowPlaying -Artist Artist -Track Track
+            Set-LFMTrackNowPlaying -Artist Artist -Track Track
 
+            It "Should remove common parameters from bound parameters" {
                 $amParams = @{
                     CommandName = 'Remove-CommonParameter'
                     Exactly     = $true
                     Times       = 1
-                    Scope       = 'It'
-                }
-                Assert-MockCalled @amParams
-            }
-
-            It "Should convert parameters to format API expects after signing" {
-                Set-LFMTrackNowPlaying -Artist Artist -Track Track
-
-                $amParams = @{
-                    CommandName = 'ConvertTo-LFMParameter'
-                    Exactly     = $true
-                    Times       = 1
-                    Scope       = 'It'
+                    ParameterFilter = {
+                        $PSBoundParameters
+                    }
                 }
                 Assert-MockCalled @amParams
             }
 
             It 'Should create a signature from the parameters passed in' {
-                Set-LFMTrackNowPlaying -Artist Artist -Track Track
-
                 $amParams = @{
                     CommandName     = 'Get-LFMSignature'
                     Exactly         = $true
                     Times           = 1
-                    Scope           = 'It'
                     ParameterFilter = {
                         $Artist -eq 'Artist' -and
                         $Track -eq 'Track' -and
@@ -291,9 +278,55 @@ InModuleScope PowerLFM {
                 }
                 Assert-MockCalled @amParams
             }
+
+            It "Should convert parameters to format API expects after signing" {
+                $amParams = @{
+                    CommandName = 'ConvertTo-LFMParameter'
+                    Exactly     = $true
+                    Times       = 1
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It "Should take hashtable and build a query for a uri" {
+                $amParams = @{
+                    CommandName = 'New-LFMApiQuery'
+                    Exactly     = $true
+                    Times       = 1
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It "Should check to see if the response has not been filtered" {
+                $amParams = @{
+                    CommandName = 'Get-LFMIgnoredMessage'
+                    Exactly     = $true
+                    Times       = 1
+                    ParameterFilter = {
+                        $Code -eq 0
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
         }
 
         Context 'Output' {
+
+            It 'Should call the Last.fm Rest API for album.addTags post method' {
+                Set-LFMTrackNowPlaying -Track Track -Artist Artist
+
+                $amParams = @{
+                    CommandName     = 'Invoke-LFMApiUri'
+                    Exactly         = $true
+                    Times           = 1
+                    Scope           = 'It'
+                    ParameterFilter = {
+                        $Method -eq 'Post' -and
+                        $Uri -like 'https://ws.audioscrobbler.com/2.0*'
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
 
             It 'Should send proper output when -Whatif is used' {
                 $output = Set-LFMTrackNowPlaying -Artist Artist -Track Track -Verbose 4>&1
@@ -310,9 +343,15 @@ InModuleScope PowerLFM {
             }
 
             It "Should throw when ignored message code is 1" {
-                Mock Get-LFMIgnoredMessage { @{ Code = 1 } }
+                Mock Get-LFMIgnoredMessage { @{ Code = 1; Message = 'Filtered message' } }
 
-                { Set-LFMTrackNowPlaying -Artist Artist -Track Track } | Should -Throw
+                { Set-LFMTrackNowPlaying -Artist Artist -Track Track } | Should -Throw 'Filtered message'
+            }
+
+            It "Should throw when an error is returned in the response" {
+                Mock Invoke-LFMApiUri { throw 'Error' }
+
+                { Set-LFMTrackNowPlaying -Track Track -Artist Artist } | Should -Throw 'Error'
             }
         }
     }

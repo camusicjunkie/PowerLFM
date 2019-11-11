@@ -89,52 +89,64 @@ Describe 'Add-LFMArtistTag: Interface' -Tag Interface {
 
 InModuleScope PowerLFM {
 
-    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-
     Describe 'Add-LFMArtistTag: Unit' -Tag Unit {
 
-        Mock Get-LFMArtistSignature
-        Mock Invoke-RestMethod
-        Mock Write-Verbose
+        Mock Remove-CommonParameter {
+            [hashtable] @{
+                Artist = 'Artist'
+                Tag = 'Tag'
+            }
+        }
+        Mock ConvertTo-LFMParameter
+        Mock Get-LFMSignature
+        Mock New-LFMApiQuery
+        Mock Invoke-LFMApiUri
+        Mock Get-LFMIgnoredMessage { @{ Code = 0 } }
 
         Context 'Input' {
 
             It 'Should throw when Artist is null' {
-                {Add-LFMArtistTag -Artist $null} | Should -Throw
+                { Add-LFMArtistTag -Artist $null } | Should -Throw
             }
 
             It 'Should throw when Tag has more than 10 values' {
                 $aatParams = @{
                     Artist = 'Artist'
-                    Tag = @(1..11)
+                    Tag    = @(1..11)
                 }
-                {Add-LFMArtistTag @aatParams} | Should -Throw
+                { Add-LFMArtistTag @aatParams } | Should -Throw
             }
 
             It 'Should not throw when Tag has 1 to 10 values' {
                 $aatParams = @{
                     Artist = 'Artist'
-                    Tag = @(1..10)
+                    Tag    = @(1..10)
                 }
-                {Add-LFMArtistTag @aatParams} | Should -Not -Throw
+                { Add-LFMArtistTag @aatParams } | Should -Not -Throw
             }
         }
 
         Context 'Execution' {
 
-            Mock ForEach-Object
+            Add-LFMArtistTag -Artist Artist -Tag Tag
 
-            $aatParams = @{
-                Artist = 'Artist'
-                Tag = 'Tag'
+            It "Should remove common parameters from bound parameters" {
+                $amParams = @{
+                    CommandName     = 'Remove-CommonParameter'
+                    Exactly         = $true
+                    Times           = 1
+                    ParameterFilter = {
+                        $PSBoundParameters
+                    }
+                }
+                Assert-MockCalled @amParams
             }
-            Add-LFMArtistTag @aatParams
 
             It 'Should create a signature from the parameters passed in' {
                 $amParams = @{
-                    CommandName = 'Get-LFMArtistSignature'
-                    Exactly = $true
-                    Times = 1
+                    CommandName     = 'Get-LFMSignature'
+                    Exactly         = $true
+                    Times           = 1
                     ParameterFilter = {
                         $Artist -eq 'Artist' -and
                         $Tag -eq 'Tag' -and
@@ -144,11 +156,20 @@ InModuleScope PowerLFM {
                 Assert-MockCalled @amParams
             }
 
-            It 'Should loop through each parameter in url string' {
+            It "Should convert parameters to format API expects after signing" {
                 $amParams = @{
-                    CommandName = 'Foreach-Object'
-                    Exactly = $true
-                    Times = 6
+                    CommandName = 'ConvertTo-LFMParameter'
+                    Exactly     = $true
+                    Times       = 1
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It "Should take hashtable and build a query for a uri" {
+                $amParams = @{
+                    CommandName = 'New-LFMApiQuery'
+                    Exactly     = $true
+                    Times       = 1
                 }
                 Assert-MockCalled @amParams
             }
@@ -156,43 +177,31 @@ InModuleScope PowerLFM {
 
         Context 'Output' {
 
-            $aatParams = @{
-                Artist = 'Artist'
-                Tag = 'Tag'
-            }
-
-            It 'Should call the Last.fm Rest API for artist.addTags post method' {
-                Add-LFMArtistTag @aatParams
+            It 'Should call the Last.fm Rest API for album.addTags post method' {
+                Add-LFMArtistTag -Artist Artist -Tag Tag
 
                 $amParams = @{
-                    CommandName = 'Invoke-RestMethod'
-                    Exactly = $true
-                    Times = 1
-                    Scope = 'It'
+                    CommandName     = 'Invoke-LFMApiUri'
+                    Exactly         = $true
+                    Times           = 1
+                    Scope           = 'It'
                     ParameterFilter = {
-                        $Method -eq 'Post'
+                        $Method -eq 'Post' -and
+                        $Uri -like 'https://ws.audioscrobbler.com/2.0*'
                     }
                 }
                 Assert-MockCalled @amParams
             }
 
             It 'Should send proper output when -Whatif is used' {
-                $output = Add-LFMArtistTag @aatParams -Verbose 4>&1
+                $output = Add-LFMArtistTag -Artist Artist -Tag Tag -Verbose 4>&1
                 $output | Should -Match 'Performing the operation "Adding artist tag: Tag" on target "Artist: Artist".'
             }
 
-            It 'Should send verbose output when -Verbose is used' {
-                Mock Invoke-RestMethod {$mocks}
+            It "Should throw when an error is returned in the response" {
+                Mock Invoke-LFMApiUri { throw 'Error' }
 
-                Add-LFMArtistTag @aatParams -Verbose 4>&1
-
-                $amParams = @{
-                    CommandName = 'Write-Verbose'
-                    Exactly = $true
-                    Times = 1
-                    Scope = 'It'
-                }
-                Assert-MockCalled @amParams
+                { Add-LFMArtistTag -Artist Artist -Tag Tag } | Should -Throw 'Error'
             }
         }
     }
@@ -204,8 +213,8 @@ Describe 'Add-LFMArtistTag: Integration' -Tag Integration {
         Get-LFMConfiguration
 
         $atParams = @{
-            Artist = 'Deftones'
-            Tag = 'randomValue'
+            Artist  = 'Deftones'
+            Tag     = 'randomValue'
             Confirm = $false
         }
         Remove-LFMArtistTag @atParams
@@ -221,8 +230,8 @@ Describe 'Add-LFMArtistTag: Integration' -Tag Integration {
         It "Should add the new random value tag to the artist" {
             Add-LFMArtistTag @atParams
             $tag = Get-LFMArtistTag -Artist Deftones
-            @($tag).Where({$_.Tag -eq 'randomValue'}).Tag | Should -Not -BeNullOrEmpty
-            @($tag).Where({$_.Tag -eq 'randomValue'}).Tag | Should -Be 'randomValue'
+            @($tag).Where( { $_.Tag -eq 'randomValue' }).Tag | Should -Not -BeNullOrEmpty
+            @($tag).Where( { $_.Tag -eq 'randomValue' }).Tag | Should -Be 'randomValue'
         }
     }
 
