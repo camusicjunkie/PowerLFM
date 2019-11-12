@@ -48,10 +48,6 @@ $album.Tags
 
 ## Currently unsupported methods
 
-* Track
-  * [track.scrobble](https://www.last.fm/api/show/track.scrobble)
-  * [track.updateNowPlaying](https://www.last.fm/api/show/track.updateNowPlaying)
-
 ## Currently supported methods
 
 * Album
@@ -103,6 +99,8 @@ $album.Tags
   * [track.removeTag](https://www.last.fm/api/show/track.removeTag)
   * [track.search](https://www.last.fm/api/show/track.search)
   * [track.unlove](https://www.last.fm/api/show/track.unlove)
+  * [track.scrobble](https://www.last.fm/api/show/track.scrobble)
+  * [track.updateNowPlaying](https://www.last.fm/api/show/track.updateNowPlaying)
 * User
   * [user.getFriends](https://www.last.fm/api/show/user.getFriends)
   * [user.getInfo](https://www.last.fm/api/show/user.getInfo)
