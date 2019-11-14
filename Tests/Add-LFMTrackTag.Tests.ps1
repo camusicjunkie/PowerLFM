@@ -216,7 +216,7 @@ InModuleScope PowerLFM {
 
         Context 'Output' {
 
-            It 'Should call the Last.fm Rest API for track.addTags post method' {
+            It 'Should call the correct Last.fm post method' {
                 Add-LFMTrackTag -Track Track -Artist Artist -Tag Tag -Confirm:$false
 
                 $amParams = @{

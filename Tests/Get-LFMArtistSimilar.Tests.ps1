@@ -328,7 +328,7 @@ InModuleScope PowerLFM {
                 $output.Artist | Should -HaveCount 2
             }
 
-            It 'Should call the Last.fm Rest API for album.getTopTag get method' {
+            It 'Should call the correct Last.fm get method' {
                 Get-LFMArtistSimilar -Artist Artist
 
                 $amParams = @{

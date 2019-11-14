@@ -169,7 +169,7 @@ InModuleScope PowerLFM {
 
         Context 'Output' {
 
-            It 'Should call the Last.fm Rest API for artist.removeTag post method' {
+            It 'Should call the correct Last.fm post method' {
                 Remove-LFMArtistTag -Artist Artist -Tag Tag -Confirm:$false
 
                 $amParams = @{

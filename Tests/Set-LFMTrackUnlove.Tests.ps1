@@ -169,7 +169,7 @@ InModuleScope PowerLFM {
 
         Context 'Output' {
 
-            It 'Should call the Last.fm Rest API for track.unlove post method' {
+            It 'Should call the correct Last.fm post method' {
                 Set-LFMTrackUnlove -Artist Artist -Track Track -Confirm:$false
 
                 $amParams = @{

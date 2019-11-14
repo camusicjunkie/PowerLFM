@@ -405,7 +405,7 @@ InModuleScope PowerLFM {
                 $output.Tracks | Should -HaveCount 2
             }
 
-            It 'Should call the Last.fm Rest API for album.getInfo get method' {
+            It 'Should call the correct Last.fm get method' {
                 Get-LFMAlbumInfo -Album Album -Artist Artist
 
                 $amParams = @{
