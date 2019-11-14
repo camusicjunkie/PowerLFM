@@ -2,7 +2,7 @@ function Add-LFMArtistTag {
     # .ExternalHelp PowerLFM-help.xml
 
     [CmdletBinding(SupportsShouldProcess,
-                   ConfirmImpact = 'Medium')]
+                   ConfirmImpact = 'High')]
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]

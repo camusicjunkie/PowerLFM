@@ -2,7 +2,7 @@ function Add-LFMTrackTag {
     # .ExternalHelp PowerLFM-help.xml
 
     [CmdletBinding(SupportsShouldProcess,
-                   ConfirmImpact = 'Medium')]
+                   ConfirmImpact = 'High')]
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
