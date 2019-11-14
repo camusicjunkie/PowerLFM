@@ -370,9 +370,9 @@ InModuleScope PowerLFM {
                 $output.Listeners | Should -Be $contextMock.Track.Listeners
             }
 
-            It "Track should have playcount with a value of $($contextMock.Track.Playcount)" {
-                $output.Playcount | Should -BeOfType [int]
-                $output.Playcount | Should -Be $contextMock.Track.Playcount
+            It "Track should have playcount with a value of $($contextMock.Track.PlayCount)" {
+                $output.PlayCount | Should -BeOfType [int]
+                $output.PlayCount | Should -Be $contextMock.Track.PlayCount
             }
 
             It "Track first tag should have name of $($contextMock.Track.TopTags.Tag[0].Name)" {

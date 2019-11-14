@@ -148,6 +148,7 @@ InModuleScope PowerLFM {
                     Track = 'Track'
                     Artist = 'Artist'
                     Tag = @(1..11)
+                    Confirm = $false
                 }
                 {Add-LFMTrackTag @aatParams} | Should -Throw
             }
@@ -157,6 +158,7 @@ InModuleScope PowerLFM {
                     Track = 'Track'
                     Artist = 'Artist'
                     Tag = @(1..10)
+                    Confirm = $false
                 }
                 {Add-LFMTrackTag @aatParams} | Should -Not -Throw
             }
@@ -164,7 +166,7 @@ InModuleScope PowerLFM {
 
         Context 'Execution' {
 
-            Add-LFMTrackTag -Track Track -Artist Artist -Tag Tag
+            Add-LFMTrackTag -Track Track -Artist Artist -Tag Tag -Confirm:$false
 
             It "Should remove common parameters from bound parameters" {
                 $amParams = @{
@@ -215,7 +217,7 @@ InModuleScope PowerLFM {
         Context 'Output' {
 
             It 'Should call the Last.fm Rest API for track.addTags post method' {
-                Add-LFMTrackTag -Track Track -Artist Artist -Tag Tag
+                Add-LFMTrackTag -Track Track -Artist Artist -Tag Tag -Confirm:$false
 
                 $amParams = @{
                     CommandName = 'Invoke-LFMApiUri'
@@ -231,14 +233,14 @@ InModuleScope PowerLFM {
             }
 
             It 'Should send proper output when -Whatif is used' {
-                $output = Add-LFMTrackTag -Track Track -Artist Artist -Tag Tag -Verbose 4>&1
+                $output = Add-LFMTrackTag -Track Track -Artist Artist -Tag Tag -Confirm:$false -Verbose 4>&1
                 $output | Should -Match 'Performing the operation "Adding track tag: Tag" on target "Track: Track".'
             }
 
             It "Should throw when an error is returned in the response" {
                 Mock Invoke-LFMApiUri { throw 'Error' }
 
-                { Add-LFMTrackTag -Track Track -Artist Artist -Tag Tag } | Should -Throw 'Error'
+                { Add-LFMTrackTag -Track Track -Artist Artist -Tag Tag -Confirm:$false } | Should -Throw 'Error'
             }
         }
     }

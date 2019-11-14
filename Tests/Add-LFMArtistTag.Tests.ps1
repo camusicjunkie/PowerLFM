@@ -113,6 +113,7 @@ InModuleScope PowerLFM {
                 $aatParams = @{
                     Artist = 'Artist'
                     Tag    = @(1..11)
+                    Confirm = $false
                 }
                 { Add-LFMArtistTag @aatParams } | Should -Throw
             }
@@ -121,6 +122,7 @@ InModuleScope PowerLFM {
                 $aatParams = @{
                     Artist = 'Artist'
                     Tag    = @(1..10)
+                    Confirm = $false
                 }
                 { Add-LFMArtistTag @aatParams } | Should -Not -Throw
             }
@@ -128,7 +130,7 @@ InModuleScope PowerLFM {
 
         Context 'Execution' {
 
-            Add-LFMArtistTag -Artist Artist -Tag Tag
+            Add-LFMArtistTag -Artist Artist -Tag Tag -Confirm:$false
 
             It "Should remove common parameters from bound parameters" {
                 $amParams = @{
@@ -177,8 +179,8 @@ InModuleScope PowerLFM {
 
         Context 'Output' {
 
-            It 'Should call the Last.fm Rest API for album.addTags post method' {
-                Add-LFMArtistTag -Artist Artist -Tag Tag
+            It 'Should call the Last.fm Rest API for artist.addTags post method' {
+                Add-LFMArtistTag -Artist Artist -Tag Tag -Confirm:$false
 
                 $amParams = @{
                     CommandName     = 'Invoke-LFMApiUri'
@@ -194,14 +196,14 @@ InModuleScope PowerLFM {
             }
 
             It 'Should send proper output when -Whatif is used' {
-                $output = Add-LFMArtistTag -Artist Artist -Tag Tag -Verbose 4>&1
+                $output = Add-LFMArtistTag -Artist Artist -Tag Tag -Verbose 4>&1 -Confirm:$false
                 $output | Should -Match 'Performing the operation "Adding artist tag: Tag" on target "Artist: Artist".'
             }
 
             It "Should throw when an error is returned in the response" {
                 Mock Invoke-LFMApiUri { throw 'Error' }
 
-                { Add-LFMArtistTag -Artist Artist -Tag Tag } | Should -Throw 'Error'
+                { Add-LFMArtistTag -Artist Artist -Tag Tag -Confirm:$false } | Should -Throw 'Error'
             }
         }
     }

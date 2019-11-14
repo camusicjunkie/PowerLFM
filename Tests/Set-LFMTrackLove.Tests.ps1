@@ -89,13 +89,19 @@ Describe 'Set-LFMTrackLove: Interface' -Tag Interface {
 
 InModuleScope PowerLFM {
 
-    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-
     Describe 'Set-LFMTrackLove: Unit' -Tag Unit {
 
-        Mock Get-LFMTrackSignature
-        Mock Invoke-RestMethod
-        Mock Write-Verbose
+        Mock Remove-CommonParameter {
+            [hashtable] @{
+                Artist = 'Artist'
+                Track = 'Track'
+            }
+        }
+        Mock ConvertTo-LFMParameter
+        Mock Get-LFMSignature
+        Mock New-LFMApiQuery
+        Mock Invoke-LFMApiUri
+        Mock Get-LFMIgnoredMessage { @{ Code = 0 } }
 
         Context 'Input' {
 
@@ -114,20 +120,25 @@ InModuleScope PowerLFM {
 
         Context 'Execution' {
 
-            Mock ForEach-Object
+            Set-LFMTrackLove -Artist Artist -Track Track -Confirm:$false
 
-            $aatParams = @{
-                Artist = 'Artist'
-                Track = 'Track'
-                Confirm = $false
+            It "Should remove common parameters from bound parameters" {
+                $amParams = @{
+                    CommandName     = 'Remove-CommonParameter'
+                    Exactly         = $true
+                    Times           = 1
+                    ParameterFilter = {
+                        $PSBoundParameters
+                    }
+                }
+                Assert-MockCalled @amParams
             }
-            Set-LFMTrackLove @aatParams
 
             It 'Should create a signature from the parameters passed in' {
                 $amParams = @{
-                    CommandName = 'Get-LFMTrackSignature'
-                    Exactly = $true
-                    Times = 1
+                    CommandName     = 'Get-LFMSignature'
+                    Exactly         = $true
+                    Times           = 1
                     ParameterFilter = {
                         $Artist -eq 'Artist' -and
                         $Track -eq 'Track' -and
@@ -137,11 +148,20 @@ InModuleScope PowerLFM {
                 Assert-MockCalled @amParams
             }
 
-            It 'Should loop through each parameter in url string' {
+            It "Should convert parameters to format API expects after signing" {
                 $amParams = @{
-                    CommandName = 'Foreach-Object'
-                    Exactly = $true
-                    Times = 6
+                    CommandName = 'ConvertTo-LFMParameter'
+                    Exactly     = $true
+                    Times       = 1
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It "Should take hashtable and build a query for a uri" {
+                $amParams = @{
+                    CommandName = 'New-LFMApiQuery'
+                    Exactly     = $true
+                    Times       = 1
                 }
                 Assert-MockCalled @amParams
             }
@@ -149,44 +169,31 @@ InModuleScope PowerLFM {
 
         Context 'Output' {
 
-            $aatParams = @{
-                Artist = 'Artist'
-                Track = 'Track'
-                Confirm = $false
-            }
-
             It 'Should call the Last.fm Rest API for track.love post method' {
-                Set-LFMTrackLove @aatParams
+                Set-LFMTrackLove -Artist Artist -Track Track -Confirm:$false
 
                 $amParams = @{
-                    CommandName = 'Invoke-RestMethod'
+                    CommandName = 'Invoke-LFMApiUri'
                     Exactly = $true
                     Times = 1
                     Scope = 'It'
                     ParameterFilter = {
-                        $Method -eq 'Post'
+                        $Method -eq 'Post' -and
+                        $Uri -like 'https://ws.audioscrobbler.com/2.0*'
                     }
                 }
                 Assert-MockCalled @amParams
             }
 
             It 'Should send proper output when -Whatif is used' {
-                $output = Set-LFMTrackLove @aatParams -Verbose 4>&1
+                $output = Set-LFMTrackLove -Artist Artist -Track Track -Confirm:$false -Verbose 4>&1
                 $output | Should -Match 'Performing the operation "Adding love" on target "Track: Track".'
             }
 
-            It 'Should send verbose output when -Verbose is used' {
-                Mock Invoke-RestMethod {$mocks}
+            It "Should throw when an error is returned in the response" {
+                Mock Invoke-LFMApiUri { throw 'Error' }
 
-                Set-LFMTrackLove @aatParams -Verbose 4>&1
-
-                $amParams = @{
-                    CommandName = 'Write-Verbose'
-                    Exactly = $true
-                    Times = 1
-                    Scope = 'It'
-                }
-                Assert-MockCalled @amParams
+                { Set-LFMTrackLove -Artist Artist -Track Track -Confirm:$false } | Should -Throw 'Error'
             }
         }
     }

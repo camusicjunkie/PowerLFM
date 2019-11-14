@@ -261,14 +261,14 @@ InModuleScope PowerLFM {
                 $output[0].Artist | Should -Be $contextMock.TopTracks.Track[0].Artist.Name
             }
 
-            It "User first top track should have playcount with a value of $($contextMock.TopTracks.Track[0].Playcount)" {
-                $output[0].Playcount | Should -BeOfType [int]
-                $output[0].Playcount | Should -Be $contextMock.TopTracks.Track[0].Playcount
+            It "User first top track should have playcount with a value of $($contextMock.TopTracks.Track[0].PlayCount)" {
+                $output[0].PlayCount | Should -BeOfType [int]
+                $output[0].PlayCount | Should -Be $contextMock.TopTracks.Track[0].PlayCount
             }
 
-            It "User second top track should have playcount with a value of $($contextMock.TopTracks.Track[1].Playcount)" {
-                $output[1].Playcount | Should -BeOfType [int]
-                $output[1].Playcount | Should -Be $contextMock.TopTracks.Track[1].Playcount
+            It "User second top track should have playcount with a value of $($contextMock.TopTracks.Track[1].PlayCount)" {
+                $output[1].PlayCount | Should -BeOfType [int]
+                $output[1].PlayCount | Should -Be $contextMock.TopTracks.Track[1].PlayCount
             }
 
             It "User second top track should have artist id with a value of $($contextMock.TopTracks.Track[1].Artist.Mbid)" {

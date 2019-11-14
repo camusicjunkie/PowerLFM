@@ -243,7 +243,14 @@ InModuleScope PowerLFM {
 
     Describe 'Get-LFMArtistSimilar: Unit' -Tag Unit {
 
-        Mock Invoke-RestMethod
+        Mock Remove-CommonParameter {
+            [hashtable] @{
+                Artist = 'Artist'
+            }
+        }
+        Mock ConvertTo-LFMParameter
+        Mock New-LFMApiQuery
+        Mock Invoke-LFMApiUri {$contextMock}
 
         Context 'Input' {
 
@@ -254,52 +261,34 @@ InModuleScope PowerLFM {
 
         Context 'Execution' {
 
-            Mock Foreach-Object
+            Get-LFMArtistSimilar -Artist Artist
 
-            $testCases = @(
-                @{
-                    set = 'artist'
-                    times = 4
-                    gasParams = @{
-                        Artist = 'Artist'
-                    }
-                }
-                @{
-                    set = 'artist'
-                    times = 5
-                    gasParams = @{
-                        Artist = 'Artist'
-                        Limit = '5'
-                    }
-                }
-                @{
-                    set = 'artist'
-                    times = 6
-                    gasParams = @{
-                        Artist = 'Artist'
-                        Limit = '5'
-                        AutoCorrect = $true
-                    }
-                }
-                @{
-                    set = 'id'
-                    times = 4
-                    gasParams = @{
-                        Id = (New-Guid)
-                    }
-                }
-            )
-
-            It 'Should call Foreach-Object <times> times building url in <set> parameter set' -TestCases $testCases {
-                param ($times, $gasParams)
-
-                Get-LFMArtistSimilar @gasParams
-
+            It "Should remove common parameters from bound parameters" {
                 $amParams = @{
-                    CommandName = 'Foreach-Object'
-                    Exactly = $true
-                    Times = $times
-                    Scope = 'It'
+                    CommandName     = 'Remove-CommonParameter'
+                    Exactly         = $true
+                    Times           = 1
+                    ParameterFilter = {
+                        $PSBoundParameters
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It "Should convert parameters to format API expects after signing" {
+                $amParams = @{
+                    CommandName = 'ConvertTo-LFMParameter'
+                    Exactly     = $true
+                    Times       = 1
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It "Should take hashtable and build a query for a uri" {
+                $amParams = @{
+                    CommandName = 'New-LFMApiQuery'
+                    Exactly     = $true
+                    Times       = 1
                 }
                 Assert-MockCalled @amParams
             }
@@ -307,11 +296,7 @@ InModuleScope PowerLFM {
 
         Context 'Output' {
 
-            Mock Invoke-RestMethod {$contextMock}
-
-            BeforeEach {
-                $script:output = Get-LFMArtistSimilar -Artist Artist
-            }
+            $output = Get-LFMArtistSimilar -Artist Artist
 
             It "Artist first similar artist should have name of $($contextMock.Similarartists.Artist[0].Name)" {
                 $output[0].Artist | Should -Be $contextMock.Similarartists.Artist[0].Name
@@ -341,6 +326,27 @@ InModuleScope PowerLFM {
             It "Artist should return two similar artists when id parameter is used" {
                 $output = Get-LFMArtistSimilar -Id (New-Guid)
                 $output.Artist | Should -HaveCount 2
+            }
+
+            It 'Should call the Last.fm Rest API for album.getTopTag get method' {
+                Get-LFMArtistSimilar -Artist Artist
+
+                $amParams = @{
+                    CommandName = 'Invoke-LFMApiUri'
+                    Exactly = $true
+                    Times = 1
+                    Scope = 'It'
+                    ParameterFilter = {
+                        $Uri -like 'https://ws.audioscrobbler.com/2.0*'
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It "Should throw when an error is returned in the response" {
+                Mock Invoke-LFMApiUri { throw 'Error' }
+
+                { Get-LFMArtistSimilar -Artist Artist } | Should -Throw 'Error'
             }
         }
     }

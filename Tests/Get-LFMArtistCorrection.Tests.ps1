@@ -65,7 +65,15 @@ InModuleScope PowerLFM {
 
     Describe 'Get-LFMArtistCorrection: Unit' -Tag Unit {
 
-        Mock Invoke-RestMethod
+        Mock Remove-CommonParameter {
+            [hashtable] @{
+                Album = 'Album'
+                Artist = 'Artist'
+            }
+        }
+        Mock ConvertTo-LFMParameter
+        Mock New-LFMApiQuery
+        Mock Invoke-LFMApiUri {$contextMock}
 
         Context 'Input' {
 
@@ -76,40 +84,42 @@ InModuleScope PowerLFM {
 
         Context 'Execution' {
 
-            Mock Foreach-Object
+            Get-LFMArtistCorrection -Artist Artist
 
-            $testCases = @(
-                @{
-                    times = 4
-                    gacParams = @{
-                        Artist = 'Artist'
-                    }
-                }
-            )
-
-            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
-                param ($times, $gacParams)
-
-                Get-LFMArtistCorrection @gacParams
-
+            It "Should remove common parameters from bound parameters" {
                 $amParams = @{
-                    CommandName = 'Foreach-Object'
-                    Exactly = $true
-                    Times = $times
-                    Scope = 'It'
+                    CommandName     = 'Remove-CommonParameter'
+                    Exactly         = $true
+                    Times           = 1
+                    ParameterFilter = {
+                        $PSBoundParameters
+                    }
                 }
                 Assert-MockCalled @amParams
             }
 
+            It "Should convert parameters to format API expects after signing" {
+                $amParams = @{
+                    CommandName = 'ConvertTo-LFMParameter'
+                    Exactly     = $true
+                    Times       = 1
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It "Should take hashtable and build a query for a uri" {
+                $amParams = @{
+                    CommandName = 'New-LFMApiQuery'
+                    Exactly     = $true
+                    Times       = 1
+                }
+                Assert-MockCalled @amParams
+            }
         }
 
         Context 'Output' {
 
-            Mock Invoke-RestMethod {$contextMock}
-
-            BeforeEach {
-                $script:output = Get-LFMArtistCorrection -Artist Artist
-            }
+            $output = Get-LFMArtistCorrection -Artist Artist
 
             It "Artist should have corrected name of $($contextMock.Corrections.Correction.Artist.Name)" {
                 $output.Artist | Should -Be $contextMock.Corrections.Correction.Artist.Name
@@ -126,6 +136,27 @@ InModuleScope PowerLFM {
             It 'Artist should not have more than 1 correction' {
                 $output.Artist | Should -Not -BeNullOrEmpty
                 $output.Artist | Should -Not -HaveCount 2
+            }
+
+            It 'Should call the Last.fm Rest API for album.getTopTag get method' {
+                Get-LFMArtistCorrection -Artist Artist
+
+                $amParams = @{
+                    CommandName = 'Invoke-LFMApiUri'
+                    Exactly = $true
+                    Times = 1
+                    Scope = 'It'
+                    ParameterFilter = {
+                        $Uri -like 'https://ws.audioscrobbler.com/2.0*'
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It "Should throw when an error is returned in the response" {
+                Mock Invoke-LFMApiUri { throw 'Error' }
+
+                { Get-LFMArtistCorrection -Artist Artisty } | Should -Throw 'Error'
             }
         }
     }

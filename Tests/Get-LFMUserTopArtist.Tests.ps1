@@ -265,9 +265,9 @@ InModuleScope PowerLFM {
                 $output[1].Url | Should -Be $contextMock.TopArtists.Artist[1].Url
             }
 
-            It "User second top artist should have playcount with a value of $($contextMock.TopArtists.Artist[1].Playcount)" {
-                $output[1].Playcount | Should -BeOfType [int]
-                $output[1].Playcount | Should -Be $contextMock.TopArtists.Artist[1].Playcount
+            It "User second top artist should have playcount with a value of $($contextMock.TopArtists.Artist[1].PlayCount)" {
+                $output[1].PlayCount | Should -BeOfType [int]
+                $output[1].PlayCount | Should -Be $contextMock.TopArtists.Artist[1].PlayCount
             }
 
             It 'User should have two top artists' {

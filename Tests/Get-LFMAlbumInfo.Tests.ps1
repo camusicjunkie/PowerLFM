@@ -276,7 +276,15 @@ InModuleScope PowerLFM {
 
     Describe 'Get-LFMAlbumInfo: Unit' -Tag Unit {
 
-        Mock Invoke-RestMethod
+        Mock Remove-CommonParameter {
+            [hashtable] @{
+                Album = 'Album'
+                Artist = 'Artist'
+            }
+        }
+        Mock ConvertTo-LFMParameter
+        Mock New-LFMApiQuery
+        Mock Invoke-LFMApiUri {$contextMock}
 
         Context 'Input' {
 
@@ -287,55 +295,34 @@ InModuleScope PowerLFM {
 
         Context 'Execution' {
 
-            Mock Foreach-Object
+            Get-LFMAlbumInfo -Album Album -Artist Artist
 
-            $testCases = @(
-                @{
-                    set = 'album'
-                    times = 5
-                    gaiParams = @{
-                        Album = 'Album'
-                        Artist = 'Artist'
-                    }
-                }
-                @{
-                    set = 'album'
-                    times = 6
-                    gaiParams = @{
-                        Album = 'Album'
-                        Artist = 'Artist'
-                        UserName = 'camusicjunkie'
-                    }
-                }
-                @{
-                    set = 'album'
-                    times = 7
-                    gaiParams = @{
-                        Album = 'Album'
-                        Artist = 'Artist'
-                        UserName = 'camusicjunkie'
-                        AutoCorrect = $true
-                    }
-                }
-                @{
-                    set = 'id'
-                    times = 4
-                    gaiParams = @{
-                        Id = (New-Guid)
-                    }
-                }
-            )
-
-            It 'Should call Foreach-Object <times> times building url in <set> parameter set' -TestCases $testCases {
-                param ($times, $gaiParams)
-
-                Get-LFMAlbumInfo @gaiParams
-
+            It "Should remove common parameters from bound parameters" {
                 $amParams = @{
-                    CommandName = 'Foreach-Object'
-                    Exactly = $true
-                    Times = $times
-                    Scope = 'It'
+                    CommandName     = 'Remove-CommonParameter'
+                    Exactly         = $true
+                    Times           = 1
+                    ParameterFilter = {
+                        $PSBoundParameters
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It "Should convert parameters to format API expects after signing" {
+                $amParams = @{
+                    CommandName = 'ConvertTo-LFMParameter'
+                    Exactly     = $true
+                    Times       = 1
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It "Should take hashtable and build a query for a uri" {
+                $amParams = @{
+                    CommandName = 'New-LFMApiQuery'
+                    Exactly     = $true
+                    Times       = 1
                 }
                 Assert-MockCalled @amParams
             }
@@ -343,11 +330,7 @@ InModuleScope PowerLFM {
 
         Context 'Output' {
 
-            Mock Invoke-RestMethod {$contextMock}
-
-            BeforeEach {
-                $script:output = Get-LFMAlbumInfo -Album Album -Artist Artist
-            }
+            $output = Get-LFMAlbumInfo -Album Album -Artist Artist
 
             It "Album should have name of $($contextMock.Album.Name)" {
                 $output.Album | Should -Be $contextMock.Album.Name
@@ -370,9 +353,9 @@ InModuleScope PowerLFM {
                 $output.Listeners | Should -Be $contextMock.Album.Listeners
             }
 
-            It "Album should have playcount with a value of $($contextMock.Album.Playcount)" {
-                $output.Playcount | Should -BeOfType [int]
-                $output.Playcount | Should -Be $contextMock.Album.Playcount
+            It "Album should have playcount with a value of $($contextMock.Album.PlayCount)" {
+                $output.PlayCount | Should -BeOfType [int]
+                $output.PlayCount | Should -Be $contextMock.Album.PlayCount
             }
 
             It "Album first track should have name of $($contextMock.Album.Tracks.Track[0].Name)" {
@@ -420,6 +403,27 @@ InModuleScope PowerLFM {
             It "Album should have two tracks when id parameter is used" {
                 $output = Get-LFMAlbumInfo -Id (New-Guid)
                 $output.Tracks | Should -HaveCount 2
+            }
+
+            It 'Should call the Last.fm Rest API for album.getInfo get method' {
+                Get-LFMAlbumInfo -Album Album -Artist Artist
+
+                $amParams = @{
+                    CommandName = 'Invoke-LFMApiUri'
+                    Exactly = $true
+                    Times = 1
+                    Scope = 'It'
+                    ParameterFilter = {
+                        $Uri -like 'https://ws.audioscrobbler.com/2.0*'
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It "Should throw when an error is returned in the response" {
+                Mock Invoke-LFMApiUri { throw 'Error' }
+
+                { Get-LFMAlbumInfo -Album Album -Artist Artist } | Should -Throw 'Error'
             }
         }
     }

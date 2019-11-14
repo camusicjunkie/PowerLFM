@@ -199,14 +199,14 @@ InModuleScope PowerLFM {
                 $output[0].Id | Should -Be $contextMock.Artists.Artist[0].Mbid
             }
 
-            It "Library first artist should have playcount with a value of $($contextMock.Artists.Artist[0].Playcount)" {
-                $output[0].Playcount | Should -BeOfType [int]
-                $output[0].Playcount | Should -Be $contextMock.Artists.Artist[0].Playcount
+            It "Library first artist should have playcount with a value of $($contextMock.Artists.Artist[0].PlayCount)" {
+                $output[0].PlayCount | Should -BeOfType [int]
+                $output[0].PlayCount | Should -Be $contextMock.Artists.Artist[0].PlayCount
             }
 
-            It "Library second artist should have playcount with a value of $($contextMock.Artists.Artist[1].Playcount)" {
-                $output[1].Playcount | Should -BeOfType [int]
-                $output[1].Playcount | Should -Be $contextMock.Artists.Artist[1].Playcount
+            It "Library second artist should have playcount with a value of $($contextMock.Artists.Artist[1].PlayCount)" {
+                $output[1].PlayCount | Should -BeOfType [int]
+                $output[1].PlayCount | Should -Be $contextMock.Artists.Artist[1].PlayCount
             }
 
             It "Library second artist should have track url of $($contextMock.Artists.Artist[1].Url)" {
