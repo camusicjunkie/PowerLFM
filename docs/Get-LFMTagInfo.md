@@ -31,7 +31,7 @@ Get info for the tag rock. The summary will be returned in the language specifie
 ## PARAMETERS
 
 ### -Language
-Language to return the wiki in, expressed as an ISO 639 alpha-2 code. Ex. 'en' for spanish.
+Language to return the wiki in, expressed as an ISO 639 alpha-2 code. Ex. 'es' for spanish.
 
 ```yaml
 Type: String

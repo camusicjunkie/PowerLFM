@@ -19,7 +19,7 @@ Get-LFMTrackInfo [-Track] <String> [-Artist] <String> [-UserName <String>] [-Aut
 
 ### id
 ```
-Get-LFMTrackInfo -Id <String> [-UserName <String>] [-AutoCorrect] [<CommonParameters>]
+Get-LFMTrackInfo -Id <Guid> [-UserName <String>] [-AutoCorrect] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -70,7 +70,7 @@ Accept wildcard characters: False
 Musicbrainz id for the artist.
 
 ```yaml
-Type: String
+Type: Guid
 Parameter Sets: id
 Aliases:
 

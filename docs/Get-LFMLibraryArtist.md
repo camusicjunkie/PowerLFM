@@ -13,7 +13,7 @@ A paginated list of all the artists in a user's library, with play counts and ta
 ## SYNTAX
 
 ```
-Get-LFMLibraryArtist [[-UserName] <String>] [[-Limit] <String>] [[-Page] <String>] [<CommonParameters>]
+Get-LFMLibraryArtist [[-UserName] <String>] [[-Limit] <Int32>] [[-Page] <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -34,7 +34,7 @@ This will get a list of all the artists in camusicjunkie's library.
 Limit the number of results per page.
 
 ```yaml
-Type: String
+Type: Int32
 Parameter Sets: (All)
 Aliases:
 
@@ -49,7 +49,7 @@ Accept wildcard characters: False
 Page number to return. Defaults to the first page.
 
 ```yaml
-Type: String
+Type: Int32
 Parameter Sets: (All)
 Aliases:
 

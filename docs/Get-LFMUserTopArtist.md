@@ -12,7 +12,7 @@ Get the top artists scrobbled by a user.
 ## SYNTAX
 
 ```
-Get-LFMUserTopArtist [[-UserName] <String>] [[-TimePeriod] <String>] [[-Limit] <String>] [[-Page] <String>]
+Get-LFMUserTopArtist [[-UserName] <String>] [[-TimePeriod] <String>] [[-Limit] <Int32>] [[-Page] <Int32>]
  [<CommonParameters>]
 ```
 
@@ -41,7 +41,7 @@ This will get the top artists scrobbled by camusicjunkie over the last 12 months
 Limit the number of results per page.
 
 ```yaml
-Type: String
+Type: Int32
 Parameter Sets: (All)
 Aliases:
 
@@ -56,7 +56,7 @@ Accept wildcard characters: False
 Page number to return. Defaults to the first page.
 
 ```yaml
-Type: String
+Type: Int32
 Parameter Sets: (All)
 Aliases:
 

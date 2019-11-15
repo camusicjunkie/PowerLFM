@@ -13,12 +13,12 @@ Get the top tracks for an artist.
 
 ### artist (Default)
 ```
-Get-LFMArtistTopTrack [-Artist] <String> [-Limit <String>] [-Page <String>] [-AutoCorrect] [<CommonParameters>]
+Get-LFMArtistTopTrack [-Artist] <String> [-Limit <Int32>] [-Page <Int32>] [-AutoCorrect] [<CommonParameters>]
 ```
 
 ### id
 ```
-Get-LFMArtistTopTrack -Id <String> [-Limit <String>] [-Page <String>] [-AutoCorrect] [<CommonParameters>]
+Get-LFMArtistTopTrack -Id <Guid> [-Limit <Int32>] [-Page <Int32>] [-AutoCorrect] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -69,7 +69,7 @@ Accept wildcard characters: False
 Musicbrainz id for the artist.
 
 ```yaml
-Type: String
+Type: Guid
 Parameter Sets: id
 Aliases:
 
@@ -84,7 +84,7 @@ Accept wildcard characters: False
 Limit the number of results per page.
 
 ```yaml
-Type: String
+Type: Int32
 Parameter Sets: (All)
 Aliases:
 
@@ -99,7 +99,7 @@ Accept wildcard characters: False
 Page number to return. Defaults to the first page.
 
 ```yaml
-Type: String
+Type: Int32
 Parameter Sets: (All)
 Aliases:
 

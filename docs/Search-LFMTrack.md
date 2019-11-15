@@ -13,7 +13,7 @@ Search for a track by name.
 ## SYNTAX
 
 ```
-Search-LFMTrack [-Track] <String> [[-Limit] <String>] [[-Page] <String>] [<CommonParameters>]
+Search-LFMTrack [-Track] <String> [[-Limit] <Int32>] [[-Page] <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -34,7 +34,7 @@ This will search for tracks that match White Pony.
 Limit the number of results per page.
 
 ```yaml
-Type: String
+Type: Int32
 Parameter Sets: (All)
 Aliases:
 
@@ -49,7 +49,7 @@ Accept wildcard characters: False
 Page number to return. Defaults to the first page.
 
 ```yaml
-Type: String
+Type: Int32
 Parameter Sets: (All)
 Aliases:
 

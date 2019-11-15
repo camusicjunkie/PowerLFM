@@ -1,38 +1,52 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
-online version:
 schema: 2.0.0
 ---
 
-# Remove-LFMTrackTag
+# Set-LFMTrackNowPlaying
 
 ## SYNOPSIS
-Untag an track using a user supplied tag.
+{{ Fill in the Synopsis }}
 
 ## SYNTAX
 
 ```
-Remove-LFMTrackTag [-Track] <String> [-Artist] <String> [-Tag] <String> [-WhatIf] [-Confirm]
- [<CommonParameters>]
+Set-LFMTrackNowPlaying [-Track] <String> [-Artist] <String> [[-Album] <String>] [[-Id] <Guid>]
+ [[-Duration] <Int32>] [-PassThru] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Untag an track using a user supplied tag. This uses the track.removeTag method from the Last.fm API.
+{{ Fill in the Description }}
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Remove-LFMTrackTag -Track Gore -Artist Deftones -Tag Heavy
+PS C:\> {{ Add example code here }}
 ```
 
-This will remove the heavy tag from the track Gore by Deftones.
+{{ Add example description here }}
 
 ## PARAMETERS
 
+### -Album
+{{ Fill Album Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
 ### -Artist
-Name of the artist.
+{{ Fill Artist Description }}
 
 ```yaml
 Type: String
@@ -46,23 +60,53 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -Tag
-Name of the tag.
+### -Duration
+{{ Fill Duration Description }}
 
 ```yaml
-Type: String
+Type: Int32
 Parameter Sets: (All)
 Aliases:
 
-Required: True
-Position: 2
+Required: False
+Position: 4
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
+### -Id
+{{ Fill Id Description }}
+
+```yaml
+Type: Guid
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 3
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -PassThru
+{{ Fill PassThru Description }}
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Track
-Name of the track.
+{{ Fill Track Description }}
 
 ```yaml
 Type: String
@@ -114,11 +158,14 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ### System.String
 
+### System.Guid
+
+### System.Int32
+
 ## OUTPUTS
 
-### System.Object
+### PowerLFM.Track.NowPlaying
+
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/track.removeTag](https://www.last.fm/api/show/track.removeTag)

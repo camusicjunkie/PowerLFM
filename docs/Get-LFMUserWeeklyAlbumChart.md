@@ -12,7 +12,7 @@ Get an album chart for a user.
 ## SYNTAX
 
 ```
-Get-LFMUserWeeklyAlbumChart [[-StartDate] <String>] [[-EndDate] <String>] [[-UserName] <String>]
+Get-LFMUserWeeklyAlbumChart [[-StartDate] <DateTime>] [[-EndDate] <DateTime>] [[-UserName] <String>]
  [<CommonParameters>]
 ```
 
@@ -48,7 +48,7 @@ This will get the first chart list for camusicjunkie and send it down the pipeli
 Date to end the range.
 
 ```yaml
-Type: String
+Type: DateTime
 Parameter Sets: (All)
 Aliases:
 
@@ -63,7 +63,7 @@ Accept wildcard characters: False
 Date to start the range.
 
 ```yaml
-Type: String
+Type: DateTime
 Parameter Sets: (All)
 Aliases:
 

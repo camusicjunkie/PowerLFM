@@ -18,7 +18,7 @@ Get-LFMAlbumTag [-Album] <String> [-Artist] <String> [-UserName <String>] [-Auto
 
 ### id
 ```
-Get-LFMAlbumTag -Id <String> [-UserName <String>] [-AutoCorrect] [<CommonParameters>]
+Get-LFMAlbumTag -Id <Guid> [-UserName <String>] [-AutoCorrect] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -84,7 +84,7 @@ Accept wildcard characters: False
 Musicbrainz id for the album.
 
 ```yaml
-Type: String
+Type: Guid
 Parameter Sets: id
 Aliases:
 

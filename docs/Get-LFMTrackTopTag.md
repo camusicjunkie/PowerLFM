@@ -19,7 +19,7 @@ Get-LFMTrackTopTag [-Track] <String> [-Artist] <String> [-AutoCorrect] [<CommonP
 
 ### id
 ```
-Get-LFMTrackTopTag -Id <String> [-AutoCorrect] [<CommonParameters>]
+Get-LFMTrackTopTag -Id <Guid> [-AutoCorrect] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -70,7 +70,7 @@ Accept wildcard characters: False
 Musicbrainz id for the artist.
 
 ```yaml
-Type: String
+Type: Guid
 Parameter Sets: id
 Aliases:
 
