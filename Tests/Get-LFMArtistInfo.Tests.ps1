@@ -245,7 +245,6 @@ InModuleScope PowerLFM {
 
         Mock Remove-CommonParameter {
             [hashtable] @{
-                Album = 'Album'
                 Artist = 'Artist'
             }
         }

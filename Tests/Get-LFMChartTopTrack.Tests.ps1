@@ -98,7 +98,12 @@ InModuleScope PowerLFM {
 
     Describe 'Get-LFMChartTopTrack: Unit' -Tag Unit {
 
-        Mock Invoke-RestMethod
+        Mock Remove-CommonParameter {
+            [hashtable] @{ }
+        }
+        Mock ConvertTo-LFMParameter
+        Mock New-LFMApiQuery
+        Mock Invoke-LFMApiUri {$contextMock}
 
         Context 'Input' {
 
@@ -109,34 +114,34 @@ InModuleScope PowerLFM {
 
         Context 'Execution' {
 
-            Mock Foreach-Object
+            Get-LFMChartTopTrack
 
-            $testCases = @(
-                @{
-                    times = 4
-                    gcttParams = @{
-                        Limit = '5'
-                    }
-                }
-                @{
-                    times = 5
-                    gcttParams = @{
-                        Limit = '5'
-                        Page = '1'
-                    }
-                }
-            )
-
-            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
-                param ($times, $gcttParams)
-
-                Get-LFMChartTopTrack @gcttParams
-
+            It "Should remove common parameters from bound parameters" {
                 $amParams = @{
-                    CommandName = 'Foreach-Object'
-                    Exactly = $true
-                    Times = $times
-                    Scope = 'It'
+                    CommandName     = 'Remove-CommonParameter'
+                    Exactly         = $true
+                    Times           = 1
+                    ParameterFilter = {
+                        $PSBoundParameters
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It "Should convert parameters to format API expects after signing" {
+                $amParams = @{
+                    CommandName = 'ConvertTo-LFMParameter'
+                    Exactly     = $true
+                    Times       = 1
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It "Should take hashtable and build a query for a uri" {
+                $amParams = @{
+                    CommandName = 'New-LFMApiQuery'
+                    Exactly     = $true
+                    Times       = 1
                 }
                 Assert-MockCalled @amParams
             }
@@ -144,11 +149,7 @@ InModuleScope PowerLFM {
 
         Context 'Output' {
 
-            Mock Invoke-RestMethod {$contextMock}
-
-            BeforeEach {
-                $script:output = Get-LFMChartTopTrack
-            }
+            $output = Get-LFMChartTopTrack
 
             It "Chart first top track should have track name of $($contextMock.Tracks.Track[0].Name)" {
                 $output[0].Track | Should -Be $contextMock.Tracks.Track[0].Name
@@ -191,6 +192,27 @@ InModuleScope PowerLFM {
             It 'Chart should not have more than two top tracks' {
                 $output.Track | Should -Not -BeNullOrEmpty
                 $output.Track | Should -Not -HaveCount 3
+            }
+
+            It 'Should call the correct Last.fm get method' {
+                Get-LFMChartTopTrack
+
+                $amParams = @{
+                    CommandName = 'Invoke-LFMApiUri'
+                    Exactly = $true
+                    Times = 1
+                    Scope = 'It'
+                    ParameterFilter = {
+                        $Uri -like 'https://ws.audioscrobbler.com/2.0*'
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It "Should throw when an error is returned in the response" {
+                Mock Invoke-LFMApiUri { throw 'Error' }
+
+                { Get-LFMChartTopTrack } | Should -Throw 'Error'
             }
         }
     }

@@ -67,7 +67,6 @@ InModuleScope PowerLFM {
 
         Mock Remove-CommonParameter {
             [hashtable] @{
-                Album = 'Album'
                 Artist = 'Artist'
             }
         }
@@ -156,7 +155,7 @@ InModuleScope PowerLFM {
             It "Should throw when an error is returned in the response" {
                 Mock Invoke-LFMApiUri { throw 'Error' }
 
-                { Get-LFMArtistCorrection -Artist Artisty } | Should -Throw 'Error'
+                { Get-LFMArtistCorrection -Artist Artist } | Should -Throw 'Error'
             }
         }
     }
