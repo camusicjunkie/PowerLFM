@@ -16,7 +16,7 @@ function ConvertTo-LFMParameter {
         'Limit'       = 'limit'
         'Page'        = 'page'
         'StartDate'   = 'from'
-        'Tag'         = 'tags'
+        'Tag'         = 'tag'
         'TagType'     = 'taggingtype'
         'TimePeriod'  = 'period'
         'Timestamp'   = 'timestamp'
@@ -37,7 +37,7 @@ function ConvertTo-LFMParameter {
 
     $callingCommand = (Get-PSCallStack)[-2].Command
     if ($callingCommand -like 'Get-LFM*Info') { $lfmParameter['Username'] = 'username' }
-    if ($callingCommand -like 'Remove-LFM*Tag') { $lfmParameter['Tag'] = 'tag' }
+    if ($callingCommand -like 'Add-LFM*Tag') { $lfmParameter['Tag'] = 'tags' }
 
     if ($InputObject.ContainsKey('Timestamp')) { $InputObject['Timestamp'] = (ConvertTo-UnixTime -Date $Timestamp) }
     if ($InputObject.ContainsKey('StartDate')) { $InputObject['StartDate'] = (ConvertTo-UnixTime -Date $StartDate) }
