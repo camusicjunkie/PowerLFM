@@ -29,7 +29,7 @@ function Request-LFMSession {
         }
 
         $noCommonParams = Remove-CommonParameter $PSBoundParameters
-        $apiSig = Get-LFMAuthSignature -Method $apiParams.Method @noCommonParams
+        $apiSig = Get-LFMSignature -Method $apiParams.Method @noCommonParams
         $apiParams.Add('api_sig', $apiSig)
 
         $query = New-LFMApiQuery ($convertedParams + $apiParams)
