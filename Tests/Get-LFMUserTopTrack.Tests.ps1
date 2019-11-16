@@ -31,7 +31,7 @@ Describe 'Get-LFMUserTopTrack: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
+            It 'Should be of type System.String' {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
@@ -51,7 +51,7 @@ Describe 'Get-LFMUserTopTrack: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 0" {
+            It 'Should have a position of 0' {
                 $parameter.Position | Should -Be 1
             }
         }
@@ -64,7 +64,7 @@ Describe 'Get-LFMUserTopTrack: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
+            It 'Should be of type System.String' {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
@@ -84,7 +84,7 @@ Describe 'Get-LFMUserTopTrack: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 1" {
+            It 'Should have a position of 1' {
                 $parameter.Position | Should -Be 0
             }
         }
@@ -97,7 +97,7 @@ Describe 'Get-LFMUserTopTrack: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.Int32" {
+            It 'Should be of type System.Int32' {
                 $parameter.ParameterType.ToString() | Should -Be System.Int32
             }
 
@@ -117,7 +117,7 @@ Describe 'Get-LFMUserTopTrack: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 2" {
+            It 'Should have a position of 2' {
                 $parameter.Position | Should -Be 2
             }
         }
@@ -130,7 +130,7 @@ Describe 'Get-LFMUserTopTrack: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.Int32" {
+            It 'Should be of type System.Int32' {
                 $parameter.ParameterType.ToString() | Should -Be System.Int32
             }
 
@@ -150,7 +150,7 @@ Describe 'Get-LFMUserTopTrack: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 3" {
+            It 'Should have a position of 3' {
                 $parameter.Position | Should -Be 3
             }
         }
@@ -168,11 +168,11 @@ InModuleScope PowerLFM {
 
         Context 'Input' {
 
-            It "Should throw when username is null" {
+            It 'Should throw when username is null' {
                 {Get-LFMUserTopTrack -UserName $null} | Should -Throw
             }
 
-            It "Should throw when limit has more than 50 values" {
+            It 'Should throw when limit has more than 50 values' {
                 Set-ItResult -Pending -Because 'the type needs to change on the limit parameter'
 
                 $guttParams = @{
@@ -182,7 +182,7 @@ InModuleScope PowerLFM {
                 {Get-LFMUserTopTrack @guttParams} | Should -Throw
             }
 
-            It "Should not throw when limit has 1 to 50 values" {
+            It 'Should not throw when limit has 1 to 50 values' {
                 Set-ItResult -Pending -Because 'the type needs to change on the limit parameter'
 
                 $guttParams = @{
@@ -297,7 +297,7 @@ InModuleScope PowerLFM {
 
 Describe 'Get-LFMUserTopTrack: Integration' -Tag Integration {
 
-    It "Integration test" {
+    It 'Integration test' {
         Set-ItResult -Skipped -Because 'the integration tests will be set up later'
     }
 }

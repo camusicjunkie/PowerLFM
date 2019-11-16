@@ -31,7 +31,7 @@ Describe 'Get-LFMChartTopTag: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.Int32" {
+            It 'Should be of type System.Int32' {
                 $parameter.ParameterType.ToString() | Should -Be System.Int32
             }
 
@@ -51,7 +51,7 @@ Describe 'Get-LFMChartTopTag: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 0" {
+            It 'Should have a position of 0' {
                 $parameter.Position | Should -Be 0
             }
         }
@@ -64,7 +64,7 @@ Describe 'Get-LFMChartTopTag: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.Int32" {
+            It 'Should be of type System.Int32' {
                 $parameter.ParameterType.ToString() | Should -Be System.Int32
             }
 
@@ -84,7 +84,7 @@ Describe 'Get-LFMChartTopTag: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 1" {
+            It 'Should have a position of 1' {
                 $parameter.Position | Should -Be 1
             }
         }
@@ -116,7 +116,7 @@ InModuleScope PowerLFM {
 
             Get-LFMChartTopTag
 
-            It "Should remove common parameters from bound parameters" {
+            It 'Should remove common parameters from bound parameters' {
                 $amParams = @{
                     CommandName     = 'Remove-CommonParameter'
                     Exactly         = $true
@@ -128,7 +128,7 @@ InModuleScope PowerLFM {
                 Assert-MockCalled @amParams
             }
 
-            It "Should convert parameters to format API expects after signing" {
+            It 'Should convert parameters to format API expects after signing' {
                 $amParams = @{
                     CommandName = 'ConvertTo-LFMParameter'
                     Exactly     = $true
@@ -137,7 +137,7 @@ InModuleScope PowerLFM {
                 Assert-MockCalled @amParams
             }
 
-            It "Should take hashtable and build a query for a uri" {
+            It 'Should take hashtable and build a query for a uri' {
                 $amParams = @{
                     CommandName = 'New-LFMApiQuery'
                     Exactly     = $true
@@ -197,7 +197,7 @@ InModuleScope PowerLFM {
                 Assert-MockCalled @amParams
             }
 
-            It "Should throw when an error is returned in the response" {
+            It 'Should throw when an error is returned in the response' {
                 Mock Invoke-LFMApiUri { throw 'Error' }
 
                 { Get-LFMChartTopTag } | Should -Throw 'Error'
@@ -208,7 +208,7 @@ InModuleScope PowerLFM {
 
 Describe 'Get-LFMChartTopTag: Integration' -Tag Integration {
 
-    It "Integration test" {
+    It 'Integration test' {
         Set-ItResult -Skipped -Because 'the integration tests will be set up later'
     }
 }

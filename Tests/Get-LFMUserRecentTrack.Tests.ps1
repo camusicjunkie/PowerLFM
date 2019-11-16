@@ -31,7 +31,7 @@ Describe 'Get-LFMUserRecentTrack: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
+            It 'Should be of type System.String' {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
@@ -51,7 +51,7 @@ Describe 'Get-LFMUserRecentTrack: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 0" {
+            It 'Should have a position of 0' {
                 $parameter.Position | Should -Be 2
             }
         }
@@ -64,7 +64,7 @@ Describe 'Get-LFMUserRecentTrack: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.DateTime" {
+            It 'Should be of type System.DateTime' {
                 $parameter.ParameterType.ToString() | Should -Be System.DateTime
             }
 
@@ -84,7 +84,7 @@ Describe 'Get-LFMUserRecentTrack: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 1" {
+            It 'Should have a position of 1' {
                 $parameter.Position | Should -Be 0
             }
         }
@@ -97,7 +97,7 @@ Describe 'Get-LFMUserRecentTrack: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.DateTime" {
+            It 'Should be of type System.DateTime' {
                 $parameter.ParameterType.ToString() | Should -Be System.DateTime
             }
 
@@ -117,7 +117,7 @@ Describe 'Get-LFMUserRecentTrack: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 2" {
+            It 'Should have a position of 2' {
                 $parameter.Position | Should -Be 1
             }
         }
@@ -130,7 +130,7 @@ Describe 'Get-LFMUserRecentTrack: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.Int32" {
+            It 'Should be of type System.Int32' {
                 $parameter.ParameterType.ToString() | Should -Be System.Int32
             }
 
@@ -150,7 +150,7 @@ Describe 'Get-LFMUserRecentTrack: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 3" {
+            It 'Should have a position of 3' {
                 $parameter.Position | Should -Be 3
             }
         }
@@ -163,7 +163,7 @@ Describe 'Get-LFMUserRecentTrack: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.Int32" {
+            It 'Should be of type System.Int32' {
                 $parameter.ParameterType.ToString() | Should -Be System.Int32
             }
 
@@ -183,7 +183,7 @@ Describe 'Get-LFMUserRecentTrack: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 4" {
+            It 'Should have a position of 4' {
                 $parameter.Position | Should -Be 4
             }
         }
@@ -207,11 +207,11 @@ InModuleScope PowerLFM {
 
         Context 'Input' {
 
-            It "Should throw when username is null" {
+            It 'Should throw when username is null' {
                 {Get-LFMUserRecentTrack -UserName $null} | Should -Throw
             }
 
-            It "Should throw when limit has a value of 51" {
+            It 'Should throw when limit has a value of 51' {
                 $gurtParams = @{
                     UserName = 'UserName'
                     Limit = 51
@@ -219,7 +219,7 @@ InModuleScope PowerLFM {
                 {Get-LFMUserRecentTrack @gurtParams} | Should -Throw
             }
 
-            It "Should not throw when limit has a value of 1 to 50" {
+            It 'Should not throw when limit has a value of 1 to 50' {
                 $gurtParams = @{
                     UserName = 'UserName'
                     Limit = 50
@@ -232,7 +232,7 @@ InModuleScope PowerLFM {
 
             Get-LFMUserRecentTrack
 
-            It "Should remove common parameters from bound parameters" {
+            It 'Should remove common parameters from bound parameters' {
                 $amParams = @{
                     CommandName     = 'Remove-CommonParameter'
                     Exactly         = $true
@@ -244,7 +244,7 @@ InModuleScope PowerLFM {
                 Assert-MockCalled @amParams
             }
 
-            It "Should convert parameters to format API expects after signing" {
+            It 'Should convert parameters to format API expects after signing' {
                 $amParams = @{
                     CommandName = 'ConvertTo-LFMParameter'
                     Exactly     = $true
@@ -253,7 +253,7 @@ InModuleScope PowerLFM {
                 Assert-MockCalled @amParams
             }
 
-            It "Should take hashtable and build a query for a uri" {
+            It 'Should take hashtable and build a query for a uri' {
                 $amParams = @{
                     CommandName = 'New-LFMApiQuery'
                     Exactly     = $true
@@ -267,7 +267,7 @@ InModuleScope PowerLFM {
 
             $output = Get-LFMUserRecentTrack
 
-            It "User first recent track should be playing now" {
+            It 'User first recent track should be playing now' {
                 $output[0].ScrobbleTime | Should -Be 'Now Playing'
             }
 
@@ -283,7 +283,7 @@ InModuleScope PowerLFM {
                 $output[1].Album | Should -Be $contextMock.RecentTracks.Track[1].Album.'#Text'
             }
 
-            It "User second recent track should be loved" {
+            It 'User second recent track should be loved' {
                 $output[1].Loved | Should -Be 'Yes'
             }
 
@@ -332,7 +332,7 @@ InModuleScope PowerLFM {
                 Assert-MockCalled @amParams
             }
 
-            It "Should throw when an error is returned in the response" {
+            It 'Should throw when an error is returned in the response' {
                 Mock Invoke-LFMApiUri { throw 'Error' }
 
                 { Get-LFMUserRecentTrack } | Should -Throw 'Error'
@@ -343,7 +343,7 @@ InModuleScope PowerLFM {
 
 Describe 'Get-LFMUserRecentTrack: Integration' -Tag Integration {
 
-    It "Integration test" {
+    It 'Integration test' {
         Set-ItResult -Skipped -Because 'the integration tests will be set up later'
     }
 }

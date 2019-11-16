@@ -27,7 +27,7 @@ Describe 'Set-LFMTrackUnlove: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
+            It 'Should be of type System.String' {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
@@ -47,7 +47,7 @@ Describe 'Set-LFMTrackUnlove: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 0" {
+            It 'Should have a position of 0' {
                 $parameter.Position | Should -Be 0
             }
         }
@@ -60,7 +60,7 @@ Describe 'Set-LFMTrackUnlove: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
+            It 'Should be of type System.String' {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
@@ -80,7 +80,7 @@ Describe 'Set-LFMTrackUnlove: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 1" {
+            It 'Should have a position of 1' {
                 $parameter.Position | Should -Be 1
             }
         }
@@ -122,7 +122,7 @@ InModuleScope PowerLFM {
 
             Set-LFMTrackUnlove -Artist Artist -Track Track -Confirm:$false
 
-            It "Should remove common parameters from bound parameters" {
+            It 'Should remove common parameters from bound parameters' {
                 $amParams = @{
                     CommandName     = 'Remove-CommonParameter'
                     Exactly         = $true
@@ -148,7 +148,7 @@ InModuleScope PowerLFM {
                 Assert-MockCalled @amParams
             }
 
-            It "Should convert parameters to format API expects after signing" {
+            It 'Should convert parameters to format API expects after signing' {
                 $amParams = @{
                     CommandName = 'ConvertTo-LFMParameter'
                     Exactly     = $true
@@ -157,7 +157,7 @@ InModuleScope PowerLFM {
                 Assert-MockCalled @amParams
             }
 
-            It "Should take hashtable and build a query for a uri" {
+            It 'Should take hashtable and build a query for a uri' {
                 $amParams = @{
                     CommandName = 'New-LFMApiQuery'
                     Exactly     = $true
@@ -190,7 +190,7 @@ InModuleScope PowerLFM {
                 $output | Should -Match 'Performing the operation "Removing love" on target "Track: Track".'
             }
 
-            It "Should throw when an error is returned in the response" {
+            It 'Should throw when an error is returned in the response' {
                 Mock Invoke-LFMApiUri { throw 'Error' }
 
                 { Set-LFMTrackUnlove -Artist Artist -Track Track -Confirm:$false } | Should -Throw 'Error'
@@ -220,7 +220,7 @@ Describe 'Set-LFMTrackUnlove: Integration' -Tag Integration {
             UserName = 'camusicjunkie'
         }
 
-        It "Track should be loved for a user before unloving it" {
+        It 'Track should be loved for a user before unloving it' {
             # do/until loop is allowing for track love/unlove to finish
             $i = 0
             do {
@@ -233,7 +233,7 @@ Describe 'Set-LFMTrackUnlove: Integration' -Tag Integration {
             $track.Loved | Should -Be 'Yes'
         }
 
-        It "Track should be unloved for a user" {
+        It 'Track should be unloved for a user' {
             # do/until loop is allowing for track love/unlove to finish
             Set-LFMTrackUnlove @stlParams
 

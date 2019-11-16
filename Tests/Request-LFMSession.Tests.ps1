@@ -31,7 +31,7 @@ Describe 'Request-LFMSession: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
+            It 'Should be of type System.String' {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
@@ -51,7 +51,7 @@ Describe 'Request-LFMSession: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 0" {
+            It 'Should have a position of 0' {
                 $parameter.Position | Should -Be 0
             }
         }
@@ -64,7 +64,7 @@ Describe 'Request-LFMSession: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
+            It 'Should be of type System.String' {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
@@ -84,7 +84,7 @@ Describe 'Request-LFMSession: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 1" {
+            It 'Should have a position of 1' {
                 $parameter.Position | Should -Be 1
             }
         }
@@ -97,7 +97,7 @@ Describe 'Request-LFMSession: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
+            It 'Should be of type System.String' {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
@@ -117,7 +117,7 @@ Describe 'Request-LFMSession: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 2" {
+            It 'Should have a position of 2' {
                 $parameter.Position | Should -Be 2
             }
         }
@@ -136,15 +136,15 @@ InModuleScope PowerLFM {
 
         Context 'Input' {
 
-            It "Should throw when api key is null" {
+            It 'Should throw when api key is null' {
                 {Request-LFMSession -ApiKey $null} | Should -Throw
             }
 
-            It "Should throw when token is null" {
+            It 'Should throw when token is null' {
                 {Request-LFMSession -Token $null} | Should -Throw
             }
 
-            It "Should throw when shared secret is null" {
+            It 'Should throw when shared secret is null' {
                 {Request-LFMSession -SharedSecret $null} | Should -Throw
             }
         }
@@ -211,7 +211,7 @@ InModuleScope PowerLFM {
 
 Describe 'Request-LFMSession: Integration' -Tag Integration {
 
-    It "Integration test" {
+    It 'Integration test' {
         Set-ItResult -Skipped -Because 'the integration tests will be set up later'
     }
 }
