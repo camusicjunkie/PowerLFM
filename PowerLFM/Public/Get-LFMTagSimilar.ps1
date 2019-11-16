@@ -1,4 +1,6 @@
 function Get-LFMTagSimilar {
+    # .ExternalHelp PowerLFM-help.xml
+
     [CmdletBinding()]
     [OutputType('PowerLFM.Tag.Similar')]
     param (

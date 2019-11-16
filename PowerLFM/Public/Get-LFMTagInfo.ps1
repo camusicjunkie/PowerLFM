@@ -1,4 +1,6 @@
 function Get-LFMTagInfo {
+    # .ExternalHelp PowerLFM-help.xml
+
     [CmdletBinding()]
     [OutputType('PowerLFM.Tag.Info')]
     param (
@@ -12,7 +14,6 @@ function Get-LFMTagInfo {
     )
 
     begin {
-        #Default hashtable
         $apiParams = @{
             'method' = 'tag.getInfo'
             'api_key' = $LFMConfig.APIKey
@@ -33,7 +34,7 @@ function Get-LFMTagInfo {
             $tagInfo = [pscustomobject] @{
                 'PSTypeName' = 'PowerLFM.Tag.Info'
                 'Tag' = $irm.Tag.Name
-                'Url' = [uri] "http://www.last.fm/tag/$Tag".Replace(' ', '+')
+                'Url' = [uri] "http://www.last.fm/tag/$Tag" -replace ' ', '+'
                 'Reach' = [int] $irm.Tag.Reach
                 'TotalTags' = [int] $irm.Tag.Total
                 'Summary' = $irm.Tag.Wiki.Summary
