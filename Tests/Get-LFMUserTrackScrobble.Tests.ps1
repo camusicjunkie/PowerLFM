@@ -197,66 +197,62 @@ InModuleScope PowerLFM {
 
     Describe 'Get-LFMUserTrackScrobble: Unit' -Tag Unit {
 
-        Mock Invoke-RestMethod
+        Mock Remove-CommonParameter {
+            [hashtable] @{
+                Track = 'Track'
+                Artist = 'Artist'
+            }
+        }
+        Mock ConvertTo-LFMParameter
+        Mock New-LFMApiQuery
+        Mock Invoke-LFMApiUri {$contextMock}
+        Mock ConvertFrom-UnixTime
 
         Context 'Input' {
 
             It 'Should throw when username is null' {
-                {Get-LFMUserTrackScrobble -UserName $null} | Should -Throw
+                {Get-LFMUserTrackScrobble -Track $null} | Should -Throw
+            }
+
+            It 'Should throw when limit has a value of 51' {
+                {Get-LFMUserTrackScrobble -Track Track -Artist Artist -Limit 51} | Should -Throw
+            }
+
+            It 'Should not throw when limit has a value of 1 to 50' {
+                {Get-LFMUserTrackScrobble -Track Track -Artist Artist -Limit 50} | Should -Not -Throw
             }
         }
 
         Context 'Execution' {
 
-            Mock Foreach-Object
+            Get-LFMUserTrackScrobble -Track Track -Artist Artist
 
-            $testCases = @(
-                @{
-                    times = 6
-                    gutsParams = @{
-                        Track = 'Track'
-                        Artist = 'Artist'
-                    }
-                }
-                @{
-                    times = 6
-                    gutsParams = @{
-                        Track = 'Track'
-                        Artist = 'Artist'
-                        UserName = 'UserName'
-                    }
-                }
-                @{
-                    times = 7
-                    gutsParams = @{
-                        Track = 'Track'
-                        Artist = 'Artist'
-                        UserName = 'UserName'
-                        Limit = '5'
-                    }
-                }
-                @{
-                    times = 8
-                    gutsParams = @{
-                        Track = 'Track'
-                        Artist = 'Artist'
-                        UserName = 'UserName'
-                        Limit = '5'
-                        Page = '1'
-                    }
-                }
-            )
-
-            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
-                param ($times, $gutsParams)
-
-                Get-LFMUserTrackScrobble @gutsParams
-
+            It 'Should remove common parameters from bound parameters' {
                 $amParams = @{
-                    CommandName = 'Foreach-Object'
-                    Exactly = $true
-                    Times = $times
-                    Scope = 'It'
+                    CommandName     = 'Remove-CommonParameter'
+                    Exactly         = $true
+                    Times           = 1
+                    ParameterFilter = {
+                        $PSBoundParameters
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should convert parameters to format API expects after signing' {
+                $amParams = @{
+                    CommandName = 'ConvertTo-LFMParameter'
+                    Exactly     = $true
+                    Times       = 1
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should take hashtable and build a query for a uri' {
+                $amParams = @{
+                    CommandName = 'New-LFMApiQuery'
+                    Exactly     = $true
+                    Times       = 1
                 }
                 Assert-MockCalled @amParams
             }
@@ -264,10 +260,7 @@ InModuleScope PowerLFM {
 
         Context 'Output' {
 
-            Mock Invoke-RestMethod {$contextMock}
-            Mock ConvertFrom-UnixTime {$mocks.UnixTime.From}
-
-            $output = Get-LFMUserTrackScrobble -Track Track -Artist Artist -UserName camusicjunkie
+            $output = Get-LFMUserTrackScrobble -Track Track -Artist Artist
 
             It "User first scrobbled track should have a name of $($contextMock.TrackScrobbles.Track[0].Name)" {
                 $output[0].Track | Should -Be $contextMock.TrackScrobbles.Track[0].Name
@@ -279,10 +272,6 @@ InModuleScope PowerLFM {
 
             It "User first scrobbled track should have track id with a value of $($contextMock.TrackScrobbles.Track[0].Mbid)" {
                 $output[0].TrackId | Should -Be $contextMock.TrackScrobbles.Track[0].Mbid
-            }
-
-            It "User should have scrobbled track on $($mocks.UnixTime.From)" {
-                $output[0].Date | Should -Be $mocks.UnixTime.From
             }
 
             It "User second scrobbled track should have track url of $($contextMock.TrackScrobbles.Track[1].Url)" {
@@ -300,6 +289,44 @@ InModuleScope PowerLFM {
             It 'User should not have more than two scrobbled tracks' {
                 $output.Track | Should -Not -BeNullOrEmpty
                 $output.Track | Should -Not -HaveCount 3
+            }
+
+            It 'Should call the correct Last.fm get method' {
+                Get-LFMUserTrackScrobble -Track Track -Artist Artist
+
+                $amParams = @{
+                    CommandName = 'Invoke-LFMApiUri'
+                    Exactly = $true
+                    Times = 1
+                    Scope = 'It'
+                    ParameterFilter = {
+                        $Uri -like 'https://ws.audioscrobbler.com/2.0*'
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should convert the date from unix time to the local time' {
+                Get-LFMUserTrackScrobble -Track Track -Artist Artist
+
+                $amParams = @{
+                    CommandName = 'ConvertFrom-UnixTime'
+                    Exactly = $true
+                    Times = 2
+                    Scope = 'It'
+                    ParameterFilter = {
+                        $UnixTime -eq 0 -or
+                        $UnixTime -eq 60 -and
+                        $Local -eq $true
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should throw when an error is returned in the response' {
+                Mock Invoke-LFMApiUri { throw 'Error' }
+
+                { Get-LFMUserTrackScrobble -Track Track -Artist Artist } | Should -Throw 'Error'
             }
         }
     }

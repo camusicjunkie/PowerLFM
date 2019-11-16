@@ -105,16 +105,12 @@ InModuleScope PowerLFM {
 
         Context 'Input' {
 
-            It 'Should throw when Artist is null' {
+            It 'Should throw when artist is null' {
                 {Set-LFMTrackLove -Artist $null} | Should -Throw
             }
 
-            It 'Should throw when Track has more than 1 value' {
-                $aatParams = @{
-                    Artist = 'Artist'
-                    Track = @(1..2)
-                }
-                {Set-LFMTrackLove @aatParams} | Should -Throw
+            It 'Should throw when track is null' {
+                {Set-LFMTrackLove -Track $null} | Should -Throw
             }
         }
 

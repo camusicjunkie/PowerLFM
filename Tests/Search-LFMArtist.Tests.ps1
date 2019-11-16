@@ -131,61 +131,66 @@ InModuleScope PowerLFM {
 
     Describe 'Search-LFMArtist: Unit' -Tag Unit {
 
-        Mock Invoke-RestMethod
+        Mock Remove-CommonParameter {
+            [hashtable] @{
+                Artist = 'Artist'
+            }
+        }
+        Mock ConvertTo-LFMParameter
+        Mock New-LFMApiQuery
+        Mock Invoke-LFMApiUri {$contextMock}
 
         Context 'Input' {
 
             It 'Should throw when artist is null' {
                 {Search-LFMArtist -Artist $null} | Should -Throw
             }
+
+            It 'Should throw when limit has a value of 51' {
+                {Search-LFMArtist -Artist Artist -Limit 51} | Should -Throw
+            }
+
+            It 'Should not throw when limit has a value of 1 to 50' {
+                {Search-LFMArtist -Artist Artist -Limit 50} | Should -Not -Throw
+            }
         }
 
         Context 'Execution' {
 
-            Mock Foreach-Object
+            Search-LFMArtist -Artist Artist
 
-            $testCases = @(
-                @{
-                    times = 4
-                    saParams = @{
-                        Artist = 'Album'
-                    }
-                }
-                @{
-                    times = 5
-                    saParams = @{
-                        Artist = 'Album'
-                        Limit = '5'
-                    }
-                }
-                @{
-                    times = 6
-                    saParams = @{
-                        Artist = 'Album'
-                        Limit = '5'
-                        Page = '1'
-                    }
-                }
-            )
-
-            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
-                param ($times, $saParams)
-
-                Search-LFMArtist @saParams
-
+            It 'Should remove common parameters from bound parameters' {
                 $amParams = @{
-                    CommandName = 'Foreach-Object'
-                    Exactly = $true
-                    Times = $times
-                    Scope = 'It'
+                    CommandName     = 'Remove-CommonParameter'
+                    Exactly         = $true
+                    Times           = 1
+                    ParameterFilter = {
+                        $PSBoundParameters
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should convert parameters to format API expects after signing' {
+                $amParams = @{
+                    CommandName = 'ConvertTo-LFMParameter'
+                    Exactly     = $true
+                    Times       = 1
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should take hashtable and build a query for a uri' {
+                $amParams = @{
+                    CommandName = 'New-LFMApiQuery'
+                    Exactly     = $true
+                    Times       = 1
                 }
                 Assert-MockCalled @amParams
             }
         }
 
         Context 'Output' {
-
-            Mock Invoke-RestMethod {$contextMock}
 
             $output = Search-LFMArtist -Artist Artist
 
@@ -217,6 +222,25 @@ InModuleScope PowerLFM {
             It 'Searched result should not have more than two artists' {
                 $output | Should -Not -BeNullOrEmpty
                 $output | Should -Not -HaveCount 3
+            }
+
+            It 'Should call the correct Last.fm get method' {
+                $amParams = @{
+                    CommandName = 'Invoke-LFMApiUri'
+                    Exactly = $true
+                    Times = 1
+                    Scope = 'Context'
+                    ParameterFilter = {
+                        $Uri -like 'https://ws.audioscrobbler.com/2.0*'
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should throw when an error is returned in the response' {
+                Mock Invoke-LFMApiUri { throw 'Error' }
+
+                { Search-LFMArtist -Artist Artist } | Should -Throw 'Error'
             }
         }
     }

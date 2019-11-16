@@ -98,11 +98,16 @@ InModuleScope PowerLFM {
 
     Describe 'Request-LFMToken: Unit' -Tag Unit {
 
-        Mock Invoke-RestMethod
-        Mock Get-LFMAuthSignature
+        Mock Remove-CommonParameter {
+            [hashtable] @{
+                ApiKey = 'ApiKey'
+                SharedSecret = 'SharedSecret'
+            }
+        }
+        Mock Get-LFMSignature
+        Mock New-LFMApiQuery
         Mock Show-LFMAuthWindow
-        Mock Write-Verbose
-        Mock Write-Warning
+        Mock Invoke-LFMApiUri {$contextMock}
 
         Context 'Input' {
 
@@ -117,35 +122,23 @@ InModuleScope PowerLFM {
 
         Context 'Execution' {
 
-            Mock Foreach-Object
+            Request-LFMToken -ApiKey 'ApiKey' -SharedSecret 'SharedSecret'
 
-            $testCases = @(
-                @{
-                    times = 4
-                    rtParams = @{
-                        ApiKey = 'ApiKey'
-                        SharedSecret = 'SharedSecret'
-                    }
-                }
-            )
-
-            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
-                param ($times, $rtParams)
-
-                Request-LFMToken @rtParams
-
+            It 'Should remove common parameters from bound parameters' {
                 $amParams = @{
-                    CommandName = 'Foreach-Object'
-                    Exactly = $true
-                    Times = $times
-                    Scope = 'It'
+                    CommandName     = 'Remove-CommonParameter'
+                    Exactly         = $true
+                    Times           = 1
+                    ParameterFilter = {
+                        $PSBoundParameters
+                    }
                 }
                 Assert-MockCalled @amParams
             }
 
             It 'Should create a signature' {
                 $amParams = @{
-                    CommandName = 'Get-LFMAuthSignature'
+                    CommandName = 'Get-LFMSignature'
                     Exactly = $true
                     Times = 1
                     ParameterFilter = {
@@ -156,11 +149,18 @@ InModuleScope PowerLFM {
                 }
                 Assert-MockCalled @amParams
             }
+
+            It 'Should take hashtable and build a query for a uri' {
+                $amParams = @{
+                    CommandName = 'New-LFMApiQuery'
+                    Exactly     = $true
+                    Times       = 1
+                }
+                Assert-MockCalled @amParams
+            }
         }
 
         Context 'Output' {
-
-            Mock Invoke-RestMethod {$contextMock}
 
             $output = Request-LFMToken -ApiKey 'ApiKey' -SharedSecret 'SharedSecret'
 

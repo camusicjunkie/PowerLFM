@@ -178,19 +178,11 @@ InModuleScope PowerLFM {
             }
 
             It 'Should throw when limit has more than 50 values' {
-                $gutaParams = @{
-                    UserName = 'UserName'
-                    Limit = 51
-                }
-                {Get-LFMUserTopArtist @gutaParams} | Should -Throw
+                {Get-LFMUserTopArtist -Limit 51} | Should -Throw
             }
 
             It 'Should not throw when limit has a value of 1 to 50' {
-                $gutaParams = @{
-                    UserName = 'UserName'
-                    Limit = 50
-                }
-                {Get-LFMUserTopArtist @gutaParams} | Should -Not -Throw
+                {Get-LFMUserTopArtist -Limit 50} | Should -Not -Throw
             }
         }
 
