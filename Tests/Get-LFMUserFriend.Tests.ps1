@@ -131,7 +131,13 @@ InModuleScope PowerLFM {
 
     Describe 'Get-LFMUserFriend: Unit' -Tag Unit {
 
-        Mock Invoke-RestMethod
+        Mock Remove-CommonParameter {
+            [hashtable] @{ }
+        }
+        Mock ConvertTo-LFMParameter
+        Mock New-LFMApiQuery
+        Mock Invoke-LFMApiUri {$contextMock}
+        Mock ConvertFrom-UnixTime
 
         Context 'Input' {
 
@@ -142,42 +148,34 @@ InModuleScope PowerLFM {
 
         Context 'Execution' {
 
-            Mock Foreach-Object
+            Get-LFMUserFriend
 
-            $testCases = @(
-                @{
-                    times = 4
-                    gufParams = @{
-                        UserName = 'UserName'
-                    }
-                }
-                @{
-                    times = 5
-                    gufParams = @{
-                        UserName = 'UserName'
-                        Limit = '5'
-                    }
-                }
-                @{
-                    times = 6
-                    gufParams = @{
-                        UserName = 'UserName'
-                        Limit = '5'
-                        Page = '1'
-                    }
-                }
-            )
-
-            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
-                param ($times, $gufParams)
-
-                Get-LFMUserFriend @gufParams
-
+            It "Should remove common parameters from bound parameters" {
                 $amParams = @{
-                    CommandName = 'Foreach-Object'
-                    Exactly = $true
-                    Times = $times
-                    Scope = 'It'
+                    CommandName     = 'Remove-CommonParameter'
+                    Exactly         = $true
+                    Times           = 1
+                    ParameterFilter = {
+                        $PSBoundParameters
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It "Should convert parameters to format API expects after signing" {
+                $amParams = @{
+                    CommandName = 'ConvertTo-LFMParameter'
+                    Exactly     = $true
+                    Times       = 1
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It "Should take hashtable and build a query for a uri" {
+                $amParams = @{
+                    CommandName = 'New-LFMApiQuery'
+                    Exactly     = $true
+                    Times       = 1
                 }
                 Assert-MockCalled @amParams
             }
@@ -185,12 +183,7 @@ InModuleScope PowerLFM {
 
         Context 'Output' {
 
-            Mock Invoke-RestMethod {$contextMock}
-            Mock ConvertFrom-UnixTime {$mocks.UnixTime.From}
-
-            BeforeEach {
-                $script:output = Get-LFMUserFriend -UserName camusicjunkie
-            }
+            $output = Get-LFMUserFriend
 
             It "User first friend should have a name of $($contextMock.Friends.User[0].RealName)" {
                 $output[0].RealName | Should -Be $contextMock.Friends.User[0].RealName
@@ -202,16 +195,6 @@ InModuleScope PowerLFM {
 
             It "User first friend should have $($contextMock.Friends.User[0].PlayLists) playlists" {
                 $output[0].PlayLists | Should -Be $contextMock.Friends.User[0].PlayLists
-            }
-
-            It "User first friend should have registered on $($mocks.UnixTime.From)" {
-                $output[0].Registered | Should -Be $mocks.UnixTime.From
-            }
-
-            Mock ConvertFrom-UnixTime {$mocks.UnixTime.To}
-
-            It "User second friend should have registered on $($mocks.UnixTime.To)" {
-                $output[1].Registered | Should -Be $mocks.UnixTime.To
             }
 
             It "User second friend should have a url of $($contextMock.Friends.User[1].Url)" {
@@ -229,6 +212,44 @@ InModuleScope PowerLFM {
             It 'User should not have more than two friends' {
                 $output.RealName | Should -Not -BeNullOrEmpty
                 $output.RealName | Should -Not -HaveCount 3
+            }
+
+            It 'Should call the correct Last.fm get method' {
+                Get-LFMUserFriend
+
+                $amParams = @{
+                    CommandName = 'Invoke-LFMApiUri'
+                    Exactly = $true
+                    Times = 1
+                    Scope = 'It'
+                    ParameterFilter = {
+                        $Uri -like 'https://ws.audioscrobbler.com/2.0*'
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should convert the date from unix time to the local time' {
+                Get-LFMUserFriend
+
+                $amParams = @{
+                    CommandName = 'ConvertFrom-UnixTime'
+                    Exactly = $true
+                    Times = 2
+                    Scope = 'It'
+                    ParameterFilter = {
+                        $UnixTime -eq 0 -or
+                        $UnixTime -eq 60 -and
+                        $Local -eq $true
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It "Should throw when an error is returned in the response" {
+                Mock Invoke-LFMApiUri { throw 'Error' }
+
+                { Get-LFMUserFriend } | Should -Throw 'Error'
             }
         }
     }

@@ -562,10 +562,6 @@
             {
               "from": 0,
               "to": 60
-            },
-            {
-              "from": 1,
-              "to": 61
             }
           ]
         }
@@ -712,7 +708,7 @@
               "url": "https://www.last.fake/user/name2",
               "country": "Country2",
               "registered": {
-                "unixtime": 1
+                "unixtime": 60
               }
             }
           ]
@@ -811,6 +807,9 @@
               "album": {
                 "#text": "Album1"
               },
+              "date": {
+                "uts": 0
+              },
               "loved": 0
             },
             {
@@ -822,7 +821,7 @@
                 "#text": "Album2"
               },
               "date": {
-                "uts": 0
+                "uts": 60
               },
               "loved": 1
             }
@@ -1180,12 +1179,6 @@
           }
         }
       }
-    }
-  ],
-  "UnixTime": [
-    {
-      "from": "1 Jan 1970 12:00:00 AM",
-      "to": "1 Jan 1970 12:01:00 AM"
     }
   ],
   "Lfm": {

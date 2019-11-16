@@ -164,30 +164,31 @@ InModuleScope PowerLFM {
 
     Describe 'Get-LFMUserTopAlbum: Unit' -Tag Unit {
 
-        Mock Invoke-RestMethod
+        Mock Remove-CommonParameter {
+            [hashtable] @{ }
+        }
+        Mock ConvertTo-LFMParameter
+        Mock New-LFMApiQuery
+        Mock Invoke-LFMApiUri {$contextMock}
 
         Context 'Input' {
 
-            It "Should throw when username is null" {
+            It 'Should throw when username is null' {
                 {Get-LFMUserTopAlbum -UserName $null} | Should -Throw
             }
 
-            It "Should throw when limit has more than 50 values" {
-                Set-ItResult -Pending -Because 'the type needs to change on the limit parameter'
-
+            It 'Should throw when limit has more than 50 values' {
                 $gutaParams = @{
                     UserName = 'UserName'
-                    Limit = @(1..51)
+                    Limit = 51
                 }
                 {Get-LFMUserTopAlbum @gutaParams} | Should -Throw
             }
 
-            It "Should not throw when limit has 1 to 50 values" {
-                Set-ItResult -Pending -Because 'the type needs to change on the limit parameter'
-
+            It 'Should not throw when limit has a value of 1 to 50' {
                 $gutaParams = @{
                     UserName = 'UserName'
-                    Limit = @(1..50)
+                    Limit = 50
                 }
                 {Get-LFMUserTopAlbum @gutaParams} | Should -Not -Throw
             }
@@ -195,51 +196,34 @@ InModuleScope PowerLFM {
 
         Context 'Execution' {
 
-            Mock Foreach-Object
+            Get-LFMUserTopAlbum
 
-            $testCases = @(
-                @{
-                    times = 4
-                    gutaParams = @{
-                        UserName = 'UserName'
-                    }
-                }
-                @{
-                    times = 5
-                    gutaParams = @{
-                        UserName = 'UserName'
-                        TimePeriod = 'Overall'
-                    }
-                }
-                @{
-                    times = 6
-                    gutaParams = @{
-                        UserName = 'UserName'
-                        TimePeriod = 'Overall'
-                        Limit = '5'
-                    }
-                }
-                @{
-                    times = 7
-                    gutaParams = @{
-                        UserName = 'UserName'
-                        TimePeriod = 'Overall'
-                        Limit = '5'
-                        Page = '1'
-                    }
-                }
-            )
-
-            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
-                param ($times, $gutaParams)
-
-                Get-LFMUserTopAlbum @gutaParams
-
+            It "Should remove common parameters from bound parameters" {
                 $amParams = @{
-                    CommandName = 'Foreach-Object'
-                    Exactly = $true
-                    Times = $times
-                    Scope = 'It'
+                    CommandName     = 'Remove-CommonParameter'
+                    Exactly         = $true
+                    Times           = 1
+                    ParameterFilter = {
+                        $PSBoundParameters
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It "Should convert parameters to format API expects after signing" {
+                $amParams = @{
+                    CommandName = 'ConvertTo-LFMParameter'
+                    Exactly     = $true
+                    Times       = 1
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It "Should take hashtable and build a query for a uri" {
+                $amParams = @{
+                    CommandName = 'New-LFMApiQuery'
+                    Exactly     = $true
+                    Times       = 1
                 }
                 Assert-MockCalled @amParams
             }
@@ -247,11 +231,7 @@ InModuleScope PowerLFM {
 
         Context 'Output' {
 
-            Mock Invoke-RestMethod {$contextMock}
-
-            BeforeEach {
-                $script:output = Get-LFMUserTopAlbum -UserName camusicjunkie
-            }
+            $output = Get-LFMUserTopAlbum
 
             It "User first top album should have name of $($contextMock.TopAlbums.Album[0].Name)" {
                 $output[0].Album | Should -Be $contextMock.TopAlbums.Album[0].Name
@@ -292,6 +272,27 @@ InModuleScope PowerLFM {
             It 'User should not have more than two top albums' {
                 $output.Album | Should -Not -BeNullOrEmpty
                 $output.Album | Should -Not -HaveCount 3
+            }
+
+            It 'Should call the correct Last.fm get method' {
+                Get-LFMUserTopAlbum
+
+                $amParams = @{
+                    CommandName = 'Invoke-LFMApiUri'
+                    Exactly = $true
+                    Times = 1
+                    Scope = 'It'
+                    ParameterFilter = {
+                        $Uri -like 'https://ws.audioscrobbler.com/2.0*'
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It "Should throw when an error is returned in the response" {
+                Mock Invoke-LFMApiUri { throw 'Error' }
+
+                { Get-LFMUserTopAlbum } | Should -Throw 'Error'
             }
         }
     }

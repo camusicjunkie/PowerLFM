@@ -65,7 +65,13 @@ InModuleScope PowerLFM {
 
     Describe 'Get-LFMUserInfo: Unit' -Tag Unit {
 
-        Mock Invoke-RestMethod
+        Mock Remove-CommonParameter {
+            [hashtable] @{ }
+        }
+        Mock ConvertTo-LFMParameter
+        Mock New-LFMApiQuery
+        Mock Invoke-LFMApiUri {$contextMock}
+        Mock ConvertFrom-UnixTime
 
         Context 'Input' {
 
@@ -76,32 +82,34 @@ InModuleScope PowerLFM {
 
         Context 'Execution' {
 
-            Mock Foreach-Object
+            Get-LFMUserInfo
 
-            $testCases = @(
-                @{
-                    times = 4
-                    guiParams = @{
-                    }
-                }
-                @{
-                    times = 4
-                    guiParams = @{
-                        UserName = 'UserName'
-                    }
-                }
-            )
-
-            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
-                param ($times, $guiParams)
-
-                Get-LFMUserInfo @guiParams
-
+            It "Should remove common parameters from bound parameters" {
                 $amParams = @{
-                    CommandName = 'Foreach-Object'
-                    Exactly = $true
-                    Times = $times
-                    Scope = 'It'
+                    CommandName     = 'Remove-CommonParameter'
+                    Exactly         = $true
+                    Times           = 1
+                    ParameterFilter = {
+                        $PSBoundParameters
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It "Should convert parameters to format API expects after signing" {
+                $amParams = @{
+                    CommandName = 'ConvertTo-LFMParameter'
+                    Exactly     = $true
+                    Times       = 1
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It "Should take hashtable and build a query for a uri" {
+                $amParams = @{
+                    CommandName = 'New-LFMApiQuery'
+                    Exactly     = $true
+                    Times       = 1
                 }
                 Assert-MockCalled @amParams
             }
@@ -109,12 +117,7 @@ InModuleScope PowerLFM {
 
         Context 'Output' {
 
-            Mock Invoke-RestMethod {$contextMock}
-            Mock ConvertFrom-UnixTime {$mocks.UnixTime.From}
-
-            BeforeEach {
-                $script:output = Get-LFMUserInfo
-            }
+            $output = Get-LFMUserInfo
 
             It "User should have a name of $($contextMock.User[0].RealName)" {
                 $output[0].RealName | Should -Be $contextMock.User[0].RealName
@@ -132,16 +135,50 @@ InModuleScope PowerLFM {
                 $output[0].PlayLists | Should -Be $contextMock.User[0].PlayLists
             }
 
-            It "User should have registered on $($mocks.UnixTime.From)" {
-                $output[0].Registered | Should -Be $mocks.UnixTime.From
-            }
-
             It "User should have a url of $($contextMock.User[0].Url)" {
                 $output[0].Url | Should -Be $contextMock.User[0].Url
             }
 
             It "User should have registered in $($contextMock.User[0].Country)" {
                 $output[0].Country | Should -Be $contextMock.User[0].Country
+            }
+
+            It 'Should call the correct Last.fm get method' {
+                Get-LFMUserInfo
+
+                $amParams = @{
+                    CommandName = 'Invoke-LFMApiUri'
+                    Exactly = $true
+                    Times = 1
+                    Scope = 'It'
+                    ParameterFilter = {
+                        $Uri -like 'https://ws.audioscrobbler.com/2.0*'
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should convert the date from unix time to the local time' {
+                Get-LFMUserInfo
+
+                $amParams = @{
+                    CommandName = 'ConvertFrom-UnixTime'
+                    Exactly = $true
+                    Times = 1
+                    Scope = 'It'
+                    ParameterFilter = {
+                        $UnixTime -eq 0 -or
+                        $UnixTime -eq 60 -and
+                        $Local -eq $true
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It "Should throw when an error is returned in the response" {
+                Mock Invoke-LFMApiUri { throw 'Error' }
+
+                { Get-LFMUserInfo } | Should -Throw 'Error'
             }
         }
     }

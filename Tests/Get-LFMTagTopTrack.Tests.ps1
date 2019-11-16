@@ -131,7 +131,14 @@ InModuleScope PowerLFM {
 
     Describe 'Get-LFMTagTopTrack: Unit' -Tag Unit {
 
-        Mock Invoke-RestMethod
+        Mock Remove-CommonParameter {
+            [hashtable] @{
+                Tag = 'Tag'
+            }
+        }
+        Mock ConvertTo-LFMParameter
+        Mock New-LFMApiQuery
+        Mock Invoke-LFMApiUri {$contextMock}
 
         Context 'Input' {
 
@@ -142,42 +149,34 @@ InModuleScope PowerLFM {
 
         Context 'Execution' {
 
-            Mock Foreach-Object
+            Get-LFMTagTopTrack -Tag Tag
 
-            $testCases = @(
-                @{
-                    times = 4
-                    gtttParams = @{
-                        Tag = 'Tag'
-                    }
-                }
-                @{
-                    times = 5
-                    gtttParams = @{
-                        Tag = 'Tag'
-                        Limit = '5'
-                    }
-                }
-                @{
-                    times = 6
-                    gtttParams = @{
-                        Tag = 'Tag'
-                        Limit = '5'
-                        Page = '1'
-                    }
-                }
-            )
-
-            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
-                param ($times, $gtttParams)
-
-                Get-LFMTagTopTrack @gtttParams
-
+            It "Should remove common parameters from bound parameters" {
                 $amParams = @{
-                    CommandName = 'Foreach-Object'
-                    Exactly = $true
-                    Times = $times
-                    Scope = 'It'
+                    CommandName     = 'Remove-CommonParameter'
+                    Exactly         = $true
+                    Times           = 1
+                    ParameterFilter = {
+                        $PSBoundParameters
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It "Should convert parameters to format API expects after signing" {
+                $amParams = @{
+                    CommandName = 'ConvertTo-LFMParameter'
+                    Exactly     = $true
+                    Times       = 1
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It "Should take hashtable and build a query for a uri" {
+                $amParams = @{
+                    CommandName = 'New-LFMApiQuery'
+                    Exactly     = $true
+                    Times       = 1
                 }
                 Assert-MockCalled @amParams
             }
@@ -185,11 +184,7 @@ InModuleScope PowerLFM {
 
         Context 'Output' {
 
-            Mock Invoke-RestMethod {$contextMock}
-
-            BeforeEach {
-                $script:output = Get-LFMTagTopTrack -Tag Tag
-            }
+            $output = Get-LFMTagTopTrack -Tag Tag
 
             It "Tag first top track should have name of $($contextMock.Tracks.Track[0].Name)" {
                 $output[0].Track | Should -Be $contextMock.Tracks.Track[0].Name
@@ -230,6 +225,27 @@ InModuleScope PowerLFM {
             It 'Tag should not have more than two top tracks' {
                 $output.Track | Should -Not -BeNullOrEmpty
                 $output.Track | Should -Not -HaveCount 3
+            }
+
+            It 'Should call the correct Last.fm get method' {
+                Get-LFMTagTopTrack -Tag Tag
+
+                $amParams = @{
+                    CommandName = 'Invoke-LFMApiUri'
+                    Exactly = $true
+                    Times = 1
+                    Scope = 'It'
+                    ParameterFilter = {
+                        $Uri -like 'https://ws.audioscrobbler.com/2.0*'
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It "Should throw when an error is returned in the response" {
+                Mock Invoke-LFMApiUri { throw 'Error' }
+
+                { Get-LFMTagTopTrack -Tag Tag } | Should -Throw 'Error'
             }
         }
     }

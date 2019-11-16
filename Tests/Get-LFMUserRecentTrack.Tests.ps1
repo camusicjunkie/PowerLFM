@@ -197,7 +197,13 @@ InModuleScope PowerLFM {
 
     Describe 'Get-LFMUserRecentTrack: Unit' -Tag Unit {
 
-        Mock Invoke-RestMethod
+        Mock Remove-CommonParameter {
+            [hashtable] @{ }
+        }
+        Mock ConvertTo-LFMParameter
+        Mock New-LFMApiQuery
+        Mock Invoke-LFMApiUri {$contextMock}
+        Mock ConvertFrom-UnixTime
 
         Context 'Input' {
 
@@ -205,22 +211,18 @@ InModuleScope PowerLFM {
                 {Get-LFMUserRecentTrack -UserName $null} | Should -Throw
             }
 
-            It "Should throw when limit has more than 50 values" {
-                Set-ItResult -Pending -Because 'the type needs to change on the limit parameter'
-
+            It "Should throw when limit has a value of 51" {
                 $gurtParams = @{
                     UserName = 'UserName'
-                    Limit = @(1..51)
+                    Limit = 51
                 }
                 {Get-LFMUserRecentTrack @gurtParams} | Should -Throw
             }
 
-            It "Should not throw when limit has 1 to 50 values" {
-                Set-ItResult -Pending -Because 'the type needs to change on the limit parameter'
-
+            It "Should not throw when limit has a value of 1 to 50" {
                 $gurtParams = @{
                     UserName = 'UserName'
-                    Limit = @(1..50)
+                    Limit = 50
                 }
                 {Get-LFMUserRecentTrack @gurtParams} | Should -Not -Throw
             }
@@ -228,61 +230,34 @@ InModuleScope PowerLFM {
 
         Context 'Execution' {
 
-            Mock Foreach-Object
+            Get-LFMUserRecentTrack
 
-            $testCases = @(
-                @{
-                    times = 5
-                    gurtParams = @{
-                        UserName = 'UserName'
-                    }
-                }
-                @{
-                    times = 6
-                    gurtParams = @{
-                        UserName = 'UserName'
-                        StartDate = '1 Jan 1970'
-                    }
-                }
-                @{
-                    times = 7
-                    gurtParams = @{
-                        UserName = 'UserName'
-                        StartDate = '1 Jan 1970'
-                        EndDate = '2 Jan 1970'
-                    }
-                }
-                @{
-                    times = 8
-                    gurtParams = @{
-                        UserName = 'UserName'
-                        StartDate = '1 Jan 1970'
-                        EndDate = '2 Jan 1970'
-                        Limit = '5'
-                    }
-                }
-                @{
-                    times = 9
-                    gurtParams = @{
-                        UserName = 'UserName'
-                        StartDate = '1 Jan 1970'
-                        EndDate = '2 Jan 1970'
-                        Limit = '5'
-                        Page = '1'
-                    }
-                }
-            )
-
-            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
-                param ($times, $gurtParams)
-
-                Get-LFMUserRecentTrack @gurtParams
-
+            It "Should remove common parameters from bound parameters" {
                 $amParams = @{
-                    CommandName = 'Foreach-Object'
-                    Exactly = $true
-                    Times = $times
-                    Scope = 'It'
+                    CommandName     = 'Remove-CommonParameter'
+                    Exactly         = $true
+                    Times           = 1
+                    ParameterFilter = {
+                        $PSBoundParameters
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It "Should convert parameters to format API expects after signing" {
+                $amParams = @{
+                    CommandName = 'ConvertTo-LFMParameter'
+                    Exactly     = $true
+                    Times       = 1
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It "Should take hashtable and build a query for a uri" {
+                $amParams = @{
+                    CommandName = 'New-LFMApiQuery'
+                    Exactly     = $true
+                    Times       = 1
                 }
                 Assert-MockCalled @amParams
             }
@@ -290,10 +265,7 @@ InModuleScope PowerLFM {
 
         Context 'Output' {
 
-            Mock Invoke-RestMethod {$contextMock}
-            Mock ConvertFrom-UnixTime {$mocks.UnixTime.From}
-
-            $output = Get-LFMUserRecentTrack -UserName camusicjunkie
+            $output = Get-LFMUserRecentTrack
 
             It "User first recent track should be playing now" {
                 $output[0].ScrobbleTime | Should -Be 'Now Playing'
@@ -311,10 +283,6 @@ InModuleScope PowerLFM {
                 $output[1].Album | Should -Be $contextMock.RecentTracks.Track[1].Album.'#Text'
             }
 
-            It "User second recent track should have scrobble time of $($mocks.UnixTime.From)" {
-                $output[1].ScrobbleTime | Should -Be $mocks.UnixTime.From
-            }
-
             It "User second recent track should be loved" {
                 $output[1].Loved | Should -Be 'Yes'
             }
@@ -330,6 +298,44 @@ InModuleScope PowerLFM {
             It 'User should not have more than two recent tracks' {
                 $output | Should -Not -BeNullOrEmpty
                 $output | Should -Not -HaveCount 3
+            }
+
+            It 'Should call the correct Last.fm get method' {
+                Get-LFMUserRecentTrack
+
+                $amParams = @{
+                    CommandName = 'Invoke-LFMApiUri'
+                    Exactly = $true
+                    Times = 1
+                    Scope = 'It'
+                    ParameterFilter = {
+                        $Uri -like 'https://ws.audioscrobbler.com/2.0*'
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should convert the date from unix time to the local time' {
+                Get-LFMUserRecentTrack
+
+                $amParams = @{
+                    CommandName = 'ConvertFrom-UnixTime'
+                    Exactly = $true
+                    Times = 2
+                    Scope = 'It'
+                    ParameterFilter = {
+                        $UnixTime -eq 0 -or
+                        $UnixTime -eq 60 -and
+                        $Local -eq $true
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It "Should throw when an error is returned in the response" {
+                Mock Invoke-LFMApiUri { throw 'Error' }
+
+                { Get-LFMUserRecentTrack } | Should -Throw 'Error'
             }
         }
     }

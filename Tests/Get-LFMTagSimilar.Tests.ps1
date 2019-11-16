@@ -65,7 +65,14 @@ InModuleScope PowerLFM {
 
     Describe 'Get-LFMTagSimilar: Unit' -Tag Unit {
 
-        Mock Invoke-RestMethod
+        Mock Remove-CommonParameter {
+            [hashtable] @{
+                Tag = 'Tag'
+            }
+        }
+        Mock ConvertTo-LFMParameter
+        Mock New-LFMApiQuery
+        Mock Invoke-LFMApiUri {$contextMock}
 
         Context 'Input' {
 
@@ -76,27 +83,34 @@ InModuleScope PowerLFM {
 
         Context 'Execution' {
 
-            Mock Foreach-Object
+            Get-LFMTagSimilar -Tag Tag
 
-            $testCases = @(
-                @{
-                    times = 4
-                    gtiParams = @{
-                        Tag = 'Tag'
+            It "Should remove common parameters from bound parameters" {
+                $amParams = @{
+                    CommandName     = 'Remove-CommonParameter'
+                    Exactly         = $true
+                    Times           = 1
+                    ParameterFilter = {
+                        $PSBoundParameters
                     }
                 }
-            )
+                Assert-MockCalled @amParams
+            }
 
-            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
-                param ($times, $gtiParams)
-
-                Get-LFMTagInfo @gtiParams
-
+            It "Should convert parameters to format API expects after signing" {
                 $amParams = @{
-                    CommandName = 'Foreach-Object'
-                    Exactly = $true
-                    Times = $times
-                    Scope = 'It'
+                    CommandName = 'ConvertTo-LFMParameter'
+                    Exactly     = $true
+                    Times       = 1
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It "Should take hashtable and build a query for a uri" {
+                $amParams = @{
+                    CommandName = 'New-LFMApiQuery'
+                    Exactly     = $true
+                    Times       = 1
                 }
                 Assert-MockCalled @amParams
             }
@@ -104,11 +118,7 @@ InModuleScope PowerLFM {
 
         Context 'Output' {
 
-            Mock Invoke-RestMethod {$contextMock}
-
-            BeforeEach {
-                $script:output = Get-LFMTagSimilar -Tag Tag
-            }
+            $output = Get-LFMTagSimilar -Tag Tag
 
             It "Tag should have name of $($contextMock.Tag.Name)" {
                 $output.Tag | Should -Be $contextMock.Tag.Name
@@ -125,6 +135,27 @@ InModuleScope PowerLFM {
             It 'Tag should not have more than one tag' {
                 $output.Tag | Should -Not -BeNullOrEmpty
                 $output.Tag | Should -Not -HaveCount 2
+            }
+
+            It 'Should call the correct Last.fm get method' {
+                Get-LFMTagSimilar -Tag Tag
+
+                $amParams = @{
+                    CommandName = 'Invoke-LFMApiUri'
+                    Exactly = $true
+                    Times = 1
+                    Scope = 'It'
+                    ParameterFilter = {
+                        $Uri -like 'https://ws.audioscrobbler.com/2.0*'
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It "Should throw when an error is returned in the response" {
+                Mock Invoke-LFMApiUri { throw 'Error' }
+
+                { Get-LFMTagSimilar -Tag Tag } | Should -Throw 'Error'
             }
         }
     }
