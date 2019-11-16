@@ -10,7 +10,7 @@ function Add-LFMArtistTag {
 
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
-        [ValidateCount(1,10)]
+        [ValidateCount(1, 10)]
         [string[]] $Tag
     )
 

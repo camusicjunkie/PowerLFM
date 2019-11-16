@@ -9,7 +9,7 @@ function Search-LFMTrack {
         [ValidateNotNullOrEmpty()]
         [string] $Track,
 
-        [ValidateRange(1,50)]
+        [ValidateRange(1, 50)]
         [int] $Limit,
 
         [int] $Page

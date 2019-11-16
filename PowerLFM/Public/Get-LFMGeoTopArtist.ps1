@@ -11,7 +11,7 @@ function Get-LFMGeoTopArtist {
         [string] $Country,
 
         [Parameter()]
-        [ValidateRange(1,119)]
+        [ValidateRange(1, 119)]
         [int] $Limit,
 
         [int] $Page

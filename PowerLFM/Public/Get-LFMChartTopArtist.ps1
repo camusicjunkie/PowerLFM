@@ -5,7 +5,7 @@ function Get-LFMChartTopArtist {
     [OutputType('PowerLFM.Chart.TopArtists')]
     param (
         [Parameter()]
-        [ValidateRange(1,119)]
+        [ValidateRange(1, 119)]
         [int] $Limit,
 
         [int] $Page

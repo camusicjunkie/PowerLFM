@@ -9,7 +9,7 @@ function Search-LFMAlbum {
         [ValidateNotNullOrEmpty()]
         [string] $Album,
 
-        [ValidateRange(1,50)]
+        [ValidateRange(1, 50)]
         [int] $Limit,
 
         [int] $Page

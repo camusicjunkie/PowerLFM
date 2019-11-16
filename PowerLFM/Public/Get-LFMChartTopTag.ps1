@@ -5,7 +5,7 @@ function Get-LFMChartTopTag {
     [OutputType('PowerLFM.Chart.TopTags')]
     param (
         [Parameter()]
-        [ValidateRange(1,119)]
+        [ValidateRange(1, 119)]
         [int] $Limit,
 
         [int] $Page

@@ -5,7 +5,7 @@ function Get-LFMChartTopTrack {
     [OutputType('PowerLFM.Chart.TopTracks')]
     param (
         [Parameter()]
-        [ValidateRange(1,119)]
+        [ValidateRange(1, 119)]
         [int] $Limit,
 
         [int] $Page
