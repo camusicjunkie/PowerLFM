@@ -272,10 +272,3 @@ InModuleScope PowerLFM {
         }
     }
 }
-
-Describe 'Get-LFMUserTopArtist: Integration' -Tag Integration {
-
-    It 'Integration test' {
-        Set-ItResult -Skipped -Because 'the integration tests will be set up later'
-    }
-}

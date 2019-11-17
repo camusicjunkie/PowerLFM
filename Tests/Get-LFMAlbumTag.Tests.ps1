@@ -377,10 +377,3 @@ InModuleScope PowerLFM {
         }
     }
 }
-
-Describe 'Get-LFMAlbumTag: Integration' -Tag Integration {
-
-    It 'Integration test' {
-        Set-ItResult -Skipped -Because 'the integration tests will be set up later'
-    }
-}

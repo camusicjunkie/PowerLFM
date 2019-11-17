@@ -32,7 +32,3 @@ InModuleScope PowerLFM {
         }
     }
 }
-
-Describe 'Get-LFMConfiguration: Integration' -Tag Integration {
-
-}
