@@ -124,16 +124,65 @@ InModuleScope PowerLFM {
 
     Describe 'Add-LFMConfiguration: Unit' -Tag Unit {
 
+        Mock Add-LFMVaultPass
+
         Context 'Input' {
 
+            It 'Should throw when Album is null' {
+                {Add-LFMConfiguration -ApiKey $null} | Should -Throw
+            }
+
+            It 'Should throw when Album is null' {
+                {Add-LFMConfiguration -SessionKey $null} | Should -Throw
+            }
+
+            It 'Should throw when Album is null' {
+                {Add-LFMConfiguration -SharedSecret $null} | Should -Throw
+            }
         }
 
         Context 'Execution' {
 
-        }
+            Add-LFMConfiguration -ApiKey ApiKey -SessionKey SessionKey -SharedSecret SharedSecret
 
-        Context 'Output' {
+            It 'Should add the configuration for ApiKey' {
+                $amParams = @{
+                    CommandName     = 'Add-LFMVaultPass'
+                    Exactly         = $true
+                    Times           = 1
+                    ParameterFilter = {
+                        $UserName -eq 'ApiKey' -and
+                        $Pass -eq 'ApiKey'
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
 
+            It 'Should add the configuration for SessionKey' {
+                $amParams = @{
+                    CommandName     = 'Add-LFMVaultPass'
+                    Exactly         = $true
+                    Times           = 1
+                    ParameterFilter = {
+                        $UserName -eq 'SessionKey' -and
+                        $Pass -eq 'SessionKey'
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should add the configuration for SharedSecret' {
+                $amParams = @{
+                    CommandName     = 'Add-LFMVaultPass'
+                    Exactly         = $true
+                    Times           = 1
+                    ParameterFilter = {
+                        $UserName -eq 'SharedSecret' -and
+                        $Pass -eq 'SharedSecret'
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
         }
     }
 }
