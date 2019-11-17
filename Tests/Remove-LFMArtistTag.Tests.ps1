@@ -194,32 +194,3 @@ InModuleScope PowerLFM {
         }
     }
 }
-
-Describe 'Remove-LFMArtistTag: Integration' -Tag Integration {
-
-    BeforeAll {
-        Get-LFMConfiguration
-
-        $atParams = @{
-            Artist = 'Deftones'
-            Tag = 'randomValue'
-            Confirm = $false
-        }
-        Add-LFMArtistTag @atParams
-    }
-
-    Context "Rest API calls" {
-
-        It 'Should contain the random value tag before removing it' {
-            $tag = Get-LFMArtistTag -Artist Deftones
-            $tag.Tag | Should -Contain 'randomValue'
-        }
-
-        It 'Should remove the new random value tag from the artist' {
-            Remove-LFMArtistTag @atParams
-            $tag = Get-LFMArtistTag -Artist Deftones
-            @($tag).Where({$_.Tag -eq 'randomValue'}).Tag | Should -BeNullOrEmpty
-            @($tag).Where({$_.Tag -eq 'randomValue'}).Tag | Should -Not -Be 'randomValue'
-        }
-    }
-}

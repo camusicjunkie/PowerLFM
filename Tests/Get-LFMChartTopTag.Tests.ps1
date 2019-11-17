@@ -203,10 +203,3 @@ InModuleScope PowerLFM {
         }
     }
 }
-
-Describe 'Get-LFMChartTopTag: Integration' -Tag Integration {
-
-    It 'Integration test' {
-        Set-ItResult -Skipped -Because 'the integration tests will be set up later'
-    }
-}
