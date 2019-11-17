@@ -22,7 +22,7 @@ Describe 'Get-LFMAlbumTag: Interface' -Tag Interface {
     Context 'ParameterSetName album' {
 
         It 'Should have a parameter set of album' {
-            $command.ParameterSets.Name -contains 'album' | Should -BeTrue
+            $command.ParameterSets.Name | Should -Contain 'album'
         }
 
         $parameterSet = $command.ParameterSets | Where-Object Name -eq album
@@ -163,7 +163,7 @@ Describe 'Get-LFMAlbumTag: Interface' -Tag Interface {
     Context 'ParameterSetName id' {
 
         It 'Should have a parameter set of id' {
-            $command.ParameterSets.Name -contains 'id' | Should -BeTrue
+            $command.ParameterSets.Name | Should -Contain 'id'
         }
 
         $parameterSet = $command.ParameterSets | Where-Object Name -eq id

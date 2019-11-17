@@ -14,7 +14,7 @@ Describe 'Remove-LFMArtistTag: Interface' -Tag Interface {
     Context 'ParameterSetName __AllParameterSets' {
 
         It 'Should have a parameter set of __AllParameterSets' {
-            $command.ParameterSets.Name -contains '__AllParameterSets' | Should -BeTrue
+            $command.ParameterSets.Name | Should -Contain '__AllParameterSets'
         }
 
         $parameterSet = $command.ParameterSets | Where-Object Name -eq __AllParameterSets

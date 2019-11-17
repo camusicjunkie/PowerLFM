@@ -22,7 +22,7 @@ Describe 'Get-LFMTrackSimilar: Interface' -Tag Interface {
     Context 'ParameterSetName track' {
 
         It 'Should have a parameter set of track' {
-            $command.ParameterSets.Name -contains 'track' | Should -BeTrue
+            $command.ParameterSets.Name | Should -Contain 'track'
         }
 
         $parameterSet = $command.ParameterSets | Where-Object Name -eq track
@@ -163,7 +163,7 @@ Describe 'Get-LFMTrackSimilar: Interface' -Tag Interface {
     Context 'ParameterSetName id' {
 
         It 'Should have a parameter set of id' {
-            $command.ParameterSets.Name -contains 'id' | Should -BeTrue
+            $command.ParameterSets.Name | Should -Contain 'id'
         }
 
         $parameterSet = $command.ParameterSets | Where-Object Name -eq id
