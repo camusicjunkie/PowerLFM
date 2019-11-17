@@ -4,27 +4,17 @@ function Get-LFMConfiguration {
     [CmdletBinding()]
     param ()
 
-    $module = (Get-Command -Name $MyInvocation.MyCommand.Name).ModuleName
+    $module = 'PowerLFM'
 
     try {
-        [Void][Windows.Security.Credentials.PasswordVault,Windows.Security.Credentials,ContentType=WindowsRuntime]
-        $vault = New-Object -TypeName Windows.Security.Credentials.PasswordVault -ErrorAction Stop
-
-        try {
-            $ak = $vault.Retrieve($module, 'APIKey').Password
-            $sk = $vault.Retrieve($module, 'SessionKey').Password
-            $ss = $vault.Retrieve($module, 'SharedSecret').Password
-            $script:LFMConfig = [pscustomobject] @{
-                'APIKey' = $ak
-                'SessionKey' = $sk
-                'SharedSecret' = $ss
-            }
-            Write-Verbose 'LFMConfig is loaded in to the session'
+        $script:LFMConfig = [pscustomobject] @{
+            'APIKey' = (Get-VaultPassword -Resource $module -Name 'ApiKey')
+            'SessionKey' = (Get-VaultPassword -Resource $module -Name 'SessionKey')
+            'SharedSecret' = (Get-VaultPassword -Resource $module -Name 'SharedSecret')
         }
-        catch {
-            Write-Error "Could not retrieve credentials for $module in Password Vault. Run Add-LFMConfiguration with proper keys."
-        }
-    } catch {
-        Write-Error $_.Exception.Message
+        Write-Verbose 'LFMConfig is loaded in to the session'
+    }
+    catch {
+        throw $_
     }
 }
