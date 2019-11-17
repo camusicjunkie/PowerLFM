@@ -233,37 +233,3 @@ InModuleScope PowerLFM {
         }
     }
 }
-
-Describe 'Add-LFMAlbumTag: Integration' -Tag Integration {
-
-    BeforeAll {
-        Get-LFMConfiguration
-
-        $atParams = @{
-            Album   = 'Gore'
-            Artist  = 'Deftones'
-            Tag     = 'randomValue'
-            Confirm = $false
-        }
-        Remove-LFMAlbumTag @atParams
-    }
-
-    Context "Rest API calls" {
-
-        It 'Should not contain the random value tag before adding it' {
-            $tag = Get-LFMAlbumTag -Album Gore -Artist Deftones
-            $tag.Tag | Should -Not -Be 'randomValue'
-        }
-
-        It 'Should add the new random value tag to the album' {
-            Add-LFMAlbumTag @atParams
-            $tag = Get-LFMAlbumTag -Album Gore -Artist Deftones
-            @($tag).Where( { $_.Tag -eq 'randomValue' }).Tag | Should -Not -BeNullOrEmpty
-            @($tag).Where( { $_.Tag -eq 'randomValue' }).Tag | Should -Be 'randomValue'
-        }
-    }
-
-    AfterAll {
-        Remove-LFMAlbumTag @atParams
-    }
-}
