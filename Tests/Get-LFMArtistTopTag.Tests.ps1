@@ -22,7 +22,7 @@ Describe 'Get-LFMArtistTopTag: Interface' -Tag Interface {
     Context 'ParameterSetName artist' {
 
         It 'Should have a parameter set of artist' {
-            $command.ParameterSets.Name -contains 'artist' | Should -BeTrue
+            $command.ParameterSets.Name | Should -Contain 'artist'
         }
 
         $parameterSet = $command.ParameterSets | Where-Object Name -eq artist
@@ -97,7 +97,7 @@ Describe 'Get-LFMArtistTopTag: Interface' -Tag Interface {
     Context 'ParameterSetName id' {
 
         It 'Should have a parameter set of id' {
-            $command.ParameterSets.Name -contains 'id' | Should -BeTrue
+            $command.ParameterSets.Name | Should -Contain 'id'
         }
 
         $parameterSet = $command.ParameterSets | Where-Object Name -eq id

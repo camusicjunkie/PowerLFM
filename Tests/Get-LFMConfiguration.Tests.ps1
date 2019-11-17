@@ -14,7 +14,7 @@ Describe 'Get-LFMConfiguration: Interface' -Tag Interface {
     Context 'ParameterSetName __AllParameterSets' {
 
         It 'Should have a parameter set of __AllParameterSets' {
-            $command.ParameterSets.Name -contains '__AllParameterSets' | Should -BeTrue
+            $command.ParameterSets.Name | Should -Contain '__AllParameterSets'
         }
     }
 }
