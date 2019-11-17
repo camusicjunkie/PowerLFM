@@ -12,6 +12,6 @@ function Get-VaultPassword {
         $vault.Retrieve($Resource, $Name).Password
     }
     catch {
-        throw $_
+        throw "Could not retrieve credentials for $Resource in Password Vault. Run Add-LFMConfiguration with proper keys."
     }
 }

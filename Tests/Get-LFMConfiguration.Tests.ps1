@@ -23,12 +23,36 @@ InModuleScope PowerLFM {
 
     Describe 'Get-LFMConfiguration: Unit' -Tag Unit {
 
+        Mock Get-VaultPassword
+
         Context 'Execution' {
 
+            It 'Should retrieve the password from the Windows Credential Manager' {
+                Get-LFMConfiguration
+
+                $amParams = @{
+                    CommandName = 'Get-VaultPassword'
+                    Exactly = $true
+                    Times = 3
+                    Scope = 'It'
+                    ParameterFilter = {
+                        $Resource -eq 'PowerLFM' -and
+                        $Name -eq 'ApiKey' -or
+                        $Name -eq 'SessionKey' -or
+                        $Name -eq 'SharedSecret'
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
         }
 
         Context 'Output' {
 
+            It 'Should throw when an error is returned in the response' {
+                Mock Get-VaultPassword { throw 'Error' }
+
+                { Get-LFMConfiguration } | Should -Throw 'Error'
+            }
         }
     }
 }

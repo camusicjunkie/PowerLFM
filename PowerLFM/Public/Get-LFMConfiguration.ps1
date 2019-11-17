@@ -15,6 +15,6 @@ function Get-LFMConfiguration {
         Write-Verbose 'LFMConfig is loaded in to the session'
     }
     catch {
-        Write-Error "Could not retrieve credentials for $module in Password Vault. Run Add-LFMConfiguration with proper keys."
+        throw $_
     }
 }
