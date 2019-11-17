@@ -8,7 +8,7 @@ Function Show-LFMAuthWindow {
     Add-Type -AssemblyName System.Windows.Forms
 
     $form = New-Object -TypeName System.Windows.Forms.Form -Property @{
-        Width = 515
+        Width = 516
         Height = 638
         StartPosition = 1
         FormBorderStyle = 'Fixed3D'

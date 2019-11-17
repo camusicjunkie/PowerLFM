@@ -12,7 +12,7 @@ Search for an album by name.
 ## SYNTAX
 
 ```
-Search-LFMAlbum [-Album] <String> [[-Limit] <String>] [[-Page] <String>] [<CommonParameters>]
+Search-LFMAlbum [-Album] <String> [[-Limit] <Int32>] [[-Page] <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -48,7 +48,7 @@ Accept wildcard characters: False
 Limit the number of results per page.
 
 ```yaml
-Type: String
+Type: Int32
 Parameter Sets: (All)
 Aliases:
 
@@ -63,7 +63,7 @@ Accept wildcard characters: False
 Page number to return. Defaults to the first page.
 
 ```yaml
-Type: String
+Type: Int32
 Parameter Sets: (All)
 Aliases:
 

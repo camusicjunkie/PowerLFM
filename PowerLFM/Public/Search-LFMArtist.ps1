@@ -10,7 +10,7 @@ function Search-LFMArtist {
         [string] $Artist,
 
         [Parameter()]
-        [ValidateRange(1,50)]
+        [ValidateRange(1, 50)]
         [int] $Limit,
 
         [int] $Page
@@ -22,22 +22,13 @@ function Search-LFMArtist {
             'api_key' = $LFMConfig.APIKey
             'format' = 'json'
         }
-
-        switch ($PSBoundParameters.Keys) {
-            'Limit' {$apiParams.Add('limit', $Limit)}
-            'Page' {$apiParams.Add('page', $Page)}
-        }
     }
     process {
-        $apiParams.Add('artist', $Artist)
+        $noCommonParams = Remove-CommonParameter $PSBoundParameters
+        $convertedParams = ConvertTo-LFMParameter $noCommonParams
 
-        #Building string to append to base url
-        $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
-            "$($_.Name)=$($_.Value)"
-        }
-        $string = $keyValues -join '&'
-
-        $apiUrl = "$baseUrl/?$string"
+        $query = New-LFMApiQuery ($convertedParams + $apiParams)
+        $apiUrl = "$baseUrl/?$query"
     }
     end {
         try {

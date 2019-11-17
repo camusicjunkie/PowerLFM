@@ -182,5 +182,12 @@ Search for a track by name.
 ### [Set-LFMTrackLove](Set-LFMTrackLove.md)
 Love a track for a user.
 
+### [Set-LFMTrackNowPlaying](Set-LFMTrackNowPlaying.md)
+{{ Fill in the Synopsis }}
+
+### [Set-LFMTrackScrobble](Set-LFMTrackScrobble.md)
+{{ Fill in the Synopsis }}
+
 ### [Set-LFMTrackUnlove](Set-LFMTrackUnlove.md)
 Unlove a track for a user.
+

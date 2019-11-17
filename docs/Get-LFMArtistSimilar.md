@@ -13,12 +13,12 @@ Get artists similar to another artist.
 
 ### artist (Default)
 ```
-Get-LFMArtistSimilar [-Artist] <String> [-Limit <String>] [-AutoCorrect] [<CommonParameters>]
+Get-LFMArtistSimilar [-Artist] <String> [-Limit <Int32>] [-AutoCorrect] [<CommonParameters>]
 ```
 
 ### id
 ```
-Get-LFMArtistSimilar -Id <String> [-Limit <String>] [-AutoCorrect] [<CommonParameters>]
+Get-LFMArtistSimilar -Id <Guid> [-Limit <Int32>] [-AutoCorrect] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -69,7 +69,7 @@ Accept wildcard characters: False
 Musicbrainz id for the artist.
 
 ```yaml
-Type: String
+Type: Guid
 Parameter Sets: id
 Aliases:
 
@@ -84,7 +84,7 @@ Accept wildcard characters: False
 Limit the number of similar artists.
 
 ```yaml
-Type: String
+Type: Int32
 Parameter Sets: (All)
 Aliases:
 

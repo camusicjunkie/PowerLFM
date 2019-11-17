@@ -13,8 +13,8 @@ Get all the times a track has been scrobbled by a user.
 ## SYNTAX
 
 ```
-Get-LFMUserTrackScrobble [-Track] <String> [-Artist] <String> [[-UserName] <String>] [[-Limit] <String>]
- [[-Page] <String>] [<CommonParameters>]
+Get-LFMUserTrackScrobble [-Track] <String> [-Artist] <String> [[-UserName] <String>] [[-Limit] <Int32>]
+ [[-Page] <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -50,7 +50,7 @@ Accept wildcard characters: False
 Limit the number of results per page.
 
 ```yaml
-Type: String
+Type: Int32
 Parameter Sets: (All)
 Aliases:
 
@@ -65,7 +65,7 @@ Accept wildcard characters: False
 Page number to return. Defaults to the first page.
 
 ```yaml
-Type: String
+Type: Int32
 Parameter Sets: (All)
 Aliases:
 

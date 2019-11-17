@@ -31,7 +31,7 @@ Describe 'Get-LFMGeoTopTrack: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
+            It 'Should be of type System.String' {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
@@ -51,7 +51,7 @@ Describe 'Get-LFMGeoTopTrack: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 0" {
+            It 'Should have a position of 0' {
                 $parameter.Position | Should -Be 0
             }
         }
@@ -64,7 +64,7 @@ Describe 'Get-LFMGeoTopTrack: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
+            It 'Should be of type System.String' {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
@@ -84,7 +84,7 @@ Describe 'Get-LFMGeoTopTrack: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 1" {
+            It 'Should have a position of 1' {
                 $parameter.Position | Should -Be 1
             }
         }
@@ -97,7 +97,7 @@ Describe 'Get-LFMGeoTopTrack: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.Int32" {
+            It 'Should be of type System.Int32' {
                 $parameter.ParameterType.ToString() | Should -Be System.Int32
             }
 
@@ -117,7 +117,7 @@ Describe 'Get-LFMGeoTopTrack: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 2" {
+            It 'Should have a position of 2' {
                 $parameter.Position | Should -Be 2
             }
         }
@@ -130,7 +130,7 @@ Describe 'Get-LFMGeoTopTrack: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.Int32" {
+            It 'Should be of type System.Int32' {
                 $parameter.ParameterType.ToString() | Should -Be System.Int32
             }
 
@@ -150,7 +150,7 @@ Describe 'Get-LFMGeoTopTrack: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 3" {
+            It 'Should have a position of 3' {
                 $parameter.Position | Should -Be 3
             }
         }
@@ -164,62 +164,52 @@ InModuleScope PowerLFM {
 
     Describe 'Get-LFMGeoTopTrack: Unit' -Tag Unit {
 
-        Mock Invoke-RestMethod
+        Mock Remove-CommonParameter {
+            [hashtable] @{
+                Country = 'Country'
+             }
+        }
+        Mock ConvertTo-LFMParameter
+        Mock New-LFMApiQuery
+        Mock Invoke-LFMApiUri {$contextMock}
 
         Context 'Input' {
 
-            It "Should throw when limit is greater than 119" {
+            It 'Should throw when limit is greater than 119' {
                 {Get-LFMGeoTopTrack -Country Country -Limit 120} | Should -Throw
             }
         }
 
         Context 'Execution' {
 
-            Mock Foreach-Object
+            Get-LFMGeoTopTrack -Country Country
 
-            $testCases = @(
-                @{
-                    times = 4
-                    ggttParams = @{
-                        Country = 'Country'
-                    }
-                }
-                @{
-                    times = 5
-                    ggttParams = @{
-                        Country = 'Country'
-                        City = 'City'
-                    }
-                }
-                @{
-                    times = 6
-                    ggttParams = @{
-                        Country = 'Country'
-                        City = 'City'
-                        Limit = '5'
-                    }
-                }
-                @{
-                    times = 7
-                    ggttParams = @{
-                        Country = 'Country'
-                        City = 'City'
-                        Limit = '5'
-                        Page = '1'
-                    }
-                }
-            )
-
-            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
-                param ($times, $ggttParams)
-
-                Get-LFMGeoTopTrack @ggttParams
-
+            It 'Should remove common parameters from bound parameters' {
                 $amParams = @{
-                    CommandName = 'Foreach-Object'
-                    Exactly = $true
-                    Times = $times
-                    Scope = 'It'
+                    CommandName     = 'Remove-CommonParameter'
+                    Exactly         = $true
+                    Times           = 1
+                    ParameterFilter = {
+                        $PSBoundParameters
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should convert parameters to format API expects after signing' {
+                $amParams = @{
+                    CommandName = 'ConvertTo-LFMParameter'
+                    Exactly     = $true
+                    Times       = 1
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should take hashtable and build a query for a uri' {
+                $amParams = @{
+                    CommandName = 'New-LFMApiQuery'
+                    Exactly     = $true
+                    Times       = 1
                 }
                 Assert-MockCalled @amParams
             }
@@ -227,11 +217,7 @@ InModuleScope PowerLFM {
 
         Context 'Output' {
 
-            Mock Invoke-RestMethod {$contextMock}
-
-            BeforeEach {
-                $script:output = Get-LFMGeoTopTrack -Country Country
-            }
+            $output = Get-LFMGeoTopTrack -Country Country
 
             It "Country first top track should have track name of $($contextMock.Tracks.Track[0].Name)" {
                 $output[0].Track | Should -Be $contextMock.Tracks.Track[0].Name
@@ -275,13 +261,32 @@ InModuleScope PowerLFM {
                 $output.Track | Should -Not -BeNullOrEmpty
                 $output.Track | Should -Not -HaveCount 3
             }
+
+            It 'Should call the correct Last.fm get method' {
+                $amParams = @{
+                    CommandName = 'Invoke-LFMApiUri'
+                    Exactly = $true
+                    Times = 1
+                    Scope = 'Context'
+                    ParameterFilter = {
+                        $Uri -like 'https://ws.audioscrobbler.com/2.0*'
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should throw when an error is returned in the response' {
+                Mock Invoke-LFMApiUri { throw 'Error' }
+
+                { Get-LFMGeoTopTrack -Country Country } | Should -Throw 'Error'
+            }
         }
     }
 }
 
 Describe 'Get-LFMGeoTopTrack: Integration' -Tag Integration {
 
-    It "Integration test" {
+    It 'Integration test' {
         Set-ItResult -Skipped -Because 'the integration tests will be set up later'
     }
 }

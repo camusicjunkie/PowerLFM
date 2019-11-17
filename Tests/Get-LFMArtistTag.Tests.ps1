@@ -35,7 +35,7 @@ Describe 'Get-LFMArtistTag: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
+            It 'Should be of type System.String' {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
@@ -55,7 +55,7 @@ Describe 'Get-LFMArtistTag: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 0" {
+            It 'Should have a position of 0' {
                 $parameter.Position | Should -Be 0
             }
         }
@@ -68,7 +68,7 @@ Describe 'Get-LFMArtistTag: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
+            It 'Should be of type System.String' {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
@@ -88,7 +88,7 @@ Describe 'Get-LFMArtistTag: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of -2147483648" {
+            It 'Should have a position of -2147483648' {
                 $parameter.Position | Should -Be -2147483648
             }
         }
@@ -101,7 +101,7 @@ Describe 'Get-LFMArtistTag: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.Management.Automation.SwitchParameter" {
+            It 'Should be of type System.Management.Automation.SwitchParameter' {
                 $parameter.ParameterType.ToString() | Should -Be System.Management.Automation.SwitchParameter
             }
 
@@ -121,7 +121,7 @@ Describe 'Get-LFMArtistTag: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of -2147483648" {
+            It 'Should have a position of -2147483648' {
                 $parameter.Position | Should -Be -2147483648
             }
         }
@@ -143,7 +143,7 @@ Describe 'Get-LFMArtistTag: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.Guid" {
+            It 'Should be of type System.Guid' {
                 $parameter.ParameterType.ToString() | Should -Be System.Guid
             }
 
@@ -163,7 +163,7 @@ Describe 'Get-LFMArtistTag: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of -2147483648" {
+            It 'Should have a position of -2147483648' {
                 $parameter.Position | Should -Be -2147483648
             }
         }
@@ -176,7 +176,7 @@ Describe 'Get-LFMArtistTag: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
+            It 'Should be of type System.String' {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
@@ -196,7 +196,7 @@ Describe 'Get-LFMArtistTag: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of -2147483648" {
+            It 'Should have a position of -2147483648' {
                 $parameter.Position | Should -Be -2147483648
             }
         }
@@ -209,7 +209,7 @@ Describe 'Get-LFMArtistTag: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.Management.Automation.SwitchParameter" {
+            It 'Should be of type System.Management.Automation.SwitchParameter' {
                 $parameter.ParameterType.ToString() | Should -Be System.Management.Automation.SwitchParameter
             }
 
@@ -229,7 +229,7 @@ Describe 'Get-LFMArtistTag: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of -2147483648" {
+            It 'Should have a position of -2147483648' {
                 $parameter.Position | Should -Be -2147483648
             }
         }
@@ -243,7 +243,14 @@ InModuleScope PowerLFM {
 
     Describe 'Get-LFMArtistTag: Unit' -Tag Unit {
 
-        Mock Invoke-RestMethod
+        Mock Remove-CommonParameter {
+            [hashtable] @{
+                Artist = 'Artist'
+            }
+        }
+        Mock ConvertTo-LFMParameter
+        Mock New-LFMApiQuery
+        Mock Invoke-LFMApiUri {$contextMock}
 
         Context 'Input' {
 
@@ -254,52 +261,34 @@ InModuleScope PowerLFM {
 
         Context 'Execution' {
 
-            Mock Foreach-Object
+            Get-LFMArtistTag -Artist Artist
 
-            $testCases = @(
-                @{
-                    set = 'artist'
-                    times = 5
-                    gatParams = @{
-                        Artist = 'Artist'
-                    }
-                }
-                @{
-                    set = 'artist'
-                    times = 5
-                    gatParams = @{
-                        Artist = 'Artist'
-                        UserName = 'camusicjunkie'
-                    }
-                }
-                @{
-                    set = 'artist'
-                    times = 6
-                    gatParams = @{
-                        Artist = 'Artist'
-                        UserName = 'camusicjunkie'
-                        AutoCorrect = $true
-                    }
-                }
-                @{
-                    set = 'id'
-                    times = 5
-                    gatParams = @{
-                        Id = (New-Guid)
-                    }
-                }
-            )
-
-            It 'Should call Foreach-Object <times> times building url in <set> parameter set' -TestCases $testCases {
-                param ($times, $gatParams)
-
-                Get-LFMArtistTag @gatParams
-
+            It 'Should remove common parameters from bound parameters' {
                 $amParams = @{
-                    CommandName = 'Foreach-Object'
-                    Exactly = $true
-                    Times = $times
-                    Scope = 'It'
+                    CommandName     = 'Remove-CommonParameter'
+                    Exactly         = $true
+                    Times           = 1
+                    ParameterFilter = {
+                        $PSBoundParameters
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should convert parameters to format API expects after signing' {
+                $amParams = @{
+                    CommandName = 'ConvertTo-LFMParameter'
+                    Exactly     = $true
+                    Times       = 1
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should take hashtable and build a query for a uri' {
+                $amParams = @{
+                    CommandName = 'New-LFMApiQuery'
+                    Exactly     = $true
+                    Times       = 1
                 }
                 Assert-MockCalled @amParams
             }
@@ -307,11 +296,7 @@ InModuleScope PowerLFM {
 
         Context 'Output' {
 
-            Mock Invoke-RestMethod {$contextMock}
-
-            BeforeEach {
-                $script:output = Get-LFMArtistTag -Artist Artist
-            }
+            $output = Get-LFMArtistTag -Artist Artist
 
             It "Artist first tag should have name of $($contextMock.Tags.Tag[0].Name)" {
                 $output[0].Tag | Should -Be $contextMock.Tags.Tag[0].Name
@@ -329,9 +314,30 @@ InModuleScope PowerLFM {
                 $output.Tag | Should -Not -HaveCount 3
             }
 
-            It "Artist should have two tags when id parameter is used" {
+            It 'Artist should have two tags when id parameter is used' {
                 $output = Get-LFMArtistTag -Id (New-Guid)
                 $output.Tag | Should -HaveCount 2
+            }
+
+            It 'Should call the correct Last.fm get method' {
+                Get-LFMArtistTag -Artist Artist
+
+                $amParams = @{
+                    CommandName = 'Invoke-LFMApiUri'
+                    Exactly = $true
+                    Times = 1
+                    Scope = 'It'
+                    ParameterFilter = {
+                        $Uri -like 'https://ws.audioscrobbler.com/2.0*'
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should throw when an error is returned in the response' {
+                Mock Invoke-LFMApiUri { throw 'Error' }
+
+                { Get-LFMArtistTag -Artist Artist } | Should -Throw 'Error'
             }
         }
     }
@@ -339,7 +345,7 @@ InModuleScope PowerLFM {
 
 Describe 'Get-LFMArtistTag: Integration' -Tag Integration {
 
-    It "Integration test" {
+    It 'Integration test' {
         Set-ItResult -Skipped -Because 'the integration tests will be set up later'
     }
 }

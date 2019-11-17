@@ -31,7 +31,7 @@ Describe 'Search-LFMTrack: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
+            It 'Should be of type System.String' {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
@@ -51,7 +51,7 @@ Describe 'Search-LFMTrack: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 0" {
+            It 'Should have a position of 0' {
                 $parameter.Position | Should -Be 0
             }
         }
@@ -64,7 +64,7 @@ Describe 'Search-LFMTrack: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.Int32" {
+            It 'Should be of type System.Int32' {
                 $parameter.ParameterType.ToString() | Should -Be System.Int32
             }
 
@@ -84,7 +84,7 @@ Describe 'Search-LFMTrack: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 1" {
+            It 'Should have a position of 1' {
                 $parameter.Position | Should -Be 1
             }
         }
@@ -97,7 +97,7 @@ Describe 'Search-LFMTrack: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.Int32" {
+            It 'Should be of type System.Int32' {
                 $parameter.ParameterType.ToString() | Should -Be System.Int32
             }
 
@@ -117,7 +117,7 @@ Describe 'Search-LFMTrack: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 2" {
+            It 'Should have a position of 2' {
                 $parameter.Position | Should -Be 2
             }
         }
@@ -131,61 +131,66 @@ InModuleScope PowerLFM {
 
     Describe 'Search-LFMTrack: Unit' -Tag Unit {
 
-        Mock Invoke-RestMethod
+        Mock Remove-CommonParameter {
+            [hashtable] @{
+                Track = 'Track'
+            }
+        }
+        Mock ConvertTo-LFMParameter
+        Mock New-LFMApiQuery
+        Mock Invoke-LFMApiUri {$contextMock}
 
         Context 'Input' {
 
-            It "Should throw when track is null" {
-                {Search-LFMAlbum -Track $null} | Should -Throw
+            It 'Should throw when track is null' {
+                {Search-LFMTrack -Track $null} | Should -Throw
+            }
+
+            It 'Should throw when limit has a value of 51' {
+                {Search-LFMTrack -Track Track -Limit 51} | Should -Throw
+            }
+
+            It 'Should not throw when limit has a value of 1 to 50' {
+                {Search-LFMTrack -Track Track -Limit 50} | Should -Not -Throw
             }
         }
 
         Context 'Execution' {
 
-            Mock Foreach-Object
+            Search-LFMTrack -Track Track
 
-            $testCases = @(
-                @{
-                    times = 4
-                    stParams = @{
-                        Track = 'Track'
-                    }
-                }
-                @{
-                    times = 5
-                    stParams = @{
-                        Track = 'Track'
-                        Limit = '5'
-                    }
-                }
-                @{
-                    times = 6
-                    stParams = @{
-                        Track = 'Track'
-                        Limit = '5'
-                        Page = '1'
-                    }
-                }
-            )
-
-            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
-                param ($times, $stParams)
-
-                Search-LFMTrack @stParams
-
+            It 'Should remove common parameters from bound parameters' {
                 $amParams = @{
-                    CommandName = 'Foreach-Object'
-                    Exactly = $true
-                    Times = $times
-                    Scope = 'It'
+                    CommandName     = 'Remove-CommonParameter'
+                    Exactly         = $true
+                    Times           = 1
+                    ParameterFilter = {
+                        $PSBoundParameters
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should convert parameters to format API expects after signing' {
+                $amParams = @{
+                    CommandName = 'ConvertTo-LFMParameter'
+                    Exactly     = $true
+                    Times       = 1
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should take hashtable and build a query for a uri' {
+                $amParams = @{
+                    CommandName = 'New-LFMApiQuery'
+                    Exactly     = $true
+                    Times       = 1
                 }
                 Assert-MockCalled @amParams
             }
         }
 
         Context 'Output' {
-
-            Mock Invoke-RestMethod {$contextMock}
 
             $output = Search-LFMTrack -Track Track
 
@@ -220,13 +225,32 @@ InModuleScope PowerLFM {
             It 'Searched result should not have more than two tracks' {
                 $output | Should -Not -HaveCount 3
             }
+
+            It 'Should call the correct Last.fm get method' {
+                $amParams = @{
+                    CommandName = 'Invoke-LFMApiUri'
+                    Exactly = $true
+                    Times = 1
+                    Scope = 'Context'
+                    ParameterFilter = {
+                        $Uri -like 'https://ws.audioscrobbler.com/2.0*'
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should throw when an error is returned in the response' {
+                Mock Invoke-LFMApiUri { throw 'Error' }
+
+                { Search-LFMTrack -Track Track } | Should -Throw 'Error'
+            }
         }
     }
 }
 
 Describe 'Search-LFMTrack: Integration' -Tag Integration {
 
-    It "Integration test" {
+    It 'Integration test' {
         Set-ItResult -Skipped -Because 'the integration tests will be set up later'
     }
 }

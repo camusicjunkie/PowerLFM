@@ -14,7 +14,7 @@ function Get-LFMUserTopArtist {
         [string] $TimePeriod,
 
         [Parameter()]
-        [ValidateRange(1,50)]
+        [ValidateRange(1, 50)]
         [int] $Limit,
 
         [int] $Page
@@ -27,35 +27,13 @@ function Get-LFMUserTopArtist {
             'sk' = $LFMConfig.SessionKey
             'format' = 'json'
         }
-
-        $period = @{
-            'Overall' = 'overall'
-            '7 Days' = '7days'
-            '1 Month' = '1month'
-            '3 Months' = '3month'
-            '6 Months' = '6month'
-            '1 Year' = '12month'
-        }
-
-        switch ($PSBoundParameters.Keys) {
-            'Limit' {$apiParams.Add('limit', $Limit)}
-            'Page' {$apiParams.Add('page', $Page)}
-            'TimePeriod' {$apiParams.Add('period', $period[$TimePeriod])}
-        }
     }
     process {
-        if ($PSBoundParameters.ContainsKey('UserName')) {
-            $apiParams.Remove('sk')
-            $apiParams.Add('user', $UserName)
-        }
+        $noCommonParams = Remove-CommonParameter $PSBoundParameters
+        $convertedParams = ConvertTo-LFMParameter $noCommonParams
 
-        #Building string to append to base url
-        $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
-            "$($_.Name)=$($_.Value)"
-        }
-        $string = $keyValues -join '&'
-
-        $apiUrl = "$baseUrl/?$string"
+        $query = New-LFMApiQuery ($convertedParams + $apiParams)
+        $apiUrl = "$baseUrl/?$query"
     }
     end {
         try {

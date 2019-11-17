@@ -12,7 +12,7 @@ Get the most popular tracks by country and city.
 ## SYNTAX
 
 ```
-Get-LFMGeoTopTrack [-Country] <String> [[-City] <String>] [[-Limit] <String>] [[-Page] <String>]
+Get-LFMGeoTopTrack [-Country] <String> [[-City] <String>] [[-Limit] <Int32>] [[-Page] <Int32>]
  [<CommonParameters>]
 ```
 
@@ -64,7 +64,7 @@ Accept wildcard characters: False
 Limit the number of results per page.
 
 ```yaml
-Type: String
+Type: Int32
 Parameter Sets: (All)
 Aliases:
 
@@ -79,7 +79,7 @@ Accept wildcard characters: False
 Page number to return. Defaults to the first page.
 
 ```yaml
-Type: String
+Type: Int32
 Parameter Sets: (All)
 Aliases:
 

@@ -18,7 +18,7 @@ Get-LFMArtistTag [-Artist] <String> [-UserName <String>] [-AutoCorrect] [<Common
 
 ### id
 ```
-Get-LFMArtistTag -Id <String> [-UserName <String>] [-AutoCorrect] [<CommonParameters>]
+Get-LFMArtistTag -Id <Guid> [-UserName <String>] [-AutoCorrect] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -69,7 +69,7 @@ Accept wildcard characters: False
 Musicbrainz id for the artist.
 
 ```yaml
-Type: String
+Type: Guid
 Parameter Sets: id
 Aliases:
 

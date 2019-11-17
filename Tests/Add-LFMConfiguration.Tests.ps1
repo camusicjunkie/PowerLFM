@@ -27,7 +27,7 @@ Describe 'Add-LFMConfiguration: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
+            It 'Should be of type System.String' {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
@@ -47,7 +47,7 @@ Describe 'Add-LFMConfiguration: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 0" {
+            It 'Should have a position of 0' {
                 $parameter.Position | Should -Be 0
             }
         }
@@ -60,7 +60,7 @@ Describe 'Add-LFMConfiguration: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
+            It 'Should be of type System.String' {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
@@ -80,7 +80,7 @@ Describe 'Add-LFMConfiguration: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 1" {
+            It 'Should have a position of 1' {
                 $parameter.Position | Should -Be 1
             }
         }
@@ -93,7 +93,7 @@ Describe 'Add-LFMConfiguration: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
+            It 'Should be of type System.String' {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
@@ -113,7 +113,7 @@ Describe 'Add-LFMConfiguration: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 2" {
+            It 'Should have a position of 2' {
                 $parameter.Position | Should -Be 2
             }
         }

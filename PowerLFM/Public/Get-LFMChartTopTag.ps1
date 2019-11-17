@@ -5,7 +5,7 @@ function Get-LFMChartTopTag {
     [OutputType('PowerLFM.Chart.TopTags')]
     param (
         [Parameter()]
-        [ValidateRange(1,119)]
+        [ValidateRange(1, 119)]
         [int] $Limit,
 
         [int] $Page
@@ -17,18 +17,11 @@ function Get-LFMChartTopTag {
         'format' = 'json'
     }
 
-    switch ($PSBoundParameters.Keys) {
-        'Limit' {$apiParams.Add('limit', $Limit)}
-        'Page' {$apiParams.Add('page', $Page)}
-    }
+    $noCommonParams = Remove-CommonParameter $PSBoundParameters
+    $convertedParams = ConvertTo-LFMParameter $noCommonParams
 
-    #Building string to append to base url
-    $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
-        "$($_.Name)=$($_.Value)"
-    }
-    $string = $keyValues -join '&'
-
-    $apiUrl = "$baseUrl/?$string"
+    $query = New-LFMApiQuery ($convertedParams + $apiParams)
+    $apiUrl = "$baseUrl/?$query"
 
     try {
         $irm = Invoke-LFMApiUri -Uri $apiUrl

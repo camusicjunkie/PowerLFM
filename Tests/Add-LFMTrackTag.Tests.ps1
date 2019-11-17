@@ -27,7 +27,7 @@ Describe 'Add-LFMTrackTag: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
+            It 'Should be of type System.String' {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
@@ -47,7 +47,7 @@ Describe 'Add-LFMTrackTag: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 0" {
+            It 'Should have a position of 0' {
                 $parameter.Position | Should -Be 0
             }
         }
@@ -60,7 +60,7 @@ Describe 'Add-LFMTrackTag: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
+            It 'Should be of type System.String' {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
@@ -80,7 +80,7 @@ Describe 'Add-LFMTrackTag: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 1" {
+            It 'Should have a position of 1' {
                 $parameter.Position | Should -Be 1
             }
         }
@@ -93,7 +93,7 @@ Describe 'Add-LFMTrackTag: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String[]" {
+            It 'Should be of type System.String[]' {
                 $parameter.ParameterType.ToString() | Should -Be System.String[]
             }
 
@@ -113,7 +113,7 @@ Describe 'Add-LFMTrackTag: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 2" {
+            It 'Should have a position of 2' {
                 $parameter.Position | Should -Be 2
             }
         }
@@ -122,13 +122,20 @@ Describe 'Add-LFMTrackTag: Interface' -Tag Interface {
 
 InModuleScope PowerLFM {
 
-    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-
     Describe 'Add-LFMTrackTag: Unit' -Tag Unit {
 
-        Mock Get-LFMTrackSignature
-        Mock Invoke-RestMethod
-        Mock Write-Verbose
+        Mock Remove-CommonParameter {
+            [hashtable] @{
+                Track = 'Track'
+                Artist = 'Artist'
+                Tag = 'Tag'
+            }
+        }
+        Mock ConvertTo-LFMParameter
+        Mock Get-LFMSignature
+        Mock New-LFMApiQuery
+        Mock Invoke-LFMApiUri
+        Mock Get-LFMIgnoredMessage { @{ Code = 0 } }
 
         Context 'Input' {
 
@@ -137,40 +144,35 @@ InModuleScope PowerLFM {
             }
 
             It 'Should throw when Tag has more than 10 values' {
-                $aatParams = @{
-                    Track = 'Track'
-                    Artist = 'Artist'
-                    Tag = @(1..11)
-                }
-                {Add-LFMTrackTag @aatParams} | Should -Throw
+                {Add-LFMTrackTag -Track Track -Artist Artist -Tag @(1..11) -Confirm:$false} | Should -Throw
             }
 
             It 'Should not throw when Tag has 1 to 10 values' {
-                $aatParams = @{
-                    Track = 'Track'
-                    Artist = 'Artist'
-                    Tag = @(1..10)
-                }
-                {Add-LFMTrackTag @aatParams} | Should -Not -Throw
+                {Add-LFMTrackTag -Track Track -Artist Artist -Tag @(1..10) -Confirm:$false} | Should -Not -Throw
             }
         }
 
         Context 'Execution' {
 
-            Mock ForEach-Object
+            Add-LFMTrackTag -Track Track -Artist Artist -Tag Tag -Confirm:$false
 
-            $aatParams = @{
-                Track = 'Track'
-                Artist = 'Artist'
-                Tag = 'Tag'
+            It 'Should remove common parameters from bound parameters' {
+                $amParams = @{
+                    CommandName     = 'Remove-CommonParameter'
+                    Exactly         = $true
+                    Times           = 1
+                    ParameterFilter = {
+                        $PSBoundParameters
+                    }
+                }
+                Assert-MockCalled @amParams
             }
-            Add-LFMTrackTag @aatParams
 
             It 'Should create a signature from the parameters passed in' {
                 $amParams = @{
-                    CommandName = 'Get-LFMTrackSignature'
-                    Exactly = $true
-                    Times = 1
+                    CommandName     = 'Get-LFMSignature'
+                    Exactly         = $true
+                    Times           = 1
                     ParameterFilter = {
                         $Track -eq 'Track' -and
                         $Artist -eq 'Artist' -and
@@ -181,11 +183,20 @@ InModuleScope PowerLFM {
                 Assert-MockCalled @amParams
             }
 
-            It 'Should loop through each parameter in url string' {
+            It 'Should convert parameters to format API expects after signing' {
                 $amParams = @{
-                    CommandName = 'Foreach-Object'
-                    Exactly = $true
-                    Times = 7
+                    CommandName = 'ConvertTo-LFMParameter'
+                    Exactly     = $true
+                    Times       = 1
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should take hashtable and build a query for a uri' {
+                $amParams = @{
+                    CommandName = 'New-LFMApiQuery'
+                    Exactly     = $true
+                    Times       = 1
                 }
                 Assert-MockCalled @amParams
             }
@@ -193,44 +204,31 @@ InModuleScope PowerLFM {
 
         Context 'Output' {
 
-            $aatParams = @{
-                Track = 'Track'
-                Artist = 'Artist'
-                Tag = 'Tag'
-            }
-
-            It 'Should call the Last.fm Rest API for track.addTags post method' {
-                Add-LFMTrackTag @aatParams
+            It 'Should call the correct Last.fm post method' {
+                Add-LFMTrackTag -Track Track -Artist Artist -Tag Tag -Confirm:$false
 
                 $amParams = @{
-                    CommandName = 'Invoke-RestMethod'
+                    CommandName = 'Invoke-LFMApiUri'
                     Exactly = $true
                     Times = 1
                     Scope = 'It'
                     ParameterFilter = {
-                        $Method -eq 'Post'
+                        $Method -eq 'Post' -and
+                        $Uri -like 'https://ws.audioscrobbler.com/2.0*'
                     }
                 }
                 Assert-MockCalled @amParams
             }
 
             It 'Should send proper output when -Whatif is used' {
-                $output = Add-LFMTrackTag @aatParams -Verbose 4>&1
+                $output = Add-LFMTrackTag -Track Track -Artist Artist -Tag Tag -Confirm:$false -Verbose 4>&1
                 $output | Should -Match 'Performing the operation "Adding track tag: Tag" on target "Track: Track".'
             }
 
-            It 'Should send verbose output when -Verbose is used' {
-                Mock Invoke-RestMethod {$mocks}
+            It 'Should throw when an error is returned in the response' {
+                Mock Invoke-LFMApiUri { throw 'Error' }
 
-                Add-LFMTrackTag @aatParams -Verbose 4>&1
-
-                $amParams = @{
-                    CommandName = 'Write-Verbose'
-                    Exactly = $true
-                    Times = 1
-                    Scope = 'It'
-                }
-                Assert-MockCalled @amParams
+                { Add-LFMTrackTag -Track Track -Artist Artist -Tag Tag -Confirm:$false } | Should -Throw 'Error'
             }
         }
     }
@@ -252,12 +250,12 @@ Describe 'Add-LFMTrackTag: Integration' -Tag Integration {
 
     Context "Rest API calls" {
 
-        It "Should not contain the random value tag before adding it" {
+        It 'Should not contain the random value tag before adding it' {
             $tag = Get-LFMTrackTag -Track Gore -Artist Deftones
             $tag.Tag | Should -Not -Be 'randomValue'
         }
 
-        It "Should add the new random value tag to the album" {
+        It 'Should add the new random value tag to the album' {
             Add-LFMTrackTag @atParams
             $tag = Get-LFMTrackTag -Track Gore -Artist Deftones
             @($tag).Where({$_.Tag -eq 'randomValue'}).Tag | Should -Not -BeNullOrEmpty

@@ -31,7 +31,7 @@ Describe 'Request-LFMSession: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
+            It 'Should be of type System.String' {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
@@ -51,7 +51,7 @@ Describe 'Request-LFMSession: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 0" {
+            It 'Should have a position of 0' {
                 $parameter.Position | Should -Be 0
             }
         }
@@ -64,7 +64,7 @@ Describe 'Request-LFMSession: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
+            It 'Should be of type System.String' {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
@@ -84,7 +84,7 @@ Describe 'Request-LFMSession: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 1" {
+            It 'Should have a position of 1' {
                 $parameter.Position | Should -Be 1
             }
         }
@@ -97,7 +97,7 @@ Describe 'Request-LFMSession: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
+            It 'Should be of type System.String' {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
@@ -117,7 +117,7 @@ Describe 'Request-LFMSession: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 2" {
+            It 'Should have a position of 2' {
                 $parameter.Position | Should -Be 2
             }
         }
@@ -131,56 +131,51 @@ InModuleScope PowerLFM {
 
     Describe 'Request-LFMSession: Unit' -Tag Unit {
 
-        Mock Invoke-RestMethod
-        Mock Get-LFMAuthSignature
+        Mock Remove-CommonParameter {
+            [hashtable] @{
+                ApiKey = 'ApiKey'
+                Token = 'Token'
+                SharedSecret = 'SharedSecret'
+            }
+        }
+        Mock Get-LFMSignature
+        Mock New-LFMApiQuery
+        Mock Invoke-LFMApiUri {$contextMock}
 
         Context 'Input' {
 
-            It "Should throw when api key is null" {
+            It 'Should throw when api key is null' {
                 {Request-LFMSession -ApiKey $null} | Should -Throw
             }
 
-            It "Should throw when token is null" {
+            It 'Should throw when token is null' {
                 {Request-LFMSession -Token $null} | Should -Throw
             }
 
-            It "Should throw when shared secret is null" {
+            It 'Should throw when shared secret is null' {
                 {Request-LFMSession -SharedSecret $null} | Should -Throw
             }
         }
 
         Context 'Execution' {
 
-            Mock Foreach-Object
+            Request-LFMSession -ApiKey 'ApiKey' -Token 'Token' -SharedSecret 'SharedSecret'
 
-            $testCases = @(
-                @{
-                    times = 5
-                    rsParams = @{
-                        ApiKey = 'ApiKey'
-                        Token = 'Token'
-                        SharedSecret = 'SharedSecret'
-                    }
-                }
-            )
-
-            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
-                param ($times, $rsParams)
-
-                Request-LFMSession @rsParams
-
+            It 'Should remove common parameters from bound parameters' {
                 $amParams = @{
-                    CommandName = 'Foreach-Object'
-                    Exactly = $true
-                    Times = $times
-                    Scope = 'It'
+                    CommandName     = 'Remove-CommonParameter'
+                    Exactly         = $true
+                    Times           = 1
+                    ParameterFilter = {
+                        $PSBoundParameters
+                    }
                 }
                 Assert-MockCalled @amParams
             }
 
             It 'Should create a signature' {
                 $amParams = @{
-                    CommandName = 'Get-LFMAuthSignature'
+                    CommandName = 'Get-LFMSignature'
                     Exactly = $true
                     Times = 1
                     ParameterFilter = {
@@ -192,15 +187,20 @@ InModuleScope PowerLFM {
                 }
                 Assert-MockCalled @amParams
             }
+
+            It 'Should take hashtable and build a query for a uri' {
+                $amParams = @{
+                    CommandName = 'New-LFMApiQuery'
+                    Exactly     = $true
+                    Times       = 1
+                }
+                Assert-MockCalled @amParams
+            }
         }
 
         Context 'Output' {
 
-            Mock Invoke-RestMethod {$contextMock}
-
-            BeforeEach {
-                $script:output = Request-LFMSession -ApiKey 'ApiKey' -Token 'Token' -SharedSecret 'SharedSecret'
-            }
+            $output = Request-LFMSession -ApiKey 'ApiKey' -Token 'Token' -SharedSecret 'SharedSecret'
 
             It "Session key should have a value of $($contextMock.Session.Key)" {
                 $output.SessionKey | Should -Be $contextMock.Session.Key
@@ -211,7 +211,7 @@ InModuleScope PowerLFM {
 
 Describe 'Request-LFMSession: Integration' -Tag Integration {
 
-    It "Integration test" {
+    It 'Integration test' {
         Set-ItResult -Skipped -Because 'the integration tests will be set up later'
     }
 }

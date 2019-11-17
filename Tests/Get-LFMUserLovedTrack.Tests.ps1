@@ -31,7 +31,7 @@ Describe 'Get-LFMUserLovedTrack: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
+            It 'Should be of type System.String' {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
@@ -51,7 +51,7 @@ Describe 'Get-LFMUserLovedTrack: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 0" {
+            It 'Should have a position of 0' {
                 $parameter.Position | Should -Be 0
             }
         }
@@ -64,7 +64,7 @@ Describe 'Get-LFMUserLovedTrack: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.Int32" {
+            It 'Should be of type System.Int32' {
                 $parameter.ParameterType.ToString() | Should -Be System.Int32
             }
 
@@ -84,7 +84,7 @@ Describe 'Get-LFMUserLovedTrack: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 1" {
+            It 'Should have a position of 1' {
                 $parameter.Position | Should -Be 1
             }
         }
@@ -97,7 +97,7 @@ Describe 'Get-LFMUserLovedTrack: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.Int32" {
+            It 'Should be of type System.Int32' {
                 $parameter.ParameterType.ToString() | Should -Be System.Int32
             }
 
@@ -117,7 +117,7 @@ Describe 'Get-LFMUserLovedTrack: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 2" {
+            It 'Should have a position of 2' {
                 $parameter.Position | Should -Be 2
             }
         }
@@ -131,53 +131,51 @@ InModuleScope PowerLFM {
 
     Describe 'Get-LFMUserLovedTrack: Unit' -Tag Unit {
 
-        Mock Invoke-RestMethod
+        Mock Remove-CommonParameter {
+            [hashtable] @{ }
+        }
+        Mock ConvertTo-LFMParameter
+        Mock New-LFMApiQuery
+        Mock Invoke-LFMApiUri {$contextMock}
+        Mock ConvertFrom-UnixTime
 
         Context 'Input' {
 
-            It "Should throw when username is null" {
+            It 'Should throw when username is null' {
                 {Get-LFMUserLovedTrack -UserName $null} | Should -Throw
             }
         }
 
         Context 'Execution' {
 
-            Mock Foreach-Object
+            Get-LFMUserLovedTrack
 
-            $testCases = @(
-                @{
-                    times = 4
-                    gultParams = @{
-                        UserName = 'UserName'
-                    }
-                }
-                @{
-                    times = 5
-                    gultParams = @{
-                        UserName = 'UserName'
-                        Limit = '5'
-                    }
-                }
-                @{
-                    times = 6
-                    gultParams = @{
-                        UserName = 'UserName'
-                        Limit = '5'
-                        Page = '1'
-                    }
-                }
-            )
-
-            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
-                param ($times, $gultParams)
-
-                Get-LFMUserLovedTrack @gultParams
-
+            It 'Should remove common parameters from bound parameters' {
                 $amParams = @{
-                    CommandName = 'Foreach-Object'
-                    Exactly = $true
-                    Times = $times
-                    Scope = 'It'
+                    CommandName     = 'Remove-CommonParameter'
+                    Exactly         = $true
+                    Times           = 1
+                    ParameterFilter = {
+                        $PSBoundParameters
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should convert parameters to format API expects after signing' {
+                $amParams = @{
+                    CommandName = 'ConvertTo-LFMParameter'
+                    Exactly     = $true
+                    Times       = 1
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should take hashtable and build a query for a uri' {
+                $amParams = @{
+                    CommandName = 'New-LFMApiQuery'
+                    Exactly     = $true
+                    Times       = 1
                 }
                 Assert-MockCalled @amParams
             }
@@ -185,12 +183,7 @@ InModuleScope PowerLFM {
 
         Context 'Output' {
 
-            Mock Invoke-RestMethod {$contextMock}
-            Mock ConvertFrom-UnixTime {$mocks.UnixTime.From}
-
-            BeforeEach {
-                $script:output = Get-LFMUserLovedTrack -UserName camusicjunkie
-            }
+            $output = Get-LFMUserLovedTrack
 
             It "User first loved track should have a name of $($contextMock.LovedTracks.Track[0].Name)" {
                 $output[0].Track | Should -Be $contextMock.LovedTracks.Track[0].Name
@@ -202,10 +195,6 @@ InModuleScope PowerLFM {
 
             It "User first loved track should have track id with a value of $($contextMock.LovedTracks.Track[0].Mbid)" {
                 $output[0].TrackId | Should -Be $contextMock.LovedTracks.Track[0].Mbid
-            }
-
-            It "User should have loved track on $($mocks.UnixTime.From)" {
-                $output[0].Date | Should -Be $mocks.UnixTime.From
             }
 
             It "User second loved track should have artist id with a value of $($contextMock.LovedTracks.Track[1].Artist.Mbid)" {
@@ -228,13 +217,47 @@ InModuleScope PowerLFM {
                 $output.Track | Should -Not -BeNullOrEmpty
                 $output.Track | Should -Not -HaveCount 3
             }
+
+            It 'Should call the correct Last.fm get method' {
+                $amParams = @{
+                    CommandName = 'Invoke-LFMApiUri'
+                    Exactly = $true
+                    Times = 1
+                    Scope = 'Context'
+                    ParameterFilter = {
+                        $Uri -like 'https://ws.audioscrobbler.com/2.0*'
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should convert the date from unix time to the local time' {
+                $amParams = @{
+                    CommandName = 'ConvertFrom-UnixTime'
+                    Exactly = $true
+                    Times = 2
+                    Scope = 'Context'
+                    ParameterFilter = {
+                        $UnixTime -eq 0 -or
+                        $UnixTime -eq 60 -and
+                        $Local -eq $true
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should throw when an error is returned in the response' {
+                Mock Invoke-LFMApiUri { throw 'Error' }
+
+                { Get-LFMUserLovedTrack } | Should -Throw 'Error'
+            }
         }
     }
 }
 
 Describe 'Get-LFMUserLovedTrack: Integration' -Tag Integration {
 
-    It "Integration test" {
+    It 'Integration test' {
         Set-ItResult -Skipped -Because 'the integration tests will be set up later'
     }
 }

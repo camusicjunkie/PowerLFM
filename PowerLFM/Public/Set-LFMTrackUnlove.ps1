@@ -15,31 +15,21 @@ function Set-LFMTrackUnlove {
         [string] $Track
     )
 
-    process {
-        $apiSigParams = @{
-            'Artist' = $Artist
-            'Track' = $Track
-            'Method' = 'track.unlove'
-        }
-        $apiSig = Get-LFMTrackSignature @apiSigParams
-
+    begin {
         $apiParams = @{
             'method' = 'track.unlove'
             'api_key' = $LFMConfig.APIKey
             'sk' = $LFMConfig.SessionKey
-            'api_sig' = $apiSig
         }
+    }
+    process {
+        $noCommonParams = Remove-CommonParameter $PSBoundParameters
+        $apiSig = Get-LFMSignature -Method $apiParams.Method @noCommonParams
+        $apiParams.Add('api_sig', $apiSig)
 
-        $apiParams.Add('artist', $Artist)
-        $apiParams.Add('track', $Track)
-
-        #Building string to append to base url
-        $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
-            "$($_.Name)=$($_.Value)"
-        }
-        $string = $keyValues -join '&'
-
-        $apiUrl = "$baseUrl/?$string"
+        $convertedParams = ConvertTo-LFMParameter $noCommonParams
+        $query = New-LFMApiQuery ($convertedParams + $apiParams)
+        $apiUrl = "$baseUrl/?$query"
     }
     end {
         if ($PSCmdlet.ShouldProcess("Track: $Track", "Removing love")) {

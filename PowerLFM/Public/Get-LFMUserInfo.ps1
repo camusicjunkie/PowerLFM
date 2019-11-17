@@ -18,18 +18,11 @@ function Get-LFMUserInfo {
         }
     }
     process {
-        if ($PSBoundParameters.ContainsKey('UserName')) {
-            $apiParams.Remove('sk')
-            $apiParams.Add('user', $UserName)
-        }
+        $noCommonParams = Remove-CommonParameter $PSBoundParameters
+        $convertedParams = ConvertTo-LFMParameter $noCommonParams
 
-        #Building string to append to base url
-        $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
-            "$($_.Name)=$($_.Value)"
-        }
-        $string = $keyValues -join '&'
-
-        $apiUrl = "$baseUrl/?$string"
+        $query = New-LFMApiQuery ($convertedParams + $apiParams)
+        $apiUrl = "$baseUrl/?$query"
     }
     end {
         try {

@@ -36,30 +36,13 @@ function Get-LFMTrackTag {
             'sk' = $LFMConfig.SessionKey
             'format' = 'json'
         }
-
-        switch ($PSBoundParameters.Keys) {
-            'AutoCorrect' {$apiParams.Add('autocorrect', 1)}
-        }
     }
     process {
-        switch ($PSCmdlet.ParameterSetName) {
-            'track' {$apiParams.Add('track', $Track);
-                     $apiParams.Add('artist', $Artist)}
-            'id'    {$apiParams.Add('mbid', $Id)}
-        }
+        $noCommonParams = Remove-CommonParameter $PSBoundParameters
+        $convertedParams = ConvertTo-LFMParameter $noCommonParams
 
-        if ($PSBoundParameters.ContainsKey('UserName')) {
-            $apiParams.Remove('sk')
-            $apiParams.Add('user', $UserName)
-        }
-
-        #Building string to append to base url
-        $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
-            "$($_.Name)=$($_.Value)"
-        }
-        $string = $keyValues -join '&'
-
-        $apiUrl = "$baseUrl/?$string"
+        $query = New-LFMApiQuery ($convertedParams + $apiParams)
+        $apiUrl = "$baseUrl/?$query"
     }
     end {
         try {

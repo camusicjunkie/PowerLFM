@@ -12,7 +12,7 @@ Get the top tags set by a user.
 ## SYNTAX
 
 ```
-Get-LFMUserTopTag [[-UserName] <String>] [[-Limit] <String>] [<CommonParameters>]
+Get-LFMUserTopTag [[-UserName] <String>] [[-Limit] <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -33,7 +33,7 @@ This will get the top tags set by camusicjunkie.
 Limit the number of results per page.
 
 ```yaml
-Type: String
+Type: Int32
 Parameter Sets: (All)
 Aliases:
 

@@ -12,7 +12,7 @@ Get a list of friends for a user.
 ## SYNTAX
 
 ```
-Get-LFMUserFriend [[-UserName] <String>] [[-Limit] <String>] [[-Page] <String>] [<CommonParameters>]
+Get-LFMUserFriend [[-UserName] <String>] [[-Limit] <Int32>] [[-Page] <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -33,7 +33,7 @@ This will get the friends for camusicjunkie
 Limit the number of results per page.
 
 ```yaml
-Type: String
+Type: Int32
 Parameter Sets: (All)
 Aliases:
 
@@ -48,7 +48,7 @@ Accept wildcard characters: False
 Page number to return. Defaults to the first page.
 
 ```yaml
-Type: String
+Type: Int32
 Parameter Sets: (All)
 Aliases:
 

@@ -21,30 +21,19 @@ function Request-LFMSession {
     )
 
     process {
-        $sigParams = @{
-            'ApiKey' = $ApiKey
-            'Method' = 'auth.getSession'
-            'SharedSecret' = $SharedSecret
-            'Token' = $Token
-        }
-        $apiSig = Get-LFMAuthSignature @sigParams
-        Write-Verbose "Signature MD5 Hash: $apiSig"
-
         $apiParams = @{
             'method' = 'auth.getSession'
             'api_key' = $APIKey
             'token' = $Token
-            'api_sig' = $apiSig
             'format' = 'json'
         }
 
-        #Building string to append to base url
-        $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
-            "$($_.Name)=$($_.Value)"
-        }
-        $string = $keyValues -join '&'
+        $noCommonParams = Remove-CommonParameter $PSBoundParameters
+        $apiSig = Get-LFMSignature -Method $apiParams.Method @noCommonParams
+        $apiParams.Add('api_sig', $apiSig)
 
-        $apiUrl = "$baseUrl/?$string"
+        $query = New-LFMApiQuery ($convertedParams + $apiParams)
+        $apiUrl = "$baseUrl/?$query"
 
         try {
             $irm = Invoke-LFMApiUri -Uri $apiUrl

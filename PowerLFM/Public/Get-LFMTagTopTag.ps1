@@ -13,13 +13,11 @@ function Get-LFMTagTopTag {
         }
     }
     process {
-        #Building string to append to base url
-        $keyValues = $apiParams.GetEnumerator() | ForEach-Object {
-            "$($_.Name)=$($_.Value)"
-        }
-        $string = $keyValues -join '&'
+        $noCommonParams = Remove-CommonParameter $PSBoundParameters
+        $convertedParams = ConvertTo-LFMParameter $noCommonParams
 
-        $apiUrl = "$baseUrl/?$string"
+        $query = New-LFMApiQuery ($convertedParams + $apiParams)
+        $apiUrl = "$baseUrl/?$query"
     }
     end {
         try {

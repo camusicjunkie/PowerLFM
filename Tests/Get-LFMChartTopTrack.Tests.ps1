@@ -31,7 +31,7 @@ Describe 'Get-LFMChartTopTrack: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.Int32" {
+            It 'Should be of type System.Int32' {
                 $parameter.ParameterType.ToString() | Should -Be System.Int32
             }
 
@@ -51,7 +51,7 @@ Describe 'Get-LFMChartTopTrack: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 0" {
+            It 'Should have a position of 0' {
                 $parameter.Position | Should -Be 0
             }
         }
@@ -64,7 +64,7 @@ Describe 'Get-LFMChartTopTrack: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.Int32" {
+            It 'Should be of type System.Int32' {
                 $parameter.ParameterType.ToString() | Should -Be System.Int32
             }
 
@@ -84,7 +84,7 @@ Describe 'Get-LFMChartTopTrack: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 1" {
+            It 'Should have a position of 1' {
                 $parameter.Position | Should -Be 1
             }
         }
@@ -98,45 +98,50 @@ InModuleScope PowerLFM {
 
     Describe 'Get-LFMChartTopTrack: Unit' -Tag Unit {
 
-        Mock Invoke-RestMethod
+        Mock Remove-CommonParameter {
+            [hashtable] @{ }
+        }
+        Mock ConvertTo-LFMParameter
+        Mock New-LFMApiQuery
+        Mock Invoke-LFMApiUri {$contextMock}
 
         Context 'Input' {
 
-            It "Should throw when limit is greater than 119" {
+            It 'Should throw when limit is greater than 119' {
                 {Get-LFMChartTopTrack -Limit 120} | Should -Throw
             }
         }
 
         Context 'Execution' {
 
-            Mock Foreach-Object
+            Get-LFMChartTopTrack
 
-            $testCases = @(
-                @{
-                    times = 4
-                    gcttParams = @{
-                        Limit = '5'
-                    }
-                }
-                @{
-                    times = 5
-                    gcttParams = @{
-                        Limit = '5'
-                        Page = '1'
-                    }
-                }
-            )
-
-            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
-                param ($times, $gcttParams)
-
-                Get-LFMChartTopTrack @gcttParams
-
+            It 'Should remove common parameters from bound parameters' {
                 $amParams = @{
-                    CommandName = 'Foreach-Object'
-                    Exactly = $true
-                    Times = $times
-                    Scope = 'It'
+                    CommandName     = 'Remove-CommonParameter'
+                    Exactly         = $true
+                    Times           = 1
+                    ParameterFilter = {
+                        $PSBoundParameters
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should convert parameters to format API expects after signing' {
+                $amParams = @{
+                    CommandName = 'ConvertTo-LFMParameter'
+                    Exactly     = $true
+                    Times       = 1
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should take hashtable and build a query for a uri' {
+                $amParams = @{
+                    CommandName = 'New-LFMApiQuery'
+                    Exactly     = $true
+                    Times       = 1
                 }
                 Assert-MockCalled @amParams
             }
@@ -144,11 +149,7 @@ InModuleScope PowerLFM {
 
         Context 'Output' {
 
-            Mock Invoke-RestMethod {$contextMock}
-
-            BeforeEach {
-                $script:output = Get-LFMChartTopTrack
-            }
+            $output = Get-LFMChartTopTrack
 
             It "Chart first top track should have track name of $($contextMock.Tracks.Track[0].Name)" {
                 $output[0].Track | Should -Be $contextMock.Tracks.Track[0].Name
@@ -162,14 +163,14 @@ InModuleScope PowerLFM {
                 $output[0].Duration | Should -Be $contextMock.Tracks.Track[0].Duration
             }
 
-            It "Chart first top track should have playcount with a value of $($contextMock.Tracks.Track[0].Playcount)" {
-                $output[0].Playcount | Should -BeOfType [int]
-                $output[0].Playcount | Should -Be $contextMock.Tracks.Track[0].Playcount
+            It "Chart first top track should have playcount with a value of $($contextMock.Tracks.Track[0].PlayCount)" {
+                $output[0].PlayCount | Should -BeOfType [int]
+                $output[0].PlayCount | Should -Be $contextMock.Tracks.Track[0].PlayCount
             }
 
-            It "Chart second top track should have playcount with a value of $($contextMock.Tracks.Track[1].Playcount)" {
-                $output[1].Playcount | Should -BeOfType [int]
-                $output[1].Playcount | Should -Be $contextMock.Tracks.Track[1].Playcount
+            It "Chart second top track should have playcount with a value of $($contextMock.Tracks.Track[1].PlayCount)" {
+                $output[1].PlayCount | Should -BeOfType [int]
+                $output[1].PlayCount | Should -Be $contextMock.Tracks.Track[1].PlayCount
             }
 
             It "Chart second top track should have artist id with a value of $($contextMock.Tracks.Track[1].Artist.Mbid)" {
@@ -192,13 +193,32 @@ InModuleScope PowerLFM {
                 $output.Track | Should -Not -BeNullOrEmpty
                 $output.Track | Should -Not -HaveCount 3
             }
+
+            It 'Should call the correct Last.fm get method' {
+                $amParams = @{
+                    CommandName = 'Invoke-LFMApiUri'
+                    Exactly = $true
+                    Times = 1
+                    Scope = 'Context'
+                    ParameterFilter = {
+                        $Uri -like 'https://ws.audioscrobbler.com/2.0*'
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should throw when an error is returned in the response' {
+                Mock Invoke-LFMApiUri { throw 'Error' }
+
+                { Get-LFMChartTopTrack } | Should -Throw 'Error'
+            }
         }
     }
 }
 
 Describe 'Get-LFMChartTopTrack: Integration' -Tag Integration {
 
-    It "Integration test" {
+    It 'Integration test' {
         Set-ItResult -Skipped -Because 'the integration tests will be set up later'
     }
 }

@@ -31,7 +31,7 @@ Describe 'Search-LFMAlbum: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
+            It 'Should be of type System.String' {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
@@ -51,7 +51,7 @@ Describe 'Search-LFMAlbum: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 0" {
+            It 'Should have a position of 0' {
                 $parameter.Position | Should -Be 0
             }
         }
@@ -64,7 +64,7 @@ Describe 'Search-LFMAlbum: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.Int32" {
+            It 'Should be of type System.Int32' {
                 $parameter.ParameterType.ToString() | Should -Be System.Int32
             }
 
@@ -84,7 +84,7 @@ Describe 'Search-LFMAlbum: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 1" {
+            It 'Should have a position of 1' {
                 $parameter.Position | Should -Be 1
             }
         }
@@ -97,7 +97,7 @@ Describe 'Search-LFMAlbum: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.Int32" {
+            It 'Should be of type System.Int32' {
                 $parameter.ParameterType.ToString() | Should -Be System.Int32
             }
 
@@ -117,7 +117,7 @@ Describe 'Search-LFMAlbum: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 2" {
+            It 'Should have a position of 2' {
                 $parameter.Position | Should -Be 2
             }
         }
@@ -131,61 +131,66 @@ InModuleScope PowerLFM {
 
     Describe 'Search-LFMAlbum: Unit' -Tag Unit {
 
-        Mock Invoke-RestMethod
+        Mock Remove-CommonParameter {
+            [hashtable] @{
+                Album = 'Album'
+            }
+        }
+        Mock ConvertTo-LFMParameter
+        Mock New-LFMApiQuery
+        Mock Invoke-LFMApiUri {$contextMock}
 
         Context 'Input' {
 
-            It "Should throw when album is null" {
+            It 'Should throw when album is null' {
                 {Search-LFMAlbum -Album $null} | Should -Throw
+            }
+
+            It 'Should throw when limit has a value of 51' {
+                {Search-LFMAlbum -Album Album -Limit 51} | Should -Throw
+            }
+
+            It 'Should not throw when limit has a value of 1 to 50' {
+                {Search-LFMAlbum -Album Album -Limit 50} | Should -Not -Throw
             }
         }
 
         Context 'Execution' {
 
-            Mock Foreach-Object
+            Search-LFMAlbum -Album Album
 
-            $testCases = @(
-                @{
-                    times = 4
-                    saParams = @{
-                        Album = 'Album'
-                    }
-                }
-                @{
-                    times = 5
-                    saParams = @{
-                        Album = 'Album'
-                        Limit = '5'
-                    }
-                }
-                @{
-                    times = 6
-                    saParams = @{
-                        Album = 'Album'
-                        Limit = '5'
-                        Page = '1'
-                    }
-                }
-            )
-
-            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
-                param ($times, $saParams)
-
-                Search-LFMAlbum @saParams
-
+            It 'Should remove common parameters from bound parameters' {
                 $amParams = @{
-                    CommandName = 'Foreach-Object'
-                    Exactly = $true
-                    Times = $times
-                    Scope = 'It'
+                    CommandName     = 'Remove-CommonParameter'
+                    Exactly         = $true
+                    Times           = 1
+                    ParameterFilter = {
+                        $PSBoundParameters
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should convert parameters to format API expects after signing' {
+                $amParams = @{
+                    CommandName = 'ConvertTo-LFMParameter'
+                    Exactly     = $true
+                    Times       = 1
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should take hashtable and build a query for a uri' {
+                $amParams = @{
+                    CommandName = 'New-LFMApiQuery'
+                    Exactly     = $true
+                    Times       = 1
                 }
                 Assert-MockCalled @amParams
             }
         }
 
         Context 'Output' {
-
-            Mock Invoke-RestMethod {$contextMock}
 
             $output = Search-LFMAlbum -Album Album
 
@@ -217,13 +222,32 @@ InModuleScope PowerLFM {
                 $output.Album | Should -Not -BeNullOrEmpty
                 $output.Album | Should -Not -HaveCount 3
             }
+
+            It 'Should call the correct Last.fm get method' {
+                $amParams = @{
+                    CommandName = 'Invoke-LFMApiUri'
+                    Exactly = $true
+                    Times = 1
+                    Scope = 'Context'
+                    ParameterFilter = {
+                        $Uri -like 'https://ws.audioscrobbler.com/2.0*'
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should throw when an error is returned in the response' {
+                Mock Invoke-LFMApiUri { throw 'Error' }
+
+                { Search-LFMAlbum -Album Album } | Should -Throw 'Error'
+            }
         }
     }
 }
 
 Describe 'Search-LFMAlbum: Integration' -Tag Integration {
 
-    It "Integration test" {
+    It 'Integration test' {
         Set-ItResult -Skipped -Because 'the integration tests will be set up later'
     }
 }

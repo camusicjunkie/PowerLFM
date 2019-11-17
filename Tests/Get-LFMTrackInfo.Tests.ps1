@@ -35,7 +35,7 @@ Describe 'Get-LFMTrackInfo: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
+            It 'Should be of type System.String' {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
@@ -55,7 +55,7 @@ Describe 'Get-LFMTrackInfo: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 0" {
+            It 'Should have a position of 0' {
                 $parameter.Position | Should -Be 0
             }
         }
@@ -68,7 +68,7 @@ Describe 'Get-LFMTrackInfo: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
+            It 'Should be of type System.String' {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
@@ -88,7 +88,7 @@ Describe 'Get-LFMTrackInfo: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 1" {
+            It 'Should have a position of 1' {
                 $parameter.Position | Should -Be 1
             }
         }
@@ -101,7 +101,7 @@ Describe 'Get-LFMTrackInfo: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
+            It 'Should be of type System.String' {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
@@ -121,7 +121,7 @@ Describe 'Get-LFMTrackInfo: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of -2147483648" {
+            It 'Should have a position of -2147483648' {
                 $parameter.Position | Should -Be -2147483648
             }
         }
@@ -134,7 +134,7 @@ Describe 'Get-LFMTrackInfo: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.Management.Automation.SwitchParameter" {
+            It 'Should be of type System.Management.Automation.SwitchParameter' {
                 $parameter.ParameterType.ToString() | Should -Be System.Management.Automation.SwitchParameter
             }
 
@@ -154,7 +154,7 @@ Describe 'Get-LFMTrackInfo: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of -2147483648" {
+            It 'Should have a position of -2147483648' {
                 $parameter.Position | Should -Be -2147483648
             }
         }
@@ -176,7 +176,7 @@ Describe 'Get-LFMTrackInfo: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.Guid" {
+            It 'Should be of type System.Guid' {
                 $parameter.ParameterType.ToString() | Should -Be System.Guid
             }
 
@@ -196,7 +196,7 @@ Describe 'Get-LFMTrackInfo: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of -2147483648" {
+            It 'Should have a position of -2147483648' {
                 $parameter.Position | Should -Be -2147483648
             }
         }
@@ -209,7 +209,7 @@ Describe 'Get-LFMTrackInfo: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
+            It 'Should be of type System.String' {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
@@ -229,7 +229,7 @@ Describe 'Get-LFMTrackInfo: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of -2147483648" {
+            It 'Should have a position of -2147483648' {
                 $parameter.Position | Should -Be -2147483648
             }
         }
@@ -242,7 +242,7 @@ Describe 'Get-LFMTrackInfo: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.Management.Automation.SwitchParameter" {
+            It 'Should be of type System.Management.Automation.SwitchParameter' {
                 $parameter.ParameterType.ToString() | Should -Be System.Management.Automation.SwitchParameter
             }
 
@@ -262,7 +262,7 @@ Describe 'Get-LFMTrackInfo: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of -2147483648" {
+            It 'Should have a position of -2147483648' {
                 $parameter.Position | Should -Be -2147483648
             }
         }
@@ -276,66 +276,53 @@ InModuleScope PowerLFM {
 
     Describe 'Get-LFMTrackInfo: Unit' -Tag Unit {
 
-        Mock Invoke-RestMethod
+        Mock Remove-CommonParameter {
+            [hashtable] @{
+                Track = 'Track'
+                Artist = 'Artist'
+            }
+        }
+        Mock ConvertTo-LFMParameter
+        Mock New-LFMApiQuery
+        Mock Invoke-LFMApiUri {$contextMock}
 
         Context 'Input' {
 
-            It "Should throw when Track is null" {
+            It 'Should throw when Track is null' {
                 {Get-LFMTrackInfo -Track $null} | Should -Throw
             }
         }
 
         Context 'Execution' {
 
-            Mock Foreach-Object
+            Get-LFMTrackInfo -Track Track -Artist Artist
 
-            $testCases = @(
-                @{
-                    set = 'track'
-                    times = 5
-                    gtiParams = @{
-                        Track = 'Track'
-                        Artist = 'Artist'
-                    }
-                }
-                @{
-                    set = 'track'
-                    times = 6
-                    gtiParams = @{
-                        Track = 'Track'
-                        Artist = 'Artist'
-                        UserName = 'UserName'
-                    }
-                }
-                @{
-                    set = 'track'
-                    times = 7
-                    gtiParams = @{
-                        Track = 'Track'
-                        Artist = 'Artist'
-                        UserName = 'UserName'
-                        AutoCorrect = $true
-                    }
-                }
-                @{
-                    set = 'id'
-                    times = 4
-                    gtiParams = @{
-                        Id = (New-Guid)
-                    }
-                }
-            )
-
-            It 'Should call Foreach-Object <times> times building url in <set> parameter set' -TestCases $testCases {
-                param ($times, $gtiParams)
-
-                Get-LFMTrackInfo @gtiParams
-
+            It 'Should remove common parameters from bound parameters' {
                 $amParams = @{
-                    CommandName = 'Foreach-Object'
-                    Exactly = $true
-                    Times = $times
-                    Scope = 'It'
+                    CommandName     = 'Remove-CommonParameter'
+                    Exactly         = $true
+                    Times           = 1
+                    ParameterFilter = {
+                        $PSBoundParameters
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should convert parameters to format API expects after signing' {
+                $amParams = @{
+                    CommandName = 'ConvertTo-LFMParameter'
+                    Exactly     = $true
+                    Times       = 1
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should take hashtable and build a query for a uri' {
+                $amParams = @{
+                    CommandName = 'New-LFMApiQuery'
+                    Exactly     = $true
+                    Times       = 1
                 }
                 Assert-MockCalled @amParams
             }
@@ -343,11 +330,7 @@ InModuleScope PowerLFM {
 
         Context 'Output' {
 
-            Mock Invoke-RestMethod {$contextMock}
-
-            BeforeEach {
-                $script:output = Get-LFMTrackInfo -Track Track -Artist Artist
-            }
+            $output = Get-LFMTrackInfo -Track Track -Artist Artist
 
             It "Track should have name of $($contextMock.Track.Name)" {
                 $output.Track | Should -Be $contextMock.Track.Name
@@ -370,9 +353,9 @@ InModuleScope PowerLFM {
                 $output.Listeners | Should -Be $contextMock.Track.Listeners
             }
 
-            It "Track should have playcount with a value of $($contextMock.Track.Playcount)" {
-                $output.Playcount | Should -BeOfType [int]
-                $output.Playcount | Should -Be $contextMock.Track.Playcount
+            It "Track should have playcount with a value of $($contextMock.Track.PlayCount)" {
+                $output.PlayCount | Should -BeOfType [int]
+                $output.PlayCount | Should -Be $contextMock.Track.PlayCount
             }
 
             It "Track first tag should have name of $($contextMock.Track.TopTags.Tag[0].Name)" {
@@ -397,9 +380,30 @@ InModuleScope PowerLFM {
                 $output.UserPlayCount | Should -Be $contextMock.Track.UserPlayCount
             }
 
-            It "Track should have two tags when id parameter is used" {
+            It 'Track should have two tags when id parameter is used' {
                 $output = Get-LFMTrackInfo -Id (New-Guid)
                 $output.Tags | Should -HaveCount 2
+            }
+
+            It 'Should call the correct Last.fm get method' {
+                Get-LFMTrackInfo -Track Track -Artist Artist
+
+                $amParams = @{
+                    CommandName = 'Invoke-LFMApiUri'
+                    Exactly = $true
+                    Times = 1
+                    Scope = 'It'
+                    ParameterFilter = {
+                        $Uri -like 'https://ws.audioscrobbler.com/2.0*'
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should throw when an error is returned in the response' {
+                Mock Invoke-LFMApiUri { throw 'Error' }
+
+                { Get-LFMTrackInfo -Track Track -Artist Artist } | Should -Throw 'Error'
             }
         }
     }
@@ -407,7 +411,7 @@ InModuleScope PowerLFM {
 
 Describe 'Get-LFMTrackInfo: Integration' -Tag Integration {
 
-    It "Integration test" {
+    It 'Integration test' {
         Set-ItResult -Skipped -Because 'the integration tests will be set up later'
     }
 }

@@ -27,7 +27,7 @@ Describe 'Set-LFMTrackScrobble: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
+            It 'Should be of type System.String' {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
@@ -47,7 +47,7 @@ Describe 'Set-LFMTrackScrobble: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 0" {
+            It 'Should have a position of 0' {
                 $parameter.Position | Should -Be 0
             }
         }
@@ -60,7 +60,7 @@ Describe 'Set-LFMTrackScrobble: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
+            It 'Should be of type System.String' {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
@@ -80,7 +80,7 @@ Describe 'Set-LFMTrackScrobble: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 1" {
+            It 'Should have a position of 1' {
                 $parameter.Position | Should -Be 1
             }
         }
@@ -93,7 +93,7 @@ Describe 'Set-LFMTrackScrobble: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.DateTime" {
+            It 'Should be of type System.DateTime' {
                 $parameter.ParameterType.ToString() | Should -Be System.DateTime
             }
 
@@ -113,7 +113,7 @@ Describe 'Set-LFMTrackScrobble: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 2" {
+            It 'Should have a position of 2' {
                 $parameter.Position | Should -Be 2
             }
         }
@@ -126,7 +126,7 @@ Describe 'Set-LFMTrackScrobble: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
+            It 'Should be of type System.String' {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
@@ -146,7 +146,7 @@ Describe 'Set-LFMTrackScrobble: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 3" {
+            It 'Should have a position of 3' {
                 $parameter.Position | Should -Be 3
             }
         }
@@ -159,7 +159,7 @@ Describe 'Set-LFMTrackScrobble: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.Guid" {
+            It 'Should be of type System.Guid' {
                 $parameter.ParameterType.ToString() | Should -Be System.Guid
             }
 
@@ -179,7 +179,7 @@ Describe 'Set-LFMTrackScrobble: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 4" {
+            It 'Should have a position of 4' {
                 $parameter.Position | Should -Be 4
             }
         }
@@ -192,7 +192,7 @@ Describe 'Set-LFMTrackScrobble: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.Int32" {
+            It 'Should be of type System.Int32' {
                 $parameter.ParameterType.ToString() | Should -Be System.Int32
             }
 
@@ -212,7 +212,7 @@ Describe 'Set-LFMTrackScrobble: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 5" {
+            It 'Should have a position of 5' {
                 $parameter.Position | Should -Be 5
             }
         }
@@ -225,7 +225,7 @@ Describe 'Set-LFMTrackScrobble: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.Int32" {
+            It 'Should be of type System.Int32' {
                 $parameter.ParameterType.ToString() | Should -Be System.Int32
             }
 
@@ -245,7 +245,7 @@ Describe 'Set-LFMTrackScrobble: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 6" {
+            It 'Should have a position of 6' {
                 $parameter.Position | Should -Be 6
             }
         }
@@ -258,7 +258,7 @@ Describe 'Set-LFMTrackScrobble: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.Management.Automation.SwitchParameter" {
+            It 'Should be of type System.Management.Automation.SwitchParameter' {
                 $parameter.ParameterType.ToString() | Should -Be System.Management.Automation.SwitchParameter
             }
 
@@ -278,7 +278,7 @@ Describe 'Set-LFMTrackScrobble: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of -2147483648" {
+            It 'Should have a position of -2147483648' {
                 $parameter.Position | Should -Be -2147483648
             }
         }
@@ -289,11 +289,22 @@ InModuleScope PowerLFM {
 
     Describe 'Set-LFMTrackScrobble: Unit' -Tag Unit {
 
-        Mock Get-LFMTrackSignature -RemoveParameterType 'Timestamp'
-        Mock ConvertTo-UnixTime
-        Mock Invoke-RestMethod
-        Mock Get-LFMIgnoredMessage { @{Code = 0 } }
-        Mock Write-Verbose
+        BeforeAll {
+            $script:dateTime = New-MockObject -Type 'datetime'
+        }
+
+        Mock Remove-CommonParameter {
+            [hashtable] @{
+                Artist = 'Artist'
+                Track  = 'Track'
+                Timestamp = $dateTime
+            }
+        }
+        Mock ConvertTo-LFMParameter
+        Mock Get-LFMSignature
+        Mock New-LFMApiQuery
+        Mock Invoke-LFMApiUri
+        Mock Get-LFMIgnoredMessage { @{ Code = 0 } }
 
         Context 'Input' {
             It 'Should throw when artist is null' {
@@ -307,87 +318,60 @@ InModuleScope PowerLFM {
 
         Context 'Execution' {
 
-            Mock Foreach-Object
+            Set-LFMTrackScrobble -Artist Artist -Track Track -Timestamp $dateTime
 
-            $testCases = @(
-                @{
-                    times = 8
-                    stsParams = @{
-                        Artist = 'Artist'
-                        Track = 'Track'
-                        Timestamp = (Get-Date)
-                    }
-                }
-                @{
-                    times = 9
-                    stsParams = @{
-                        Artist = 'Artist'
-                        Track = 'Track'
-                        Timestamp = (Get-Date)
-                        Album = 'Album'
-                    }
-                }
-                @{
-                    times = 10
-                    stsParams = @{
-                        Artist = 'Artist'
-                        Track = 'Track'
-                        Timestamp = (Get-Date)
-                        Album = 'Album'
-                        Id = (New-Guid)
-                    }
-                }
-                @{
-                    times = 11
-                    stsParams = @{
-                        Artist = 'Artist'
-                        Track = 'Track'
-                        Timestamp = (Get-Date)
-                        Album = 'Album'
-                        Id = (New-Guid)
-                        TrackNumber = 1
-                    }
-                }
-                @{
-                    times = 12
-                    stsParams = @{
-                        Artist = 'Artist'
-                        Track = 'Track'
-                        Timestamp = (Get-Date)
-                        Album = 'Album'
-                        Id = (New-Guid)
-                        TrackNumber = 1
-                        Duration = 60
-                    }
-                }
-            )
-
-            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
-                param ($times, $stsParams)
-
-                Set-LFMTrackScrobble @stsParams
-
+            It 'Should remove common parameters from bound parameters' {
                 $amParams = @{
-                    CommandName = 'Foreach-Object'
-                    Exactly = $true
-                    Times = $times
-                    Scope = 'It'
+                    CommandName = 'Remove-CommonParameter'
+                    Exactly     = $true
+                    Times       = 1
+                    ParameterFilter = {
+                        $PSBoundParameters
+                    }
                 }
                 Assert-MockCalled @amParams
             }
 
             It 'Should create a signature from the parameters passed in' {
-                Set-LFMTrackScrobble -Artist Artist -Track Track -Timestamp (Get-Date)
-
                 $amParams = @{
-                    CommandName = 'Get-LFMTrackSignature'
-                    Exactly = $true
-                    Times = 1
-                    Scope = 'It'
+                    CommandName     = 'Get-LFMSignature'
+                    Exactly         = $true
+                    Times           = 1
                     ParameterFilter = {
                         $Artist -eq 'Artist' -and
                         $Track -eq 'Track' -and
+                        $Timestamp -eq $dateTime -and
                         $Method -eq 'track.scrobble'
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should convert parameters to format API expects after signing' {
+                $amParams = @{
+                    CommandName = 'ConvertTo-LFMParameter'
+                    Exactly     = $true
+                    Times       = 1
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should take hashtable and build a query for a uri' {
+                $amParams = @{
+                    CommandName = 'New-LFMApiQuery'
+                    Exactly     = $true
+                    Times       = 1
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should check to see if the response has not been filtered' {
+                $amParams = @{
+                    CommandName = 'Get-LFMIgnoredMessage'
+                    Exactly     = $true
+                    Times       = 1
+                    ParameterFilter = {
+                        $Code -eq 0
                     }
                 }
                 Assert-MockCalled @amParams
@@ -396,21 +380,30 @@ InModuleScope PowerLFM {
 
         Context 'Output' {
 
-            $stsParams = @{
-                Artist = 'Artist'
-                Track = 'Track'
-                Timestamp = (Get-Date)
-            }
-
             It 'Should send proper output when -Whatif is used' {
-                $output = Set-LFMTrackScrobble @stsParams -Verbose 4>&1
+                $output = Set-LFMTrackScrobble -Artist Artist -Track Track -Timestamp $dateTime -Verbose 4>&1
                 $output | Should -Match 'Performing the operation "Setting track to now playing" on target "Track: Track".'
             }
 
-            It "Should throw when ignored message code is 1" {
-                Mock Get-LFMIgnoredMessage {@{Code = 1}}
+            It 'Should output an object when -PassThru is used' {
+                Mock Invoke-LFMApiUri { $contextMock }
 
-                {Set-LFMTrackScrobble @stsParams} | Should -Throw
+                $output = Set-LFMTrackScrobble -Artist Artist -Track Track -Timestamp $dateTime -PassThru
+                $output.Artist | Should -Be $contextMock.Scrobbles.Scrobble.Artist.'#text'
+                $output.Album | Should -Be $contextMock.Scrobbles.Scrobble.Album.'#text'
+                $output.Track | Should -Be $contextMock.Scrobbles.Scrobble.Track.'#text'
+            }
+
+            It 'Should throw when ignored message code is 1' {
+                Mock Get-LFMIgnoredMessage { @{ Code = 1; Message = 'Filtered message' } }
+
+                { Set-LFMTrackScrobble -Artist Artist -Track Track -Timestamp $dateTime } | Should -Throw 'Filtered message'
+            }
+
+            It 'Should throw when an error is returned in the response' {
+                Mock Invoke-LFMApiUri { throw 'Error' }
+
+                { Set-LFMTrackScrobble -Artist Artist -Track Track -Timestamp $dateTime } | Should -Throw 'Error'
             }
         }
     }
@@ -418,7 +411,7 @@ InModuleScope PowerLFM {
 
 Describe 'Set-LFMTrackScrobble: Integration' -Tag Integration {
 
-    It "Integration test" {
+    It 'Integration test' {
         Set-ItResult -Skipped -Because 'the integration tests will be set up later'
     }
 }

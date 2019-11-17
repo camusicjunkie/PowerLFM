@@ -31,7 +31,7 @@ Describe 'Request-LFMToken: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
+            It 'Should be of type System.String' {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
@@ -51,7 +51,7 @@ Describe 'Request-LFMToken: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 0" {
+            It 'Should have a position of 0' {
                 $parameter.Position | Should -Be 0
             }
         }
@@ -64,7 +64,7 @@ Describe 'Request-LFMToken: Interface' -Tag Interface {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It "Should be of type System.String" {
+            It 'Should be of type System.String' {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
@@ -84,7 +84,7 @@ Describe 'Request-LFMToken: Interface' -Tag Interface {
                 $parameter.ValueFromRemainingArguments | Should -BeFalse
             }
 
-            It "Should have a position of 1" {
+            It 'Should have a position of 1' {
                 $parameter.Position | Should -Be 1
             }
         }
@@ -98,54 +98,47 @@ InModuleScope PowerLFM {
 
     Describe 'Request-LFMToken: Unit' -Tag Unit {
 
-        Mock Invoke-RestMethod
-        Mock Get-LFMAuthSignature
+        Mock Remove-CommonParameter {
+            [hashtable] @{
+                ApiKey = 'ApiKey'
+                SharedSecret = 'SharedSecret'
+            }
+        }
+        Mock Get-LFMSignature
+        Mock New-LFMApiQuery
         Mock Show-LFMAuthWindow
-        Mock Write-Verbose
-        Mock Write-Warning
+        Mock Invoke-LFMApiUri {$contextMock}
 
         Context 'Input' {
 
-            It "Should throw when api key is null" {
+            It 'Should throw when api key is null' {
                 {Request-LFMToken -ApiKey $null} | Should -Throw
             }
 
-            It "Should throw when shared secret is null" {
+            It 'Should throw when shared secret is null' {
                 {Request-LFMToken -SharedSecret $null} | Should -Throw
             }
         }
 
         Context 'Execution' {
 
-            Mock Foreach-Object
+            Request-LFMToken -ApiKey 'ApiKey' -SharedSecret 'SharedSecret'
 
-            $testCases = @(
-                @{
-                    times = 4
-                    rtParams = @{
-                        ApiKey = 'ApiKey'
-                        SharedSecret = 'SharedSecret'
-                    }
-                }
-            )
-
-            It 'Should call Foreach-Object <times> times building url' -TestCases $testCases {
-                param ($times, $rtParams)
-
-                Request-LFMToken @rtParams
-
+            It 'Should remove common parameters from bound parameters' {
                 $amParams = @{
-                    CommandName = 'Foreach-Object'
-                    Exactly = $true
-                    Times = $times
-                    Scope = 'It'
+                    CommandName     = 'Remove-CommonParameter'
+                    Exactly         = $true
+                    Times           = 1
+                    ParameterFilter = {
+                        $PSBoundParameters
+                    }
                 }
                 Assert-MockCalled @amParams
             }
 
             It 'Should create a signature' {
                 $amParams = @{
-                    CommandName = 'Get-LFMAuthSignature'
+                    CommandName = 'Get-LFMSignature'
                     Exactly = $true
                     Times = 1
                     ParameterFilter = {
@@ -156,11 +149,18 @@ InModuleScope PowerLFM {
                 }
                 Assert-MockCalled @amParams
             }
+
+            It 'Should take hashtable and build a query for a uri' {
+                $amParams = @{
+                    CommandName = 'New-LFMApiQuery'
+                    Exactly     = $true
+                    Times       = 1
+                }
+                Assert-MockCalled @amParams
+            }
         }
 
         Context 'Output' {
-
-            Mock Invoke-RestMethod {$contextMock}
 
             $output = Request-LFMToken -ApiKey 'ApiKey' -SharedSecret 'SharedSecret'
 
@@ -173,7 +173,7 @@ InModuleScope PowerLFM {
 
 Describe 'Request-LFMToken: Integration' -Tag Integration {
 
-    It "Integration test" {
+    It 'Integration test' {
         Set-ItResult -Skipped -Because 'the integration tests will be set up later'
     }
 }

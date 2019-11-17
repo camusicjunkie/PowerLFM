@@ -13,8 +13,8 @@ Get a list of the recent tracks listened to by a user.
 ## SYNTAX
 
 ```
-Get-LFMUserRecentTrack [[-StartDate] <String>] [[-EndDate] <String>] [[-UserName] <String>] [[-Limit] <String>]
- [[-Page] <String>] [<CommonParameters>]
+Get-LFMUserRecentTrack [[-StartDate] <DateTime>] [[-EndDate] <DateTime>] [[-UserName] <String>]
+ [[-Limit] <Int32>] [[-Page] <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -35,7 +35,7 @@ This will get the ten recent tracks for the currently authenticated user.
 Date to end the range.
 
 ```yaml
-Type: String
+Type: DateTime
 Parameter Sets: (All)
 Aliases:
 
@@ -50,7 +50,7 @@ Accept wildcard characters: False
 Limit the number of results per page.
 
 ```yaml
-Type: String
+Type: Int32
 Parameter Sets: (All)
 Aliases:
 
@@ -65,7 +65,7 @@ Accept wildcard characters: False
 Page number to return. Defaults to the first page.
 
 ```yaml
-Type: String
+Type: Int32
 Parameter Sets: (All)
 Aliases:
 
@@ -80,7 +80,7 @@ Accept wildcard characters: False
 Date to start the range.
 
 ```yaml
-Type: String
+Type: DateTime
 Parameter Sets: (All)
 Aliases:
 
