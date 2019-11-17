@@ -183,13 +183,11 @@ InModuleScope PowerLFM {
             }
 
             It 'Should call the correct Last.fm get method' {
-                Get-LFMChartTopTag
-
                 $amParams = @{
                     CommandName = 'Invoke-LFMApiUri'
                     Exactly = $true
                     Times = 1
-                    Scope = 'It'
+                    Scope = 'Context'
                     ParameterFilter = {
                         $Uri -like 'https://ws.audioscrobbler.com/2.0*'
                     }

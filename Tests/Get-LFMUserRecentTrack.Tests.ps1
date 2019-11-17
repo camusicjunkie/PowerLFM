@@ -301,13 +301,11 @@ InModuleScope PowerLFM {
             }
 
             It 'Should call the correct Last.fm get method' {
-                Get-LFMUserRecentTrack
-
                 $amParams = @{
                     CommandName = 'Invoke-LFMApiUri'
                     Exactly = $true
                     Times = 1
-                    Scope = 'It'
+                    Scope = 'Context'
                     ParameterFilter = {
                         $Uri -like 'https://ws.audioscrobbler.com/2.0*'
                     }
@@ -316,13 +314,11 @@ InModuleScope PowerLFM {
             }
 
             It 'Should convert the date from unix time to the local time' {
-                Get-LFMUserRecentTrack
-
                 $amParams = @{
                     CommandName = 'ConvertFrom-UnixTime'
                     Exactly = $true
                     Times = 2
-                    Scope = 'It'
+                    Scope = 'Context'
                     ParameterFilter = {
                         $UnixTime -eq 0 -or
                         $UnixTime -eq 60 -and

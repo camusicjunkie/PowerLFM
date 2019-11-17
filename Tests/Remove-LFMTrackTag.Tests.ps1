@@ -144,12 +144,7 @@ InModuleScope PowerLFM {
             }
 
             It 'Should throw when Tag has more than 1 value' {
-                $aatParams = @{
-                    Track = 'Track'
-                    Artist = 'Artist'
-                    Tag = @(1..2)
-                }
-                {Remove-LFMTrackTag @aatParams} | Should -Throw
+                {Remove-LFMTrackTag -Track Track -Artist Artist -Tag @(1..2)} | Should -Throw
             }
         }
 

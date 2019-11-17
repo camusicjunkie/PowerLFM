@@ -144,23 +144,11 @@ InModuleScope PowerLFM {
             }
 
             It 'Should throw when Tag has more than 10 values' {
-                $aatParams = @{
-                    Track = 'Track'
-                    Artist = 'Artist'
-                    Tag = @(1..11)
-                    Confirm = $false
-                }
-                {Add-LFMTrackTag @aatParams} | Should -Throw
+                {Add-LFMTrackTag -Track Track -Artist Artist -Tag @(1..11) -Confirm:$false} | Should -Throw
             }
 
             It 'Should not throw when Tag has 1 to 10 values' {
-                $aatParams = @{
-                    Track = 'Track'
-                    Artist = 'Artist'
-                    Tag = @(1..10)
-                    Confirm = $false
-                }
-                {Add-LFMTrackTag @aatParams} | Should -Not -Throw
+                {Add-LFMTrackTag -Track Track -Artist Artist -Tag @(1..10) -Confirm:$false} | Should -Not -Throw
             }
         }
 
