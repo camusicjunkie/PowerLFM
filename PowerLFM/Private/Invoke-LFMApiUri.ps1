@@ -42,6 +42,7 @@ function Invoke-LFMApiUri {
         # Constructing error message from response object.
         # Capitalizing first letter in sentence.
         $responseMessage = [char]::ToUpper($response.Message[0]) + $response.Message.Substring(1)
+
         if ($responseMessage -like 'Invalid API key*') {$errorMessage = $responseMessage + $messagePart1}
         else {$errorMessage = "$messagePart2 $responseMessage."}
 

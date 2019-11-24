@@ -23,7 +23,7 @@ InModuleScope PowerLFM {
 
     Describe 'Get-LFMConfiguration: Unit' -Tag Unit {
 
-        Mock Get-VaultPassword
+        Mock Get-LFMVaultCredential
 
         Context 'Execution' {
 
@@ -31,15 +31,14 @@ InModuleScope PowerLFM {
                 Get-LFMConfiguration
 
                 $amParams = @{
-                    CommandName = 'Get-VaultPassword'
+                    CommandName = 'Get-LFMVaultCredential'
                     Exactly = $true
                     Times = 3
                     Scope = 'It'
                     ParameterFilter = {
-                        $Resource -eq 'PowerLFM' -and
-                        $Name -eq 'ApiKey' -or
-                        $Name -eq 'SessionKey' -or
-                        $Name -eq 'SharedSecret'
+                        $UserName -eq 'ApiKey' -or
+                        $UserName -eq 'SessionKey' -or
+                        $UserName -eq 'SharedSecret'
                     }
                 }
                 Assert-MockCalled @amParams
@@ -49,7 +48,7 @@ InModuleScope PowerLFM {
         Context 'Output' {
 
             It 'Should throw when an error is returned in the response' {
-                Mock Get-VaultPassword { throw 'Error' }
+                Mock Get-LFMVaultCredential { throw 'Error' }
 
                 { Get-LFMConfiguration } | Should -Throw 'Error'
             }
