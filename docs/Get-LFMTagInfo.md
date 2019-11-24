@@ -34,8 +34,7 @@ The summary will be returned in the language specified.
 
 ### -Language
 Language to return the wiki in, expressed as an ISO 639 alpha-2 code.
-Ex.
-'en' for spanish.
+For example: 'es' for spanish.
 
 ```yaml
 Type: String
