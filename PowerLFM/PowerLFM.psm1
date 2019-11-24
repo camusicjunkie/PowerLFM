@@ -14,5 +14,6 @@ foreach ($import in @($Public + $Private)) {
     }
 }
 
-New-Variable -Name projectName -Value 'PowerLFM'
+New-Variable -Name module -Value 'PowerLFM'
 New-Variable -Name baseUrl -Value 'https://ws.audioscrobbler.com/2.0'
+New-Variable -Name vault -Value (Get-PasswordVaultClass)

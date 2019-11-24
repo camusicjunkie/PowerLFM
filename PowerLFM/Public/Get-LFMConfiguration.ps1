@@ -4,13 +4,11 @@ function Get-LFMConfiguration {
     [CmdletBinding()]
     param ()
 
-    $module = 'PowerLFM'
-
     try {
         $script:LFMConfig = [pscustomobject] @{
-            'APIKey' = (Get-VaultPassword -Resource $module -Name 'ApiKey')
-            'SessionKey' = (Get-VaultPassword -Resource $module -Name 'SessionKey')
-            'SharedSecret' = (Get-VaultPassword -Resource $module -Name 'SharedSecret')
+            'APIKey' = (Get-LFMVaultCredential -UserName 'ApiKey').Password
+            'SessionKey' = (Get-LFMVaultCredential -UserName 'SessionKey').Password
+            'SharedSecret' = (Get-LFMVaultCredential -UserName 'SharedSecret').Password
         }
         Write-Verbose 'LFMConfig is loaded in to the session'
     }

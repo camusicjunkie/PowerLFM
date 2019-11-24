@@ -124,19 +124,19 @@ InModuleScope PowerLFM {
 
     Describe 'Add-LFMConfiguration: Unit' -Tag Unit {
 
-        Mock Add-LFMVaultPass
+        Mock Add-LFMVaultCredential
 
         Context 'Input' {
 
-            It 'Should throw when Album is null' {
+            It 'Should throw when apiKey is null' {
                 {Add-LFMConfiguration -ApiKey $null} | Should -Throw
             }
 
-            It 'Should throw when Album is null' {
+            It 'Should throw when sessionKey is null' {
                 {Add-LFMConfiguration -SessionKey $null} | Should -Throw
             }
 
-            It 'Should throw when Album is null' {
+            It 'Should throw when sharedSecret is null' {
                 {Add-LFMConfiguration -SharedSecret $null} | Should -Throw
             }
         }
@@ -147,7 +147,7 @@ InModuleScope PowerLFM {
 
             It 'Should add the configuration for ApiKey' {
                 $amParams = @{
-                    CommandName     = 'Add-LFMVaultPass'
+                    CommandName     = 'Add-LFMVaultCredential'
                     Exactly         = $true
                     Times           = 1
                     ParameterFilter = {
@@ -160,7 +160,7 @@ InModuleScope PowerLFM {
 
             It 'Should add the configuration for SessionKey' {
                 $amParams = @{
-                    CommandName     = 'Add-LFMVaultPass'
+                    CommandName     = 'Add-LFMVaultCredential'
                     Exactly         = $true
                     Times           = 1
                     ParameterFilter = {
@@ -173,7 +173,7 @@ InModuleScope PowerLFM {
 
             It 'Should add the configuration for SharedSecret' {
                 $amParams = @{
-                    CommandName     = 'Add-LFMVaultPass'
+                    CommandName     = 'Add-LFMVaultCredential'
                     Exactly         = $true
                     Times           = 1
                     ParameterFilter = {
@@ -182,6 +182,21 @@ InModuleScope PowerLFM {
                     }
                 }
                 Assert-MockCalled @amParams
+            }
+        }
+
+        Context 'Output' {
+
+            It 'Should throw when an error is returned in the response' {
+                $acParams = @{
+                    ApiKey = 'ApiKey'
+                    SessionKey = 'SessionKey'
+                    SharedSecret = 'SharedSecret'
+                }
+
+                Mock Add-LFMVaultCredential { throw 'Error' }
+
+                { Add-LFMConfiguration @acParams } | Should -Throw 'Error'
             }
         }
     }
