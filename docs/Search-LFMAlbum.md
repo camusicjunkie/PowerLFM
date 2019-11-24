@@ -1,6 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Search-LFMAlbum.md
 schema: 2.0.0
 ---
 
@@ -16,12 +17,14 @@ Search-LFMAlbum [-Album] <String> [[-Limit] <Int32>] [[-Page] <Int32>] [<CommonP
 ```
 
 ## DESCRIPTION
-Search for an album by name. The results will be sorted by relevance. This uses the album.search method from the Last.fm API.
+Search for an album by name.
+The results will be sorted by relevance.
+This uses the album.search method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Search-LFMAlbum -Album Gore
 ```
 
@@ -60,7 +63,8 @@ Accept wildcard characters: False
 ```
 
 ### -Page
-Page number to return. Defaults to the first page.
+Page number to return.
+Defaults to the first page.
 
 ```yaml
 Type: Int32
@@ -80,13 +84,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ## OUTPUTS
 
 ### PowerLFM.Album.Search
-
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/album.search](https://www.last.fm/api/show/album.search)

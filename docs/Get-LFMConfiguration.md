@@ -1,6 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMConfiguration.md
 schema: 2.0.0
 ---
 
@@ -16,12 +17,13 @@ Get-LFMConfiguration [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Get the configuration from the Windows credential manager. This will add the ApiKey, SharedSecret, and SessionKey to the current session.
+Get the configuration from the Windows credential manager.
+This will add the ApiKey, SharedSecret, and SessionKey to the current session.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-LFMConfiguration
 ```
 
@@ -35,7 +37,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object

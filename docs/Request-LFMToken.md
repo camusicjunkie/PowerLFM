@@ -1,6 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Request-LFMToken.md
 schema: 2.0.0
 ---
 
@@ -21,7 +22,7 @@ Requests a token by sending the API key and shared secret as arguments to the au
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Request-LFMToken -ApiKey $apiKey -SharedSecret $sharedSecret
 ```
 
@@ -30,7 +31,8 @@ This will request a token using the API key and shared secret.
 ## PARAMETERS
 
 ### -ApiKey
-API key that was created on Last.fm for a user and application. This is required for all API calls.
+API key that was created on Last.fm for a user and application.
+This is required for all API calls.
 
 ```yaml
 Type: String
@@ -45,7 +47,8 @@ Accept wildcard characters: False
 ```
 
 ### -SharedSecret
-Shared secret that was created on Last.fm for a user and application. This is required for API calls that need to be signed.
+Shared secret that was created on Last.fm for a user and application.
+This is required for API calls that need to be signed.
 
 ```yaml
 Type: String
@@ -65,15 +68,12 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.String
-
 ## NOTES
 
 ## RELATED LINKS
 
-[https://www.last.fm/api/show/auth.getToken](https://www.last.fm/api/show/auth.getToken)
-
 [https://www.last.fm/api/desktopauth](https://www.last.fm/api/desktopauth)
+

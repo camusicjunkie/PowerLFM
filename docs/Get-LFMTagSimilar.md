@@ -1,7 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
-online version:
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMTagSimilar.md
 schema: 2.0.0
 ---
 
@@ -17,12 +17,14 @@ Get-LFMTagSimilar [-Tag] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Get tags similar to the one specified. Returns tags ranked by similarity, based on listening data. This uses the tag.getSimilar method from the Last.fm API.
+Get tags similar to the one specified.
+Returns tags ranked by similarity, based on listening data.
+This uses the tag.getSimilar method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-LFMTagSimilar -Tag rock
 ```
 
@@ -51,13 +53,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ## OUTPUTS
 
 ### PowerLFM.Tag.Similar
-
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/tag.getSimilar](https://www.last.fm/api/show/tag.getSimilar)

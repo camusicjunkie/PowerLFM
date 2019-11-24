@@ -1,7 +1,7 @@
 ---
 Module Name: PowerLFM
 Module Guid: c8d0461c-325b-4b14-bd9c-dd5fa57fafeb
-Download Help Link: {{ Update Download Link }}
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/PowerLFM.md
 Help Version: {{ Please enter version of help manually (X.X.X.X) format }}
 Locale: en-US
 ---

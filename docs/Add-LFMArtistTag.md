@@ -1,6 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Add-LFMArtistTag.md
 schema: 2.0.0
 ---
 
@@ -16,12 +17,13 @@ Add-LFMArtistTag [-Artist] <String> [-Tag] <String[]> [-WhatIf] [-Confirm] [<Com
 ```
 
 ## DESCRIPTION
-Tag an artist using a list of user supplied tags. This uses the artist.addTags method from the Last.fm API.
+Tag an artist using a list of user supplied tags.
+This uses the artist.addTags method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Add-LFMArtistTag -Artist Deftones -Tag Rock
 ```
 
@@ -45,7 +47,8 @@ Accept wildcard characters: False
 ```
 
 ### -Tag
-Tags to apply to this album. This parameter takes a maximum of ten tags.
+Tags to apply to this album.
+This parameter takes a maximum of ten tags.
 
 ```yaml
 Type: String[]
@@ -69,7 +72,7 @@ Aliases: cf
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -85,7 +88,7 @@ Aliases: wi
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -96,14 +99,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ### System.String[]
-
 ## OUTPUTS
 
 ### System.Object
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/artist.addTags](https://www.last.fm/api/show/artist.addTags)

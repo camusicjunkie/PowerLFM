@@ -1,7 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
-online version:
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMTagTopTrack.md
 schema: 2.0.0
 ---
 
@@ -17,12 +17,13 @@ Get-LFMTagTopTrack [-Tag] <String> [[-Limit] <Int32>] [[-Page] <Int32>] [<Common
 ```
 
 ## DESCRIPTION
-Get the top artists tagged by this tag, ordered by tag count. This uses the tag.getTopTracks method from the Last.fm API.
+Get the top artists tagged by this tag, ordered by tag count.
+This uses the tag.getTopTracks method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-LFMTagTopTrack -Tag rock
 ```
 
@@ -46,7 +47,8 @@ Accept wildcard characters: False
 ```
 
 ### -Page
-Page number to return. Defaults to the first page.
+Page number to return.
+Defaults to the first page.
 
 ```yaml
 Type: Int32
@@ -81,13 +83,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ## OUTPUTS
 
 ### PowerLFM.Tag.TopTracks
-
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/tag.getTopTracks](https://www.last.fm/api/show/tag.getTopTracks)

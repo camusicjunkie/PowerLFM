@@ -1,6 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMUserWeeklyChartList.md
 schema: 2.0.0
 ---
 
@@ -16,21 +17,27 @@ Get-LFMUserWeeklyChartList [[-UserName] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Get a list of available charts for a user. These charts are expressed as date ranges that can be sent to the other chart services. This uses the user.getWeeklyChartList method from the Last.fm API.
+Get a list of available charts for a user.
+These charts are expressed as date ranges that can be sent to the other chart services.
+This uses the user.getWeeklyChartList method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
-PS C:\> Get-LFMUserWeeklyChartList -UserName camusicjunkie
+```
+PS C:\> Get-LFMUserWeeklyChartList
 ```
 
-This will get the chart lists for camusicjunkie.
+This will get the chart lists for the currently authenticated user.
 
 ## PARAMETERS
 
 ### -UserName
-Username for the context of the request. The chart list of this user is included in the response. Providing no user will use the currently authenticated user. The API docs say the user field is mandatory but testing shows that it isn't actually required. Will keep implemented for now.
+Username for the context of the request.
+The chart list of this user is included in the response.
+Providing no user will use the currently authenticated user.
+The API docs say the user field is mandatory but testing shows that it isn't actually required.
+Will keep implemented for now.
 
 ```yaml
 Type: String
@@ -50,13 +57,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ## OUTPUTS
 
 ### PowerLFM.User.WeeklyChartList
-
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/user.getWeeklyChartList](https://www.last.fm/api/show/user.getWeeklyChartList)

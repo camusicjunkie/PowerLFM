@@ -1,6 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMUserTopTag.md
 schema: 2.0.0
 ---
 
@@ -16,16 +17,17 @@ Get-LFMUserTopTag [[-UserName] <String>] [[-Limit] <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Get the top tags set by a user. This uses the user.getTopTags method from the Last.fm API.
+Get the top tags set by a user.
+This uses the user.getTopTags method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
-PS C:\> Get-LFMUserTopTag -UserName camusicjunkie
+```
+PS C:\> Get-LFMUserTopTag
 ```
 
-This will get the top tags set by camusicjunkie.
+This will get the top tags set by the currently authenticated user.
 
 ## PARAMETERS
 
@@ -45,7 +47,9 @@ Accept wildcard characters: False
 ```
 
 ### -UserName
-Username for the context of the request. The top tags of this user are included in the response. Providing no user will use the currently authenticated user.
+Username for the context of the request.
+The top tags of this user are included in the response.
+Providing no user will use the currently authenticated user.
 
 ```yaml
 Type: String
@@ -65,13 +69,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ## OUTPUTS
 
 ### PowerLFM.User.TopTag
-
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/user.getTopTags](https://www.last.fm/api/show/user.getTopTags)

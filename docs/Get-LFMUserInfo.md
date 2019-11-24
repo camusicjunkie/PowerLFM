@@ -1,6 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMUserInfo.md
 schema: 2.0.0
 ---
 
@@ -16,28 +17,31 @@ Get-LFMUserInfo [[-UserName] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Get information about a user. This uses the user.getInfo method from the Last.fm API.
+Get information about a user.
+This uses the user.getInfo method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-LFMUserInfo
 ```
 
 This will get the user information for the authenticated user.
 
 ### Example 2
-```powershell
-PS C:\> Get-LFMUserInfo -UserName camusicjunkie
+```
+PS C:\> Get-LFMUserInfo
 ```
 
-This will get the user information for camusicjunkie.
+This will get the user information for the currently authenticated user.
 
 ## PARAMETERS
 
 ### -UserName
-Username for the context of the request. The information for this user is included in the response. Providing no user will use the currently authenticated user.
+Username for the context of the request.
+The information for this user is included in the response.
+Providing no user will use the currently authenticated user.
 
 ```yaml
 Type: String
@@ -57,13 +61,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ## OUTPUTS
 
 ### PowerLFM.User.Info
-
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/user.getInfo](https://www.last.fm/api/show/user.getInfo)

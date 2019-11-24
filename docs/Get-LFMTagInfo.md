@@ -1,7 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
-online version:
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMTagInfo.md
 schema: 2.0.0
 ---
 
@@ -17,21 +17,25 @@ Get-LFMTagInfo [-Tag] <String> [[-Language] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Get the metadata for a tag. This uses the tag.getInfo method from the Last.fm API.
+Get the metadata for a tag.
+This uses the tag.getInfo method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-LFMTagInfo -Tag rock -Language en
 ```
 
-Get info for the tag rock. The summary will be returned in the language specified.
+Get info for the tag rock.
+The summary will be returned in the language specified.
 
 ## PARAMETERS
 
 ### -Language
-Language to return the wiki in, expressed as an ISO 639 alpha-2 code. Ex. 'es' for spanish.
+Language to return the wiki in, expressed as an ISO 639 alpha-2 code.
+Ex.
+'en' for spanish.
 
 ```yaml
 Type: String
@@ -66,13 +70,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ## OUTPUTS
 
 ### PowerLFM.Tag.Info
-
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/tag.getInfo](https://www.last.fm/api/show/tag.getInfo)

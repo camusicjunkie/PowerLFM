@@ -1,7 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
-online version:
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMUserPersonalTag.md
 schema: 2.0.0
 ---
 
@@ -18,12 +18,13 @@ Get-LFMUserPersonalTag [-Tag] <String> [-TagType] <String> [[-UserName] <String>
 ```
 
 ## DESCRIPTION
-Get a list of personal tags for a user. This uses the user.getPersonalTags method from the Last.fm API.
+Get a list of personal tags for a user.
+This uses the user.getPersonalTags method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-LFMUserPersonalTag -Tag Heavy -TagType Artist
 ```
 
@@ -47,7 +48,8 @@ Accept wildcard characters: False
 ```
 
 ### -Page
-Page number to return. Defaults to the first page.
+Page number to return.
+Defaults to the first page.
 
 ```yaml
 Type: Int32
@@ -93,7 +95,9 @@ Accept wildcard characters: False
 ```
 
 ### -UserName
-Username for the context of the request. The personal tags of this user are included in the response. Providing no user will use the currently authenticated user.
+Username for the context of the request.
+The personal tags of this user are included in the response.
+Providing no user will use the currently authenticated user.
 
 ```yaml
 Type: String
@@ -113,13 +117,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ## OUTPUTS
 
 ### PowerLFM.User.PersonalTag
-
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/user.getPersonalTags](https://www.last.fm/api/show/user.getPersonalTags)

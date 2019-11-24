@@ -1,6 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Remove-LFMAlbumTag.md
 schema: 2.0.0
 ---
 
@@ -17,12 +18,13 @@ Remove-LFMAlbumTag [-Album] <String> [-Artist] <String> [-Tag] <String> [-WhatIf
 ```
 
 ## DESCRIPTION
-Untag an album using a user supplied tag. This uses the album.removeTag method from the Last.fm API.
+Untag an album using a user supplied tag.
+This uses the album.removeTag method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Remove-LFMAlbumTag -Album Gore -Artist Deftones -Tag Rock
 ```
 
@@ -85,7 +87,7 @@ Aliases: cf
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -101,7 +103,7 @@ Aliases: wi
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -112,12 +114,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ## OUTPUTS
 
 ### System.Object
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/album.removeTag](https://www.last.fm/api/show/album.removeTag)

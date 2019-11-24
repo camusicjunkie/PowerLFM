@@ -1,6 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMArtistInfo.md
 schema: 2.0.0
 ---
 
@@ -22,12 +23,13 @@ Get-LFMArtistInfo -Id <Guid> [-UserName <String>] [-AutoCorrect] [<CommonParamet
 ```
 
 ## DESCRIPTION
-Get the metadata and biography for an artist using the artist name or a musicbrainz id. This uses the artist.getInfo method from the Last.fm API.
+Get the metadata and biography for an artist using the artist name or a musicbrainz id.
+This uses the artist.getInfo method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-LFMArtistInfo -Artist Deftones
 ```
 
@@ -60,7 +62,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -81,7 +83,8 @@ Accept wildcard characters: False
 ```
 
 ### -UserName
-Username for the context of the request. If used, the user's playcount for this album is included in the response.
+Username for the context of the request.
+If used, the user's playcount for this album is included in the response.
 
 ```yaml
 Type: String
@@ -101,13 +104,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ## OUTPUTS
 
 ### PowerLFM.Artist.Info
-
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/artist.getInfo](https://www.last.fm/api/show/artist.getInfo)

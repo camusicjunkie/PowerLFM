@@ -1,6 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Set-LFMTrackUnlove.md
 schema: 2.0.0
 ---
 
@@ -16,12 +17,13 @@ Set-LFMTrackUnlove [-Artist] <String> [-Track] <String> [-WhatIf] [-Confirm] [<C
 ```
 
 ## DESCRIPTION
-Unlove a track for a user. This uses the track.unlove method from the Last.fm API.
+Unlove a track for a user.
+This uses the track.unlove method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Set-LFMTrackUnlove -Artist Deftones -Track Gore -Verbose
 ```
 
@@ -69,7 +71,7 @@ Aliases: cf
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -85,7 +87,7 @@ Aliases: wi
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -96,12 +98,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ## OUTPUTS
 
 ### System.Object
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/track.unlove](https://www.last.fm/api/show/track.unlove)

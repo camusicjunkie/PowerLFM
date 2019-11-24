@@ -1,6 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMChartTopArtist.md
 schema: 2.0.0
 ---
 
@@ -16,12 +17,13 @@ Get-LFMChartTopArtist [[-Limit] <Int32>] [[-Page] <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Get the top artists chart. This uses the chart.getTopArtists method from the Last.fm API.
+Get the top artists chart.
+This uses the chart.getTopArtists method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-LFMChartTopArtist
 ```
 
@@ -45,7 +47,8 @@ Accept wildcard characters: False
 ```
 
 ### -Page
-Page number to return. Defaults to the first page.
+Page number to return.
+Defaults to the first page.
 
 ```yaml
 Type: Int32
@@ -65,13 +68,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### PowerLFM.Chart.TopArtists
-
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/chart.getTopArtists](https://www.last.fm/api/show/chart.getTopArtists)

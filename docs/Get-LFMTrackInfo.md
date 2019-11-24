@@ -1,7 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
-online version:
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMTrackInfo.md
 schema: 2.0.0
 ---
 
@@ -23,13 +23,14 @@ Get-LFMTrackInfo -Id <Guid> [-UserName <String>] [-AutoCorrect] [<CommonParamete
 ```
 
 ## DESCRIPTION
-Get the metadata for a track using the artist and track name or a musicbrainz id. This uses the track.getInfo method from the Last.fm API.
+Get the metadata for a track using the artist and track name or a musicbrainz id.
+This uses the track.getInfo method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
-PS C:\> Get-LFMTrackInfo -Track Gore -Artist Deftones -UserName camusicjunkie
+```
+PS C:\> Get-LFMTrackInfo -Track Gore -Artist Deftones
 ```
 
 This will get info for the track Gore by Deftones
@@ -61,7 +62,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -97,7 +98,8 @@ Accept wildcard characters: False
 ```
 
 ### -UserName
-Username for the context of the request. If used, the user's playcount for this track and whether they have loved the track is included in the response.
+Username for the context of the request.
+If used, the user's playcount for this track and whether they have loved the track is included in the response.
 
 ```yaml
 Type: String
@@ -117,13 +119,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ## OUTPUTS
 
 ### PowerLFM.Track.Info
-
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/track.getInfo](https://www.last.fm/api/show/track.getInfo)

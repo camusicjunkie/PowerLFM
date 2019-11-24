@@ -1,7 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
-online version:
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Add-LFMTrackTag.md
 schema: 2.0.0
 ---
 
@@ -18,12 +18,13 @@ Add-LFMTrackTag [-Track] <String> [-Artist] <String> [-Tag] <String[]> [-WhatIf]
 ```
 
 ## DESCRIPTION
-Tag a track using a list of user supplied tags. This uses the track.addTags method from the Last.fm API.
+Tag a track using a list of user supplied tags.
+This uses the track.addTags method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Add-LFMTrackTag -Track Gore -Artist Deftones -Tag Rock
 ```
 
@@ -86,7 +87,7 @@ Aliases: cf
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -102,7 +103,7 @@ Aliases: wi
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -113,14 +114,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ### System.String[]
-
 ## OUTPUTS
 
 ### System.Object
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/track.addTags](https://www.last.fm/api/show/track.addTags)

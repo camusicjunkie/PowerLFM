@@ -1,6 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Add-LFMConfiguration.md
 schema: 2.0.0
 ---
 
@@ -17,20 +18,22 @@ Add-LFMConfiguration [-ApiKey] <String> [-SessionKey] <String> [-SharedSecret] <
 ```
 
 ## DESCRIPTION
-Takes the API key and shared secret received from Last.fm and adds them to the credential manager. This will also add the session key after it has been requested.
+Takes the API key and shared secret received from Last.fm and adds them to the credential manager.
+This will also add the session key after it has been requested.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> $session = Request-LFMToken -ApiKey $ApiKey -SharedSecret $SharedSecret | Request-LFMSession
 PS C:\> $session | Add-LFMConfiguration
 ```
 
-This will take the session key requested from Last.fm and add it to the $session variable. The $session will then be added to the credential manager.
+This will take the session key requested from Last.fm and add it to the $session variable.
+The $session will then be added to the credential manager.
 
 ### Example 2
-```powershell
+```
 PS C:\> Request-LFMToken -ApiKey $ApiKey -SharedSecret $SharedSecret | Request-LFMSession | Add-LFMConfiguration
 ```
 
@@ -39,7 +42,8 @@ This will take the session key requested from Last.fm and add it to the credenti
 ## PARAMETERS
 
 ### -ApiKey
-API key that was created on Last.fm for a user and application. This is required for all API calls.
+API key that was created on Last.fm for a user and application.
+This is required for all API calls.
 
 ```yaml
 Type: String
@@ -54,7 +58,8 @@ Accept wildcard characters: False
 ```
 
 ### -SessionKey
-Session key that was created on Last.fm for a user and application. This is required for all authenticated API calls.
+Session key that was created on Last.fm for a user and application.
+This is required for all authenticated API calls.
 
 ```yaml
 Type: String
@@ -69,7 +74,8 @@ Accept wildcard characters: False
 ```
 
 ### -SharedSecret
-Shared secret that was created on Last.fm for a user and application. This is required for API calls that need to be signed.
+Shared secret that was created on Last.fm for a user and application.
+This is required for API calls that need to be signed.
 
 ```yaml
 Type: String
@@ -93,7 +99,7 @@ Aliases: cf
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -109,7 +115,7 @@ Aliases: wi
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -120,7 +126,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ## OUTPUTS
 
 ### System.Object
