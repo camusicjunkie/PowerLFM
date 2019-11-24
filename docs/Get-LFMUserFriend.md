@@ -1,6 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMUserFriend.md
 schema: 2.0.0
 ---
 
@@ -16,16 +17,17 @@ Get-LFMUserFriend [[-UserName] <String>] [[-Limit] <Int32>] [[-Page] <Int32>] [<
 ```
 
 ## DESCRIPTION
-Get a list of friends for a user. This uses the user.getFriends method from the Last.fm API.
+Get a list of friends for a user.
+This uses the user.getFriends method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
-PS C:\> Get-LFMUserFriend -UserName camusicjunkie
+```
+PS C:\> Get-LFMUserFriend
 ```
 
-This will get the friends for camusicjunkie
+This will get the friends for the currently authenticated user.
 
 ## PARAMETERS
 
@@ -45,7 +47,8 @@ Accept wildcard characters: False
 ```
 
 ### -Page
-Page number to return. Defaults to the first page.
+Page number to return.
+Defaults to the first page.
 
 ```yaml
 Type: Int32
@@ -60,7 +63,9 @@ Accept wildcard characters: False
 ```
 
 ### -UserName
-Username for the context of the request. The friends of this user are included in the response. Providing no user will use the currently authenticated user.
+Username for the context of the request.
+The friends of this user are included in the response.
+Providing no user will use the currently authenticated user.
 
 ```yaml
 Type: String
@@ -80,13 +85,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ## OUTPUTS
 
 ### PowerLFM.User.Info
-
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/user.getFriends](https://www.last.fm/api/show/user.getFriends)

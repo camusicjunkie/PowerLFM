@@ -1,7 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
-online version:
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMUserRecentTrack.md
 schema: 2.0.0
 ---
 
@@ -18,12 +18,14 @@ Get-LFMUserRecentTrack [[-StartDate] <DateTime>] [[-EndDate] <DateTime>] [[-User
 ```
 
 ## DESCRIPTION
-Get a list of the recent tracks listened to by a user. Also includes the currently playing track with the now playing attribute if the user is currently listening to a track. This uses the user.getRecentTracks method from the Last.fm API.
+Get a list of the recent tracks listened to by a user.
+Also includes the currently playing track with the now playing attribute if the user is currently listening to a track.
+This uses the user.getRecentTracks method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-LFMUserRecentTrack -Limit 10
 ```
 
@@ -62,7 +64,8 @@ Accept wildcard characters: False
 ```
 
 ### -Page
-Page number to return. Defaults to the first page.
+Page number to return.
+Defaults to the first page.
 
 ```yaml
 Type: Int32
@@ -92,7 +95,9 @@ Accept wildcard characters: False
 ```
 
 ### -UserName
-Username for the context of the request. The recent tracks of this user are included in the response. Providing no user will use the currently authenticated user.
+Username for the context of the request.
+The recent tracks of this user are included in the response.
+Providing no user will use the currently authenticated user.
 
 ```yaml
 Type: String
@@ -112,13 +117,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ## OUTPUTS
 
 ### PowerLFM.User.RecentTrack
-
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/user.getRecentTracks](https://www.last.fm/api/show/user.getRecentTracks)

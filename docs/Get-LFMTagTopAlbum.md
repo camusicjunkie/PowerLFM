@@ -1,7 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
-online version:
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMTagTopAlbum.md
 schema: 2.0.0
 ---
 
@@ -17,12 +17,13 @@ Get-LFMTagTopAlbum [-Tag] <String> [[-Limit] <Int32>] [[-Page] <Int32>] [<Common
 ```
 
 ## DESCRIPTION
-Get the top albums tagged by this tag, ordered by tag count. This uses the tag.getTopAlbums method from the Last.fm API.
+Get the top albums tagged by this tag, ordered by tag count.
+This uses the tag.getTopAlbums method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-LFMTagTopAlbum -Tag rock
 ```
 
@@ -46,7 +47,8 @@ Accept wildcard characters: False
 ```
 
 ### -Page
-Page number to return. Defaults to the first page.
+Page number to return.
+Defaults to the first page.
 
 ```yaml
 Type: Int32
@@ -81,13 +83,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ## OUTPUTS
 
 ### PowerLFM.Tag.TopAlbums
-
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/tag.getTopAlbums](https://www.last.fm/api/show/tag.getTopAlbums)

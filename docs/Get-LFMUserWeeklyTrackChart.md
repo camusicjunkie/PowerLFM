@@ -1,6 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMUserWeeklyTrackChart.md
 schema: 2.0.0
 ---
 
@@ -17,30 +18,33 @@ Get-LFMUserWeeklyTrackChart [[-StartDate] <DateTime>] [[-EndDate] <DateTime>] [[
 ```
 
 ## DESCRIPTION
-Get a track chart for a user. A date range can be specified. If no date range is specified the most recent track chart is chosen by default. This uses the user.getWeeklyTrackChart method from the Last.fm API.
+Get a track chart for a user.
+A date range can be specified.
+If no date range is specified the most recent track chart is chosen by default.
+This uses the user.getWeeklyTrackChart method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
-PS C:\> Get-LFMUserWeeklyTrackChart -UserName camusicjunkie
+```
+PS C:\> Get-LFMUserWeeklyTrackChart
 ```
 
-This will get the recent track chart for camusicjunkie.
+This will get the recent track chart for the currently authenticated user.
 
 ### Example 2
-```powershell
-PS C:\> Get-LFMUserWeeklyTrackChart -UserName camusicjunkie -StartDate 11/1/2018 -EndDate 12/1/2018
+```
+PS C:\> Get-LFMUserWeeklyTrackChart -StartDate 11/1/2018 -EndDate 12/1/2018
 ```
 
-This will get the track chart for camusicjunkie within the specified date range.
+This will get the track chart for the currently authenticated user within the specified date range.
 
 ### Example 3
-```powershell
-PS C:\> (Get-LFMUserWeeklyChartList -UserName camusicjunkie)[0] | Get-LFMUserWeeklyTrackChart
+```
+PS C:\> (Get-LFMUserWeeklyChartList)[0] | Get-LFMUserWeeklyTrackChart
 ```
 
-This will get the first chart list for camusicjunkie and send it down the pipeline to get the track chart.
+This will get the first chart list for the currently authenticated user and send it down the pipeline to get the track chart.
 
 ## PARAMETERS
 
@@ -75,7 +79,9 @@ Accept wildcard characters: False
 ```
 
 ### -UserName
-Username for the context of the request. The track chart of this user is included in the response. Providing no user will use the currently authenticated user.
+Username for the context of the request.
+The track chart of this user is included in the response.
+Providing no user will use the currently authenticated user.
 
 ```yaml
 Type: String
@@ -95,13 +101,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ## OUTPUTS
 
 ### PowerLFM.User.WeeklyTrackChart
-
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/user.getWeeklyTrackChart](https://www.last.fm/api/show/user.getWeeklyTrackChart)

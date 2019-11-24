@@ -1,7 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
-online version:
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMTrackCorrection.md
 schema: 2.0.0
 ---
 
@@ -17,12 +17,15 @@ Get-LFMTrackCorrection [-Track] <String> [-Artist] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Gets the supplied track and sees if there is a correction to a canonical track. The results can be pretty inconsistent. This is best used on tracks or artists when trying to correct a name with punctuation or accents. This uses the track.getCorrection method from the Last.fm API.
+Gets the supplied track and sees if there is a correction to a canonical track.
+The results can be pretty inconsistent.
+This is best used on tracks or artists when trying to correct a name with punctuation or accents.
+This uses the track.getCorrection method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-LFMTrackCorrection -Track Joga -Artist Bjork
 ```
 
@@ -66,13 +69,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ## OUTPUTS
 
 ### PowerLFM.Track.Correction
-
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/track.getCorrection](https://www.last.fm/api/show/track.getCorrection)

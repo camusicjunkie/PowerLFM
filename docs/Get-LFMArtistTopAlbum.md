@@ -1,6 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMArtistTopAlbum.md
 schema: 2.0.0
 ---
 
@@ -22,12 +23,13 @@ Get-LFMArtistTopAlbum -Id <Guid> [-Limit <Int32>] [-Page <Int32>] [-AutoCorrect]
 ```
 
 ## DESCRIPTION
-Get the top albums for an artist, ordered by popularity. This uses the artist.getTopAlbums method from the Last.fm API.
+Get the top albums for an artist, ordered by popularity.
+This uses the artist.getTopAlbums method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-LFMArtistTopAlbum -Artist Deftones
 ```
 
@@ -60,7 +62,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -96,7 +98,8 @@ Accept wildcard characters: False
 ```
 
 ### -Page
-Page number to return. Defaults to the first page.
+Page number to return.
+Defaults to the first page.
 
 ```yaml
 Type: Int32
@@ -116,13 +119,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ## OUTPUTS
 
 ### PowerLFM.Artist.Album
-
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/artist.getTopAlbums](https://www.last.fm/api/show/artist.getTopAlbums)

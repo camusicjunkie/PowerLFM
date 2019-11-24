@@ -1,6 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Set-LFMTrackLove.md
 schema: 2.0.0
 ---
 
@@ -16,12 +17,13 @@ Set-LFMTrackLove [-Artist] <String> [-Track] <String> [-WhatIf] [-Confirm] [<Com
 ```
 
 ## DESCRIPTION
-Love a track for a user. This uses the track.love method from the Last.fm API.
+Love a track for a user.
+This uses the track.love method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Set-LFMTrackLove -Artist Deftones -Track Gore
 ```
 
@@ -69,7 +71,7 @@ Aliases: cf
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -85,7 +87,7 @@ Aliases: wi
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -96,12 +98,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ## OUTPUTS
 
 ### System.Object
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/track.love](https://www.last.fm/api/show/track.love)

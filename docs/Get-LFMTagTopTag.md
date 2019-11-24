@@ -1,7 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
-online version:
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMTagTopTag.md
 schema: 2.0.0
 ---
 
@@ -17,12 +17,13 @@ Get-LFMTagTopTag [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Get the top tags, ordered by popularity. This uses the tag.getTopTags method from the Last.fm API.
+Get the top tags, ordered by popularity.
+This uses the tag.getTopTags method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-LFMTagTopTag
 ```
 
@@ -36,13 +37,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### PowerLFM.Tag.TopTags
-
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/tag.getTopTags](https://www.last.fm/api/show/tag.getTopTags)

@@ -1,6 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMArtistCorrection.md
 schema: 2.0.0
 ---
 
@@ -16,12 +17,13 @@ Get-LFMArtistCorrection [-Artist] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Checks to see if a correction can be made. This uses the artist.getCorrection method from the Last.fm API.
+Checks to see if a correction can be made.
+This uses the artist.getCorrection method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-LFMArtistCorrection -Artist Deftone
 ```
 
@@ -50,13 +52,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ## OUTPUTS
 
 ### PowerLFM.Artist.Correction
-
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/artist.getCorrection](https://www.last.fm/api/show/artist.getCorrection)

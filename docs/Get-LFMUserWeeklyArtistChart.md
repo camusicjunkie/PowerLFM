@@ -1,6 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMUserWeeklyArtistChart.md
 schema: 2.0.0
 ---
 
@@ -17,30 +18,33 @@ Get-LFMUserWeeklyArtistChart [[-StartDate] <DateTime>] [[-EndDate] <DateTime>] [
 ```
 
 ## DESCRIPTION
-Get an artist chart for a user. A date range can be specified. If no date range is specified the most recent artist chart is chosen by default. This uses the user.getWeeklyArtistChart method from the Last.fm API.
+Get an artist chart for a user.
+A date range can be specified.
+If no date range is specified the most recent artist chart is chosen by default.
+This uses the user.getWeeklyArtistChart method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
-PS C:\> Get-LFMUserWeeklyArtistChart -UserName camusicjunkie
+```
+PS C:\> Get-LFMUserWeeklyArtistChart
 ```
 
-This will get the recent artist chart for camusicjunkie.
+This will get the recent artist chart for the currently authenticated user.
 
 ### Example 2
-```powershell
-PS C:\> Get-LFMUserWeeklyArtistChart -UserName camusicjunkie -StartDate 11/1/2018 -EndDate 12/1/2018
+```
+PS C:\> Get-LFMUserWeeklyArtistChart -StartDate 11/1/2018 -EndDate 12/1/2018
 ```
 
-This will get the artist chart for camusicjunkie within the specified date range.
+This will get the artist chart for the currently authenticated user within the specified date range.
 
 ### Example 3
-```powershell
-PS C:\> (Get-LFMUserWeeklyChartList -UserName camusicjunkie)[0] | Get-LFMUserWeeklyArtistChart
+```
+PS C:\> (Get-LFMUserWeeklyChartList)[0] | Get-LFMUserWeeklyArtistChart
 ```
 
-This will get the first chart list for camusicjunkie and send it down the pipeline to get the artist chart.
+This will get the first chart list for the currently authenticated user and send it down the pipeline to get the artist chart.
 
 ## PARAMETERS
 
@@ -75,7 +79,9 @@ Accept wildcard characters: False
 ```
 
 ### -UserName
-Username for the context of the request. The artist chart of this user is included in the response. Providing no user will use the currently authenticated user.
+Username for the context of the request.
+The artist chart of this user is included in the response.
+Providing no user will use the currently authenticated user.
 
 ```yaml
 Type: String
@@ -95,13 +101,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ## OUTPUTS
 
 ### PowerLFM.User.WeeklyArtistChart
-
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/user.getWeeklyArtistChart](https://www.last.fm/api/show/user.getWeeklyArtistChart)

@@ -1,7 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
-online version:
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMTagWeeklyChartList.md
 schema: 2.0.0
 ---
 
@@ -17,12 +17,13 @@ Get-LFMTagWeeklyChartList [-Tag] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Get a list of available charts for this tag, expressed as date ranges which can be sent to the chart services. This uses the tag.getTagWeeklyChartList method from the Last.fm API.
+Get a list of available charts for this tag, expressed as date ranges which can be sent to the chart services.
+This uses the tag.getTagWeeklyChartList method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-LFMTagWeeklyChartList -Tag rock
 ```
 
@@ -31,7 +32,9 @@ This gets the available charts for the tag rock as a date range.
 ## PARAMETERS
 
 ### -Tag
-Name of the tag. This is currently required but doesn't make a difference on the response. Considering hard coding the value and removing this parameter.
+Name of the tag.
+This is currently required but doesn't make a difference on the response.
+Considering hard coding the value and removing this parameter.
 
 ```yaml
 Type: String
@@ -51,13 +54,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ## OUTPUTS
 
 ### PowerLFM.Tag.WeeklyChartList
-
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/tag.getWeeklyChartList](https://www.last.fm/api/show/tag.getWeeklyChartList)

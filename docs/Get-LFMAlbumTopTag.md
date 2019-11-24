@@ -1,6 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMAlbumTopTag.md
 schema: 2.0.0
 ---
 
@@ -22,12 +23,13 @@ Get-LFMAlbumTopTag -Id <Guid> [-AutoCorrect] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Get the top tags for an album, ordered by popularity. This uses the album.getTopTags method from the Last.fm API.
+Get the top tags for an album, ordered by popularity.
+This uses the album.getTopTags method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-LFMAlbumTopTag -Album Gore -Artist Deftones
 ```
 
@@ -75,7 +77,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -101,13 +103,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ## OUTPUTS
 
 ### PowerLFM.Album.Tag
-
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/album.getTopTags](https://www.last.fm/api/show/album.getTopTags)

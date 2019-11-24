@@ -1,6 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Request-LFMSession.md
 schema: 2.0.0
 ---
 
@@ -21,14 +22,14 @@ Request a session key by sending the API key, shared secret, and the authenticat
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Request-LFMToken -ApiKey $apiKey -SharedSecret $sharedSecret | Request-LFMSession
 ```
 
 This will request a token and send all three properties down the pipeline to request a session.
 
 ### Example 2
-```powershell
+```
 PS C:\> Request-LFMSession -ApiKey $apiKey -Token $token -SharedSecret $sharedSecret
 ```
 
@@ -37,7 +38,8 @@ This will request a session key after the token has already been requested and s
 ## PARAMETERS
 
 ### -ApiKey
-API key that was created on Last.fm for a user and application. This is required for all API calls.
+API key that was created on Last.fm for a user and application.
+This is required for all API calls.
 
 ```yaml
 Type: String
@@ -52,7 +54,8 @@ Accept wildcard characters: False
 ```
 
 ### -SharedSecret
-Shared secret that was created on Last.fm for a user and application. This is required for API calls that need to be signed.
+Shared secret that was created on Last.fm for a user and application.
+This is required for API calls that need to be signed.
 
 ```yaml
 Type: String
@@ -67,7 +70,8 @@ Accept wildcard characters: False
 ```
 
 ### -Token
-Token used to generate a session key. It is valid for only 60 minutes from the moment it is granted to a user.
+Token used to generate a session key.
+It is valid for only 60 minutes from the moment it is granted to a user.
 
 ```yaml
 Type: String
@@ -87,15 +91,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ## OUTPUTS
 
 ### System.String
-
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/auth.getSession](https://www.last.fm/api/show/auth.getSession)
-
-[https://www.last.fm/api/desktopauth](https://www.last.fm/api/desktopauth)

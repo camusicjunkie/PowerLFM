@@ -1,7 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
-online version:
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Search-LFMTrack.md
 schema: 2.0.0
 ---
 
@@ -17,12 +17,14 @@ Search-LFMTrack [-Track] <String> [[-Limit] <Int32>] [[-Page] <Int32>] [<CommonP
 ```
 
 ## DESCRIPTION
-Search for a track by name. The results will be sorted by relevance. This uses the track.search method from the Last.fm API.
+Search for a track by name.
+The results will be sorted by relevance.
+This uses the track.search method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Search-LFMTrack -Track 'White Pony'
 ```
 
@@ -46,7 +48,8 @@ Accept wildcard characters: False
 ```
 
 ### -Page
-Page number to return. Defaults to the first page.
+Page number to return.
+Defaults to the first page.
 
 ```yaml
 Type: Int32
@@ -81,13 +84,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ## OUTPUTS
 
 ### PowerLFM.Track.Search
-
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/track.search](https://www.last.fm/api/show/track.search)

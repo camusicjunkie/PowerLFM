@@ -1,7 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
-online version:
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMTrackTopTag.md
 schema: 2.0.0
 ---
 
@@ -23,12 +23,13 @@ Get-LFMTrackTopTag -Id <Guid> [-AutoCorrect] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Get the top tags for a track, ordered by tag count. This uses the track.getTopTags method from the Last.fm API.
+Get the top tags for a track, ordered by tag count.
+This uses the track.getTopTags method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-LFMTrackTopTag -Track Gore -Artist Deftones
 ```
 
@@ -61,7 +62,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -102,13 +103,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ## OUTPUTS
 
 ### PowerLFM.Track.TopTag
-
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/track.getTopTags](https://www.last.fm/api/show/track.getTopTags)

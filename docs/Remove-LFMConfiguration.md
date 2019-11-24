@@ -1,7 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
-online version:
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Remove-LFMConfiguration.md
 schema: 2.0.0
 ---
 
@@ -17,12 +17,13 @@ Remove-LFMConfiguration [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Removes the configuration from the Windows credential manager. This will remove the ApiKey, SharedSecret, and SessionKey from the current session.
+Removes the configuration from the Windows credential manager.
+This will remove the ApiKey, SharedSecret, and SessionKey from the current session.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Remove-LFMConfiguration
 ```
 
@@ -40,7 +41,7 @@ Aliases: cf
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -56,7 +57,7 @@ Aliases: wi
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -67,7 +68,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object

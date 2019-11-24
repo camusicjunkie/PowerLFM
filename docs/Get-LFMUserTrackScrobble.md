@@ -1,7 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
-online version:
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMUserTrackScrobble.md
 schema: 2.0.0
 ---
 
@@ -18,12 +18,13 @@ Get-LFMUserTrackScrobble [-Track] <String> [-Artist] <String> [[-UserName] <Stri
 ```
 
 ## DESCRIPTION
-Get all the times a track has been scrobbled by a user. This uses the user.getTrackScrobbles method from the Last.fm API.
+Get all the times a track has been scrobbled by a user.
+This uses the user.getTrackScrobbles method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-LFMUserTrackScrobble -Track Gore -Artist Deftones
 ```
 
@@ -62,7 +63,8 @@ Accept wildcard characters: False
 ```
 
 ### -Page
-Page number to return. Defaults to the first page.
+Page number to return.
+Defaults to the first page.
 
 ```yaml
 Type: Int32
@@ -92,7 +94,9 @@ Accept wildcard characters: False
 ```
 
 ### -UserName
-Username for the context of the request. The scrobbled tracks of this user are included in the response. Providing no user will use the currently authenticated user.
+Username for the context of the request.
+The scrobbled tracks of this user are included in the response.
+Providing no user will use the currently authenticated user.
 
 ```yaml
 Type: String
@@ -112,13 +116,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ## OUTPUTS
 
 ### PowerLFM.User.TrackScrobble
-
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/user.getTrackScrobbles](https://www.last.fm/api/show/user.getTrackScrobbles)

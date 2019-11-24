@@ -1,6 +1,7 @@
 ---
 external help file: PowerLFM-help.xml
 Module Name: PowerLFM
+online version: https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMUserTopArtist.md
 schema: 2.0.0
 ---
 
@@ -17,23 +18,26 @@ Get-LFMUserTopArtist [[-UserName] <String>] [[-TimePeriod] <String>] [[-Limit] <
 ```
 
 ## DESCRIPTION
-Get the top artists scrobbled by a user. A time period can be specified. If no time period is specified the overall chart is chosen by default. This uses the user.getTopArtists method from the Last.fm API.
+Get the top artists scrobbled by a user.
+A time period can be specified.
+If no time period is specified the overall chart is chosen by default.
+This uses the user.getTopArtists method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
-PS C:\> Get-LFMUserTopArtist -UserName camusicjunkie
+```
+PS C:\> Get-LFMUserTopArtist
 ```
 
-This will get the top artists scrobbled by camusicjunkie.
+This will get the top artists scrobbled by the currently authenticated user.
 
 ### Example 2
-```powershell
-PS C:\> Get-LFMUserTopArtist -UserName camusicjunkie -TimePeriod 12month
+```
+PS C:\> Get-LFMUserTopArtist -TimePeriod '1 Year'
 ```
 
-This will get the top artists scrobbled by camusicjunkie over the last 12 months.
+This will get the top artists scrobbled by the currently authenticated user over the last year.
 
 ## PARAMETERS
 
@@ -53,7 +57,8 @@ Accept wildcard characters: False
 ```
 
 ### -Page
-Page number to return. Defaults to the first page.
+Page number to return.
+Defaults to the first page.
 
 ```yaml
 Type: Int32
@@ -84,7 +89,9 @@ Accept wildcard characters: False
 ```
 
 ### -UserName
-Username for the context of the request. The top artists of this user are included in the response. Providing no user will use the currently authenticated user.
+Username for the context of the request.
+The top artists of this user are included in the response.
+Providing no user will use the currently authenticated user.
 
 ```yaml
 Type: String
@@ -104,13 +111,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.String
-
 ## OUTPUTS
 
 ### PowerLFM.User.TopArtist
-
 ## NOTES
 
 ## RELATED LINKS
-
-[https://www.last.fm/api/show/user.getTopArtists](https://www.last.fm/api/show/user.getTopArtists)
