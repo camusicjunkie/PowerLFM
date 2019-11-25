@@ -13,7 +13,7 @@ function Get-LFMChartTopTag {
 
     $apiParams = @{
         'method' = 'chart.getTopTags'
-        'api_key' = $LFMConfig.APIKey
+        'api_key' = $script:LFMConfig.APIKey
         'format' = 'json'
     }
 

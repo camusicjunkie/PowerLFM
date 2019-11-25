@@ -18,8 +18,8 @@ function Get-LFMUserWeeklyTrackChart {
     begin {
         $apiParams = @{
             'method' = 'user.getWeeklyTrackChart'
-            'api_key' = $LFMConfig.APIKey
-            'sk' = $LFMConfig.SessionKey
+            'api_key' = $script:LFMConfig.APIKey
+            'sk' = $script:LFMConfig.SessionKey
             'format' = 'json'
         }
     }

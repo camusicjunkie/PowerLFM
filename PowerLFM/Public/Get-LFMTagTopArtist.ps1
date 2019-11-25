@@ -17,7 +17,7 @@ function Get-LFMTagTopArtist {
     begin {
         $apiParams = @{
             'method' = 'tag.getTopArtists'
-            'api_key' = $LFMConfig.APIKey
+            'api_key' = $script:LFMConfig.APIKey
             'format' = 'json'
         }
     }

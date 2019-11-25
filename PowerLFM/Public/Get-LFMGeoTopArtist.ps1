@@ -20,7 +20,7 @@ function Get-LFMGeoTopArtist {
     begin {
         $apiParams = @{
             'method' = 'geo.getTopArtists'
-            'api_key' = $LFMConfig.APIKey
+            'api_key' = $script:LFMConfig.APIKey
             'format' = 'json'
         }
     }

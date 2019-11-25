@@ -29,7 +29,7 @@ function Get-LFMArtistTopTrack {
     begin {
         $apiParams = @{
             'method' = 'artist.getTopTracks'
-            'api_key' = $LFMConfig.APIKey
+            'api_key' = $script:LFMConfig.APIKey
             'format' = 'json'
         }
     }

@@ -26,8 +26,8 @@ function Get-LFMSignature {
 
     $sigParams = @{
         'method' = $Method
-        'api_key' = $LFMConfig.ApiKey
-        'sk' = $LFMConfig.SessionKey
+        'api_key' = $script:LFMConfig.ApiKey
+        'sk' = $script:LFMConfig.SessionKey
     }
 
     $convertedParams = ConvertTo-LFMParameter $PSBoundParameters
@@ -44,7 +44,7 @@ function Get-LFMSignature {
     else {
         $query = New-LFMApiQuery ($convertedParams + $sigParams)
 
-        Get-Md5Hash -String "$query$($LFMConfig.SharedSecret)"
-        Write-Verbose "$query$($LFMConfig.SharedSecret)"
+        Get-Md5Hash -String "$query$($script:LFMConfig.SharedSecret)"
+        Write-Verbose "$query$($script:LFMConfig.SharedSecret)"
     }
 }

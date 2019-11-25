@@ -29,7 +29,7 @@ function Get-LFMArtistTopAlbum {
     begin {
         $apiParams = @{
             'method' = 'artist.getTopAlbums'
-            'api_key' = $LFMConfig.APIKey
+            'api_key' = $script:LFMConfig.APIKey
             'format' = 'json'
         }
     }

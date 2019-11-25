@@ -18,7 +18,7 @@ function Search-LFMTrack {
     begin {
         $apiParams = @{
             'method' = 'track.search'
-            'api_key' = $LFMConfig.APIKey
+            'api_key' = $script:LFMConfig.APIKey
             'format' = 'json'
         }
     }
