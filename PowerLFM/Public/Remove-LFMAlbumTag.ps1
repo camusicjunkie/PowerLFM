@@ -23,8 +23,8 @@ function Remove-LFMAlbumTag {
     begin {
         $apiParams = @{
             'method' = 'album.removeTag'
-            'api_key' = $LFMConfig.APIKey
-            'sk' = $LFMConfig.SessionKey
+            'api_key' = $script:LFMConfig.APIKey
+            'sk' = $script:LFMConfig.SessionKey
         }
     }
     process {

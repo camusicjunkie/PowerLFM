@@ -12,8 +12,8 @@ function Get-LFMUserWeeklyChartList {
     begin {
         $apiParams = @{
             'method' = 'user.getWeeklyChartList'
-            'api_key' = $LFMConfig.APIKey
-            'sk' = $LFMConfig.SessionKey
+            'api_key' = $script:LFMConfig.APIKey
+            'sk' = $script:LFMConfig.SessionKey
             'format' = 'json'
         }
     }

@@ -23,8 +23,8 @@ function Add-LFMTrackTag {
     begin {
         $apiParams = @{
             'method' = 'track.addTags'
-            'api_key' = $LFMConfig.APIKey
-            'sk' = $LFMConfig.SessionKey
+            'api_key' = $script:LFMConfig.APIKey
+            'sk' = $script:LFMConfig.SessionKey
         }
     }
     process {

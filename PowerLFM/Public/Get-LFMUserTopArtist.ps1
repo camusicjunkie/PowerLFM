@@ -23,8 +23,8 @@ function Get-LFMUserTopArtist {
     begin {
         $apiParams = @{
             'method' = 'user.getTopArtists'
-            'api_key' = $LFMConfig.APIKey
-            'sk' = $LFMConfig.SessionKey
+            'api_key' = $script:LFMConfig.APIKey
+            'sk' = $script:LFMConfig.SessionKey
             'format' = 'json'
         }
     }

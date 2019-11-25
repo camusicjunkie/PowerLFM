@@ -13,7 +13,7 @@ function Get-LFMTagWeeklyChartList {
     begin {
         $apiParams = @{
             'method' = 'tag.getWeeklyChartList'
-            'api_key' = $LFMConfig.APIKey
+            'api_key' = $script:LFMConfig.APIKey
             'format' = 'json'
         }
     }

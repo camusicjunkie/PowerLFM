@@ -43,8 +43,8 @@ function Set-LFMTrackScrobble {
     begin {
         $apiParams = @{
             'method' = 'track.scrobble'
-            'api_key' = $LFMConfig.APIKey
-            'sk' = $LFMConfig.SessionKey
+            'api_key' = $script:LFMConfig.APIKey
+            'sk' = $script:LFMConfig.SessionKey
             'format' = 'json'
         }
     }

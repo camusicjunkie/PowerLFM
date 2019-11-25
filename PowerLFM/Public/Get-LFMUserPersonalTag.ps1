@@ -29,8 +29,8 @@ function Get-LFMUserPersonalTag {
     begin {
         $apiParams = @{
             'method' = 'user.getPersonalTags'
-            'api_key' = $LFMConfig.APIKey
-            'sk' = $LFMConfig.SessionKey
+            'api_key' = $script:LFMConfig.APIKey
+            'sk' = $script:LFMConfig.SessionKey
             'format' = 'json'
         }
     }

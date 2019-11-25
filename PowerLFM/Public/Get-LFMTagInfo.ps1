@@ -16,7 +16,7 @@ function Get-LFMTagInfo {
     begin {
         $apiParams = @{
             'method' = 'tag.getInfo'
-            'api_key' = $LFMConfig.APIKey
+            'api_key' = $script:LFMConfig.APIKey
             'format' = 'json'
         }
     }

@@ -16,8 +16,8 @@ function Get-LFMLibraryArtist {
     begin {
         $apiParams = @{
             'method' = 'library.getArtists'
-            'api_key' = $LFMConfig.APIKey
-            'sk' = $LFMConfig.SessionKey
+            'api_key' = $script:LFMConfig.APIKey
+            'sk' = $script:LFMConfig.SessionKey
             'format' = 'json'
         }
     }

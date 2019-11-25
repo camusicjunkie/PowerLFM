@@ -34,8 +34,8 @@ function Set-LFMTrackNowPlaying {
     begin {
         $apiParams = @{
             'method' = 'track.updateNowPlaying'
-            'api_key' = $LFMConfig.ApiKey
-            'sk' = $LFMConfig.SessionKey
+            'api_key' = $script:LFMConfig.ApiKey
+            'sk' = $script:LFMConfig.SessionKey
             'format' = 'json'
         }
     }

@@ -32,7 +32,7 @@ function Get-LFMTrackSimilar {
     begin {
         $apiParams = @{
             'method' = 'track.getSimilar'
-            'api_key' = $LFMConfig.APIKey
+            'api_key' = $script:LFMConfig.APIKey
             'limit' = $Limit
             'format' = 'json'
         }

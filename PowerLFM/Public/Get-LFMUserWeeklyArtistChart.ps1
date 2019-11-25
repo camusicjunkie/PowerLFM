@@ -18,8 +18,8 @@ function Get-LFMUserWeeklyArtistChart {
     begin {
         $apiParams = @{
             'method' = 'user.getWeeklyArtistChart'
-            'api_key' = $LFMConfig.APIKey
-            'sk' = $LFMConfig.SessionKey
+            'api_key' = $script:LFMConfig.APIKey
+            'sk' = $script:LFMConfig.SessionKey
             'format' = 'json'
         }
     }

@@ -13,7 +13,7 @@ function Get-LFMTagSimilar {
     begin {
         $apiParams = @{
             'method' = 'tag.getSimilar'
-            'api_key' = $LFMConfig.APIKey
+            'api_key' = $script:LFMConfig.APIKey
             'format' = 'json'
         }
     }

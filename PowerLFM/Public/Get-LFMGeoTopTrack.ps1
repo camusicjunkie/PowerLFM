@@ -23,7 +23,7 @@ function Get-LFMGeoTopTrack {
     begin {
         $apiParams = @{
             'method' = 'geo.getTopTracks'
-            'api_key' = $LFMConfig.APIKey
+            'api_key' = $script:LFMConfig.APIKey
             'format' = 'json'
         }
     }
