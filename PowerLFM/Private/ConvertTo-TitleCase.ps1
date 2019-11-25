@@ -7,5 +7,7 @@ function ConvertTo-TitleCase {
         [string[]] $String
     )
 
-    (Get-Culture).TextInfo.ToTitleCase($String)
+    process {
+        (Get-Culture).TextInfo.ToTitleCase($String)
+    }
 }
