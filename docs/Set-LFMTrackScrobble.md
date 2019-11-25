@@ -8,7 +8,7 @@ schema: 2.0.0
 # Set-LFMTrackScrobble
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Add a track play to a user's profile.
 
 ## SYNTAX
 
@@ -19,21 +19,30 @@ Set-LFMTrackScrobble [-Artist] <String> [-Track] <String> [-Timestamp] <DateTime
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Add a track play to the profile of the currently authenticated user.
+This uses the track.scrobble method from the Last.fm API.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
-PS C:\> {{ Add example code here }}
+```
+PS C:\> Set-LFMTrackScrobble -Artist Deftones -Track Gore
 ```
 
-{{ Add example description here }}
+This will scrobble the track Gore by Deftones for the currently authenticated user.
+
+### Example 2
+```
+PS C:\> Set-LFMTrackScrobble -Artist Deftones -Track Gore -Timestamp (Get-Date) -Album Gore -TrackNumber 9 -Duration 299
+```
+
+This will scrobble the track Gore by Deftones with more granular information.
+This is updated for the currently authenticated user.
 
 ## PARAMETERS
 
 ### -Album
-{{ Fill Album Description }}
+Name of the album.
 
 ```yaml
 Type: String
@@ -48,7 +57,7 @@ Accept wildcard characters: False
 ```
 
 ### -Artist
-{{ Fill Artist Description }}
+Name of the artist.
 
 ```yaml
 Type: String
@@ -63,7 +72,7 @@ Accept wildcard characters: False
 ```
 
 ### -Duration
-{{ Fill Duration Description }}
+Length of the track in seconds.
 
 ```yaml
 Type: Int32
@@ -78,7 +87,7 @@ Accept wildcard characters: False
 ```
 
 ### -Id
-{{ Fill Id Description }}
+Musicbrainz id for the track.
 
 ```yaml
 Type: Guid
@@ -93,7 +102,7 @@ Accept wildcard characters: False
 ```
 
 ### -PassThru
-{{ Fill PassThru Description }}
+Returns an object with info on the track set to scrobble.
 
 ```yaml
 Type: SwitchParameter
@@ -108,7 +117,7 @@ Accept wildcard characters: False
 ```
 
 ### -Timestamp
-{{ Fill Timestamp Description }}
+Time the track started playing.
 
 ```yaml
 Type: DateTime
@@ -123,7 +132,7 @@ Accept wildcard characters: False
 ```
 
 ### -Track
-{{ Fill Track Description }}
+Name of the track.
 
 ```yaml
 Type: String
@@ -138,7 +147,7 @@ Accept wildcard characters: False
 ```
 
 ### -TrackNumber
-{{ Fill TrackNumber Description }}
+Number of the track on the album.
 
 ```yaml
 Type: Int32
