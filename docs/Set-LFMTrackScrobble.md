@@ -8,7 +8,7 @@ schema: 2.0.0
 # Set-LFMTrackScrobble
 
 ## SYNOPSIS
-Add a track play to a user's profile.
+Add a track play to the profile of the currently authenticated user.
 
 ## SYNTAX
 
