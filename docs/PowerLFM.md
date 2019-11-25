@@ -183,11 +183,10 @@ Search for a track by name.
 Love a track for a user.
 
 ### [Set-LFMTrackNowPlaying](Set-LFMTrackNowPlaying.md)
-{{ Fill in the Synopsis }}
+Notify Last.fm that a user has started listening to a track.
 
 ### [Set-LFMTrackScrobble](Set-LFMTrackScrobble.md)
-{{ Fill in the Synopsis }}
+Add a track play to the profile of the currently authenticated user.
 
 ### [Set-LFMTrackUnlove](Set-LFMTrackUnlove.md)
 Unlove a track for a user.
-
