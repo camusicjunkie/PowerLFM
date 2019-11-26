@@ -13,6 +13,7 @@ ConvertFrom-StringData @'
     errorCredentials = Could not retrieve credentials for {0}. Run Add-LFMConfiguration with proper keys.
     errorInvalidApiKey = . Run Get-LFMConfiguration if token and session key have already been requested.
     errorInvalidRequest = This is not a valid request.
+    errorFunctionImport = Failed to import function {0}
     tagAdded = Tag: {0} has been added
     tagRemoved = Tag: {0} has been removed
     trackLoved = Track: {0} has been loved
