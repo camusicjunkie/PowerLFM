@@ -40,7 +40,7 @@ function Add-LFMTrackTag {
         if ($PSCmdlet.ShouldProcess("Track: $Track", "Adding track tag: $Tag")) {
             try {
                 $irm = Invoke-LFMApiUri -Uri $apiUrl -Method Post
-                if ($irm.Lfm.Status -eq 'ok') {Write-Verbose "Tag: $Tag has been added"}
+                if ($irm.Lfm.Status -eq 'ok') {Write-Verbose ($script:localizedData.tagAdded -f $Tag)}
             }
             catch {
                 throw $_

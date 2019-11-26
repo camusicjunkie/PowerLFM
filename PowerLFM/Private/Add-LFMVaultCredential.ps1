@@ -15,7 +15,7 @@ function Add-LFMVaultCredential {
 
     try {
         if (Test-LFMVaultCredential -UserName $UserName) {
-            $message = "There is already a value present for $UserName, do you wish to update the value?"
+            $message = $script:localizedData.vaultCredPresent -f $UserName
 
             if ($PSCmdlet.ShouldProcess($vaultType, $message)) {
                 $vault.Add($pwCred)

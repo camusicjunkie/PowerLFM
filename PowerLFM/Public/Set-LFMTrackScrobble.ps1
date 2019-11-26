@@ -64,7 +64,12 @@ function Set-LFMTrackScrobble {
 
                 $code = Get-LFMIgnoredMessage -Code $irm.Scrobbles.Scrobble.IgnoredMessage.Code
                 if ($code.Code -ne 0) {
-                    throw "Request has been filtered because of bad meta data. $($code.Message)."
+                    if ($null -eq $code.Message) {
+                        throw $script:localizedData.errorFiltered2
+                    }
+                    else {
+                        throw ($script:localizedData.errorFiltered -f $code.Message)
+                    }
                 }
 
                 if ($PassThru) {

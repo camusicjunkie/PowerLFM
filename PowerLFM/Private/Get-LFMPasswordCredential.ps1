@@ -14,6 +14,6 @@ function Get-LFMPasswordCredential {
         New-Object @noParams
     }
     catch {
-        throw 'Could not create PasswordCredential object'
+        throw $script:localizedData.errorPasswordCredentialObject
     }
 }

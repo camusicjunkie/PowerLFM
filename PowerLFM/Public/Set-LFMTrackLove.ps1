@@ -35,7 +35,7 @@ function Set-LFMTrackLove {
         if ($PSCmdlet.ShouldProcess("Track: $Track", "Adding love")) {
             try {
                 $irm = Invoke-LFMApiUri -Uri $apiUrl -Method Post
-                if ($irm.Lfm.Status -eq 'ok') {Write-Verbose "Track: $Track has been loved"}
+                if ($irm.Lfm.Status -eq 'ok') {Write-Verbose ($script:localizedData.trackLoved -f $Track)}
             }
             catch {
                 throw $_
