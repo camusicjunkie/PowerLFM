@@ -22,7 +22,7 @@ Describe 'Module Tests' {
         It "Script <file> should be valid powershell" -TestCases $testCases {
             param($file)
 
-            $fullName = (Get-ChildItem -Path $projectRoot -Include $file -Recurse -File).FullName
+            $fullName = (Get-ChildItem -Path $projectRoot -Filter $file -Recurse -File).FullName
             $fullname | Should Exist
 
             $contents = Get-Content -Path $fullname -ErrorAction Stop
