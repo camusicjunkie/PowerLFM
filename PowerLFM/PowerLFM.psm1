@@ -10,7 +10,7 @@ foreach ($import in @($Public + $Private)) {
         . $import.FullName
     }
     catch {
-        Write-Error -Message "Failed to import function $($import.FullName): $_"
+        Write-Error -Message ($script:localizedData.errorFunctionImport -f $import.FullName)
     }
 }
 
