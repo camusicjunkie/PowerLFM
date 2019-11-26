@@ -27,10 +27,10 @@ function Request-LFMToken {
     $apiUrl = "$baseUrl/?$query"
 
     try {
-        Write-Verbose "Requesting token from $baseUrl"
+        Write-Verbose ($script:localizedData.tokenRequest -f $baseUrl)
         $token = (Invoke-LFMApiUri -Uri $apiUrl).Token
 
-        Write-Verbose "Authorizing application with requested token on account"
+        Write-Verbose ($script:localizedData.tokenAuthorizing)
         Show-LFMAuthWindow -Url "http://www.last.fm/api/auth/?api_key=$ApiKey&token=$token"
 
         $obj = [pscustomobject] @{

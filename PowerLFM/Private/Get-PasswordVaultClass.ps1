@@ -6,6 +6,6 @@ function Get-PasswordVaultClass {
         New-Object -TypeName Windows.Security.Credentials.PasswordVault -ErrorAction Stop
     }
     catch {
-        throw 'Could not create PasswordVault class'
+        throw $script:localizedData.errorPasswordVaultClass
     }
 }

@@ -4,12 +4,12 @@ function Get-LFMIgnoredMessage {
     )
 
     $ignoredCode = @{
-        0 = 'None (the request passed all filters)'
-        1 = 'Filtered artist'
-        2 = 'Filtered track'
-        3 = 'Timestamp too far in the past'
-        4 = 'Timestamp too far in the future'
-        5 = 'Max daily scrobbles exceeded'
+        0 = $script:localizedData.codeNone
+        1 = $script:localizedData.FilteredArtist
+        2 = $script:localizedData.FilteredTrack
+        3 = $script:localizedData.codeTimestampTooFarPast
+        4 = $script:localizedData.codeTimestampTooFarFuture
+        5 = $script:localizedData.codeScrobblesExceeded
     }
 
     [pscustomobject] @{
