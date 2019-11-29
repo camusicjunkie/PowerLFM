@@ -288,7 +288,7 @@ InModuleScope PowerLFM {
 
         Context 'Input' {
 
-            It 'Should throw when Track is null' {
+            It 'Should throw when track is null' {
                 {Get-LFMTrackInfo -Track $null} | Should -Throw
             }
         }

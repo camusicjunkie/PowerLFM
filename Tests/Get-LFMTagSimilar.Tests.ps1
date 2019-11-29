@@ -76,7 +76,7 @@ InModuleScope PowerLFM {
 
         Context 'Input' {
 
-            It 'Should throw when Tag is null' {
+            It 'Should throw when tag is null' {
                 {Get-LFMTagSimilar -Tag $null} | Should -Throw
             }
         }

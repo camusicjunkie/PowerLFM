@@ -105,11 +105,11 @@ InModuleScope PowerLFM {
 
         Context 'Input' {
 
-            It 'Should throw when Artist is null' {
+            It 'Should throw when artist is null' {
                 {Set-LFMTrackUnlove -Artist $null} | Should -Throw
             }
 
-            It 'Should throw when Artist is null' {
+            It 'Should throw when track is null' {
                 {Set-LFMTrackUnlove -Track $null} | Should -Throw
             }
         }

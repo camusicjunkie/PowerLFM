@@ -77,7 +77,7 @@ InModuleScope PowerLFM {
 
         Context 'Input' {
 
-            It 'Should throw when Tag is null' {
+            It 'Should throw when tag is null' {
                 {Get-LFMTagWeeklyChartList -Tag $null} | Should -Throw
             }
         }
