@@ -139,11 +139,11 @@ InModuleScope PowerLFM {
 
         Context 'Input' {
 
-            It 'Should throw when Track is null' {
+            It 'Should throw when track is null' {
                 {Remove-LFMTrackTag -Track $null} | Should -Throw
             }
 
-            It 'Should throw when Tag has more than 1 value' {
+            It 'Should throw when tag has more than 1 value' {
                 {Remove-LFMTrackTag -Track Track -Artist Artist -Tag @(1..2)} | Should -Throw
             }
         }

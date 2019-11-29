@@ -140,7 +140,7 @@ InModuleScope PowerLFM {
 
         Context 'Input' {
 
-            It 'Should throw when UserName is null' {
+            It 'Should throw when username is null' {
                 {Get-LFMLibraryArtist -UserName $null} | Should -Throw
             }
         }

@@ -288,7 +288,7 @@ InModuleScope PowerLFM {
 
         Context 'Input' {
 
-            It 'Should throw when Album is null' {
+            It 'Should throw when album is null' {
                 {Get-LFMAlbumInfo -Album $null} | Should -Throw
             }
         }

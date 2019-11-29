@@ -254,7 +254,7 @@ InModuleScope PowerLFM {
 
         Context 'Input' {
 
-            It 'Should throw when Artist is null' {
+            It 'Should throw when artist is null' {
                 {Get-LFMArtistSimilar -Artist $null} | Should -Throw
             }
         }

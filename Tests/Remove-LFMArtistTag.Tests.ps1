@@ -105,11 +105,11 @@ InModuleScope PowerLFM {
 
         Context 'Input' {
 
-            It 'Should throw when Album is null' {
+            It 'Should throw when album is null' {
                 {Remove-LFMArtistTag -Album $null} | Should -Throw
             }
 
-            It 'Should throw when Tag has more than 1 value' {
+            It 'Should throw when tag has more than 1 value' {
                 {Remove-LFMArtistTag -Artist Artist -Tag @(1..2)} | Should -Throw
             }
         }
