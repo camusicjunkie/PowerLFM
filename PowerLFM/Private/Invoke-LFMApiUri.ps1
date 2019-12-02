@@ -26,7 +26,12 @@ function Invoke-LFMApiUri {
     }
     catch {
         $response = if ($null -ne $_.ErrorDetails) {
-            $_.ErrorDetails.Message | ConvertFrom-Json
+            if ($_.ErrorDetails.Message | Test-Json) {
+                $_.ErrorDetails.Message | ConvertFrom-Json
+            }
+            else {
+                $_.ErrorDetails.Message
+            }
             $errorId = 'PowerLFM.WebResponseException'
             $errorCategory = 'InvalidOperation'
         }
