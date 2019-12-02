@@ -1,16 +1,17 @@
 function Test-Json {
     param (
+        [Parameter(Mandatory, ValueFromPipeline)]
         [string] $Json
     )
 
     $result = $true
 
     try {
-        [Newtonsoft.Json.Linq.JObject]::Parse($Json)
+        $null = [Newtonsoft.Json.Linq.JObject]::Parse($Json)
     }
     catch {
         $result = $false
     }
 
-    Write-Verbose $result
+    Write-Output $result
 }
