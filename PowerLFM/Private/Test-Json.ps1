@@ -1,6 +1,7 @@
 function Test-Json {
     param (
-        [Parameter(Mandatory, ValueFromPipeline)]
+        [Parameter(Mandatory,
+                   ValueFromPipeline)]
         [string] $Json
     )
 

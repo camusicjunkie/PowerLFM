@@ -39,10 +39,10 @@ function Invoke-LFMApiUri {
             $_.TargetObject
             $errorId = 'PowerLFM.ResourceNotFound'
             $errorCategory = 'ObjectNotFound'
-            $messagePart2 = 'This is not a valid request.'
         }
 
-        $messagePart1 = '. Run Get-LFMConfiguration if token and session key have already been requested.'
+        $messagePart1 = '. Run Get-LFMConfiguration if token and session keys have already been requested.'
+        $messagePart2 = 'This is not a valid request.'
 
         # Constructing error message from response object.
         # Capitalizing first letter in sentence.
