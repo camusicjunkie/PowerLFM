@@ -38,7 +38,7 @@ function Request-LFMSession {
         try {
             $irm = Invoke-LFMApiUri -Uri $apiUrl
 
-            $obj = [PSCustomObject] @{
+            $obj = [pscustomobject] @{
                 'ApiKey' = $ApiKey
                 'SessionKey' = $irm.Session.Key
                 'SharedSecret' = $SharedSecret
