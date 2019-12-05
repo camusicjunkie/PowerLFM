@@ -1,33 +1,37 @@
-[cmdletbinding()]
+[CmdletBinding()]
 param(
-    [string[]]$Task = 'default'
+    [parameter(Position=0)]
+    $Task = 'Default'
 )
 
-$null = Get-PackageProvider -Name NuGet -ForceBootstrap
-
-$Script:Modules = @(
+$modules = @(
+    'BuildHelpers',
+    'InvokeBuild',
     'Pester',
-    'PSScriptAnalyzer',
-    'Psake'
-    'PSDeploy'
+    'platyPS',
+    'PSScriptAnalyzer'
 )
 
 'Starting build...'
 'Installing module dependencies...'
 
-Install-Module -Name $Script:Modules -Force -SkipPublisherCheck
+Get-PackageProvider -Name 'NuGet' -ForceBootstrap | Out-Null
 
-if ($env:APPVEYOR) {
-    Remove-Module -Name PowerLFM -ErrorAction Ignore
-    Import-Module -Name $PSScriptRoot\PowerLFM\PowerLFM.psd1
+Install-Module -Name $modules -Force -SkipPublisherCheck
 
-    $acParams = @{
-        APIKey = $env:LFMAPIKey
-        SessionKey = $env:LFMSessionKey
-        SharedSecret = $env:LFMSharedSecret
-    }
-    Add-LFMConfiguration @acParams
+Set-BuildEnvironment
+Get-ChildItem Env:BH*
+Get-ChildItem Env:APPVEYOR*
+
+$Error.Clear()
+
+"Invoking build action [$Task]"
+
+Invoke-Build -Task $Task -Result 'Result'
+if ($Result.Error)
+{
+    $Error[-1].ScriptStackTrace | Out-String
+    exit 1
 }
 
-Invoke-Psake -buildFile "$PSScriptRoot\psake.ps1" -taskList $Task -Verbose:$VerbosePreference
-exit ([int] (-not $psake.build_success))
+exit 0
