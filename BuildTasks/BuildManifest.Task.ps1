@@ -1,5 +1,5 @@
 
-taskx BuildManifest @{
+task BuildManifest @{
     Inputs  = (Get-ChildItem -Path $Source -Recurse -File)
     Outputs = $ManifestPath
     Jobs    = {
@@ -12,7 +12,7 @@ taskx BuildManifest @{
         if ($functions)
         {
             'Setting FunctionsToExport...'
-            Set-ModuleFunctions -Name $ManifestPath -FunctionsToExport $functions.BaseName
+            Set-ModuleFunction -Name $ManifestPath -FunctionsToExport $functions.BaseName
         }
     }
 }

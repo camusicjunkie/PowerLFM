@@ -1,4 +1,4 @@
-taskx Compile @{
+task Compile @{
     If = (Get-ChildItem -Path $BuildRoot -Include *.csproj -Recurse)
     Inputs = {
         Get-ChildItem $BuildRoot -Recurse -File -Include *.cs

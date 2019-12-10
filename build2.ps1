@@ -5,7 +5,7 @@ param(
 
 $null = Get-PackageProvider -Name NuGet -ForceBootstrap
 
-$Script:Modules = @(
+$script:Modules = @(
     'Pester',
     'PSScriptAnalyzer',
     'Psake'
@@ -15,7 +15,7 @@ $Script:Modules = @(
 'Starting build...'
 'Installing module dependencies...'
 
-Install-Module -Name $Script:Modules -Force -SkipPublisherCheck
+Install-Module -Name $script:Modules -Force -SkipPublisherCheck
 
 if ($env:APPVEYOR) {
     Remove-Module -Name PowerLFM -ErrorAction Ignore

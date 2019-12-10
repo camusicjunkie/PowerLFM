@@ -1,5 +1,5 @@
 task Pester {
-    $requiredPercent = $Script:CodeCoveragePercent
+    $requiredPercent = $script:CodeCoveragePercent
 
     $params = @{
         OutputFile             = $testFile

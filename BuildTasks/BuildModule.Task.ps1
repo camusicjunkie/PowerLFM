@@ -1,4 +1,3 @@
-
 # namespaces for Move-Statement
 using namespace System.Collections.Generic
 using namespace System.IO
@@ -121,7 +120,7 @@ function Move-Statement
     }
 }
 
-taskx BuildModule @{
+task BuildModule @{
     Inputs  = (Get-ChildItem -Path $Source -Recurse -Filter *.ps1)
     Outputs = $ModulePath
     Jobs    = {

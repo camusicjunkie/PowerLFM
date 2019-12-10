@@ -1,30 +1,26 @@
-function ImportModule
-{
+function ImportModule {
     param(
-        [string]$path,
-        [switch]$PassThru
+        [string] $Path,
+        [switch] $PassThru
     )
 
 
-    if (-not(Test-Path -Path $path))
-    {
-        "Cannot find [$path]."
-        Write-Error -Message "Could not find module manifest [$path]"
+    if (-not (Test-Path -Path $Path)) {
+        "Cannot find [$Path]."
+        Write-Error -Message "Could not find module manifest [$Path]"
     }
-    else
-    {
-        $file = Get-Item $path
+    else {
+        $file = Get-Item $Path
         $name = $file.BaseName
 
         $loaded = Get-Module -Name $name -All -ErrorAction Ignore
-        if ($loaded)
-        {
+        if ($loaded) {
             "Unloading Module [$name] from a previous import..."
             $loaded | Remove-Module -Force
         }
 
-        "Importing Module [$name] from [$($file.fullname)]..."
-        Import-Module -Name $file.fullname -Force -PassThru:$PassThru
+        "Importing Module [$name] from [$($file.FullName)]..."
+        Import-Module -Name $file.FullName -Force -PassThru:$PassThru
     }
 }
 
