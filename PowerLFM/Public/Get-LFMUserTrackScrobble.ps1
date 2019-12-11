@@ -46,6 +46,7 @@ function Get-LFMUserTrackScrobble {
 
             foreach ($scrobble in $irm.TrackScrobbles.Track) {
                 $scrobbleInfo = [pscustomobject] @{
+                    'PSTypeName' = 'PowerLFM.User.TrackScrobble'
                     'Track' = $scrobble.Name
                     'TrackId' = $scrobble.Mbid
                     'TrackUrl' = $scrobble.Url

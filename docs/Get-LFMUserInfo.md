@@ -27,13 +27,6 @@ This uses the user.getInfo method from the Last.fm API.
 PS C:\> Get-LFMUserInfo
 ```
 
-This will get the user information for the authenticated user.
-
-### Example 2
-```
-PS C:\> Get-LFMUserInfo
-```
-
 This will get the user information for the currently authenticated user.
 
 ## PARAMETERS
