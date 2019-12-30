@@ -76,12 +76,12 @@ Describe 'Module Tests' {
             $help.Description.Text | Should -Not -BeNullOrEmpty
         }
 
-        It 'Should have at least 1 example for <FileName>' -TestCases $testCases {
+        It 'Should have at least one example for <FileName>' -TestCases $testCases {
             param ($FileName)
 
             $help = Get-Help $FileName
             $help.Examples | Should Not BeNullOrEmpty
-            $help.Examples[0].Example.Code | Should -Match ($help.Name)
+            $help.Examples[0].Example.Code | Should -Match $help.Name
         }
 
         foreach ($fileName in $scripts.BaseName) {
