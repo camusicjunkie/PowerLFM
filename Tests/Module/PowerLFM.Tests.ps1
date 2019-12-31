@@ -11,7 +11,7 @@ Remove-Module -Name $moduleName -ErrorAction Ignore
 Import-Module -Name $moduleManifestPath
 
 if (Get-Command Invoke-ScriptAnalyzer -ErrorAction SilentlyContinue) {
-    $scriptAnalyzerRules = Get-ScriptAnalyzerRule -Severity Error, Warning
+    $scriptAnalyzerRules = Get-ScriptAnalyzerRule
 }
 else {
     if ($ErrorActionPreference -ne 'Stop') {
