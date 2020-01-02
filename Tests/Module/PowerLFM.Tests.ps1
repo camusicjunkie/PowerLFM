@@ -60,7 +60,7 @@ Describe 'Module Tests' {
                 Set-ItResult -Pending -Because "a test for the private function doesn't exist yet"
             }
 
-            "$projectRoot\Tests\$FileName.tests.ps1" | Should -Exist
+            Get-Content "$projectRoot\Tests\$FileName.tests.ps1" | Should -Not -BeNullOrEmpty
         }
     }
 
