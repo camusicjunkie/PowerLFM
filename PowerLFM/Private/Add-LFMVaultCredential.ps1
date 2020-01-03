@@ -15,7 +15,7 @@ function Add-LFMVaultCredential {
 
     try {
         if (Test-LFMVaultCredential -UserName $UserName) {
-            $message = $script:localizedData.vaultCredPresent -f $UserName
+            $message = $localizedData.vaultCredPresent -f $UserName
 
             if ($PSCmdlet.ShouldProcess($vaultType, $message)) {
                 $vault.Add($pwCred)

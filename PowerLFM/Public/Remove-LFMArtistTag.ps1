@@ -35,7 +35,7 @@ function Remove-LFMArtistTag {
         if ($PSCmdlet.ShouldProcess("Artist: $Artist", "Removing artist tag: $Tag")) {
             try {
                 $irm = Invoke-LFMApiUri -Uri $apiUrl -Method Post
-                if ($irm.Lfm.Status -eq 'ok') {Write-Verbose ($script:localizedData.tagRemoved -f $Tag)}
+                if ($irm.Lfm.Status -eq 'ok') {Write-Verbose ($localizedData.tagRemoved -f $Tag)}
             }
             catch {
                 throw $_

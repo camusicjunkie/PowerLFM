@@ -40,7 +40,7 @@ function Add-LFMAlbumTag {
         if ($PSCmdlet.ShouldProcess("Album: $Album", "Adding album tag: $Tag")) {
             try {
                 $irm = Invoke-LFMApiUri -Uri $apiUrl -Method Post
-                if ($irm.Lfm.Status -eq 'ok') {Write-Verbose ($script:localizedData.tagAdded -f $Tag)}
+                if ($irm.Lfm.Status -eq 'ok') {Write-Verbose ($localizedData.tagAdded -f $Tag)}
             }
             catch {
                 throw $_

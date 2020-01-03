@@ -4,12 +4,12 @@ function Get-LFMIgnoredMessage {
     )
 
     $ignoredCode = @{
-        0 = $script:localizedData.codeNone
-        1 = $script:localizedData.FilteredArtist
-        2 = $script:localizedData.FilteredTrack
-        3 = $script:localizedData.codeTimestampTooFarPast
-        4 = $script:localizedData.codeTimestampTooFarFuture
-        5 = $script:localizedData.codeScrobblesExceeded
+        0 = $localizedData.codeNone
+        1 = $localizedData.FilteredArtist
+        2 = $localizedData.FilteredTrack
+        3 = $localizedData.codeTimestampTooFarPast
+        4 = $localizedData.codeTimestampTooFarFuture
+        5 = $localizedData.codeScrobblesExceeded
     }
 
     [pscustomobject] @{

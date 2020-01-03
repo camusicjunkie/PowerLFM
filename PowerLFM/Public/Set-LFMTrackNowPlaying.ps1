@@ -56,10 +56,10 @@ function Set-LFMTrackNowPlaying {
                 $code = Get-LFMIgnoredMessage -Code $irm.NowPlaying.IgnoredMessage.Code
                 if ($code.Code -ne 0) {
                     if ($null -eq $code.Message) {
-                        throw $script:localizedData.errorFiltered2
+                        throw $localizedData.errorFiltered2
                     }
                     else {
-                        throw ($script:localizedData.errorFiltered -f $code.Message)
+                        throw ($localizedData.errorFiltered -f $code.Message)
                     }
                 }
 

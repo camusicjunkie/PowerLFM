@@ -41,8 +41,8 @@ function Invoke-LFMApiUri {
             $errorCategory = 'ObjectNotFound'
         }
 
-        $messagePart1 = $script:localizedData.errorInvalidApiKey
-        $messagePart2 = $script:localizedData.errorInvalidRequest
+        $messagePart1 = $localizedData.errorInvalidApiKey
+        $messagePart2 = $localizedData.errorInvalidRequest
 
         # Constructing error message from response object.
         # Capitalizing first letter in sentence.

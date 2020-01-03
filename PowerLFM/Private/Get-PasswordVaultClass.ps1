@@ -6,6 +6,6 @@ function Get-PasswordVaultClass {
         New-Object -TypeName Windows.Security.Credentials.PasswordVault -ErrorAction Stop
     }
     catch {
-        throw $script:localizedData.errorPasswordVaultClass
+        throw $localizedData.errorPasswordVaultClass
     }
 }

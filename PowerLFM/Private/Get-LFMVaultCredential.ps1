@@ -13,7 +13,7 @@ function Get-LFMVaultCredential {
         else { $vault.FindAllByResource($module) }
     }
     catch {
-        $errorMessage = $script:localizedData.errorCredentials -f $module
+        $errorMessage = $localizedData.errorCredentials -f $module
 
         $PSCmdlet.ThrowTerminatingError(
             [ErrorRecord]::new(

@@ -10,7 +10,7 @@ function Get-LFMConfiguration {
             'SessionKey' = (Get-LFMVaultCredential -UserName 'SessionKey').Password
             'SharedSecret' = (Get-LFMVaultCredential -UserName 'SharedSecret').Password
         }
-        Write-Verbose $script:localizedData.configInSession
+        Write-Verbose $localizedData.configInSession
     }
     catch {
         throw $_
