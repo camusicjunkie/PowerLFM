@@ -1,6 +1,7 @@
 [cmdletbinding()]
 param(
-    [string[]]$Task = 'default'
+    [string[]]
+    $Task = 'default'
 )
 
 $null = Get-PackageProvider -Name NuGet -ForceBootstrap
