@@ -12,6 +12,8 @@ $Script:Modules = @(
     'PSDeploy'
 )
 
+GitVersion.exe
+
 'Starting build...'
 'Installing module dependencies...'
 
