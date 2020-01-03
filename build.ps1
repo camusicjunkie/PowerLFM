@@ -10,12 +10,18 @@ $Script:Modules = @(
     'PSScriptAnalyzer',
     'Psake'
     'PSDeploy'
+    'BuildHelpers'
 )
+
+GitVersion.exe
 
 'Starting build...'
 'Installing module dependencies...'
 
 Install-Module -Name $Script:Modules -Force -SkipPublisherCheck
+
+Set-BuildEnvironment
+Get-BuildEnvironment
 
 if ($env:APPVEYOR) {
     Remove-Module -Name PowerLFM -ErrorAction Ignore

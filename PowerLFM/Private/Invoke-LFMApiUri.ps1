@@ -26,7 +26,12 @@ function Invoke-LFMApiUri {
     }
     catch {
         $response = if ($null -ne $_.ErrorDetails) {
-            $_.ErrorDetails.Message | ConvertFrom-Json
+            if ($_.ErrorDetails.Message | Test-Json) {
+                $_.ErrorDetails.Message | ConvertFrom-Json
+            }
+            else {
+                $_.ErrorDetails.Message
+            }
             $errorId = 'PowerLFM.WebResponseException'
             $errorCategory = 'InvalidOperation'
         }
@@ -34,10 +39,10 @@ function Invoke-LFMApiUri {
             $_.TargetObject
             $errorId = 'PowerLFM.ResourceNotFound'
             $errorCategory = 'ObjectNotFound'
-            $messagePart2 = $script:localizedData.errorInvalidRequest
         }
 
         $messagePart1 = $script:localizedData.errorInvalidApiKey
+        $messagePart2 = $script:localizedData.errorInvalidRequest
 
         # Constructing error message from response object.
         # Capitalizing first letter in sentence.

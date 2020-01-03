@@ -100,18 +100,6 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
-        <maml:name>Confirm</maml:name>
-        <maml:Description>
-          <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
-        </maml:Description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
-      </command:parameter>
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="2" aliases="none">
         <maml:name>Tag</maml:name>
         <maml:Description>
@@ -123,6 +111,18 @@
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
+        <maml:name>Confirm</maml:name>
+        <maml:Description>
+          <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
         <maml:name>WhatIf</maml:name>
@@ -181,8 +181,8 @@
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/album.addTags</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/album.addTags</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Add-LFMAlbumTag.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -262,18 +262,6 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
-        <maml:name>Confirm</maml:name>
-        <maml:Description>
-          <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
-        </maml:Description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
-      </command:parameter>
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
         <maml:name>Tag</maml:name>
         <maml:Description>
@@ -285,6 +273,18 @@
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
+        <maml:name>Confirm</maml:name>
+        <maml:Description>
+          <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
         <maml:name>WhatIf</maml:name>
@@ -343,8 +343,8 @@
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/artist.addTags</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/artist.addTags</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Add-LFMArtistTag.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -436,18 +436,6 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
-        <maml:name>Confirm</maml:name>
-        <maml:Description>
-          <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
-        </maml:Description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
-      </command:parameter>
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
         <maml:name>SessionKey</maml:name>
         <maml:Description>
@@ -471,6 +459,18 @@
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
+        <maml:name>Confirm</maml:name>
+        <maml:Description>
+          <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
         <maml:name>WhatIf</maml:name>
@@ -527,7 +527,12 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         </dev:remarks>
       </command:example>
     </command:examples>
-    <command:relatedLinks />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Add-LFMConfiguration.md</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
@@ -617,18 +622,6 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
-        <maml:name>Confirm</maml:name>
-        <maml:Description>
-          <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
-        </maml:Description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
-      </command:parameter>
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="2" aliases="none">
         <maml:name>Tag</maml:name>
         <maml:Description>
@@ -652,6 +645,18 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
+        <maml:name>Confirm</maml:name>
+        <maml:Description>
+          <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
         <maml:name>WhatIf</maml:name>
@@ -708,7 +713,12 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         </dev:remarks>
       </command:example>
     </command:examples>
-    <command:relatedLinks />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Add-LFMTrackTag.md</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
@@ -791,9 +801,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Musicbrainz id for the album.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Guid</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -854,9 +864,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Musicbrainz id for the album.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Guid</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -910,8 +920,8 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/album.getInfo</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/album.getInfo</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMAlbumInfo.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -996,9 +1006,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Musicbrainz id for the album.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Guid</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -1059,9 +1069,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Musicbrainz id for the album.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Guid</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -1115,8 +1125,8 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/album.getTags</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/album.getTags</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMAlbumTag.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1189,9 +1199,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Musicbrainz id for the album.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Guid</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -1240,9 +1250,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Musicbrainz id for the album.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Guid</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -1284,8 +1294,8 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/album.getTopTags</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/album.getTopTags</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMAlbumTopTag.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1368,8 +1378,8 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/artist.getCorrection</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/artist.getCorrection</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMArtistCorrection.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1442,9 +1452,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Musicbrainz id for the artist.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Guid</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -1493,9 +1503,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Musicbrainz id for the artist.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Guid</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -1549,8 +1559,8 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/artist.getInfo</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/artist.getInfo</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMArtistInfo.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1597,9 +1607,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Limit the number of similar artists.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -1623,9 +1633,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Musicbrainz id for the artist.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Guid</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -1635,9 +1645,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Limit the number of similar artists.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -1674,9 +1684,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Musicbrainz id for the artist.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Guid</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -1686,9 +1696,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Limit the number of similar artists.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -1730,8 +1740,8 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/artist.getSimilar</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/artist.getSimilar</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMArtistSimilar.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1804,9 +1814,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Musicbrainz id for the artist.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Guid</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -1855,9 +1865,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Musicbrainz id for the artist.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Guid</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -1911,8 +1921,8 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/artist.getTags</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/artist.getTags</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMArtistTag.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1959,9 +1969,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Limit the number of results per page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -1971,9 +1981,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Page number to return. Defaults to the first page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -1997,9 +2007,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Musicbrainz id for the artist.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Guid</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -2009,9 +2019,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Limit the number of results per page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -2021,9 +2031,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Page number to return. Defaults to the first page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -2060,9 +2070,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Musicbrainz id for the artist.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Guid</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -2072,9 +2082,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Limit the number of results per page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -2084,9 +2094,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Page number to return. Defaults to the first page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -2128,8 +2138,8 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/artist.getTopAlbums</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/artist.getTopAlbums</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMArtistTopAlbum.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -2190,9 +2200,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Musicbrainz id for the artist.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Guid</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -2229,9 +2239,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Musicbrainz id for the artist.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Guid</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -2273,8 +2283,8 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/album.getTopTags</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/album.getTopTags</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMArtistTopTag.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -2321,9 +2331,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Limit the number of results per page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -2333,9 +2343,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Page number to return. Defaults to the first page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -2359,9 +2369,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Musicbrainz id for the artist.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Guid</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -2371,9 +2381,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Limit the number of results per page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -2383,9 +2393,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Page number to return. Defaults to the first page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -2422,9 +2432,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Musicbrainz id for the artist.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Guid</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -2434,9 +2444,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Limit the number of results per page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -2446,9 +2456,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Page number to return. Defaults to the first page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -2490,8 +2500,8 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/artist.getTopTracks</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/artist.getTopTracks</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMArtistTopTrack.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -2515,9 +2525,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Limit the number of results per page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -2527,9 +2537,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Page number to return. Defaults to the first page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -2542,9 +2552,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Limit the number of results per page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -2554,9 +2564,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Page number to return. Defaults to the first page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -2598,8 +2608,8 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/chart.getTopArtists</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/chart.getTopArtists</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMChartTopArtist.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -2623,9 +2633,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Limit the number of results per page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -2635,9 +2645,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Page number to return. Defaults to the first page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -2650,9 +2660,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Limit the number of results per page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -2662,9 +2672,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Page number to return. Defaults to the first page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -2706,8 +2716,8 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/chart.getTopTags</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/chart.getTopTags</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMChartTopTag.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -2731,9 +2741,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Limit the number of results per page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -2743,9 +2753,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Page number to return. Defaults to the first page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -2758,9 +2768,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Limit the number of results per page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -2770,9 +2780,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Page number to return. Defaults to the first page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -2814,8 +2824,8 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/chart.getTopTracks</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/chart.getTopTracks</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMChartTopTrack.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -2871,7 +2881,12 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         </dev:remarks>
       </command:example>
     </command:examples>
-    <command:relatedLinks />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMConfiguration.md</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
@@ -2905,9 +2920,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Limit the number of results per page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -2917,9 +2932,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Page number to return. Defaults to the first page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -2944,9 +2959,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Limit the number of results per page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -2956,9 +2971,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Page number to return. Defaults to the first page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -3000,8 +3015,8 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/geo.getTopArtists</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/geo.getTopArtists</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMGeoTopArtist.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -3049,9 +3064,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Limit the number of results per page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -3061,9 +3076,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Page number to return. Defaults to the first page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -3100,9 +3115,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Limit the number of results per page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -3112,9 +3127,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Page number to return. Defaults to the first page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -3156,8 +3171,8 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/geo.getTopTracks</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/geo.getTopTracks</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMGeoTopTrack.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -3193,9 +3208,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Limit the number of results per page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -3205,9 +3220,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Page number to return. Defaults to the first page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -3220,9 +3235,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Limit the number of results per page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -3232,9 +3247,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Page number to return. Defaults to the first page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -3280,13 +3295,18 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Get-LFMLibraryArtist -UserName camusicjunkie</dev:code>
+        <dev:code>PS C:\&gt; Get-LFMLibraryArtist</dev:code>
         <dev:remarks>
-          <maml:para>This will get a list of all the artists in camusicjunkie's library.</maml:para>
+          <maml:para>This will get a list of all the artists in the currently authenticated user's library.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
-    <command:relatedLinks />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMLibraryArtist.md</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
@@ -3318,7 +3338,7 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>Language</maml:name>
           <maml:Description>
-            <maml:para>Language to return the wiki in, expressed as an ISO 639 alpha-2 code. Ex. 'en' for spanish.</maml:para>
+            <maml:para>Language to return the wiki in, expressed as an ISO 639 alpha-2 code. For example: 'es' for spanish.</maml:para>
           </maml:Description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -3333,7 +3353,7 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>Language</maml:name>
         <maml:Description>
-          <maml:para>Language to return the wiki in, expressed as an ISO 639 alpha-2 code. Ex. 'en' for spanish.</maml:para>
+          <maml:para>Language to return the wiki in, expressed as an ISO 639 alpha-2 code. For example: 'es' for spanish.</maml:para>
         </maml:Description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -3389,7 +3409,12 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         </dev:remarks>
       </command:example>
     </command:examples>
-    <command:relatedLinks />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMTagInfo.md</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
@@ -3468,7 +3493,12 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         </dev:remarks>
       </command:example>
     </command:examples>
-    <command:relatedLinks />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMTagSimilar.md</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
@@ -3502,9 +3532,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Limit the number of results per page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -3514,9 +3544,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Page number to return. Defaults to the first page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -3529,9 +3559,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Limit the number of results per page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -3541,9 +3571,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Page number to return. Defaults to the first page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -3595,7 +3625,12 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         </dev:remarks>
       </command:example>
     </command:examples>
-    <command:relatedLinks />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMTagTopAlbum.md</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
@@ -3629,9 +3664,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Limit the number of results per page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -3641,9 +3676,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Page number to return. Defaults to the first page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -3656,9 +3691,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Limit the number of results per page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -3668,9 +3703,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Page number to return. Defaults to the first page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -3722,7 +3757,12 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         </dev:remarks>
       </command:example>
     </command:examples>
-    <command:relatedLinks />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMTagTopArtist.md</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
@@ -3776,7 +3816,12 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         </dev:remarks>
       </command:example>
     </command:examples>
-    <command:relatedLinks />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMTagTopTag.md</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
@@ -3810,9 +3855,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Limit the number of results per page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -3822,9 +3867,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Page number to return. Defaults to the first page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -3837,9 +3882,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Limit the number of results per page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -3849,9 +3894,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Page number to return. Defaults to the first page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -3903,7 +3948,12 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         </dev:remarks>
       </command:example>
     </command:examples>
-    <command:relatedLinks />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMTagTopTrack.md</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
@@ -3982,7 +4032,12 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         </dev:remarks>
       </command:example>
     </command:examples>
-    <command:relatedLinks />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMTagWeeklyChartList.md</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
@@ -4085,7 +4140,12 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         </dev:remarks>
       </command:example>
     </command:examples>
-    <command:relatedLinks />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMTrackCorrection.md</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
@@ -4168,9 +4228,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Musicbrainz id for the artist.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Guid</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -4219,9 +4279,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Musicbrainz id for the artist.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Guid</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -4279,13 +4339,18 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Get-LFMTrackInfo -Track Gore -Artist Deftones -UserName camusicjunkie</dev:code>
+        <dev:code>PS C:\&gt; Get-LFMTrackInfo -Track Gore -Artist Deftones</dev:code>
         <dev:remarks>
           <maml:para>This will get info for the track Gore by Deftones</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
-    <command:relatedLinks />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMTrackInfo.md</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
@@ -4342,9 +4407,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Limit the number of results per page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -4368,9 +4433,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Musicbrainz id for the artist.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Guid</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -4380,9 +4445,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Limit the number of results per page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -4419,9 +4484,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Musicbrainz id for the artist.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Guid</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -4431,9 +4496,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Limit the number of results per page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -4485,7 +4550,12 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         </dev:remarks>
       </command:example>
     </command:examples>
-    <command:relatedLinks />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMTrackSimilar.md</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
@@ -4568,9 +4638,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Musicbrainz id for the album.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Guid</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -4619,9 +4689,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Musicbrainz id for the album.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Guid</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -4685,7 +4755,12 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         </dev:remarks>
       </command:example>
     </command:examples>
-    <command:relatedLinks />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMTrackTag.md</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
@@ -4756,9 +4831,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Musicbrainz id for the artist.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Guid</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -4795,9 +4870,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Musicbrainz id for the artist.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Guid</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -4849,7 +4924,12 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         </dev:remarks>
       </command:example>
     </command:examples>
-    <command:relatedLinks />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMTrackTopTag.md</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
@@ -4883,9 +4963,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Limit the number of results per page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -4895,9 +4975,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Page number to return. Defaults to the first page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -4910,9 +4990,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Limit the number of results per page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -4922,9 +5002,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Page number to return. Defaults to the first page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -4970,16 +5050,16 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Get-LFMUserFriend -UserName camusicjunkie</dev:code>
+        <dev:code>PS C:\&gt; Get-LFMUserFriend</dev:code>
         <dev:remarks>
-          <maml:para>This will get the friends for camusicjunkie</maml:para>
+          <maml:para>This will get the friends for the currently authenticated user.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/user.getFriends</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/user.getFriends</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMUserFriend.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -5061,16 +5141,16 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
       </command:example>
       <command:example>
         <maml:title>-------------------------- Example 2 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Get-LFMUserInfo -UserName camusicjunkie</dev:code>
+        <dev:code>PS C:\&gt; Get-LFMUserInfo</dev:code>
         <dev:remarks>
-          <maml:para>This will get the user information for camusicjunkie.</maml:para>
+          <maml:para>This will get the user information for the currently authenticated user.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/user.getInfo</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/user.getInfo</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMUserInfo.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -5106,9 +5186,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Limit the number of results per page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -5118,9 +5198,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Page number to return. Defaults to the first page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -5133,9 +5213,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Limit the number of results per page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -5145,9 +5225,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Page number to return. Defaults to the first page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -5193,16 +5273,16 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Get-LFMUserLovedTrack -UserName camusicjunkie</dev:code>
+        <dev:code>PS C:\&gt; Get-LFMUserLovedTrack</dev:code>
         <dev:remarks>
-          <maml:para>This will get all the loved tracks for camusicjunkie.</maml:para>
+          <maml:para>This will get all the loved tracks for the currently authenticated user.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/user.getLovedTracks</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/user.getLovedTracks</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMUserLovedTrack.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -5267,9 +5347,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Limit the number of results per page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -5279,9 +5359,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Page number to return. Defaults to the first page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -5294,9 +5374,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Limit the number of results per page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -5306,9 +5386,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Page number to return. Defaults to the first page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -5384,7 +5464,12 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         </dev:remarks>
       </command:example>
     </command:examples>
-    <command:relatedLinks />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMUserPersonalTag.md</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
@@ -5406,9 +5491,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Date to start the range.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">DateTime</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>DateTime</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -5418,9 +5503,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Date to end the range.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">DateTime</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>DateTime</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -5442,9 +5527,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Limit the number of results per page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -5454,23 +5539,12 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Page number to return. Defaults to the first page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>Extended</maml:name>
-          <maml:Description>
-            <maml:para>{{ Fill Extended Description }}</maml:para>
-          </maml:Description>
-          <dev:type>
-            <maml:name>SwitchParameter</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
       </command:syntaxItem>
     </command:syntax>
@@ -5480,33 +5554,21 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Date to end the range.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">DateTime</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>DateTime</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>Extended</maml:name>
-        <maml:Description>
-          <maml:para>{{ Fill Extended Description }}</maml:para>
-        </maml:Description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>Limit</maml:name>
         <maml:Description>
           <maml:para>Limit the number of results per page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -5516,9 +5578,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Page number to return. Defaults to the first page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -5528,9 +5590,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Date to start the range.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">DateTime</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>DateTime</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -5582,7 +5644,12 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         </dev:remarks>
       </command:example>
     </command:examples>
-    <command:relatedLinks />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMUserRecentTrack.md</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
@@ -5636,9 +5703,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Limit the number of results per page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -5648,9 +5715,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Page number to return. Defaults to the first page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -5663,9 +5730,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Limit the number of results per page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -5675,9 +5742,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Page number to return. Defaults to the first page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -5735,23 +5802,23 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Get-LFMUserTopAlbum -UserName camusicjunkie</dev:code>
+        <dev:code>PS C:\&gt; Get-LFMUserTopAlbum</dev:code>
         <dev:remarks>
-          <maml:para>This will get the top albums scrobbled by camusicjunkie.</maml:para>
+          <maml:para>This will get the top albums scrobbled by the currently authenticated user.</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
         <maml:title>-------------------------- Example 2 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Get-LFMUserTopAlbum -UserName camusicjunkie -TimePeriod 12month</dev:code>
+        <dev:code>PS C:\&gt; Get-LFMUserTopAlbum -TimePeriod '1 Year'</dev:code>
         <dev:remarks>
-          <maml:para>This will get the top albums scrobbled by camusicjunkie over the last 12 months.</maml:para>
+          <maml:para>This will get the top albums scrobbled by the currently authenticated user over the last year.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/user.getTopAlbums</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/user.getTopAlbums</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMUserTopAlbum.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -5807,9 +5874,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Limit the number of results per page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -5819,9 +5886,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Page number to return. Defaults to the first page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -5834,9 +5901,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Limit the number of results per page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -5846,9 +5913,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Page number to return. Defaults to the first page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -5906,23 +5973,23 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Get-LFMUserTopArtist -UserName camusicjunkie</dev:code>
+        <dev:code>PS C:\&gt; Get-LFMUserTopArtist</dev:code>
         <dev:remarks>
-          <maml:para>This will get the top artists scrobbled by camusicjunkie.</maml:para>
+          <maml:para>This will get the top artists scrobbled by the currently authenticated user.</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
         <maml:title>-------------------------- Example 2 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Get-LFMUserTopArtist -UserName camusicjunkie -TimePeriod 12month</dev:code>
+        <dev:code>PS C:\&gt; Get-LFMUserTopArtist -TimePeriod '1 Year'</dev:code>
         <dev:remarks>
-          <maml:para>This will get the top artists scrobbled by camusicjunkie over the last 12 months.</maml:para>
+          <maml:para>This will get the top artists scrobbled by the currently authenticated user over the last year.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/user.getTopArtists</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/user.getTopArtists</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMUserTopArtist.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -5958,9 +6025,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Limit the number of results per page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -5973,9 +6040,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Limit the number of results per page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -6021,16 +6088,16 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Get-LFMUserTopTag -UserName camusicjunkie</dev:code>
+        <dev:code>PS C:\&gt; Get-LFMUserTopTag</dev:code>
         <dev:remarks>
-          <maml:para>This will get the top tags set by camusicjunkie.</maml:para>
+          <maml:para>This will get the top tags set by the currently authenticated user.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/user.getTopTags</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/user.getTopTags</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMUserTopTag.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -6086,9 +6153,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Limit the number of results per page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -6098,9 +6165,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Page number to return. Defaults to the first page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -6113,9 +6180,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Limit the number of results per page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -6125,9 +6192,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Page number to return. Defaults to the first page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -6185,23 +6252,23 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Get-LFMUserTopTrack -UserName camusicjunkie</dev:code>
+        <dev:code>PS C:\&gt; Get-LFMUserTopTrack</dev:code>
         <dev:remarks>
-          <maml:para>This will get the top tracks scrobbled by camusicjunkie.</maml:para>
+          <maml:para>This will get the top tracks scrobbled by the currently authenticated user.</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
         <maml:title>-------------------------- Example 2 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Get-LFMUserTopTrack -UserName camusicjunkie -TimePeriod 12month</dev:code>
+        <dev:code>PS C:\&gt; Get-LFMUserTopTrack -TimePeriod '1 Year'</dev:code>
         <dev:remarks>
-          <maml:para>This will get the top tracks scrobbled by camusicjunkie over the last 12 months.</maml:para>
+          <maml:para>This will get the top tracks scrobbled by the currently authenticated user over the last year.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/user.getTopTracks</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/user.getTopTracks</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMUserTopTrack.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -6261,9 +6328,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Limit the number of results per page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -6273,9 +6340,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Page number to return. Defaults to the first page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -6300,9 +6367,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Limit the number of results per page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -6312,9 +6379,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Page number to return. Defaults to the first page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -6378,7 +6445,12 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         </dev:remarks>
       </command:example>
     </command:examples>
-    <command:relatedLinks />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMUserTrackScrobble.md</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
@@ -6400,9 +6472,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Date to start the range.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">DateTime</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>DateTime</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -6412,9 +6484,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Date to end the range.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">DateTime</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>DateTime</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -6439,9 +6511,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Date to end the range.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">DateTime</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>DateTime</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -6451,9 +6523,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Date to start the range.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">DateTime</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>DateTime</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -6499,30 +6571,30 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Get-LFMUserWeeklyAlbumChart -UserName camusicjunkie</dev:code>
+        <dev:code>PS C:\&gt; Get-LFMUserWeeklyAlbumChart</dev:code>
         <dev:remarks>
-          <maml:para>This will get the recent album chart for camusicjunkie.</maml:para>
+          <maml:para>This will get the recent album chart for the currently authenticated user.</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
         <maml:title>-------------------------- Example 2 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Get-LFMUserWeeklyAlbumChart -UserName camusicjunkie -StartDate 11/1/2018 -EndDate 12/1/2018</dev:code>
+        <dev:code>PS C:\&gt; Get-LFMUserWeeklyAlbumChart -StartDate 11/1/2018 -EndDate 12/1/2018</dev:code>
         <dev:remarks>
-          <maml:para>This will get the album chart for camusicjunkie within the specified date range.</maml:para>
+          <maml:para>This will get the album chart for the currently authenticated user within the specified date range.</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
         <maml:title>-------------------------- Example 3 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; (Get-LFMUserWeeklyChartList -UserName camusicjunkie)[0] | Get-LFMUserWeeklyAlbumChart</dev:code>
+        <dev:code>PS C:\&gt; (Get-LFMUserWeeklyChartList)[0] | Get-LFMUserWeeklyAlbumChart</dev:code>
         <dev:remarks>
-          <maml:para>This will get the first chart list for camusicjunkie and send it down the pipeline to get the album chart.</maml:para>
+          <maml:para>This will get the first chart list for the currently authenticated user and send it down the pipeline to get the album chart.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/user.getWeeklyAlbumChart</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/user.getWeeklyAlbumChart</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMUserWeeklyAlbumChart.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -6546,9 +6618,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Date to start the range.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">DateTime</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>DateTime</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -6558,9 +6630,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Date to end the range.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">DateTime</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>DateTime</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -6585,9 +6657,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Date to end the range.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">DateTime</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>DateTime</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -6597,9 +6669,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Date to start the range.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">DateTime</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>DateTime</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -6645,30 +6717,30 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Get-LFMUserWeeklyArtistChart -UserName camusicjunkie</dev:code>
+        <dev:code>PS C:\&gt; Get-LFMUserWeeklyArtistChart</dev:code>
         <dev:remarks>
-          <maml:para>This will get the recent artist chart for camusicjunkie.</maml:para>
+          <maml:para>This will get the recent artist chart for the currently authenticated user.</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
         <maml:title>-------------------------- Example 2 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Get-LFMUserWeeklyArtistChart -UserName camusicjunkie -StartDate 11/1/2018 -EndDate 12/1/2018</dev:code>
+        <dev:code>PS C:\&gt; Get-LFMUserWeeklyArtistChart -StartDate 11/1/2018 -EndDate 12/1/2018</dev:code>
         <dev:remarks>
-          <maml:para>This will get the artist chart for camusicjunkie within the specified date range.</maml:para>
+          <maml:para>This will get the artist chart for the currently authenticated user within the specified date range.</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
         <maml:title>-------------------------- Example 3 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; (Get-LFMUserWeeklyChartList -UserName camusicjunkie)[0] | Get-LFMUserWeeklyArtistChart</dev:code>
+        <dev:code>PS C:\&gt; (Get-LFMUserWeeklyChartList)[0] | Get-LFMUserWeeklyArtistChart</dev:code>
         <dev:remarks>
-          <maml:para>This will get the first chart list for camusicjunkie and send it down the pipeline to get the artist chart.</maml:para>
+          <maml:para>This will get the first chart list for the currently authenticated user and send it down the pipeline to get the artist chart.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/user.getWeeklyArtistChart</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/user.getWeeklyArtistChart</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMUserWeeklyArtistChart.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -6743,16 +6815,16 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Get-LFMUserWeeklyChartList -UserName camusicjunkie</dev:code>
+        <dev:code>PS C:\&gt; Get-LFMUserWeeklyChartList</dev:code>
         <dev:remarks>
-          <maml:para>This will get the chart lists for camusicjunkie.</maml:para>
+          <maml:para>This will get the chart lists for the currently authenticated user.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/user.getWeeklyChartList</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/user.getWeeklyChartList</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMUserWeeklyChartList.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -6776,9 +6848,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Date to start the range.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">DateTime</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>DateTime</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -6788,9 +6860,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Date to end the range.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">DateTime</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>DateTime</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -6815,9 +6887,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Date to end the range.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">DateTime</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>DateTime</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -6827,9 +6899,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Date to start the range.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">DateTime</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>DateTime</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -6875,30 +6947,30 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Get-LFMUserWeeklyTrackChart -UserName camusicjunkie</dev:code>
+        <dev:code>PS C:\&gt; Get-LFMUserWeeklyTrackChart</dev:code>
         <dev:remarks>
-          <maml:para>This will get the recent track chart for camusicjunkie.</maml:para>
+          <maml:para>This will get the recent track chart for the currently authenticated user.</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
         <maml:title>-------------------------- Example 2 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Get-LFMUserWeeklyTrackChart -UserName camusicjunkie -StartDate 11/1/2018 -EndDate 12/1/2018</dev:code>
+        <dev:code>PS C:\&gt; Get-LFMUserWeeklyTrackChart -StartDate 11/1/2018 -EndDate 12/1/2018</dev:code>
         <dev:remarks>
-          <maml:para>This will get the track chart for camusicjunkie within the specified date range.</maml:para>
+          <maml:para>This will get the track chart for the currently authenticated user within the specified date range.</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
         <maml:title>-------------------------- Example 3 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; (Get-LFMUserWeeklyChartList -UserName camusicjunkie)[0] | Get-LFMUserWeeklyTrackChart</dev:code>
+        <dev:code>PS C:\&gt; (Get-LFMUserWeeklyChartList)[0] | Get-LFMUserWeeklyTrackChart</dev:code>
         <dev:remarks>
-          <maml:para>This will get the first chart list for camusicjunkie and send it down the pipeline to get the track chart.</maml:para>
+          <maml:para>This will get the first chart list for the currently authenticated user and send it down the pipeline to get the track chart.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/user.getWeeklyTrackChart</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/user.getWeeklyTrackChart</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Get-LFMUserWeeklyTrackChart.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -7002,18 +7074,6 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
-        <maml:name>Confirm</maml:name>
-        <maml:Description>
-          <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
-        </maml:Description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
-      </command:parameter>
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="2" aliases="none">
         <maml:name>Tag</maml:name>
         <maml:Description>
@@ -7025,6 +7085,18 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
+        <maml:name>Confirm</maml:name>
+        <maml:Description>
+          <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
         <maml:name>WhatIf</maml:name>
@@ -7075,8 +7147,8 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/album.removeTag</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/album.removeTag</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Remove-LFMAlbumTag.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -7156,18 +7228,6 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
-        <maml:name>Confirm</maml:name>
-        <maml:Description>
-          <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
-        </maml:Description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
-      </command:parameter>
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
         <maml:name>Tag</maml:name>
         <maml:Description>
@@ -7179,6 +7239,18 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
+        <maml:name>Confirm</maml:name>
+        <maml:Description>
+          <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
         <maml:name>WhatIf</maml:name>
@@ -7229,8 +7301,8 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/artist.removeTag</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/artist.removeTag</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Remove-LFMArtistTag.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -7333,7 +7405,12 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         </dev:remarks>
       </command:example>
     </command:examples>
-    <command:relatedLinks />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Remove-LFMConfiguration.md</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
@@ -7423,18 +7500,6 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
-        <maml:name>Confirm</maml:name>
-        <maml:Description>
-          <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
-        </maml:Description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
-      </command:parameter>
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="2" aliases="none">
         <maml:name>Tag</maml:name>
         <maml:Description>
@@ -7458,6 +7523,18 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
+        <maml:name>Confirm</maml:name>
+        <maml:Description>
+          <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
         <maml:name>WhatIf</maml:name>
@@ -7506,7 +7583,12 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         </dev:remarks>
       </command:example>
     </command:examples>
-    <command:relatedLinks />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Remove-LFMTrackTag.md</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
@@ -7642,12 +7724,8 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/auth.getSession</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/auth.getSession</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/desktopauth</maml:linkText>
-        <maml:uri>https://www.last.fm/api/desktopauth</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Request-LFMSession.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -7754,12 +7832,8 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/auth.getToken</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/auth.getToken</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/desktopauth</maml:linkText>
-        <maml:uri>https://www.last.fm/api/desktopauth</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Request-LFMToken.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -7795,9 +7869,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Limit the number of results per page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -7807,9 +7881,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Page number to return. Defaults to the first page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -7834,9 +7908,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Limit the number of results per page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -7846,9 +7920,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Page number to return. Defaults to the first page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -7890,8 +7964,8 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/album.search</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/album.search</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Search-LFMAlbum.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -7927,9 +8001,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Limit the number of results per page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -7939,9 +8013,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Page number to return. Defaults to the first page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -7966,9 +8040,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Limit the number of results per page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -7978,9 +8052,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Page number to return. Defaults to the first page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -8022,8 +8096,8 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/artist.search</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/artist.search</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Search-LFMArtist.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -8059,9 +8133,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Limit the number of results per page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -8071,9 +8145,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:Description>
             <maml:para>Page number to return. Defaults to the first page.</maml:para>
           </maml:Description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -8086,9 +8160,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Limit the number of results per page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -8098,9 +8172,9 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         <maml:Description>
           <maml:para>Page number to return. Defaults to the first page.</maml:para>
         </maml:Description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -8152,7 +8226,12 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         </dev:remarks>
       </command:example>
     </command:examples>
-    <command:relatedLinks />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Search-LFMTrack.md</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
@@ -8230,18 +8309,6 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
-        <maml:name>Confirm</maml:name>
-        <maml:Description>
-          <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
-        </maml:Description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
-      </command:parameter>
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
         <maml:name>Track</maml:name>
         <maml:Description>
@@ -8253,6 +8320,18 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
+        <maml:name>Confirm</maml:name>
+        <maml:Description>
+          <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
         <maml:name>WhatIf</maml:name>
@@ -8303,8 +8382,608 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/track.love</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/track.love</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Set-LFMTrackLove.md</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Set-LFMTrackNowPlaying</command:name>
+      <command:verb>Set</command:verb>
+      <command:noun>LFMTrackNowPlaying</command:noun>
+      <maml:description>
+        <maml:para>Notify Last.fm that a user has started listening to a track.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Notify Last.fm that a user has started listening to a track. This uses the track.updateNowPlaying method from the Last.fm API.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Set-LFMTrackNowPlaying</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="none">
+          <maml:name>Track</maml:name>
+          <maml:Description>
+            <maml:para>Name of the track.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
+          <maml:name>Artist</maml:name>
+          <maml:Description>
+            <maml:para>Name of the artist</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="2" aliases="none">
+          <maml:name>Album</maml:name>
+          <maml:Description>
+            <maml:para>Name of the album.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="3" aliases="none">
+          <maml:name>Id</maml:name>
+          <maml:Description>
+            <maml:para>Musicbrainz id for the track.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
+          <dev:type>
+            <maml:name>Guid</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="4" aliases="none">
+          <maml:name>Duration</maml:name>
+          <maml:Description>
+            <maml:para>Length of the track in seconds.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>PassThru</maml:name>
+          <maml:Description>
+            <maml:para>Returns an object with info on the track set to now playing.</maml:para>
+          </maml:Description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
+          <maml:name>Confirm</maml:name>
+          <maml:Description>
+            <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
+          </maml:Description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
+          <maml:name>WhatIf</maml:name>
+          <maml:Description>
+            <maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
+          </maml:Description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="2" aliases="none">
+        <maml:name>Album</maml:name>
+        <maml:Description>
+          <maml:para>Name of the album.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
+        <maml:name>Artist</maml:name>
+        <maml:Description>
+          <maml:para>Name of the artist</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="4" aliases="none">
+        <maml:name>Duration</maml:name>
+        <maml:Description>
+          <maml:para>Length of the track in seconds.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="3" aliases="none">
+        <maml:name>Id</maml:name>
+        <maml:Description>
+          <maml:para>Musicbrainz id for the track.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
+        <dev:type>
+          <maml:name>Guid</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>PassThru</maml:name>
+        <maml:Description>
+          <maml:para>Returns an object with info on the track set to now playing.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="none">
+        <maml:name>Track</maml:name>
+        <maml:Description>
+          <maml:para>Name of the track.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
+        <maml:name>Confirm</maml:name>
+        <maml:Description>
+          <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
+        <maml:name>WhatIf</maml:name>
+        <maml:Description>
+          <maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.Guid</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.Int32</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>PowerLFM.Track.NowPlaying</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Set-LFMTrackNowPlaying -Track Gore -Artist Deftones</dev:code>
+        <dev:remarks>
+          <maml:para>This will set the track Gore by Deftones as now playing for the currently authenticated user.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 2 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Set-LFMTrackNowPlaying -Track Passenger -Artist Deftones -Album 'White Pony' -Duration 367 -Id '119c683c-d078-41f3-b63c-cb92816d7329'</dev:code>
+        <dev:remarks>
+          <maml:para>This will set the track Passenger by Deftones as now playing with more granular information. This is updated for the currently authenticated user.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Set-LFMTrackNowPlaying.md</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Set-LFMTrackScrobble</command:name>
+      <command:verb>Set</command:verb>
+      <command:noun>LFMTrackScrobble</command:noun>
+      <maml:description>
+        <maml:para>Add a track play to the profile of the currently authenticated user.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Add a track play to the profile of the currently authenticated user. This uses the track.scrobble method from the Last.fm API.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Set-LFMTrackScrobble</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="none">
+          <maml:name>Artist</maml:name>
+          <maml:Description>
+            <maml:para>Name of the artist.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
+          <maml:name>Track</maml:name>
+          <maml:Description>
+            <maml:para>Name of the track.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="2" aliases="none">
+          <maml:name>Timestamp</maml:name>
+          <maml:Description>
+            <maml:para>Time the track started playing.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">DateTime</command:parameterValue>
+          <dev:type>
+            <maml:name>DateTime</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="3" aliases="none">
+          <maml:name>Album</maml:name>
+          <maml:Description>
+            <maml:para>Name of the album.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="4" aliases="none">
+          <maml:name>Id</maml:name>
+          <maml:Description>
+            <maml:para>Musicbrainz id for the track.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
+          <dev:type>
+            <maml:name>Guid</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="5" aliases="none">
+          <maml:name>TrackNumber</maml:name>
+          <maml:Description>
+            <maml:para>Number of the track on the album.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="6" aliases="none">
+          <maml:name>Duration</maml:name>
+          <maml:Description>
+            <maml:para>Length of the track in seconds.</maml:para>
+          </maml:Description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>PassThru</maml:name>
+          <maml:Description>
+            <maml:para>Returns an object with info on the track set to scrobble.</maml:para>
+          </maml:Description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
+          <maml:name>Confirm</maml:name>
+          <maml:Description>
+            <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
+          </maml:Description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
+          <maml:name>WhatIf</maml:name>
+          <maml:Description>
+            <maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
+          </maml:Description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="3" aliases="none">
+        <maml:name>Album</maml:name>
+        <maml:Description>
+          <maml:para>Name of the album.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="none">
+        <maml:name>Artist</maml:name>
+        <maml:Description>
+          <maml:para>Name of the artist.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="6" aliases="none">
+        <maml:name>Duration</maml:name>
+        <maml:Description>
+          <maml:para>Length of the track in seconds.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="4" aliases="none">
+        <maml:name>Id</maml:name>
+        <maml:Description>
+          <maml:para>Musicbrainz id for the track.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">Guid</command:parameterValue>
+        <dev:type>
+          <maml:name>Guid</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>PassThru</maml:name>
+        <maml:Description>
+          <maml:para>Returns an object with info on the track set to scrobble.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="2" aliases="none">
+        <maml:name>Timestamp</maml:name>
+        <maml:Description>
+          <maml:para>Time the track started playing.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">DateTime</command:parameterValue>
+        <dev:type>
+          <maml:name>DateTime</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
+        <maml:name>Track</maml:name>
+        <maml:Description>
+          <maml:para>Name of the track.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="5" aliases="none">
+        <maml:name>TrackNumber</maml:name>
+        <maml:Description>
+          <maml:para>Number of the track on the album.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
+        <maml:name>Confirm</maml:name>
+        <maml:Description>
+          <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
+        <maml:name>WhatIf</maml:name>
+        <maml:Description>
+          <maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.DateTime</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.Guid</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.Int32</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>PowerLFM.Track.Scrobble</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Set-LFMTrackScrobble -Artist Deftones -Track Gore</dev:code>
+        <dev:remarks>
+          <maml:para>This will scrobble the track Gore by Deftones for the currently authenticated user.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 2 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Set-LFMTrackScrobble -Artist Deftones -Track Gore -Timestamp (Get-Date) -Album Gore -TrackNumber 9 -Duration 299</dev:code>
+        <dev:remarks>
+          <maml:para>This will scrobble the track Gore by Deftones with more granular information. This is updated for the currently authenticated user.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Set-LFMTrackScrobble.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -8384,18 +9063,6 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
-        <maml:name>Confirm</maml:name>
-        <maml:Description>
-          <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
-        </maml:Description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
-      </command:parameter>
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
         <maml:name>Track</maml:name>
         <maml:Description>
@@ -8407,6 +9074,18 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
+        <maml:name>Confirm</maml:name>
+        <maml:Description>
+          <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
+        </maml:Description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
         <maml:name>WhatIf</maml:name>
@@ -8457,8 +9136,8 @@ PS C:\&gt; $session | Add-LFMConfiguration</dev:code>
     </command:examples>
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>https://www.last.fm/api/show/track.unlove</maml:linkText>
-        <maml:uri>https://www.last.fm/api/show/track.unlove</maml:uri>
+        <maml:linkText>Online Version:</maml:linkText>
+        <maml:uri>https://github.com/camusicjunkie/PowerLFM/blob/master/docs/Set-LFMTrackUnlove.md</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
