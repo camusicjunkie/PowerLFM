@@ -4,10 +4,16 @@
 [System.Diagnostics.CodeAnalysis.SuppressMessage('PSAvoidUsingWriteHost', '')]
 [System.Diagnostics.CodeAnalysis.SuppressMessage('PSAvoidUsingEmptyCatchBlock', '')]
 param(
-    [String[]]$Tag,
-    [String[]]$ExcludeTag = @("Integration"),
-    [String]$PSGalleryAPIKey,
-    [String]$GithubAccessToken
+    [Parameter(Position = 0)]
+    $Tasks,
+    [string[]]
+    $Tag,
+    [string]
+    $PSGalleryAPIKey,
+    [string]
+    $GithubAccessToken,
+    [switch]
+    $ResolveDependency
 )
 
 $WarningPreference = "Continue"
@@ -18,25 +24,31 @@ if ($PSBoundParameters.ContainsKey('Debug')) {
     $DebugPreference = "Continue"
 }
 
-function GetModulePublicInterfaceMap {
-    param($Path)
-    $module = Import-Module -Name $Path -PassThru -Force
-    $exportedCommands = @(
-        $module.ExportedFunctions.values
-        $module.ExportedCmdlets.values
-        $module.ExportedAliases.values
-    )
+Import-Module "$PSScriptRoot\BuildTools.psm1" -Force
 
-    foreach ($command in $exportedCommands) {
-        foreach ($parameter in $command.Parameters.Keys) {
-            if ($false -eq $command.Parameters[$parameter].IsDynamic) {
-                '{0}:{1}' -f $command.Name, $command.Parameters[$parameter].Name
-                foreach ($alias in $command.Parameters[$parameter].Aliases) {
-                    '{0}:{1}' -f $command.Name, $alias
-                }
-            }
-        }
+if ($ResolveDependency) {
+    Write-Host "Resolving Dependencies... [this can take a moment]"
+    $rsParams = @{}
+    if ($PSBoundParameters.ContainsKey('Verbose')) {
+        $Params.Add('Verbose', $verbose)
     }
+    Resolve-Dependency @rsParams
+}
+
+if ($MyInvocation.ScriptName -notlike '*Invoke-Build.ps1') {
+    if ($PSBoundParameters.ContainsKey('ResolveDependency')) {
+        Write-Verbose "Dependency already resolved. Skipping"
+        $null = $PSBoundParameters.Remove('ResolveDependency')
+    }
+
+    Invoke-Build $Tasks $MyInvocation.MyCommand.Path @PSBoundParameters
+    return
+}
+
+Enter-Build {
+    Write-Build Yellow 'Build: Inside Enter-Build'
+    Write-Host 'Host: Inside Enter-Build' -ForegroundColor Yellow
+    Set-BuildEnvironment -Force
 }
 
 Task ShowInfo GetNextVersion, {
@@ -97,8 +109,8 @@ Task GetNextVersion {
         #"Downloading published module to check for breaking changes"
         $publishedModule | Save-Module -Path $downloadFolder
 
-        [System.Collections.Generic.HashSet[string]] $publishedInterface = @(GetModulePublicInterfaceMap -Path (Join-Path $downloadFolder $env:BHProjectName))
-        [System.Collections.Generic.HashSet[string]] $buildInterface = @(GetModulePublicInterfaceMap -Path $env:BHPSModuleManifest)
+        [System.Collections.Generic.HashSet[string]] $publishedInterface = @(Get-ModuleInterfaceMap -Path (Join-Path $downloadFolder $env:BHProjectName))
+        [System.Collections.Generic.HashSet[string]] $buildInterface = @(Get-ModuleInterfaceMap -Path $env:BHPSModuleManifest)
 
         $bumpVersionType = if (-not $publishedInterface.IsSubsetOf($buildInterface)) {
             'Major'
@@ -127,8 +139,8 @@ Task GetNextVersion {
         $version = [version]::new($version.Major, $version.Minor, $version.Build, $build)
     }
     elseif ( -not [string]::IsNullOrEmpty($env:APPVEYOR_BUILD_ID)) {
-        $build = $env:APPVEYOR_BUILD_ID
-        $version = [version]::new($version.Major, $version.Minor, $version.Build, $build)
+        #$build = $env:APPVEYOR_BUILD_ID
+        #$version = [version]::new($version.Major, $version.Minor, $version.Build, $build)
     }
 
     #"  Setting version [$version]"
