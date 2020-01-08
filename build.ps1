@@ -12,6 +12,8 @@ $modules = @(
     'PSScriptAnalyzer'
 )
 
+GitVersion.exe
+
 'Starting build...'
 'Installing module dependencies...'
 
