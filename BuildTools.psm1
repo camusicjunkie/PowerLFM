@@ -3,14 +3,13 @@ function Resolve-Dependency {
     param()
 
     if (-not (Get-PackageProvider -Name NuGet -ForceBootstrap)) {
-        $providerBootstrapParams = @{
+        $ippParams = @{
             Name = 'Nuget'
             Force = $true
             ForceBootstrap = $true
         }
-        if($PSBoundParameters.ContainsKey('Verbose')) { $providerBootstrapParams.Add('Verbose', $Verbose)}
-        if ($GalleryProxy) { $providerBootstrapParams.Add('Proxy',$GalleryProxy) }
-        $null = Install-PackageProvider @providerBootstrapParams
+        if($PSBoundParameters.ContainsKey('Verbose')) { $ippParams.Add('Verbose', $Verbose)}
+        $null = Install-PackageProvider @ippParams
         Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
     }
 
@@ -26,17 +25,16 @@ function Resolve-Dependency {
             Scope = 'CurrentUser'
         }
         if ($PSBoundParameters.ContainsKey('Verbose')) { $imParams.Add('Verbose', $Verbose)}
-        if ($GalleryRepository) { $imParams.Add('Repository', $GalleryRepository) }
         Install-Module @imParams
     }
 
-    #$ipParams = @{
-    #    Force = $true
-    #    Path = $PSScriptRoot
-    #}
+    $ipParams = @{
+        Tags = 'Build'
+        Confirm = $false
+    }
     if ($PSBoundParameters.ContainsKey('Verbose')) { $ipParams.Add('Verbose', $Verbose)}
-    Invoke-PSDepend -Tags Build -Confirm:$false #@ipParams
-    Write-Verbose "Project Bootstrapped, returning to Invoke-Build"
+    Invoke-PSDepend @ipParams
+    Write-Verbose "Project bootstrapped. Returning to Invoke-Build"
 }
 
 function Get-ModuleInterfaceMap {

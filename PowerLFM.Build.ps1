@@ -30,7 +30,7 @@ if ($ResolveDependency) {
     Write-Host "Resolving Dependencies... [this can take a moment]"
     $rsParams = @{}
     if ($PSBoundParameters.ContainsKey('Verbose')) {
-        $Params.Add('Verbose', $verbose)
+        $rsParams.Add('Verbose', $Verbose)
     }
     Resolve-Dependency @rsParams
 }
@@ -49,6 +49,8 @@ Enter-Build {
     Write-Build Yellow 'Build: Inside Enter-Build'
     Write-Host 'Host: Inside Enter-Build' -ForegroundColor Yellow
     Set-BuildEnvironment -Force
+    $env:BHBuildModulePath = "$env:BHBuildOutput\$env:BHProjectName\$env:BHProjectName.psm1"
+    $env:BHBuildManifestPath = "$env:BHBuildOutput\$env:BHProjectName\$env:BHProjectName.psd1"
 }
 
 Task ShowInfo GetNextVersion, {
@@ -135,8 +137,8 @@ Task GetNextVersion {
     }
 
     if ( -not [string]::IsNullOrEmpty($env:Build_BuildID)) {
-        $build = $env:Build_BuildID
-        $version = [version]::new($version.Major, $version.Minor, $version.Build, $build)
+        #$build = $env:Build_BuildID
+        #$version = [version]::new($version.Major, $version.Minor, $version.Build, $build)
     }
     elseif ( -not [string]::IsNullOrEmpty($env:APPVEYOR_BUILD_ID)) {
         #$build = $env:APPVEYOR_BUILD_ID
@@ -152,15 +154,3 @@ Task GetNextVersion {
 
     #Set-Content -Path $versionFile -Value $versionStamp -NoNewline -Encoding UTF8
 }
-
-# task Default Build, Test, UpdateSource
-# task Build Copy, Compile, BuildModule, BuildManifest, SetVersion
-# task Helpify GenerateMarkdown, GenerateHelp
-# task Test Build, ImportModule, Pester
-# task Publish Build, PublishVersion, Test, PublishModule
-# task TFS Clean, Build, PublishVersion, Test
-# task DevTest ImportDevModule, Pester
-
-# Write-Host 'Import common tasks'
-# Get-ChildItem -Path $BuildRoot\BuildTasks\*.Task.ps1 |
-#     ForEach-Object {Write-Host $_.FullName;. $_.FullName}
