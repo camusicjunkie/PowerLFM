@@ -35,7 +35,7 @@ Task GetNextVersion {
     use "$env:BHBuildOutput\downloads\GitVersion.CommandLine\tools" gitversion
 
     $gitversion = exec { gitversion | ConvertFrom-Json }
-    $env:GetNextVersion = $gitversion.MajorMinorPatch
+    $env:NextBuildVersion = $gitversion.MajorMinorPatch
 }
 
 Task ShowInfo GetNextVersion, {
