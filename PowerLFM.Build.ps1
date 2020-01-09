@@ -65,7 +65,7 @@ Task Clean -If (Get-ChildItem $env:BHBuildOutput -Exclude downloads, modules) {
     remove (Get-ChildItem $env:BHBuildOutput -Exclude downloads, modules)
 }
 
-Task . ShowInfo #, Clean, Build, Test
+Task . ShowInfo, Clean #, Build, Test
 
 # Task Test
 
