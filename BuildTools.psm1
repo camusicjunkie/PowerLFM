@@ -14,7 +14,7 @@ function Resolve-Dependency {
     }
 
     if (-not (Get-Module -ListAvailable PSDepend)) {
-        Write-verbose "BootStrapping PSDepend"
+        Write-verbose "Bootstrapping PSDepend"
 
         $imParams = @{
             Name = 'PSDepend'

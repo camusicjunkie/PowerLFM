@@ -22,4 +22,4 @@ build: false
 
 #Kick off the CI/CD pipeline
 build_script:
-    - ps: build.ps1 -ResolveDependency
+    - ps: .\build.ps1 -ResolveDependency
