@@ -15,7 +15,6 @@ function Resolve-Dependency {
 
     if (-not (Get-Module -ListAvailable PSDepend)) {
         Write-verbose "BootStrapping PSDepend"
-        Write-verbose "Parameter $BuildOutput"
 
         $imParams = @{
             Name = 'PSDepend'
@@ -35,29 +34,4 @@ function Resolve-Dependency {
     if ($PSBoundParameters.ContainsKey('Verbose')) { $ipParams.Add('Verbose', $Verbose)}
     Invoke-PSDepend @ipParams
     Write-Verbose "Project bootstrapped. Returning to Invoke-Build"
-}
-
-function Get-ModuleInterfaceMap {
-    param (
-        [string]
-        $Path
-    )
-
-    $module = Import-Module -Name $Path -PassThru -Force
-    $exportedCommands = @(
-        $module.ExportedFunctions.Values
-        $module.ExportedCmdlets.Values
-        $module.ExportedAliases.Values
-    )
-
-    foreach ($command in $exportedCommands) {
-        foreach ($parameter in $command.Parameters.Keys) {
-            if ($false -eq $command.Parameters[$parameter].IsDynamic) {
-                '{0}:{1}' -f $command.Name, $command.Parameters[$parameter].Name
-                foreach ($alias in $command.Parameters[$parameter].Aliases) {
-                    '{0}:{1}' -f $command.Name, $alias
-                }
-            }
-        }
-    }
 }
