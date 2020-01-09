@@ -22,4 +22,4 @@ build: false
 
 #Kick off the CI/CD pipeline
 build_script:
-    - ps: Invoke-Build -Task .
+    - ps: build.ps1 -ResolveDependency
