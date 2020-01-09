@@ -17,6 +17,14 @@
         Target = 'BuildOutput\downloads'
     }
 
+    'Gitversion.CommandLine' = @{
+        DependencyType = 'Nuget'
+        Target = 'BuildOutput\downloads'
+        Parameters = @{
+            DLLName = 'Gitversion'
+        }
+    }
+
     'Newtonsoft.Json_Copy' = @{
         DependencyType = 'FileSystem'
         Source = 'BuildOutput\downloads\Newtonsoft.Json\lib\netstandard2.0\Newtonsoft.Json.dll'
