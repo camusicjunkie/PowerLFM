@@ -1,35 +1,26 @@
 [CmdletBinding()]
 param(
-    [parameter(Position=0)]
-    $Task = 'Default'
+    [ValidateSet('.', 'Build', 'Test', 'Deploy')]
+    $Task = '.',
+
+    [switch]
+    $ResolveDependency
 )
 
-$modules = @(
-    'BuildHelpers',
-    'InvokeBuild',
-    'Pester',
-    'platyPS',
-    'PSScriptAnalyzer'
-)
+Import-Module "$PSScriptRoot\BuildTools.psm1" -Force
 
-GitVersion.exe
+if ($ResolveDependency) {
+    Write-Host "Resolving Dependencies... [this can take a moment]"
 
-'Starting build...'
-'Installing module dependencies...'
-
-Get-PackageProvider -Name 'NuGet' -ForceBootstrap | Out-Null
-
-Install-Module -Name $modules -Force -SkipPublisherCheck
-
-Set-BuildEnvironment
-Get-ChildItem Env:BH*
-Get-ChildItem Env:APPVEYOR*
+    $rsParams = @{}
+    if ($PSBoundParameters.ContainsKey('Verbose')) { $rsParams.Add('Verbose', $Verbose) }
+    Resolve-Dependency @rsParams
+}
 
 $Error.Clear()
 
-"Invoking build action [$Task]"
-
 Invoke-Build -Task $Task -Result 'Result'
+
 if ($Result.Error)
 {
     $Error[-1].ScriptStackTrace | Out-String
