@@ -32,9 +32,9 @@ Enter-Build {
 }
 
 Task GetNextVersion {
-    use { "$env:BHBuildOutput\downloads\Gitversion.Commandline\tools" } gitversion
+    use "$env:BHBuildOutput\downloads\GitVersion.CommandLine\tools" gitversion
 
-    $gitversion = exec {gitversion | ConvertFrom-Json}
+    $gitversion = exec { gitversion | ConvertFrom-Json }
     $env:GetNextVersion = $gitversion.MajorMinorPatch
 }
 
