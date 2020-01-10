@@ -63,7 +63,7 @@ Task ShowInfo GetNextVersion, {
     Write-Build Gray
 }
 
-Task Build CopyModuleFiles, UpdateManifest, CompileModule, CleanBuild
+Task Build GenerateExternalHelp, CopyModuleFiles, UpdateManifest, CompileModule, CleanBuild
 
 # Synopsis: Generate external help for each public function
 task GenerateExternalHelp {
@@ -80,6 +80,9 @@ task CopyModuleFiles {
     # Setup
     if (-not (Test-Path "$env:BHBuildOutput\$env:BHProjectName")) {
         $null = New-Item -Path "$env:BHBuildOutput\$env:BHProjectName" -ItemType Directory
+    }
+    if (-not (Test-Path "$env:BHBuildOutput\$env:BHProjectName\bin")) {
+        $null = New-Item -Path "$env:BHBuildOutput\$env:BHProjectName\bin" -ItemType Directory
     }
 
     # Copy module
