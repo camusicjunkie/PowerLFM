@@ -138,11 +138,11 @@ task CleanBuild CompileModule, {
     "Private", "Public" | Foreach-Object { Remove-Item -Path "$env:BHBuildOutput/$env:BHProjectName/$_" -Recurse -Force }
 }
 
-task Clean -If (Get-ChildItem $env:BHBuildOutput -Exclude downloads, modules) {
-    remove (Get-ChildItem $env:BHBuildOutput -Exclude downloads, modules -ErrorAction SilentlyContinue)
-}
+#task Clean -If (Get-ChildItem $env:BHBuildOutput -Exclude downloads, modules) {
+#    remove (Get-ChildItem $env:BHBuildOutput -Exclude downloads, modules -ErrorAction SilentlyContinue)
+#}
 
-Task . ShowInfo, Clean, Build #, Test
+Task . ShowInfo, Build #, Test
 
 # Task Test
 
