@@ -63,7 +63,9 @@ Task ShowInfo GetNextVersion, {
     Write-Build Gray
 }
 
-# Synopsis: Copy module files over to build output
+Task Build CopyModuleFiles, CompileModule
+
+# Synopsis: Copy module files over to build output folder
 task CopyModuleFiles {
     # Setup
     if (-not (Test-Path "$env:BHBuildOutput/$env:BHProjectName")) {
@@ -72,6 +74,7 @@ task CopyModuleFiles {
 
     # Copy module
     Copy-Item -Path "$env:BHModulePath/*" -Destination "$env:BHBuildOutput/$env:BHProjectName" -Recurse -Force
+
     # Copy additional files
     Copy-Item -Path @(
         #"$env:BHProjectPath/CHANGELOG.md"
@@ -79,34 +82,32 @@ task CopyModuleFiles {
         "$env:BHProjectPath/README.md"
     ) -Destination "$env:BHBuildOutput/$env:BHProjectName" -Force
 
-    Invoke-PSDepend -Tags Copy
+    Invoke-PSDepend -Tags Copy -Confirm:$false
 }
 
 # Synopsis: Compile all functions into the .psm1 file
 task CompileModule {
-    $regionsToKeep = @('Init')
+    $regionsToKeep = @('Init', 'Variables')
 
     $content = Get-Content -Encoding UTF8 -LiteralPath $env:BHBuildModulePath
     $capture = $false
-    $compiled = ""
+    $compiled = ''
 
-    foreach ($line in $content) {
+    #captures all content between #region/#endregion tags in $regionsToKeep
+    $compiled = foreach ($line in $content) {
+        if ($capture) { $line -replace '^#endregion.+'}
         if ($line -match "^#region ($($regionsToKeep -join "|"))$") { $capture = $true }
-
         if (($capture -eq $true) -and ($line -match "^#endregion")) { $capture = $false }
-
-        if ($capture) { $compiled += "$line`r`n" }
     }
 
-    $public = @( Get-ChildItem -Path "$env:BHBuildOutput/$env:BHProjectName/Public/*.ps1" -ErrorAction SilentlyContinue )
-    $private = @( Get-ChildItem -Path "$env:BHBuildOutput/$env:BHProjectName/Private/*.ps1" -ErrorAction SilentlyContinue )
+    $public = @(Get-ChildItem -Path "$env:BHBuildOutput/$env:BHProjectName/Public/*.ps1" -ErrorAction SilentlyContinue)
+    $private = @(Get-ChildItem -Path "$env:BHBuildOutput/$env:BHProjectName/Private/*.ps1" -ErrorAction SilentlyContinue)
 
-    foreach ($function in @($public + $private)) {
-        $compiled += (Get-Content -Path $function.FullName -Raw)
-        $compiled += "`r`n"
+    $content = foreach ($function in @($public + $private)) {
+        Get-Content -Path $function.FullName -Raw
     }
 
-    Set-Content -LiteralPath $env:BHBuildModulePath -Value $compiled -Encoding UTF8 -Force
+    Set-Content -LiteralPath $env:BHBuildModulePath -Value @($compiled, $content) -Encoding UTF8 -Force -Exclude '^#region'
 
     "Private", "Public" | Foreach-Object { Remove-Item -Path "$env:BHBuildOutput/$env:BHProjectName/$_" -Recurse -Force }
 }
@@ -115,7 +116,7 @@ Task Clean -If (Get-ChildItem $env:BHBuildOutput -Exclude downloads, modules) {
     remove (Get-ChildItem $env:BHBuildOutput -Exclude downloads, modules)
 }
 
-Task . ShowInfo, Clean #, Build, Test
+Task . ShowInfo, Clean, Build #, Test
 
 # Task Test
 
