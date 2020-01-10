@@ -139,7 +139,7 @@ task CleanBuild CompileModule, {
 }
 
 task Clean -If (Get-ChildItem $env:BHBuildOutput -Exclude downloads, modules) {
-    remove (Get-ChildItem $env:BHBuildOutput -Exclude downloads, modules)
+    remove (Get-ChildItem $env:BHBuildOutput -Exclude downloads, modules -ErrorAction SilentlyContinue)
 }
 
 Task . ShowInfo, Clean, Build #, Test
