@@ -1,11 +1,11 @@
 #region Init
 using namespace System.Management.Automation
+#endregion Init
 
+#region Variables
 New-Variable -Name module -Value 'PowerLFM'
 New-Variable -Name baseUrl -Value 'https://ws.audioscrobbler.com/2.0'
-New-Variable -Name vault -Value (Get-PasswordVaultClass)
-
-#endregion Init
+#endregion Variables
 
 #Get public and private function definition files.
 $public = @(Get-ChildItem -Path $PSScriptRoot\Public\*.ps1 -ErrorAction SilentlyContinue)
