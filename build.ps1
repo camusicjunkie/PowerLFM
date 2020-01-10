@@ -4,10 +4,7 @@ param(
     [string] $Task = '.',
 
     # Install all modules and packages in *.depend.psd1
-    [switch] $ResolveDependency,
-
-    # Force dependency installs
-    [switch] $Force
+    [switch] $ResolveDependency
 )
 
 Import-Module "$PSScriptRoot\BuildTools.psm1" -Force
@@ -17,7 +14,6 @@ if ($ResolveDependency) {
 
     $rsParams = @{}
     if ($PSBoundParameters.ContainsKey('Verbose')) { $rsParams.Add('Verbose', $Verbose) }
-    if ($PSBoundParameters.ContainsKey('Force')) { $rsParams.Add('Force', $true)}
     Resolve-Dependency @rsParams
 }
 

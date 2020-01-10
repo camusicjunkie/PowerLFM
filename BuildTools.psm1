@@ -1,8 +1,6 @@
 function Resolve-Dependency {
     [CmdletBinding()]
-    param(
-        [switch] $Force
-    )
+    param()
 
     if (-not (Get-PackageProvider -Name NuGet -ForceBootstrap)) {
         $ippParams = @{
@@ -31,10 +29,9 @@ function Resolve-Dependency {
 
     $ipParams = @{
         Tags = 'Build'
-        Confirm = $false
+        Force = $true
     }
     if ($PSBoundParameters.ContainsKey('Verbose')) { $ipParams.Add('Verbose', $Verbose)}
-    if ($PSBoundParameters.ContainsKey('Force')) { $ipParams.Add('Force', $true)}
     Invoke-PSDepend @ipParams
     Write-Verbose "Project bootstrapped. Returning to Invoke-Build"
 }
