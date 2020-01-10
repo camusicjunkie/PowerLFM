@@ -131,7 +131,7 @@ task CompileModule {
         Get-Content -Path $function.FullName -Raw
     }
 
-    Set-Content -LiteralPath $env:BHBuildModulePath -Value @($compiled, $content) -Encoding UTF8 -Force -Exclude '^#region'
+    Set-Content -LiteralPath $env:BHBuildModulePath -Value @($compiled, $content) -Encoding UTF8 -Force
 }
 
 task CleanBuild CompileModule, {
