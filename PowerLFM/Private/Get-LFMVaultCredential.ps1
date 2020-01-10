@@ -5,6 +5,8 @@ function Get-LFMVaultCredential {
     )
 
     try {
+        $vault = Get-PasswordVaultClass
+
         if (-not (Test-LFMVaultCredential -Resource $module)) {
             throw
         }

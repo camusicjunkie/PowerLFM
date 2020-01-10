@@ -3,9 +3,9 @@ function Remove-LFMVaultCredential {
                    ConfirmImpact = 'High')]
     param ()
 
-    $vaultType = $vault.GetType().Name
-
     try {
+        $vault = Get-PasswordVaultClass
+        $vaultType = $vault.GetType().Name
         $credentials = Get-LFMVaultCredential
 
         foreach ($cred in $credentials) {
