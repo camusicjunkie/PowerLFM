@@ -1,13 +1,13 @@
 [CmdletBinding()]
 param(
-    [ValidateSet('Build', 'Test', 'Deploy')]
-    [string] $Task,
+    [ValidateSet('.', 'Build', 'Test', 'Noop')]
+    [string] $Task = '.',
 
     # Install all modules and packages in *.depend.psd1
     [switch] $ResolveDependency
 )
 
-Import-Module "$PSScriptRoot\BuildTools.psm1" -Force
+Import-Module "$PSScriptRoot\BuildTools\BuildTools.psm1" -Force
 
 if ($ResolveDependency) {
     Write-Host "Resolving Dependencies... [this can take a moment]"
