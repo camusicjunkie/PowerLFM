@@ -44,8 +44,15 @@ Enter-Build {
     }
 }
 
+# Synopsis: Default task
 task . ShowInfo, Build, Test, CleanBuild
-task Build GenerateExternalHelp, CopyModuleFiles, UpdateManifest, CompileModule
+
+# Synopsis: Build a shippable release
+task Build GenerateExternalHelp, CopyModuleFiles, CreateManifest, CompileModule
+
+# Synopsis: Run all tests
+task Test Build, RunPester, PublishTestToAppveyor
+
 #task Deploy
 
 # Synopsis: Get the next build version
@@ -95,12 +102,7 @@ task GenerateExternalHelp {
 # Synopsis: Copy module files to the build output folder
 task CopyModuleFiles {
     # Setup
-    if (-not (Test-Path "$env:BHBuildOutput\$env:BHProjectName")) {
-        $null = New-Item -Path "$env:BHBuildOutput\$env:BHProjectName" -ItemType Directory
-    }
-    if (-not (Test-Path "$env:BHBuildOutput\$env:BHProjectName\bin")) {
-        $null = New-Item -Path "$env:BHBuildOutput\$env:BHProjectName\bin" -ItemType Directory
-    }
+    $null = New-Item -Path "$env:BHBuildOutput\$env:BHProjectName\bin" -ItemType Directory -Force
 
     # Copy module
     Copy-Item -Path "$env:BHModulePath\*" -Destination "$env:BHBuildOutput\$env:BHProjectName" -Recurse -Force
@@ -115,18 +117,27 @@ task CopyModuleFiles {
 }
 
 # Synopsis: Update the manifest of the build output module
-task UpdateManifest GetNextVersion, {
+task CreateManifest GetNextVersion, {
     Remove-Module $env:BHProjectName -ErrorAction SilentlyContinue
     Import-Module $env:BHPSModuleManifest -Force
 
     $public = @(Get-ChildItem -Path "$env:BHBuildOutput\$env:BHProjectName\Public\*.ps1" -ErrorAction SilentlyContinue)
 
-    $ummParams = @{
+    $nmmParams = @{
         Path = $env:BHBuildManifestPath
-        FunctionsToExport = $public.BaseName
+        RootModule = 'PowerLFM.psm1'
         ModuleVersion = $env:NextBuildVersion
+        Author = 'John Steele'
+        Description = 'Module to leverage the Last.fm API'
+        RequiredAssemblies = 'bin\Newtonsoft.Json.dll'
+        FunctionsToExport = $public.BaseName
+        CmdletsToExport = @()
+        AliasesToExport = @()
+        Tags = 'Last.FM','LastFM','API','Rest','Json'
+        LicenseUri = 'https://github.com/camusicjunkie/PowerLFM/blob/master/LICENSE'
+        ProjectUri = 'https://github.com/camusicjunkie/PowerLFM'
     }
-    Update-ModuleManifest @ummParams
+    New-ModuleManifest @nmmParams
 }
 
 # Synopsis: Compile all functions into the build output module file
@@ -158,24 +169,35 @@ task CompileModule {
 task CopyTestFiles {
     Copy-Item -Path "$env:BHProjectPath\Tests" -Destination $env:BHBuildOutput -Recurse -Force
     Copy-Item -Path "$env:BHProjectPath\config" -Destination $env:BHBuildOutput -Recurse -Force
+    $null = New-Item -Path "$env:BHBuildOutput\testResults" -ItemType Directory
 }
 
 # Synopsis: Run all Pester tests
-task Test CopyTestFiles, {
-    assert { Test-Path $env:BHBuildOutput -PathType Container } "Release path must exist"
+task RunPester CopyTestFiles, {
+    assert { Test-Path $env:BHBuildOutput -PathType Container } "Build output path must exist"
     Remove-Module $env:BHProjectName -ErrorAction SilentlyContinue
+
+    $timestamp = Get-Date -UFormat "%Y%m%d-%H%M%S"
 
     $ipParams = @{
         Script       = "$env:BHBuildOutput\Tests\"
         Tag          = $Tag
         Show         = 'Failed', 'Summary'
         PassThru     = $true
-        OutputFile   = "$env:BHBuildOutput\Test-$($PSVersionTable.PSVersion.ToString()).xml"
+        OutputFile   = "$env:BHBuildOutput\testResults\Test-{0}-{1}.xml" -f $PSVersionTable.PSVersion, $timestamp
         OutputFormat = 'NUnitXml'
     }
     $testResults = Invoke-Pester @ipParams
 
     assert ($testResults.FailedCount -eq 0) "$($testResults.FailedCount) Pester test(s) failed."
+}
+
+# Synopsis: Publish tests to Appveyor
+task PublishTestToAppveyor -If ($env:APPVEYOR) {
+    assert { Test-Path -Path "$env:BHBuildOutput\testResults" }
+
+    $TestResultFiles = Get-ChildItem -Path "$env:BHBuildOutput\testResults" -Filter *.xml
+    $TestResultFiles | Add-TestResultToAppveyor
 }
 
 # Synopsis: Remove private/public folders from module in the build output folder
