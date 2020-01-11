@@ -29,6 +29,8 @@ Enter-Build {
 
     $env:BHBuildModulePath = "$env:BHBuildOutput\$env:BHProjectName\$env:BHProjectName.psm1"
     $env:BHBuildManifestPath = "$env:BHBuildOutput\$env:BHProjectName\$env:BHProjectName.psd1"
+    $OS = (Get-CimInstance -ClassName Win32_OperatingSystem).Caption
+    $OSVersion = (Get-CimInstance -ClassName Win32_OperatingSystem).Version
 
     Set-BuildHeader {
         param($Path)
@@ -84,8 +86,8 @@ task ShowInfo GetNextVersion, {
     Write-Build Gray '-------------------------------------------------------'
     Write-Build Gray
     Write-Build Gray ('PowerShell version:         {0}' -f $PSVersionTable.PSVersion.ToString())
-    #Write-Build Gray ('OS:                         {0}' -f $OS)
-    #Write-Build Gray ('OS Version:                 {0}' -f $OSVersion)
+    Write-Build Gray ('OS:                         {0}' -f $OS)
+    Write-Build Gray ('OS Version:                 {0}' -f $OSVersion)
     Write-Build Gray
 }
 
