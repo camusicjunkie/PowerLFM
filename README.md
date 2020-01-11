@@ -1,5 +1,7 @@
 # PowerLFM
 
+![PowerShell Gallery Version](https://img.shields.io/powershellgallery/v/PowerLFM?style=flat-square) ![AppVeyor](https://img.shields.io/appveyor/ci/camusicjunkie/PowerLFM?style=flat-square) ![GitHub](https://img.shields.io/github/license/camusicjunkie/PowerLFM?style=flat-square)
+
 PowerShell module to leverage the Last.fm API. This module is still a work in progress. Breaking changes may be implemented without any prior notice.
 
 All the API documentation can be found [here](https://www.last.fm/api/intro).
