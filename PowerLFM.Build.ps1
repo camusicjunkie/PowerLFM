@@ -151,7 +151,7 @@ task Test CopyTestFiles, {
     $ipParams = @{
         Script       = "$env:BHBuildOutput\Tests\"
         Tag          = $Tag
-        #Show         = 'Fails', 'Summary'
+        Show         = 'Failed', 'Summary'
         PassThru     = $true
         OutputFile   = "$env:BHBuildOutput\Test-$($PSVersionTable.PSVersion.ToString()).xml"
         OutputFormat = 'NUnitXml'
@@ -164,9 +164,5 @@ task Test CopyTestFiles, {
 task CleanBuild CompileModule, {
     "Private", "Public" | Foreach-Object { Remove-Item -Path "$env:BHBuildOutput\$env:BHProjectName\$_" -Recurse -Force }
 }
-
-#task Clean -If (Get-ChildItem $env:BHBuildOutput -Exclude downloads, modules) {
-#    remove (Get-ChildItem $env:BHBuildOutput -Exclude downloads, modules -ErrorAction SilentlyContinue)
-#}
 
 # Task Deploy
