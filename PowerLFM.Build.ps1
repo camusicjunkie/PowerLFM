@@ -32,6 +32,8 @@ Enter-Build {
 }
 
 task . ShowInfo, Build, Test, CleanBuild
+task Build GenerateExternalHelp, CopyModuleFiles, UpdateManifest, CompileModule
+#task Deploy
 
 # Synopsis: Get the next build version
 task GetNextVersion {
@@ -50,6 +52,8 @@ task ShowInfo GetNextVersion, {
     Write-Build Gray ('Project name:               {0}' -f $env:BHProjectName)
     Write-Build Gray ('Project root:               {0}' -f $env:BHProjectPath)
     Write-Build Gray ('Build Path:                 {0}' -f $env:BHBuildOutput)
+    Write-Build Gray ('Build Manifest Path:        {0}' -f $env:BHBuildManifestPath)
+    Write-Build Gray ('Build Module Path:          {0}' -f $env:BHBuildModulePath)
     Write-Build Gray ('Current (online) Version:   {0}' -f $env:CurrentOnlineVersion)
     Write-Build Gray '-------------------------------------------------------'
     Write-Build Gray
@@ -64,8 +68,6 @@ task ShowInfo GetNextVersion, {
     #Write-Build Gray ('OS Version:                 {0}' -f $OSVersion)
     Write-Build Gray
 }
-
-Task Build GenerateExternalHelp, CopyModuleFiles, UpdateManifest, CompileModule
 
 # Synopsis: Generate external help for each public function
 task GenerateExternalHelp {
@@ -164,5 +166,3 @@ task Test CopyTestFiles, {
 task CleanBuild CompileModule, {
     "Private", "Public" | Foreach-Object { Remove-Item -Path "$env:BHBuildOutput\$env:BHProjectName\$_" -Recurse -Force }
 }
-
-# Task Deploy
