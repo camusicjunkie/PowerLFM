@@ -31,8 +31,10 @@ Enter-Build {
     $env:BHBuildManifestPath = "$env:BHBuildOutput\$env:BHProjectName\$env:BHProjectName.psd1"
 }
 
+task . ShowInfo, Build, Test, CleanBuild
+
 # Synopsis: Get the next build version
-Task GetNextVersion {
+task GetNextVersion {
     use "$env:BHBuildOutput\downloads\GitVersion.CommandLine\tools" gitversion
 
     $gitversion = exec { gitversion | ConvertFrom-Json }
@@ -40,7 +42,7 @@ Task GetNextVersion {
 }
 
 # Synopsis: Display build information
-Task ShowInfo GetNextVersion, {
+task ShowInfo GetNextVersion, {
     Write-Build Gray
     Write-Build Gray ('Running in:                 {0}' -f $env:BHBuildSystem)
     Write-Build Gray '-------------------------------------------------------'
@@ -63,7 +65,7 @@ Task ShowInfo GetNextVersion, {
     Write-Build Gray
 }
 
-Task Build GenerateExternalHelp, CopyModuleFiles, UpdateManifest, CompileModule, CleanBuild
+Task Build GenerateExternalHelp, CopyModuleFiles, UpdateManifest, CompileModule
 
 # Synopsis: Generate external help for each public function
 task GenerateExternalHelp {
@@ -137,16 +139,34 @@ task CompileModule {
     Set-Content -LiteralPath $env:BHBuildModulePath -Value @($compiled, $content) -Encoding UTF8 -Force
 }
 
+task CopyTestFiles {
+    Copy-Item -Path "$env:BHProjectPath\Tests" -Destination $env:BHBuildOutput -Recurse -Force
+    Copy-Item -Path "$env:BHProjectPath\config" -Destination $env:BHBuildOutput -Recurse -Force
+}
+
+task Test CopyTestFiles, {
+    assert { Test-Path $env:BHBuildOutput -PathType Container } "Release path must exist"
+    Remove-Module $env:BHProjectName -ErrorAction SilentlyContinue
+
+    $ipParams = @{
+        Script       = "$env:BHBuildOutput\Tests\"
+        Tag          = $Tag
+        #Show         = 'Fails', 'Summary'
+        PassThru     = $true
+        OutputFile   = "$env:BHBuildOutput\Test-$($PSVersionTable.PSVersion.ToString()).xml"
+        OutputFormat = 'NUnitXml'
+    }
+    $testResults = Invoke-Pester @ipParams
+
+    assert ($testResults.FailedCount -eq 0) "$($testResults.FailedCount) Pester test(s) failed."
+}
+
 task CleanBuild CompileModule, {
-    "Private", "Public" | Foreach-Object { Remove-Item -Path "$env:BHBuildOutput/$env:BHProjectName/$_" -Recurse -Force }
+    "Private", "Public" | Foreach-Object { Remove-Item -Path "$env:BHBuildOutput\$env:BHProjectName\$_" -Recurse -Force }
 }
 
 #task Clean -If (Get-ChildItem $env:BHBuildOutput -Exclude downloads, modules) {
 #    remove (Get-ChildItem $env:BHBuildOutput -Exclude downloads, modules -ErrorAction SilentlyContinue)
 #}
-
-Task . ShowInfo, Build #, Test
-
-# Task Test
 
 # Task Deploy
