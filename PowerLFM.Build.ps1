@@ -29,6 +29,19 @@ Enter-Build {
 
     $env:BHBuildModulePath = "$env:BHBuildOutput\$env:BHProjectName\$env:BHProjectName.psm1"
     $env:BHBuildManifestPath = "$env:BHBuildOutput\$env:BHProjectName\$env:BHProjectName.psd1"
+
+    Set-BuildHeader {
+        param($Path)
+        ''
+        '=' * 79
+        Write-Build Cyan "$($Task.Name)"
+        ''
+        Write-Build DarkGray  "$(Get-BuildSynopsis $Task)"
+        '-' * 79
+        Write-Build DarkGray "  $Path"
+        Write-Build DarkGray "  $($Task.InvocationInfo.ScriptName):$($Task.InvocationInfo.ScriptLineNumber)"
+        ''
+    }
 }
 
 task . ShowInfo, Build, Test, CleanBuild
@@ -79,7 +92,7 @@ task GenerateExternalHelp {
     $null = New-ExternalHelp @neParams
 }
 
-# Synopsis: Copy module files over to build output folder
+# Synopsis: Copy module files to the build output folder
 task CopyModuleFiles {
     # Setup
     if (-not (Test-Path "$env:BHBuildOutput\$env:BHProjectName")) {
@@ -101,7 +114,7 @@ task CopyModuleFiles {
     Invoke-PSDepend -Tags Copy -Confirm:$false
 }
 
-# Synopsis: Update the manifest of the module
+# Synopsis: Update the manifest of the build output module
 task UpdateManifest GetNextVersion, {
     Remove-Module $env:BHProjectName -ErrorAction SilentlyContinue
     Import-Module $env:BHPSModuleManifest -Force
@@ -116,7 +129,7 @@ task UpdateManifest GetNextVersion, {
     Update-ModuleManifest @ummParams
 }
 
-# Synopsis: Compile all functions into the .psm1 file
+# Synopsis: Compile all functions into the build output module file
 task CompileModule {
     $regionsToKeep = @('Init', 'Variables')
 
@@ -141,11 +154,13 @@ task CompileModule {
     Set-Content -LiteralPath $env:BHBuildModulePath -Value @($compiled, $content) -Encoding UTF8 -Force
 }
 
+# Synopsis: Copy test files to the build output folder
 task CopyTestFiles {
     Copy-Item -Path "$env:BHProjectPath\Tests" -Destination $env:BHBuildOutput -Recurse -Force
     Copy-Item -Path "$env:BHProjectPath\config" -Destination $env:BHBuildOutput -Recurse -Force
 }
 
+# Synopsis: Run all Pester tests
 task Test CopyTestFiles, {
     assert { Test-Path $env:BHBuildOutput -PathType Container } "Release path must exist"
     Remove-Module $env:BHProjectName -ErrorAction SilentlyContinue
@@ -163,6 +178,10 @@ task Test CopyTestFiles, {
     assert ($testResults.FailedCount -eq 0) "$($testResults.FailedCount) Pester test(s) failed."
 }
 
+# Synopsis: Remove private/public folders from module in the build output folder
 task CleanBuild CompileModule, {
     "Private", "Public" | Foreach-Object { Remove-Item -Path "$env:BHBuildOutput\$env:BHProjectName\$_" -Recurse -Force }
 }
+
+# Synopsis: Empty task that's useful to test the bootstrap process
+task Noop { }
