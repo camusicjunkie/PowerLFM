@@ -239,6 +239,9 @@ $gitHubConditions = {
 
 # Synopsis: Publish module to Github Releases
 Task PublishToGitHub -If $gitHubConditions GetNextVersion, Package, {
+    Get-ChildItem
+    cmd /c 'git config --list'
+
     # Push a tag to the repository
     Write-Build Gray "  git checkout $ENV:BHBranchName"
     cmd /c "git checkout $ENV:BHBranchName 2>&1"
