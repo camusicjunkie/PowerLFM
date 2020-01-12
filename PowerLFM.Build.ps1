@@ -211,6 +211,18 @@ Task CleanBuild CompileModule, {
     "Private", "Public" | ForEach-Object { Remove "$env:BHBuildOutput\$env:BHProjectName\$_" }
 }
 
+# Synopsis: Create a ZIP file from this build
+Task Package {
+    Write-Build Gray "  Creating Release ZIP..."
+
+    $caParams = @{
+        Path = "$env:BHBuildOutput\$env:BHProjectName"
+        DestinationPath = "$env:BHBuildOutput\downloads\$env:BHProjectName.zip"
+        Force = $true
+    }
+    Compress-Archive @caParams
+}
+
 # Synopsis: Remove Pester results
 Task RemoveTestResults {
     remove "$env:BHBuildOutput\testResults\Test-*.xml"
@@ -225,22 +237,25 @@ $gitHubConditions = {
 }
 
 # Synopsis: Publish module to Github Releases
-Task PublishToGitHub -If $gitHubConditions {
-    Write-Build Gray "  Creating Release ZIP..."
+Task PublishToGitHub -If $gitHubConditions Package, {
+    $releaseText = "PowerLFM Release v$env:NextBuildVersion"
 
-    $caParams = @{
-        Path = "$env:BHBuildOutput\$env:BHProjectName"
-        DestinationPath = "$env:BHBuildOutput\downloads\$env:BHProjectName.zip"
-        Force = $true
-    }
-    Compress-Archive @caParams
+    # Push a tag to the repository
+    Write-Build Gray "  git checkout $ENV:BHBranchName"
+    cmd /c "git checkout $ENV:BHBranchName 2>&1"
+
+    Write-Build Gray "  git tag -a v$env:NextBuildVersion -m $releaseText"
+    cmd /c "git tag -a v$env:NextBuildVersion -m $releaseText 2>&1"
+
+    Write-Build Gray "  git push origin v$env:NextBuildVersion"
+    cmd /c "git push origin v$env:NextBuildVersion 2>&1"
 
     Write-Build Gray "  Publishing Release v$env:NextBuildVersion to GitHub..."
 
     $gitHubParams = @{
         Name            = "PowerLFM v$env:NextBuildVersion"
         TagName         = "v$env:NextBuildVersion"
-        ReleaseText     = "PowerLFM Release v$env:NextBuildVersion"
+        ReleaseText     = $releaseText
         RepositoryOwner = 'camusicjunkie'
         RepositoryName  = $env:BHProjectName
         AccessToken     = $GithubAccessToken
