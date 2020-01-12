@@ -23,7 +23,8 @@ if ($PSBoundParameters.ContainsKey('Debug')) {
 Enter-Build {
     git config --global user.email '33888807+camusicjunkie@users.noreply.github.com'
     git config --global user.name 'John Steele'
-    git config --global credential.helper "store --file ~\.git-credentials"
+    git config --global credential.helper 'store --file ~\.git-credentials'
+    Get-ChildItem -Recurse
 
     Set-BuildEnvironment -Force
 
@@ -242,7 +243,7 @@ Task PublishToGitHub -If $gitHubConditions GetNextVersion, Package, {
     Write-Build Gray "  git checkout $ENV:BHBranchName"
     cmd /c "git checkout $ENV:BHBranchName 2>&1"
 
-    Write-Build Gray "  git tag -a v$env:NextBuildVersion -m '$releaseText'"
+    Write-Build Gray "  git tag -a v$env:NextBuildVersion -m 'PowerLFM Release v$env:NextBuildVersion'"
     cmd /c "git tag -a v$env:NextBuildVersion -m "PowerLFM Release v$env:NextBuildVersion" 2>&1"
 
     Write-Build Gray "  git push origin v$env:NextBuildVersion"
