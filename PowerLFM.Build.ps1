@@ -237,15 +237,13 @@ $gitHubConditions = {
 }
 
 # Synopsis: Publish module to Github Releases
-Task PublishToGitHub -If $gitHubConditions Package, {
-    $releaseText = "PowerLFM Release v$env:NextBuildVersion"
-
+Task PublishToGitHub -If $gitHubConditions GetNextVersion, Package, {
     # Push a tag to the repository
     Write-Build Gray "  git checkout $ENV:BHBranchName"
     cmd /c "git checkout $ENV:BHBranchName 2>&1"
 
-    Write-Build Gray "  git tag -a v$env:NextBuildVersion -m $releaseText"
-    cmd /c "git tag -a v$env:NextBuildVersion -m $releaseText 2>&1"
+    Write-Build Gray "  git tag -a v$env:NextBuildVersion -m '$releaseText'"
+    cmd /c "git tag -a v$env:NextBuildVersion -m '$releaseText' 2>&1"
 
     Write-Build Gray "  git push origin v$env:NextBuildVersion"
     cmd /c "git push origin v$env:NextBuildVersion 2>&1"
@@ -255,7 +253,7 @@ Task PublishToGitHub -If $gitHubConditions Package, {
     $gitHubParams = @{
         Name            = "PowerLFM v$env:NextBuildVersion"
         TagName         = "v$env:NextBuildVersion"
-        ReleaseText     = $releaseText
+        ReleaseText     = "PowerLFM Release v$env:NextBuildVersion"
         RepositoryOwner = 'camusicjunkie'
         RepositoryName  = $env:BHProjectName
         AccessToken     = $GithubAccessToken
