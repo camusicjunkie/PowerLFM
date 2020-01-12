@@ -23,9 +23,7 @@ if ($PSBoundParameters.ContainsKey('Debug')) {
 Enter-Build {
     git config --global user.email '33888807+camusicjunkie@users.noreply.github.com'
     git config --global user.name 'John Steele'
-    git config --global credential.helper "store --file ~\.git-credentials"
-    Get-ChildItem
-    Get-ChildItem ~
+    git config --global credential.helper store
 
     Set-BuildEnvironment -Force
 
@@ -240,9 +238,6 @@ $gitHubConditions = {
 
 # Synopsis: Publish module to Github Releases
 Task PublishToGitHub -If $gitHubConditions GetNextVersion, Package, {
-    Get-ChildItem
-    cmd /c 'git config --list'
-
     # Push a tag to the repository
     Write-Build Gray "  git checkout $ENV:BHBranchName"
     cmd /c "git checkout $ENV:BHBranchName 2>&1"
