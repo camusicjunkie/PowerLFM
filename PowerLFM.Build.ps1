@@ -6,7 +6,7 @@ param(
     $Tag,
 
     [string]
-    $PSGalleryAPIKey,
+    $NuGetApiKey,
 
     [string]
     $GithubAccessToken = $env:GitHubPAT
@@ -59,11 +59,11 @@ Task Build GenerateExternalHelp, CopyModuleFiles, CreateManifest, CompileModule
 Task Test Build, RunPester, PublishTestToAppveyor
 
 # Synopsis: Publish
-Task Publish PublishToGitHub
+Task Publish Test, PublishToGitHub
 
 # Synopsis: Get the next build version
 Task GetNextVersion {
-    use "$env:BHBuildOutput\downloads\GitVersion.CommandLine\tools" gitversion
+    Use "$env:BHBuildOutput\downloads\GitVersion.CommandLine\tools" gitversion
 
     $gitversion = Exec { gitversion | ConvertFrom-Json }
     $env:NextBuildVersion = $gitversion.MajorMinorPatch
@@ -243,13 +243,13 @@ Task PublishToGitHub -If $gitHubConditions GetNextVersion, Package, {
 
     # Push a tag to the repository
     Write-Build Gray "  git checkout $ENV:BHBranchName"
-    cmd /c "git checkout $ENV:BHBranchName 2>&1"
+    $null = cmd /c "git checkout $ENV:BHBranchName 2>&1"
 
     Write-Build Gray "  git tag -a v$env:NextBuildVersion -m 'PowerLFM Release v$env:NextBuildVersion'"
-    cmd /c "git tag -a v$env:NextBuildVersion -m "PowerLFM Release v$env:NextBuildVersion" 2>&1"
+    $null = cmd /c "git tag -a v$env:NextBuildVersion -m "PowerLFM Release v$env:NextBuildVersion" 2>&1"
 
     Write-Build Gray "  git push origin v$env:NextBuildVersion"
-    cmd /c "git push origin v$env:NextBuildVersion 2>&1"
+    $null = cmd /c "git push origin v$env:NextBuildVersion 2>&1"
 
     Write-Build Gray "  Publishing Release v$env:NextBuildVersion to GitHub..."
 
