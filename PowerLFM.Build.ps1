@@ -9,7 +9,7 @@ param(
     $PSGalleryAPIKey,
 
     [string]
-    $GithubAccessToken
+    $GithubAccessToken = $env:GitHubPAT
 )
 
 $WarningPreference = "Continue"
@@ -29,8 +29,8 @@ Enter-Build {
 
     $env:BHBuildModulePath = "$env:BHBuildOutput\$env:BHProjectName\$env:BHProjectName.psm1"
     $env:BHBuildManifestPath = "$env:BHBuildOutput\$env:BHProjectName\$env:BHProjectName.psd1"
-    $OS = (Get-CimInstance -ClassName Win32_OperatingSystem).Caption
-    $OSVersion = (Get-CimInstance -ClassName Win32_OperatingSystem).Version
+    $script:OS = (Get-CimInstance -ClassName Win32_OperatingSystem).Caption
+    $script:OSVersion = (Get-CimInstance -ClassName Win32_OperatingSystem).Version
 
     Set-BuildHeader {
         param($Path)
@@ -47,26 +47,30 @@ Enter-Build {
 }
 
 # Synopsis: Default task
-task . ShowInfo, Build, Test, CleanBuild
+Task . Clean, ShowInfo, Build, Test, CleanBuild, Publish
+
+# Synopsis: Remove old build files
+Task Clean RemoveTestResults
 
 # Synopsis: Build a shippable release
-task Build GenerateExternalHelp, CopyModuleFiles, CreateManifest, CompileModule
+Task Build GenerateExternalHelp, CopyModuleFiles, CreateManifest, CompileModule
 
 # Synopsis: Run all tests
-task Test Build, RunPester, PublishTestToAppveyor
+Task Test Build, RunPester, PublishTestToAppveyor
 
-#task Deploy
+# Synopsis: Publish
+Task Publish PublishToGitHub
 
 # Synopsis: Get the next build version
-task GetNextVersion {
+Task GetNextVersion {
     use "$env:BHBuildOutput\downloads\GitVersion.CommandLine\tools" gitversion
 
-    $gitversion = exec { gitversion | ConvertFrom-Json }
+    $gitversion = Exec { gitversion | ConvertFrom-Json }
     $env:NextBuildVersion = $gitversion.MajorMinorPatch
 }
 
 # Synopsis: Display build information
-task ShowInfo GetNextVersion, {
+Task ShowInfo GetNextVersion, {
     Write-Build Gray
     Write-Build Gray ('Running in:                 {0}' -f $env:BHBuildSystem)
     Write-Build Gray '-------------------------------------------------------'
@@ -92,17 +96,17 @@ task ShowInfo GetNextVersion, {
 }
 
 # Synopsis: Generate external help for each public function
-task GenerateExternalHelp {
+Task GenerateExternalHelp {
     $neParams = @{
-        Path = "$env:BHProjectPath\docs"
+        Path       = "$env:BHProjectPath\docs"
         OutputPath = "$env:BHBuildOutput\$env:BHProjectName\$PSCulture"
-        Force = $true
+        Force      = $true
     }
     $null = New-ExternalHelp @neParams
 }
 
 # Synopsis: Copy module files to the build output folder
-task CopyModuleFiles {
+Task CopyModuleFiles {
     # Setup
     $null = New-Item -Path "$env:BHBuildOutput\$env:BHProjectName\bin" -ItemType Directory -Force
 
@@ -119,31 +123,31 @@ task CopyModuleFiles {
 }
 
 # Synopsis: Update the manifest of the build output module
-task CreateManifest GetNextVersion, {
+Task CreateManifest GetNextVersion, {
     Remove-Module $env:BHProjectName -ErrorAction SilentlyContinue
     Import-Module $env:BHPSModuleManifest -Force
 
     $public = @(Get-ChildItem -Path "$env:BHBuildOutput\$env:BHProjectName\Public\*.ps1" -ErrorAction SilentlyContinue)
 
     $nmmParams = @{
-        Path = $env:BHBuildManifestPath
-        RootModule = 'PowerLFM.psm1'
-        ModuleVersion = $env:NextBuildVersion
-        Author = 'John Steele'
-        Description = 'Module to leverage the Last.fm API'
+        Path               = $env:BHBuildManifestPath
+        RootModule         = 'PowerLFM.psm1'
+        ModuleVersion      = $env:NextBuildVersion
+        Author             = 'John Steele'
+        Description        = 'Module to leverage the Last.fm API'
         RequiredAssemblies = 'bin\Newtonsoft.Json.dll'
-        FunctionsToExport = $public.BaseName
-        CmdletsToExport = @()
-        AliasesToExport = @()
-        Tags = 'Last.FM','LastFM','API','Rest','Json'
-        LicenseUri = 'https://github.com/camusicjunkie/PowerLFM/blob/master/LICENSE'
-        ProjectUri = 'https://github.com/camusicjunkie/PowerLFM'
+        FunctionsToExport  = $public.BaseName
+        CmdletsToExport    = @()
+        AliasesToExport    = @()
+        Tags               = 'Last.FM', 'LastFM', 'API', 'Rest', 'Json'
+        LicenseUri         = 'https://github.com/camusicjunkie/PowerLFM/blob/master/LICENSE'
+        ProjectUri         = 'https://github.com/camusicjunkie/PowerLFM'
     }
     New-ModuleManifest @nmmParams
 }
 
 # Synopsis: Compile all functions into the build output module file
-task CompileModule {
+Task CompileModule {
     $regionsToKeep = @('Init', 'Variables')
 
     $content = Get-Content -Encoding UTF8 -LiteralPath $env:BHBuildModulePath
@@ -152,7 +156,7 @@ task CompileModule {
 
     #captures all content between #region\#endregion tags in $regionsToKeep
     $compiled = foreach ($line in $content) {
-        if ($capture) { $line -replace '^#endregion.+'}
+        if ($capture) { $line -replace '^#endregion.+' }
         if ($line -match "^#region ($($regionsToKeep -join "|"))$") { $capture = $true }
         if (($capture -eq $true) -and ($line -match "^#endregion")) { $capture = $false }
     }
@@ -168,15 +172,15 @@ task CompileModule {
 }
 
 # Synopsis: Copy test files to the build output folder
-task CopyTestFiles {
+Task CopyTestFiles {
     Copy-Item -Path "$env:BHProjectPath\Tests" -Destination $env:BHBuildOutput -Recurse -Force
     Copy-Item -Path "$env:BHProjectPath\config" -Destination $env:BHBuildOutput -Recurse -Force
-    $null = New-Item -Path "$env:BHBuildOutput\testResults" -ItemType Directory
+    $null = New-Item -Path "$env:BHBuildOutput\testResults" -ItemType Directory -Force
 }
 
 # Synopsis: Run all Pester tests
-task RunPester CopyTestFiles, {
-    assert { Test-Path $env:BHBuildOutput -PathType Container } "Build output path must exist"
+Task RunPester CopyTestFiles, {
+    Assert { Test-Path $env:BHBuildOutput -PathType Container } "Build output path must exist"
     Remove-Module $env:BHProjectName -ErrorAction SilentlyContinue
 
     $timestamp = Get-Date -UFormat "%Y%m%d-%H%M%S"
@@ -191,21 +195,61 @@ task RunPester CopyTestFiles, {
     }
     $testResults = Invoke-Pester @ipParams
 
-    assert ($testResults.FailedCount -eq 0) "$($testResults.FailedCount) Pester test(s) failed."
+    Assert ($testResults.FailedCount -eq 0) "$($testResults.FailedCount) Pester test(s) failed."
 }
 
 # Synopsis: Publish tests to Appveyor
-task PublishTestToAppveyor -If ($env:APPVEYOR) {
-    assert { Test-Path -Path "$env:BHBuildOutput\testResults" }
+Task PublishTestToAppveyor -If ($env:APPVEYOR) {
+    Assert { Test-Path -Path "$env:BHBuildOutput\testResults" }
 
     $TestResultFiles = Get-ChildItem -Path "$env:BHBuildOutput\testResults" -Filter *.xml
     $TestResultFiles | Add-TestResultToAppveyor
 }
 
 # Synopsis: Remove private/public folders from module in the build output folder
-task CleanBuild CompileModule, {
-    "Private", "Public" | Foreach-Object { Remove-Item -Path "$env:BHBuildOutput\$env:BHProjectName\$_" -Recurse -Force }
+Task CleanBuild CompileModule, {
+    "Private", "Public" | ForEach-Object { Remove "$env:BHBuildOutput\$env:BHProjectName\$_" }
+}
+
+# Synopsis: Remove Pester results
+Task RemoveTestResults {
+    remove "$env:BHBuildOutput\testResults\Test-*.xml"
+}
+
+$gitHubConditions = {
+   -not [String]::IsNullOrEmpty($GithubAccessToken) -and
+   -not [String]::IsNullOrEmpty($env:NextBuildVersion) -and
+   $env:BHBuildSystem -eq 'APPVEYOR' -and
+   $env:BHCommitMessage -match '!deploy' -and
+   $env:BHBranchName -eq "master"
+}
+
+# Synopsis: Publish module to Github Releases
+Task PublishToGitHub -If $gitHubConditions {
+    Write-Build Gray "  Creating Release ZIP..."
+
+    $caParams = @{
+        Path = "$env:BHBuildOutput\$env:BHProjectName"
+        DestinationPath = "$env:BHBuildOutput\downloads\$env:BHProjectName.zip"
+        Force = $true
+    }
+    Compress-Archive @caParams
+
+    Write-Build Gray "  Publishing Release v$env:NextBuildVersion to GitHub..."
+
+    $gitHubParams = @{
+        Name            = "PowerLFM v$env:NextBuildVersion"
+        TagName         = "v$env:NextBuildVersion"
+        ReleaseText     = "PowerLFM Release v$env:NextBuildVersion"
+        RepositoryOwner = 'camusicjunkie'
+        RepositoryName  = $env:BHProjectName
+        AccessToken     = $GithubAccessToken
+        Artifact        = "$env:BHBuildOutput\downloads\$env:BHProjectName.zip"
+    }
+    $null = Publish-GithubRelease @gitHubParams
+
+    Write-Build Gray "  Github release created."
 }
 
 # Synopsis: Empty task that's useful to test the bootstrap process
-task Noop { }
+Task Noop { }
