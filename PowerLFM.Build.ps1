@@ -243,7 +243,7 @@ Task PublishToGitHub -If $gitHubConditions GetNextVersion, Package, {
     cmd /c "git checkout $ENV:BHBranchName 2>&1"
 
     Write-Build Gray "  git tag -a v$env:NextBuildVersion -m '$releaseText'"
-    cmd /c "git tag -a v$env:NextBuildVersion -m '$releaseText' 2>&1"
+    cmd /c "git tag -a v$env:NextBuildVersion -m "PowerLFM Release v$env:NextBuildVersion" 2>&1"
 
     Write-Build Gray "  git push origin v$env:NextBuildVersion"
     cmd /c "git push origin v$env:NextBuildVersion 2>&1"
