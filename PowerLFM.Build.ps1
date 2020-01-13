@@ -168,7 +168,7 @@ Task CompileModule {
         Get-Content -Path $function.FullName -Raw
     }
 
-    Set-Content -LiteralPath $env:BHBuildModulePath -Value @($compiled, $content) -Encoding UTF8 -Force
+    Set-Content -LiteralPath $env:BHBuildModulePath -Value $compiled, $content -Encoding UTF8 -Force
 }
 
 # Synopsis: Copy test files to the build output folder
