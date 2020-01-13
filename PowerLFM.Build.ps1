@@ -238,7 +238,7 @@ $gitHubConditions = {
 
 # Synopsis: Publish module to Github Releases
 Task PublishToGitHub -If $gitHubConditions GetNextVersion, Package, {
-    # Add PAT to the git credentials store file
+    # Add GithubPAT to the git credentials store file
     Add-Content "$HOME\.git-credentials" "https://$($env:GithubPAT):x-oauth-basic@github.com`n"
 
     # Push a tag to the repository
