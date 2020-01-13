@@ -195,7 +195,7 @@ Task RunPester CopyTestFiles, {
     }
     $testResults = Invoke-Pester @ipParams
 
-    Assert ($testResults.FailedCount -eq 0) "$($testResults.FailedCount) Pester test(s) failed."
+    Equals $testResults.FailedCount 0
 }
 
 # Synopsis: Publish tests to Appveyor
