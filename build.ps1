@@ -4,7 +4,13 @@ param(
     [string] $Task = '.',
 
     # Install all modules and packages in *.depend.psd1
-    [switch] $ResolveDependency
+    [switch] $ResolveDependency,
+
+    [string]
+    $NuGetApiKey = $env:NuGetApiKey,
+
+    [string]
+    $GithubAccessToken = $env:GitHubPAT
 )
 
 Import-Module "$PSScriptRoot\BuildTools\BuildTools.psm1" -Force
@@ -12,14 +18,20 @@ Import-Module "$PSScriptRoot\BuildTools\BuildTools.psm1" -Force
 if ($ResolveDependency) {
     Write-Host "Resolving Dependencies... [this can take a moment]"
 
-    $rsParams = @{}
+    $rsParams = @{ }
     if ($PSBoundParameters.ContainsKey('Verbose')) { $rsParams.Add('Verbose', $Verbose) }
     Resolve-Dependency @rsParams
 }
 
 $Error.Clear()
 
-Invoke-Build -Task $Task -Result 'Result'
+$ibParams = @{
+    Task = $Task
+    Result = 'Result'
+}
+if ($PSBoundParameters.ContainsKey('NuGetApiKey')) { $ibParams.Add('NuGetApiKey', $NuGetApiKey) }
+if ($PSBoundParameters.ContainsKey('GithubAccessToken')) { $ibParams.Add('GithubAccessToken', $GithubAccessToken) }
+Invoke-Build @ibParams
 
 if ($Result.Error)
 {
