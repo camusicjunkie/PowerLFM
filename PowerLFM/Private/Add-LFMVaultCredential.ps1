@@ -9,11 +9,12 @@ function Add-LFMVaultCredential {
         [string] $Pass
     )
 
-    $vaultType = $vault.GetType().Name
-
-    $pwCred = Get-LFMPasswordCredential -UserName $UserName -Pass $Pass
-
     try {
+        $vault = Get-PasswordVaultClass
+        $vaultType = $vault.GetType().Name
+
+        $pwCred = Get-LFMPasswordCredential -UserName $UserName -Pass $Pass
+
         if (Test-LFMVaultCredential -UserName $UserName) {
             $message = $localizedData.vaultCredPresent -f $UserName
 

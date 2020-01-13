@@ -1,40 +1,42 @@
-[cmdletbinding()]
+[CmdletBinding()]
 param(
-    [string[]]
-    $Task = 'default'
+    [ValidateSet('.', 'Build', 'Test', 'Publish', 'Noop')]
+    [string] $Task = '.',
+
+    # Install all modules and packages in *.depend.psd1
+    [switch] $ResolveDependency,
+
+    [string]
+    $NuGetApiKey = $env:NuGetApiKey,
+
+    [string]
+    $GithubAccessToken = $env:GitHubPAT
 )
 
-$null = Get-PackageProvider -Name NuGet -ForceBootstrap
+Import-Module "$PSScriptRoot\BuildTools\BuildTools.psm1" -Force
 
-$Script:Modules = @(
-    'Pester',
-    'PSScriptAnalyzer',
-    'Psake'
-    'PSDeploy'
-    'BuildHelpers'
-)
+if ($ResolveDependency) {
+    Write-Host "Resolving Dependencies... [this can take a moment]"
 
-GitVersion.exe
-
-'Starting build...'
-'Installing module dependencies...'
-
-Install-Module -Name $Script:Modules -Force -SkipPublisherCheck
-
-Set-BuildEnvironment
-Get-BuildEnvironment
-
-if ($env:APPVEYOR) {
-    Remove-Module -Name PowerLFM -ErrorAction Ignore
-    Import-Module -Name $PSScriptRoot\PowerLFM\PowerLFM.psd1
-
-    $acParams = @{
-        APIKey = $env:LFMAPIKey
-        SessionKey = $env:LFMSessionKey
-        SharedSecret = $env:LFMSharedSecret
-    }
-    Add-LFMConfiguration @acParams
+    $rsParams = @{ }
+    if ($PSBoundParameters.ContainsKey('Verbose')) { $rsParams.Add('Verbose', $Verbose) }
+    Resolve-Dependency @rsParams
 }
 
-Invoke-Psake -buildFile "$PSScriptRoot\psake.ps1" -taskList $Task -Verbose:$VerbosePreference
-exit ([int] (-not $psake.build_success))
+$Error.Clear()
+
+$ibParams = @{
+    Task = $Task
+    Result = 'Result'
+}
+if ($PSBoundParameters.ContainsKey('NuGetApiKey')) { $ibParams.Add('NuGetApiKey', $NuGetApiKey) }
+if ($PSBoundParameters.ContainsKey('GithubAccessToken')) { $ibParams.Add('GithubAccessToken', $GithubAccessToken) }
+Invoke-Build @ibParams
+
+if ($Result.Error)
+{
+    $Error[-1].ScriptStackTrace | Out-String
+    exit 1
+}
+
+exit 0

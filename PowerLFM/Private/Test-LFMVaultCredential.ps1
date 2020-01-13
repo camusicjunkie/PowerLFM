@@ -5,6 +5,8 @@ function Test-LFMVaultCredential {
     )
 
     try {
+        $vault = Get-PasswordVaultClass
+
         if ($PSBoundParameters.ContainsKey('Resource')) { $vault.FindAllByResource($Resource) }
         elseif ($PSBoundParameters.ContainsKey('UserName')) { $vault.FindAllByUserName($UserName) }
 

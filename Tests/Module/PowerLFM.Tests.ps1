@@ -1,5 +1,5 @@
 $projectRoot = Resolve-Path "$PSScriptRoot\..\.."
-$moduleName = Split-Path $projectRoot -Leaf
+$moduleName = 'PowerLFM'
 $moduleRoot = "$projectRoot\$moduleName"
 $moduleManifestName = "$moduleName.psd1"
 $moduleManifestPath = "$moduleRoot\$moduleManifestName"
