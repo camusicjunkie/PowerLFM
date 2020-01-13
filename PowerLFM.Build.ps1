@@ -47,16 +47,16 @@ Enter-Build {
 }
 
 # Synopsis: Default task
-Task . Clean, ShowInfo, Build, Test, CleanBuild, Publish
+Task . Clean, Build, Test, Publish
 
 # Synopsis: Remove old build files
 Task Clean RemoveTestResults
 
 # Synopsis: Build a shippable release
-Task Build GenerateExternalHelp, CopyModuleFiles, CreateManifest, CompileModule
+Task Build Clean, ShowInfo, GenerateExternalHelp, CopyModuleFiles, CreateManifest, CompileModule
 
 # Synopsis: Run all tests
-Task Test Build, RunPester, PublishTestToAppveyor
+Task Test Build, RunPester, CleanBuild, PublishTestToAppveyor
 
 # Synopsis: Publish
 Task Publish Test, PublishToGitHub
