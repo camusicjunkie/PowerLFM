@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param(
-    [ValidateSet('.', 'Build', 'Test', 'Noop')]
+    [ValidateSet('.', 'Build', 'Test', 'Publish', 'Noop')]
     [string] $Task = '.',
 
     # Install all modules and packages in *.depend.psd1
