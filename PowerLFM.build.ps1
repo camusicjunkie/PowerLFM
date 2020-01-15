@@ -9,7 +9,7 @@ param(
     $NuGetApiKey,
 
     [string]
-    $GithubAccessToken = $env:GitHubPAT
+    $GithubAccessToken
 )
 
 $WarningPreference = "Continue"
@@ -265,6 +265,18 @@ Task PublishToGitHub -If $gitHubConditions GetNextVersion, Package, {
     $null = Publish-GithubRelease @gitHubParams
 
     Write-Build Gray "  Github release created."
+}
+
+$localGalleryConditions = {
+    -not [String]::IsNullOrEmpty($NuGetApiKey) -and
+    -not [String]::IsNullOrEmpty($env:NextBuildVersion) -and
+    $env:BHBuildSystem -eq 'Unknown' -and
+    $env:BHCommitMessage -match '!deploy' -and
+    $env:BHBranchName -eq "master"
+ }
+
+Task PublishToLocalGallery -If $localGalleryConditions GetNextVersion, {
+
 }
 
 # Synopsis: Empty task that's useful to test the bootstrap process
