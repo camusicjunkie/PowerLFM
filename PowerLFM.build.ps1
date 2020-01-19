@@ -59,7 +59,7 @@ Task Build Clean, ShowInfo, GenerateExternalHelp, CopyModuleFiles, CreateManifes
 Task Test Build, RunPester, CleanBuild, PublishTestToAppveyor
 
 # Synopsis: Publish
-Task Publish Test, PublishToGitHub
+Task Publish Test, PublishToGitHub, PublishToLocalGallery
 
 # Synopsis: Get the next build version
 Task GetNextVersion {
@@ -179,7 +179,7 @@ Task CopyTestFiles {
 }
 
 # Synopsis: Run all Pester tests
-Task RunPester CopyTestFiles, {
+Task RunPester -If $false CopyTestFiles, {
     Assert { Test-Path $env:BHBuildOutput -PathType Container } "Build output path must exist"
     Remove-Module $env:BHProjectName -ErrorAction SilentlyContinue
 
@@ -200,7 +200,7 @@ Task RunPester CopyTestFiles, {
 
 # Synopsis: Publish tests to Appveyor
 Task PublishTestToAppveyor -If ($env:APPVEYOR) {
-    Assert { Test-Path -Path "$env:BHBuildOutput\testResults" }
+    Assert { Test-Path -Path "$env:BHBuildOutput\testResults" } "Test results path must exist"
 
     $TestResultFiles = Get-ChildItem -Path "$env:BHBuildOutput\testResults" -Filter *.xml
     $TestResultFiles | Add-TestResultToAppveyor
@@ -225,7 +225,7 @@ Task Package {
 
 # Synopsis: Remove Pester results
 Task RemoveTestResults {
-    remove "$env:BHBuildOutput\testResults\Test-*.xml"
+    Remove "$env:BHBuildOutput\testResults\Test-*.xml"
 }
 
 $gitHubConditions = {
@@ -270,13 +270,24 @@ Task PublishToGitHub -If $gitHubConditions GetNextVersion, Package, {
 $localGalleryConditions = {
     -not [String]::IsNullOrEmpty($NuGetApiKey) -and
     -not [String]::IsNullOrEmpty($env:NextBuildVersion) -and
-    $env:BHBuildSystem -eq 'Unknown' -and
-    $env:BHCommitMessage -match '!deploy' -and
-    $env:BHBranchName -eq "master"
- }
+    $env:BHBuildSystem -eq 'Unknown'
+}
 
-Task PublishToLocalGallery -If $localGalleryConditions GetNextVersion, {
+# Synopsis: Publish module to local NuGet repository
+Task PublishToLocalGallery -If $localGalleryConditions {
+    Assert {Get-Module -Name $env:BHProjectName} "Module $env:BHProjectName is not available"
 
+    $ipdParams = @{
+        Deployment = (Get-PSDeployment -Path "PowerLFM.psdeploy.ps1")
+        Tags = 'Local'
+        Force = $true
+        DeploymentParameters = @{
+            PSGalleryModule = @{
+                ApiKey = $NuGetApiKey
+            }
+        }
+    }
+    Invoke-PSDeployment @ipdParams
 }
 
 # Synopsis: Empty task that's useful to test the bootstrap process

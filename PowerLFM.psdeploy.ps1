@@ -1,10 +1,10 @@
 Deploy PowerLFM {
     By PSGalleryModule {
-        FromSource PowerLFM
+        FromSource (Split-Path -Path $env:BHBuildModulePath)
         To Local
         Tagged Local
         WithOptions @{
-            ApiKey = $env:NuGetApiKey
+            ApiKey = $NuGetApiKey
         }
     }
 }
