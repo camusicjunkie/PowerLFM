@@ -179,7 +179,7 @@ Task CopyTestFiles {
 }
 
 # Synopsis: Run all Pester tests
-Task RunPester -If $false CopyTestFiles, {
+Task RunPester CopyTestFiles, {
     Assert { Test-Path $env:BHBuildOutput -PathType Container } "Build output path must exist"
     Remove-Module $env:BHProjectName -ErrorAction SilentlyContinue
 
