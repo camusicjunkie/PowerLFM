@@ -234,7 +234,7 @@ Task RemoveTestResults {
 }
 
 $gitHubConditions = {
-   -not [String]::IsNullOrEmpty($GithubAccessToken) -and
+   #-not [String]::IsNullOrEmpty($GithubAccessToken) -and
    -not [String]::IsNullOrEmpty($env:NextBuildVersion) -and
    $env:BHBuildSystem -eq 'APPVEYOR' -and
    $env:BHCommitMessage -match '!deploy' -and
