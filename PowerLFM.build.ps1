@@ -44,6 +44,9 @@ Enter-Build {
         Write-Build DarkGray "  $($Task.InvocationInfo.ScriptName):$($Task.InvocationInfo.ScriptLineNumber)"
         ''
     }
+
+    Write-Host 'Checking if github token is null'
+    Write-Host ($GithubAccessToken -eq $null)
 }
 
 # Synopsis: Default task
@@ -229,9 +232,6 @@ Task Package {
 Task RemoveTestResults {
     Remove "$env:BHBuildOutput\testResults\Test-*.xml"
 }
-
-Write-Host 'Checking if github token is null'
-Write-Host ($GithubAccessToken -eq $null)
 
 $gitHubConditions = {
    -not [String]::IsNullOrEmpty($GithubAccessToken) -and
