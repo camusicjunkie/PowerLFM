@@ -28,7 +28,7 @@ function ConvertTo-LFMParameter {
 
     $period = @{
         'Overall' = 'overall'
-        '7 Days' = '7days'
+        '7 Days' = '7day'
         '1 Month' = '1month'
         '3 Months' = '3month'
         '6 Months' = '6month'
