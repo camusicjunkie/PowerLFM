@@ -8,7 +8,7 @@ param(
 
     [string] $NuGetApiKey = $env:NuGetApiKey,
 
-    [string] $GithubAccessToken = $env:GithubPAT
+    [string] $GithubAccessToken
 )
 
 Import-Module "$PSScriptRoot\BuildTools\BuildTools.psm1" -Force
