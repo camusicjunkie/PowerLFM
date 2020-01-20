@@ -129,9 +129,6 @@ Task CopyModuleFiles {
 
 # Synopsis: Update the manifest of the build output module
 Task CreateManifest GetNextVersion, {
-    Remove-Module $env:BHProjectName -ErrorAction SilentlyContinue
-    Import-Module $env:BHPSModuleManifest -Force
-
     $public = @(Get-ChildItem -Path "$env:BHBuildOutput\$env:BHProjectName\Public\*.ps1" -ErrorAction SilentlyContinue)
 
     $nmmParams = @{
