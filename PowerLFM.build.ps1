@@ -46,7 +46,7 @@ Enter-Build {
     }
 
     Write-Host 'Checking if github token is null'
-    Write-Host ($GithubAccessToken -eq $null)
+    Write-Host ($null -eq $GithubAccessToken)
 }
 
 # Synopsis: Default task
