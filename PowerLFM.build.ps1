@@ -230,6 +230,8 @@ Task RemoveTestResults {
     Remove "$env:BHBuildOutput\testResults\Test-*.xml"
 }
 
+Write-Host ($GithubAccessToken -eq $null)
+
 $gitHubConditions = {
    -not [String]::IsNullOrEmpty($GithubAccessToken) -and
    -not [String]::IsNullOrEmpty($env:NextBuildVersion) -and
