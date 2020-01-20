@@ -6,11 +6,9 @@ param(
     # Install all modules and packages in *.depend.psd1
     [switch] $ResolveDependency,
 
-    [string]
-    $NuGetApiKey = $env:NuGetApiKey,
+    [string] $NuGetApiKey = $env:NuGetApiKey,
 
-    [string]
-    $GithubAccessToken = $env:GitHubPAT
+    [string] $GithubAccessToken
 )
 
 Import-Module "$PSScriptRoot\BuildTools\BuildTools.psm1" -Force

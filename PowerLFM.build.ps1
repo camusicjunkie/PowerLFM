@@ -9,7 +9,7 @@ param(
     $NuGetApiKey,
 
     [string]
-    $GithubAccessToken = $env:GitHubPAT
+    $GithubAccessToken
 )
 
 $WarningPreference = "Continue"
@@ -44,6 +44,9 @@ Enter-Build {
         Write-Build DarkGray "  $($Task.InvocationInfo.ScriptName):$($Task.InvocationInfo.ScriptLineNumber)"
         ''
     }
+
+    Write-Host 'Checking if github token is null'
+    Write-Host ($null -eq $env:GithubPAT)
 }
 
 # Synopsis: Default task
@@ -59,7 +62,12 @@ Task Build Clean, ShowInfo, GenerateExternalHelp, CopyModuleFiles, CreateManifes
 Task Test Build, RunPester, CleanBuild, PublishTestToAppveyor
 
 # Synopsis: Publish
-Task Publish Test, PublishToGitHub
+Task Publish Test, PublishToGitHub, PublishToLocalGallery
+
+# Synopsis: Import module
+Task ImportModule {
+    Import-Module $env:BHBuildManifestPath -Force
+}
 
 # Synopsis: Get the next build version
 Task GetNextVersion {
@@ -124,9 +132,6 @@ Task CopyModuleFiles {
 
 # Synopsis: Update the manifest of the build output module
 Task CreateManifest GetNextVersion, {
-    Remove-Module $env:BHProjectName -ErrorAction SilentlyContinue
-    Import-Module $env:BHPSModuleManifest -Force
-
     $public = @(Get-ChildItem -Path "$env:BHBuildOutput\$env:BHProjectName\Public\*.ps1" -ErrorAction SilentlyContinue)
 
     $nmmParams = @{
@@ -169,7 +174,7 @@ Task CompileModule {
     }
 
     Set-Content -LiteralPath $env:BHBuildModulePath -Value $compiled, $content -Encoding UTF8 -Force
-}
+}, ImportModule
 
 # Synopsis: Copy test files to the build output folder
 Task CopyTestFiles {
@@ -200,7 +205,7 @@ Task RunPester CopyTestFiles, {
 
 # Synopsis: Publish tests to Appveyor
 Task PublishTestToAppveyor -If ($env:APPVEYOR) {
-    Assert { Test-Path -Path "$env:BHBuildOutput\testResults" }
+    Assert { Test-Path -Path "$env:BHBuildOutput\testResults" } "Test results path must exist"
 
     $TestResultFiles = Get-ChildItem -Path "$env:BHBuildOutput\testResults" -Filter *.xml
     $TestResultFiles | Add-TestResultToAppveyor
@@ -225,7 +230,7 @@ Task Package {
 
 # Synopsis: Remove Pester results
 Task RemoveTestResults {
-    remove "$env:BHBuildOutput\testResults\Test-*.xml"
+    Remove "$env:BHBuildOutput\testResults\Test-*.xml"
 }
 
 $gitHubConditions = {
@@ -259,12 +264,37 @@ Task PublishToGitHub -If $gitHubConditions GetNextVersion, Package, {
         ReleaseText     = "PowerLFM Release v$env:NextBuildVersion"
         RepositoryOwner = 'camusicjunkie'
         RepositoryName  = $env:BHProjectName
-        AccessToken     = $GithubAccessToken
+        AccessToken     = $env:GithubPAT
         Artifact        = "$env:BHBuildOutput\downloads\$env:BHProjectName.zip"
     }
     $null = Publish-GithubRelease @gitHubParams
 
     Write-Build Gray "  Github release created."
+}
+
+$localGalleryConditions = {
+    -not [String]::IsNullOrEmpty($NuGetApiKey) -and
+    -not [String]::IsNullOrEmpty($env:NextBuildVersion) -and
+    (Get-Module $env:BHProjectName).Version -gt
+    (Find-Module $env:BHProjectName -Repository Local -ErrorAction SilentlyContinue).Version -and
+    $env:BHBuildSystem -eq 'Unknown'
+}
+
+# Synopsis: Publish module to local NuGet repository
+Task PublishToLocalGallery -If $localGalleryConditions {
+    Assert {Get-Module -Name $env:BHProjectName} "Module $env:BHProjectName is not available"
+
+    $ipdParams = @{
+        Deployment = (Get-PSDeployment -Path "PowerLFM.psdeploy.ps1")
+        Tags = 'Local'
+        Force = $true
+        DeploymentParameters = @{
+            PSGalleryModule = @{
+                ApiKey = $NuGetApiKey
+            }
+        }
+    }
+    Invoke-PSDeployment @ipdParams
 }
 
 # Synopsis: Empty task that's useful to test the bootstrap process
