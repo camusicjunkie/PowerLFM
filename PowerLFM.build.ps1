@@ -234,7 +234,7 @@ Task RemoveTestResults {
 }
 
 $gitHubConditions = {
-   -not [String]::IsNullOrEmpty($GithubAccessToken) -and
+   #-not [String]::IsNullOrEmpty($GithubAccessToken) -and
    -not [String]::IsNullOrEmpty($env:NextBuildVersion) -and
    $env:BHBuildSystem -eq 'APPVEYOR' -and
    $env:BHCommitMessage -match '!deploy' -and
@@ -264,7 +264,7 @@ Task PublishToGitHub -If $gitHubConditions GetNextVersion, Package, {
         ReleaseText     = "PowerLFM Release v$env:NextBuildVersion"
         RepositoryOwner = 'camusicjunkie'
         RepositoryName  = $env:BHProjectName
-        AccessToken     = $GithubAccessToken
+        AccessToken     = $env:GithubPAT
         Artifact        = "$env:BHBuildOutput\downloads\$env:BHProjectName.zip"
     }
     $null = Publish-GithubRelease @gitHubParams
