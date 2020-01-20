@@ -47,7 +47,7 @@ Enter-Build {
 }
 
 # Synopsis: Default task
-Task . Clean, Build, Test
+Task . Clean, Build, Test, Publish
 
 # Synopsis: Remove old build files
 Task Clean RemoveTestResults
