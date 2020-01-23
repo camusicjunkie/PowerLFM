@@ -10,7 +10,7 @@ environment:
     NuGetApiKey:
         secure: 3BHyJdLSWsV+oTEApA674BGFBj2nhOED/WIAfLI2d1fDvo+6UatQzar6f36CAh05
     GithubPAT:
-        secure: 27XejJF29M2hDTg6Vk8TPu93nPtYl5beYua0EU8i5Bi67ILDmA9IJAN21OdP5jW+
+        secure: 1Bo0wzOBrK82haALqyLZ0gVv2EKS9LKWtmUadLv04PM5pUG0ZL5lZYpWF4KqJikH
 
 # Allow WMF5 (i.e. PowerShellGallery functionality)
 image: Visual Studio 2017
