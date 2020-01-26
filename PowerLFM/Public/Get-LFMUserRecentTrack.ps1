@@ -70,7 +70,9 @@ function Get-LFMUserRecentTrack {
                 # parameter when a track is currently playing. Previously, if the limit
                 # was set to two there would be three objects in the output including
                 # the currently playing track.
-                if ($irm.RecentTracks.Track[0].'@attr'.NowPlaying -and $Limit -eq $i) {
+                if ($irm.RecentTracks.Track[0].'@attr'.NowPlaying -and
+                    $PSBoundParameters.ContainsKey('Limit') -and
+                    $Limit -eq $i) {
                     break
                 }
                 $i++
