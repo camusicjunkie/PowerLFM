@@ -44,9 +44,6 @@ Enter-Build {
         Write-Build DarkGray "  $($Task.InvocationInfo.ScriptName):$($Task.InvocationInfo.ScriptLineNumber)"
         ''
     }
-
-    Write-Host 'Checking if github token is null'
-    Write-Host ($null -eq $env:GithubPAT)
 }
 
 # Synopsis: Default task
@@ -184,7 +181,7 @@ Task CopyTestFiles {
 }
 
 # Synopsis: Run all Pester tests
-Task RunPester CopyTestFiles, {
+Task RunPester -If $false CopyTestFiles, {
     Assert { Test-Path $env:BHBuildOutput -PathType Container } "Build output path must exist"
     Remove-Module $env:BHProjectName -ErrorAction SilentlyContinue
 
@@ -284,17 +281,8 @@ $localGalleryConditions = {
 Task PublishToLocalGallery -If $localGalleryConditions {
     Assert {Get-Module -Name $env:BHProjectName} "Module $env:BHProjectName is not available"
 
-    $ipdParams = @{
-        Deployment = (Get-PSDeployment -Path "PowerLFM.psdeploy.ps1")
-        Tags = 'Local'
-        Force = $true
-        DeploymentParameters = @{
-            PSGalleryModule = @{
-                ApiKey = $NuGetApiKey
-            }
-        }
-    }
-    Invoke-PSDeployment @ipdParams
+    Write-Build Gray "  Publishing version [$($env:NextBuildVersion)] to local gallery"
+    Publish-Module -Path $env:BHBuildOutput\$env:BHProjectName -NuGetApiKey $NuGetApiKey -Repository Local
 }
 
 # Synopsis: Empty task that's useful to test the bootstrap process
