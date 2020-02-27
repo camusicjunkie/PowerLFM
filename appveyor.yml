@@ -24,4 +24,4 @@ build: false
 
 #Kick off the CI/CD pipeline
 build_script:
-    - ps: .\build.ps1 -ResolveDependency -GithubAccessToken $env:GithubPAT
+    - ps: .\build.ps1 -ResolveDependency -GithubAccessToken $env:GithubPAT -NuGetApiKey $env:NuGetApiKey

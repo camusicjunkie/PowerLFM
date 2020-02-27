@@ -59,7 +59,7 @@ Task Build Clean, ShowInfo, GenerateExternalHelp, CopyModuleFiles, CreateManifes
 Task Test Build, RunPester, CleanBuild, PublishTestToAppveyor
 
 # Synopsis: Publish
-Task Publish Test, PublishToGitHub, PublishToLocalGallery
+Task Publish Test, PublishToGitHub, PublishToPSGallery, PublishToLocalGallery
 
 # Synopsis: Import module
 Task ImportModule {
@@ -267,6 +267,22 @@ Task PublishToGitHub -If $gitHubConditions GetNextVersion, Package, {
     $null = Publish-GithubRelease @gitHubParams
 
     Write-Build Gray "  Github release created."
+}
+
+$psGalleryConditions = {
+    -not [String]::IsNullOrEmpty($NuGetApiKey) -and
+    -not [String]::IsNullOrEmpty($env:NextBuildVersion) -and
+    $env:BHBuildSystem -eq 'APPVEYOR' -and
+    $env:BHCommitMessage -match '!deploy' -and
+    $env:BHBranchName -eq "master"
+}
+
+# Synopsis: Publish module to the PSGallery
+Task PublishToPSGallery -If $psGalleryConditions {
+    Assert {Get-Module -Name $env:BHProjectName} "Module $env:BHProjectName is not available"
+
+    Write-Build Gray "  Publishing version [$($env:NextBuildVersion)] to PSGallery"
+    Publish-Module -Path $env:BHBuildOutput\$env:BHProjectName -NuGetApiKey $NuGetApiKey -Repository PSGallery
 }
 
 $localGalleryConditions = {
