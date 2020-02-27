@@ -6,7 +6,7 @@ param(
     # Install all modules and packages in *.depend.psd1
     [switch] $ResolveDependency,
 
-    [string] $NuGetApiKey = $env:NuGetApiKey,
+    [string] $NuGetApiKey,
 
     [string] $GithubAccessToken
 )
