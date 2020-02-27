@@ -8,7 +8,7 @@ environment:
     LFMSharedSecret:
         secure: LA1YzNyJRI0WpbZ+HAWU9uXyalNMw3y24+9FHoFeFIHWXX8tm52CBfi/nz84wYke
     NuGetApiKey:
-        secure: 3BHyJdLSWsV+oTEApA674BGFBj2nhOED/WIAfLI2d1fDvo+6UatQzar6f36CAh05
+        secure: Q9M3EY6VUzeBPpz1d8x1fgJaVx2O6H4hLmeSmSx4B/Ln/RprDEBKAErkPYArt+Dz
     GithubPAT:
         secure: 1Bo0wzOBrK82haALqyLZ0gVv2EKS9LKWtmUadLv04PM5pUG0ZL5lZYpWF4KqJikH
 
