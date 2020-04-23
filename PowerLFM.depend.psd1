@@ -21,7 +21,7 @@
         DependencyType = 'Nuget'
         Target = 'BuildOutput\downloads'
         Parameters = @{
-            DLLName = 'Gitversion'
+            Name = 'Gitversion'
         }
     }
 
