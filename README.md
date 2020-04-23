@@ -2,7 +2,7 @@
 
 [![PowerShell Gallery Version](https://img.shields.io/powershellgallery/v/PowerLFM?style=flat-square)](https://www.powershellgallery.com/packages/PowerLFM) [![AppVeyor](https://img.shields.io/appveyor/ci/camusicjunkie/PowerLFM?style=flat-square)](https://ci.appveyor.com/project/camusicjunkie/powerlfm) ![Codecov](https://img.shields.io/codecov/c/github/camusicjunkie/PowerLFM?token=b512cb85-ea8a-426f-83fd-86581799734c) [![GitHub](https://img.shields.io/github/license/camusicjunkie/PowerLFM?style=flat-square)](https://github.com/camusicjunkie/PowerLFM/blob/fix%2384/LICENSE)
 
-PowerShell module to leverage the Last.fm API. This module is still a work in progress. Breaking changes may be implemented without any prior notice.
+PowerShell module to leverage the Last.fm API.
 
 All the API documentation can be found [here](https://www.last.fm/api/intro).
 
