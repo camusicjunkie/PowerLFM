@@ -13,7 +13,7 @@ function Get-LFMArtistCorrection {
     begin {
         $apiParams = @{
             'method' = 'artist.getCorrection'
-            'api_key' = $script:LFMConfig.APIKey
+            'api_key' = $script:LFMConfig.ApiKey
             'format' = 'json'
         }
     }

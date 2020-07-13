@@ -18,7 +18,7 @@ function Set-LFMTrackLove {
     begin {
         $apiParams = @{
             'method' = 'track.love'
-            'api_key' = $script:LFMConfig.APIKey
+            'api_key' = $script:LFMConfig.ApiKey
             'sk' = $script:LFMConfig.SessionKey
         }
     }

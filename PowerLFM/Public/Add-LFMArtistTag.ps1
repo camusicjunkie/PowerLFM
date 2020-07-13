@@ -17,7 +17,7 @@ function Add-LFMArtistTag {
     begin {
         $apiParams = @{
             'method' = 'artist.addTags'
-            'api_key' = $script:LFMConfig.APIKey
+            'api_key' = $script:LFMConfig.ApiKey
             'sk' = $script:LFMConfig.SessionKey
         }
     }

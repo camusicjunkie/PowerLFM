@@ -17,7 +17,7 @@ function Get-LFMTagTopAlbum {
     begin {
         $apiParams = @{
             'method' = 'tag.getTopAlbums'
-            'api_key' = $script:LFMConfig.APIKey
+            'api_key' = $script:LFMConfig.ApiKey
             'format' = 'json'
         }
     }

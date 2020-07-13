@@ -12,7 +12,7 @@ function Get-LFMUserInfo {
     begin {
         $apiParams = @{
             'method' = 'user.GetInfo'
-            'api_key' = $script:LFMConfig.APIKey
+            'api_key' = $script:LFMConfig.ApiKey
             'sk' = $script:LFMConfig.SessionKey
             'format' = 'json'
         }
