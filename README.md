@@ -37,13 +37,13 @@ Get-LFMConfiguration
 * Run a function from PowerLFM to test the configuration.
 
 ```powershell
-Get-LFMAlbumInfo -Artist Cher -Album Believe
+Get-LFMAlbumInfo -Artist Deftones -Album Gore
 ```
 
 * Add command to a variable to inspect the nested objects further.
 
 ```powershell
-$album = Get-LFMAlbumInfo -Artist Cher -Album Believe
+$album = Get-LFMAlbumInfo -Artist Deftones -Album Gore
 $album.Tracks
 $album.Tags
 ```
