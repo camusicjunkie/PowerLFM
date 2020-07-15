@@ -13,7 +13,7 @@ function Get-LFMChartTopTrack {
 
     $apiParams = @{
         'method' = 'chart.getTopTracks'
-        'api_key' = $script:LFMConfig.APIKey
+        'api_key' = $script:LFMConfig.ApiKey
         'format' = 'json'
     }
 

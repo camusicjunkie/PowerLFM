@@ -23,7 +23,7 @@ function Get-LFMUserTopTrack {
     begin {
         $apiParams = @{
             'method' = 'user.getTopTracks'
-            'api_key' = $script:LFMConfig.APIKey
+            'api_key' = $script:LFMConfig.ApiKey
             'sk' = $script:LFMConfig.SessionKey
             'format' = 'json'
         }

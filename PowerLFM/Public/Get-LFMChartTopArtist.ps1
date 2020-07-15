@@ -13,7 +13,7 @@ function Get-LFMChartTopArtist {
 
     $apiParams = @{
         'method' = 'chart.getTopArtists'
-        'api_key' = $script:LFMConfig.APIKey
+        'api_key' = $script:LFMConfig.ApiKey
         'format' = 'json'
     }
 

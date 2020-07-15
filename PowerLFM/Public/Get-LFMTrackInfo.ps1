@@ -32,7 +32,7 @@ function Get-LFMTrackInfo {
     begin {
         $apiParams = @{
             'method' = 'track.getInfo'
-            'api_key' = $script:LFMConfig.APIKey
+            'api_key' = $script:LFMConfig.ApiKey
             'format' = 'json'
         }
     }

@@ -18,7 +18,7 @@ function Get-LFMUserWeeklyAlbumChart {
     begin {
         $apiParams = @{
             'method' = 'user.getWeeklyAlbumChart'
-            'api_key' = $script:LFMConfig.APIKey
+            'api_key' = $script:LFMConfig.ApiKey
             'sk' = $script:LFMConfig.SessionKey
             'format' = 'json'
         }

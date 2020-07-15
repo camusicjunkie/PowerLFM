@@ -30,7 +30,7 @@ function Get-LFMTrackTopTag {
     begin {
         $apiParams = @{
             'method' = 'track.getTopTags'
-            'api_key' = $script:LFMConfig.APIKey
+            'api_key' = $script:LFMConfig.ApiKey
             'format' = 'json'
         }
     }

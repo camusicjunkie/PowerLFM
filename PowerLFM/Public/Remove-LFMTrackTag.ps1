@@ -23,7 +23,7 @@ function Remove-LFMTrackTag {
     begin {
         $apiParams = @{
             'method' = 'track.removeTag'
-            'api_key' = $script:LFMConfig.APIKey
+            'api_key' = $script:LFMConfig.ApiKey
             'sk' = $script:LFMConfig.SessionKey
         }
     }

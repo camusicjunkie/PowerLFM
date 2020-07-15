@@ -23,17 +23,22 @@ InModuleScope PowerLFM {
 
     Describe 'Remove-LFMConfiguration: Unit' -Tag Unit {
 
-        Mock Remove-LFMVaultCredential
+        Mock Get-SecretInfo {
+            @{ Name = 'LFMApiKey' },
+            @{ Name = 'LFMSessionKey' },
+            @{ Name = 'LFMSharedSecret' }
+        }
+        Mock Remove-Secret
 
         Context 'Execution' {
 
-            It 'Should remove the passwords from the Windows Credential Manager' {
-                Remove-LFMConfiguration
+            It 'Should remove the passwords from the BuiltInLocalVault' {
+                Remove-LFMConfiguration -Confirm:$false
 
                 $amParams = @{
-                    CommandName = 'Remove-LFMVaultCredential'
+                    CommandName = 'Remove-Secret'
                     Exactly = $true
-                    Times = 1
+                    Times = 3
                     Scope = 'It'
                 }
                 Assert-MockCalled @amParams
@@ -43,9 +48,9 @@ InModuleScope PowerLFM {
         Context 'Output' {
 
             It 'Should throw when an error is returned in the response' {
-                Mock Remove-LFMVaultCredential { throw 'Error' }
+                Mock Remove-Secret { throw 'Error' }
 
-                { Remove-LFMConfiguration } | Should -Throw 'Error'
+                { Remove-LFMConfiguration -Confirm:$false } | Should -Throw 'Error'
             }
         }
     }

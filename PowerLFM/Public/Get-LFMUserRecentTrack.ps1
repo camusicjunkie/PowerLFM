@@ -22,7 +22,7 @@ function Get-LFMUserRecentTrack {
     begin {
         $apiParams = @{
             'method' = 'user.getRecentTracks'
-            'api_key' = $script:LFMConfig.APIKey
+            'api_key' = $script:LFMConfig.ApiKey
             'sk' = $script:LFMConfig.SessionKey
             'extended' = 1
             'format' = 'json'

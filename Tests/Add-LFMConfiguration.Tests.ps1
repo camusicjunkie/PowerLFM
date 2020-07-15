@@ -124,7 +124,8 @@ InModuleScope PowerLFM {
 
     Describe 'Add-LFMConfiguration: Unit' -Tag Unit {
 
-        Mock Add-LFMVaultCredential
+        Mock Get-Secret
+        Mock Set-Secret
 
         Context 'Input' {
 
@@ -143,16 +144,58 @@ InModuleScope PowerLFM {
 
         Context 'Execution' {
 
-            Add-LFMConfiguration -ApiKey ApiKey -SessionKey SessionKey -SharedSecret SharedSecret
+            $acParams = @{
+                ApiKey = 'ApiKey'
+                SessionKey = 'SessionKey'
+                SharedSecret = 'SharedSecret'
+                Confirm = $false
+            }
+            Add-LFMConfiguration @acParams
 
-            It 'Should add the configuration for ApiKey' {
+            It 'Should get the configuration for ApiKey' {
                 $amParams = @{
-                    CommandName     = 'Add-LFMVaultCredential'
+                    CommandName     = 'Get-Secret'
                     Exactly         = $true
                     Times           = 1
                     ParameterFilter = {
-                        $UserName -eq 'ApiKey' -and
-                        $Pass -eq 'ApiKey'
+                        $Name -eq 'LFMApiKey'
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should get the configuration for SessionKey' {
+                $amParams = @{
+                    CommandName     = 'Get-Secret'
+                    Exactly         = $true
+                    Times           = 1
+                    ParameterFilter = {
+                        $Name -eq 'LFMSessionKey'
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should get the configuration for SharedSecret' {
+                $amParams = @{
+                    CommandName     = 'Get-Secret'
+                    Exactly         = $true
+                    Times           = 1
+                    ParameterFilter = {
+                        $Name -eq 'LFMSharedSecret'
+                    }
+                }
+                Assert-MockCalled @amParams
+            }
+
+            It 'Should add the configuration for ApiKey' {
+                $amParams = @{
+                    CommandName     = 'Set-Secret'
+                    Exactly         = $true
+                    Times           = 1
+                    ParameterFilter = {
+                        $Name -eq 'LFMApiKey' -and
+                        $Secret -eq 'ApiKey'
                     }
                 }
                 Assert-MockCalled @amParams
@@ -160,12 +203,12 @@ InModuleScope PowerLFM {
 
             It 'Should add the configuration for SessionKey' {
                 $amParams = @{
-                    CommandName     = 'Add-LFMVaultCredential'
+                    CommandName     = 'Set-Secret'
                     Exactly         = $true
                     Times           = 1
                     ParameterFilter = {
-                        $UserName -eq 'SessionKey' -and
-                        $Pass -eq 'SessionKey'
+                        $Name -eq 'LFMSessionKey' -and
+                        $Secret -eq 'SessionKey'
                     }
                 }
                 Assert-MockCalled @amParams
@@ -173,12 +216,12 @@ InModuleScope PowerLFM {
 
             It 'Should add the configuration for SharedSecret' {
                 $amParams = @{
-                    CommandName     = 'Add-LFMVaultCredential'
+                    CommandName     = 'Set-Secret'
                     Exactly         = $true
                     Times           = 1
                     ParameterFilter = {
-                        $UserName -eq 'SharedSecret' -and
-                        $Pass -eq 'SharedSecret'
+                        $Name -eq 'LFMSharedSecret' -and
+                        $Secret -eq 'SharedSecret'
                     }
                 }
                 Assert-MockCalled @amParams
@@ -192,9 +235,10 @@ InModuleScope PowerLFM {
                     ApiKey = 'ApiKey'
                     SessionKey = 'SessionKey'
                     SharedSecret = 'SharedSecret'
+                    Confirm = $false
                 }
 
-                Mock Add-LFMVaultCredential { throw 'Error' }
+                Mock Set-Secret { throw 'Error' }
 
                 { Add-LFMConfiguration @acParams } | Should -Throw 'Error'
             }

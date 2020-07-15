@@ -25,7 +25,7 @@ function Get-LFMArtistInfo {
     begin {
         $apiParams = @{
             'method' = 'artist.getInfo'
-            'api_key' = $script:LFMConfig.APIKey
+            'api_key' = $script:LFMConfig.ApiKey
             'format' = 'json'
         }
     }

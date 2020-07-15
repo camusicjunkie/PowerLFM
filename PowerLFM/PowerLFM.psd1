@@ -33,7 +33,7 @@ Copyright = '(c) 2018 John Steele. All rights reserved.'
 Description = 'Module to leverage the Last.fm API'
 
 # Minimum version of the Windows PowerShell engine required by this module
-# PowerShellVersion = ''
+PowerShellVersion = '5.1'
 
 # Name of the Windows PowerShell host required by this module
 # PowerShellHostName = ''
@@ -51,7 +51,9 @@ Description = 'Module to leverage the Last.fm API'
 # ProcessorArchitecture = ''
 
 # Modules that must be imported into the global environment prior to importing this module
-# RequiredModules = @()
+RequiredModules = @(
+    @{ModuleName = 'Microsoft.Powershell.SecretManagement'; ModuleVersion = '0.2.1'}
+)
 
 # Assemblies that must be loaded prior to importing this module
 RequiredAssemblies = @('bin\Newtonsoft.Json.dll')
