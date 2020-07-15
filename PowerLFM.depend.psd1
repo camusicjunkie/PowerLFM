@@ -11,7 +11,13 @@
     PSScriptAnalyzer = 'latest'
     PlatyPS = 'latest'
     PSDeploy = 'latest'
-    'Microsoft.PowerShell.SecretManagement' = 'latest'
+
+    'Microsoft.PowerShell.SecretManagement' = @{
+        Version = 'latest'
+        Parameters = @{
+            AllowPrerelease = $true
+        }
+    }
 
     'Newtonsoft.Json' = @{
         DependencyType = 'Nuget'
