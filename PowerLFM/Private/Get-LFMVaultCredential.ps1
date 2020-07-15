@@ -15,7 +15,7 @@ function Get-LFMVaultCredential {
         else { $vault.FindAllByResource($module) }
     }
     catch {
-        $errorMessage = "Could not retrieve credentials for $module. Run Add-LFMConfiguration with proper keys."
+        $errorMessage = $localizedData.errorCredentials -f $module
 
         $PSCmdlet.ThrowTerminatingError(
             [ErrorRecord]::new(
