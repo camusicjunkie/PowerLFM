@@ -224,8 +224,12 @@ Task CleanBuild CompileModule, {
 }
 
 # Synopsis: Create a ZIP file from this build
-Task Package RemoveModule, {
+Task Package {
     Write-Build Gray "  Creating Release ZIP..."
+
+    if ($env:APPVEYOR) {
+        handle.exe -a -u 'C:\projects\powerlfm\BuildOutput\PowerLFM\lib\Microsoft.PowerShell.SecretManagement\0.2.1\Microsoft.PowerShell.SecretManagement.dll' -nobanner
+    }
 
     $caParams = @{
         Path = "$env:BHBuildOutput\$env:BHProjectName"
@@ -233,7 +237,7 @@ Task Package RemoveModule, {
         Force = $true
     }
     Compress-Archive @caParams
-}, ImportModule
+}
 
 # Synopsis: Remove Pester results
 Task RemoveTestResults {
