@@ -59,7 +59,7 @@ Task Build Clean, ShowInfo, GenerateExternalHelp, CopyModuleFiles, CreateManifes
 Task Test Build, RunPester, CleanBuild, PublishTestToAppveyor
 
 # Synopsis: Publish
-Task Publish Test, PublishToGitHub, PublishToPSGallery, PublishToLocalGallery
+Task Publish Test, Package, PublishToGitHub, PublishToPSGallery, PublishToLocalGallery
 
 # Synopsis: Import module
 Task ImportModule {
