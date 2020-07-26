@@ -4,7 +4,6 @@ Import-Module "$PSScriptRoot\lib\Microsoft.PowerShell.SecretManagement"
 #endregion Init
 
 #region Variables
-New-Variable -Name module -Value 'PowerLFM'
 New-Variable -Name baseUrl -Value 'https://ws.audioscrobbler.com/2.0'
 #endregion Variables
 
