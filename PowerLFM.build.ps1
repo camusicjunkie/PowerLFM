@@ -61,9 +61,14 @@ Task Test Build, RunPester, CleanBuild, PublishTestToAppveyor
 # Synopsis: Publish
 Task Publish Test, PublishToGitHub, PublishToPSGallery, PublishToLocalGallery
 
-# Synopsis: Remove module dependencies
+# Synopsis: Import module
+Task ImportModule {
+    Import-Module $env:BHBuildManifestPath -Force
+}
+
+# Synopsis: Remove module
 Task RemoveModule {
-    Remove-Module -Name Microsoft.PowerShell.SecretManagement -Force
+    Remove-Module $env:BHProjectName -Force
 }
 
 # Synopsis: Get the next build version
@@ -228,7 +233,7 @@ Task Package RemoveModule, {
         Force = $true
     }
     Compress-Archive @caParams
-}
+}, ImportModule
 
 # Synopsis: Remove Pester results
 Task RemoveTestResults {
