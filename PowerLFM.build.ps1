@@ -216,10 +216,18 @@ Task CleanBuild CompileModule, {
 
 # Synopsis: Create a ZIP file from this build
 Task Package {
+    $ciParams = @{
+        Path = "$env:BHBuildOutput\$env:BHProjectName"
+        Destination = "$env:BHBuildOutput\downloads\$env:BHProjectName"
+        Recurse = $true
+        Force = $true
+    }
+    Copy-Item @ciParams
+
     Write-Build Gray "  Creating Release ZIP..."
 
     $caParams = @{
-        Path = "$env:BHBuildOutput\$env:BHProjectName"
+        Path = "$env:BHBuildOutput\downloads\$env:BHProjectName"
         DestinationPath = "$env:BHBuildOutput\downloads\$env:BHProjectName.zip"
         Force = $true
     }
