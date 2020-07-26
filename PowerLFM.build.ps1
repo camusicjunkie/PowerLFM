@@ -217,6 +217,8 @@ Task CleanBuild CompileModule, {
 Task Package {
     Write-Build Gray "  Creating Release ZIP..."
 
+    Get-Module | Remove-Module
+
     $caParams = @{
         Path = "$env:BHBuildOutput\$env:BHProjectName"
         DestinationPath = "$env:BHBuildOutput\downloads\$env:BHProjectName.zip"
