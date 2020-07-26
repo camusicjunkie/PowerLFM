@@ -113,7 +113,6 @@ Task GenerateExternalHelp {
 # Synopsis: Copy module files to the build output folder
 Task CopyModuleFiles {
     # Setup
-    $null = New-Item -Path "$env:BHBuildOutput\$env:BHProjectName\bin" -ItemType Directory -Force
     $null = New-Item -Path "$env:BHBuildOutput\$env:BHProjectName\lib" -ItemType Directory -Force
 
     # Copy module
@@ -143,7 +142,7 @@ Task CreateManifest GetNextVersion, {
         ModuleVersion      = $env:NextBuildVersion
         Author             = 'John Steele'
         Description        = 'Module to leverage the Last.fm API'
-        RequiredAssemblies = 'bin\Newtonsoft.Json.dll'
+        RequiredAssemblies = 'lib\Newtonsoft.Json.dll'
         FunctionsToExport  = $public.BaseName
         CmdletsToExport    = @()
         AliasesToExport    = @()
