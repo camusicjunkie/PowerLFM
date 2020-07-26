@@ -105,7 +105,7 @@ AliasesToExport = @()
 # DscResourcesToExport = @()
 
 # List of all modules packaged with this module
-#ModuleList = @('lib\Microsoft.PowerShell.SecretManagement\0.2.1\Microsoft.PowerShell.SecretManagement.dll')
+# ModuleList = @()
 
 # List of all files packaged with this module
 # FileList = @()
