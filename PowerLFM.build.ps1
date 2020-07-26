@@ -61,11 +61,6 @@ Task Test Build, RunPester, CleanBuild, PublishTestToAppveyor
 # Synopsis: Publish
 Task Publish Test, PublishToGitHub, PublishToPSGallery, PublishToLocalGallery
 
-# Synopsis: Import module
-Task ImportModule {
-    Import-Module $env:BHBuildManifestPath -Force
-}
-
 # Synopsis: Get the next build version
 Task GetNextVersion {
     Use "$env:BHBuildOutput\downloads\GitVersion.CommandLine\tools" gitversion
@@ -143,6 +138,7 @@ Task CreateManifest GetNextVersion, {
         Author             = 'John Steele'
         Description        = 'Module to leverage the Last.fm API'
         RequiredAssemblies = 'lib\Newtonsoft.Json.dll'
+        NestedModules      = 'lib\Microsoft.PowerShell.SecretManagement\0.2.1\Microsoft.PowerShell.SecretManagement.dll'
         FunctionsToExport  = $public.BaseName
         CmdletsToExport    = @()
         AliasesToExport    = @()
@@ -176,7 +172,7 @@ Task CompileModule {
     }
 
     Set-Content -LiteralPath $env:BHBuildModulePath -Value $compiled, $content -Encoding UTF8 -Force
-}, ImportModule
+}
 
 # Synopsis: Copy test files to the build output folder
 Task CopyTestFiles {
@@ -220,10 +216,18 @@ Task CleanBuild CompileModule, {
 
 # Synopsis: Create a ZIP file from this build
 Task Package {
+    $ciParams = @{
+        Path = "$env:BHBuildOutput\$env:BHProjectName"
+        Destination = "$env:BHBuildOutput\downloads\$env:BHProjectName"
+        Recurse = $true
+        Force = $true
+    }
+    Copy-Item @ciParams
+
     Write-Build Gray "  Creating Release ZIP..."
 
     $caParams = @{
-        Path = "$env:BHBuildOutput\$env:BHProjectName"
+        Path = "$env:BHBuildOutput\downloads\$env:BHProjectName"
         DestinationPath = "$env:BHBuildOutput\downloads\$env:BHProjectName.zip"
         Force = $true
     }
