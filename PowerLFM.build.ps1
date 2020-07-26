@@ -61,6 +61,11 @@ Task Test Build, RunPester, CleanBuild, PublishTestToAppveyor
 # Synopsis: Publish
 Task Publish Test, PublishToGitHub, PublishToPSGallery, PublishToLocalGallery
 
+# Synopsis: Remove module dependencies
+Task RemoveModule {
+    Remove-Module -Name Microsoft.PowerShell.SecretManagement -Force
+}
+
 # Synopsis: Get the next build version
 Task GetNextVersion {
     Use "$env:BHBuildOutput\downloads\GitVersion.CommandLine\tools" gitversion
@@ -214,10 +219,8 @@ Task CleanBuild CompileModule, {
 }
 
 # Synopsis: Create a ZIP file from this build
-Task Package {
+Task Package RemoveModule, {
     Write-Build Gray "  Creating Release ZIP..."
-
-    Get-Module | Remove-Module
 
     $caParams = @{
         Path = "$env:BHBuildOutput\$env:BHProjectName"
