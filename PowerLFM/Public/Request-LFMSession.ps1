@@ -23,7 +23,7 @@ function Request-LFMSession {
     process {
         $apiParams = @{
             'method' = 'auth.getSession'
-            'api_key' = $APIKey
+            'api_key' = $ApiKey
             'token' = $Token
             'format' = 'json'
         }

@@ -1,6 +1,7 @@
 /BuildOutput/
 /output/
 [Bb]in/
+[Ll]ib/
 
 # VSCode directories that are not at the repository root
 .vscode/
