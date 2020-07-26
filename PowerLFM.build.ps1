@@ -61,11 +61,6 @@ Task Test Build, RunPester, CleanBuild, PublishTestToAppveyor
 # Synopsis: Publish
 Task Publish Test, PublishToGitHub, PublishToPSGallery, PublishToLocalGallery
 
-# Synopsis: Import module
-Task ImportModule {
-    Import-Module $env:BHBuildManifestPath -Force
-}
-
 # Synopsis: Get the next build version
 Task GetNextVersion {
     Use "$env:BHBuildOutput\downloads\GitVersion.CommandLine\tools" gitversion
@@ -176,7 +171,7 @@ Task CompileModule {
     }
 
     Set-Content -LiteralPath $env:BHBuildModulePath -Value $compiled, $content -Encoding UTF8 -Force
-}, ImportModule
+}
 
 # Synopsis: Copy test files to the build output folder
 Task CopyTestFiles {
