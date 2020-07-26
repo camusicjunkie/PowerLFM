@@ -1,6 +1,5 @@
 #region Init
 using namespace System.Management.Automation
-Import-Module "$PSScriptRoot\lib\Microsoft.PowerShell.SecretManagement"
 #endregion Init
 
 #region Variables

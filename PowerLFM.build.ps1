@@ -148,6 +148,7 @@ Task CreateManifest GetNextVersion, {
         Author             = 'John Steele'
         Description        = 'Module to leverage the Last.fm API'
         RequiredAssemblies = 'lib\Newtonsoft.Json.dll'
+        NestedModules      = 'lib\Microsoft.PowerShell.SecretManagement\0.2.1\Microsoft.PowerShell.SecretManagement.dll'
         FunctionsToExport  = $public.BaseName
         CmdletsToExport    = @()
         AliasesToExport    = @()
@@ -225,14 +226,10 @@ Task CleanBuild CompileModule, {
 
 # Synopsis: Create a ZIP file from this build
 Task Package {
-    Write-Build Gray "  Creating Release ZIP..."
-
-    if ($env:APPVEYOR) {
-        handle.exe -a -u 'C:\projects\powerlfm\BuildOutput\PowerLFM\lib\Microsoft.PowerShell.SecretManagement\0.2.1\Microsoft.PowerShell.SecretManagement.dll' -nobanner
-    }
+    Copy-Item -Path "$env:BHBuildOutput\$env:BHProjectName" -Destination "$env:BHBuildOutput\downloads" -Recurse -Force
 
     $caParams = @{
-        Path = "$env:BHBuildOutput\$env:BHProjectName"
+        Path = "$env:BHBuildOutput\downloads\$env:BHProjectName"
         DestinationPath = "$env:BHBuildOutput\downloads\$env:BHProjectName.zip"
         Force = $true
     }
