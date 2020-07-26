@@ -59,17 +59,7 @@ Task Build Clean, ShowInfo, GenerateExternalHelp, CopyModuleFiles, CreateManifes
 Task Test Build, RunPester, CleanBuild, PublishTestToAppveyor
 
 # Synopsis: Publish
-Task Publish Test, Package, PublishToGitHub, PublishToPSGallery, PublishToLocalGallery
-
-# Synopsis: Import module
-Task ImportModule {
-    Import-Module $env:BHBuildManifestPath -Force
-}
-
-# Synopsis: Remove module
-Task RemoveModule {
-    Remove-Module $env:BHProjectName -Force
-}
+Task Publish Test, PublishToGitHub, PublishToPSGallery, PublishToLocalGallery
 
 # Synopsis: Get the next build version
 Task GetNextVersion {
@@ -226,10 +216,10 @@ Task CleanBuild CompileModule, {
 
 # Synopsis: Create a ZIP file from this build
 Task Package {
-    Copy-Item -Path "$env:BHBuildOutput\$env:BHProjectName" -Destination "$env:BHBuildOutput\downloads" -Recurse -Force
+    Write-Build Gray "  Creating Release ZIP..."
 
     $caParams = @{
-        Path = "$env:BHBuildOutput\downloads\$env:BHProjectName"
+        Path = "$env:BHBuildOutput\$env:BHProjectName"
         DestinationPath = "$env:BHBuildOutput\downloads\$env:BHProjectName.zip"
         Force = $true
     }
