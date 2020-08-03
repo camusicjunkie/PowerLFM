@@ -1,12 +1,11 @@
 BeforeAll {
-    Remove-Module -Name PowerLFM -ErrorAction Ignore
-    Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
+    Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1 -Force
 }
 
 Describe 'Get-LFMAlbumInfo: Interface' -Tag Interface {
 
     BeforeAll {
-        $command = (Get-Command -Name 'Get-LFMAlbumInfo')
+        $command = Get-Command -Name 'Get-LFMAlbumInfo'
     }
 
     It 'CmdletBinding should be declared' {
@@ -446,7 +445,6 @@ Describe 'Get-LFMAlbumInfo: Unit' -Tag Unit {
                 ModuleName      = 'PowerLFM'
                 Exactly         = $true
                 Times           = 1
-                Scope           = 'It'
                 ParameterFilter = {
                     $Uri -like 'https://ws.audioscrobbler.com/2.0*'
                 }
