@@ -284,8 +284,12 @@ Describe 'Get-LFMAlbumTopTag: Unit' -Tag Unit {
 
     Context 'Output' {
 
+        #region Discovery
+
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMAlbumTopTag'.AlbumTopTag
+
+        #endregion Discovery
 
         BeforeAll {
             $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json

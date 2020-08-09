@@ -354,8 +354,12 @@ Describe 'Get-LFMAlbumTag: Unit' -Tag Unit {
 
     Context 'Output' {
 
+        #region Discovery
+
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMAlbumTag'.AlbumTag
+
+        #endregion Discovery
 
         BeforeAll {
             $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
@@ -392,7 +396,6 @@ Describe 'Get-LFMAlbumTag: Unit' -Tag Unit {
             $amParams = @{
                 CommandName     = 'Invoke-LFMApiUri'
                 ModuleName      = 'PowerLFM'
-                Scope           = 'It'
                 Exactly         = $true
                 Times           = 1
                 ParameterFilter = {
