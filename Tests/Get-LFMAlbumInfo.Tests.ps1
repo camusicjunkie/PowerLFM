@@ -291,7 +291,17 @@ Describe 'Get-LFMAlbumInfo: Interface' -Tag Interface {
 
 Describe 'Get-LFMAlbumInfo: Unit' -Tag Unit {
 
+    #region Discovery
+
+    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+    $contextMock = $mocks.'Get-LFMAlbumInfo'.AlbumInfo
+
+    #endregion Discovery
+
     BeforeAll {
+        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+        $contextMock = $mocks.'Get-LFMAlbumInfo'.AlbumInfo
+
         Mock Remove-CommonParameter {
             [hashtable] @{
                 Album  = 'Album'
@@ -355,17 +365,7 @@ Describe 'Get-LFMAlbumInfo: Unit' -Tag Unit {
 
     Context 'Output' {
 
-        #region Discovery
-
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMAlbumInfo'.AlbumInfo
-
-        #endregion Discovery
-
         BeforeAll {
-            $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-            $contextMock = $mocks.'Get-LFMAlbumInfo'.AlbumInfo
-
             $output = Get-LFMAlbumInfo -Album Album -Artist Artist
         }
 

@@ -262,7 +262,7 @@ Describe 'Add-LFMConfiguration: Unit' -Tag Unit {
                 Confirm      = $false
             }
 
-            Mock Set-Secret { throw 'Error' } -ModuleName 'PowerLFM'
+            Mock Set-Secret { throw 'Error' }
 
             { Add-LFMConfiguration @acParams } | Should -Throw 'Error'
         }

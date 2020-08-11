@@ -28,13 +28,13 @@ Describe 'Get-LFMArtistTopTag: Interface' -Tag Interface {
         }
 
         BeforeAll {
-            $parameterSet = $command.ParameterSets | Where-Object Name -eq artist
+            $parameterSet = $command.ParameterSets | Where-Object Name -EQ artist
         }
 
         Context 'Parameter [Artist] attribute validation' {
 
             BeforeAll {
-                $parameter = $parameterSet.Parameters | Where-Object Name -eq Artist
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ Artist
             }
 
             It 'Should not be null or empty' {
@@ -69,7 +69,7 @@ Describe 'Get-LFMArtistTopTag: Interface' -Tag Interface {
         Context 'Parameter [AutoCorrect] attribute validation' {
 
             BeforeAll {
-                $parameter = $parameterSet.Parameters | Where-Object Name -eq AutoCorrect
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ AutoCorrect
             }
 
             It 'Should not be null or empty' {
@@ -109,13 +109,13 @@ Describe 'Get-LFMArtistTopTag: Interface' -Tag Interface {
         }
 
         BeforeAll {
-            $parameterSet = $command.ParameterSets | Where-Object Name -eq id
+            $parameterSet = $command.ParameterSets | Where-Object Name -EQ id
         }
 
         Context 'Parameter [Id] attribute validation' {
 
             BeforeAll {
-                $parameter = $parameterSet.Parameters | Where-Object Name -eq Id
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ Id
             }
 
             It 'Should not be null or empty' {
@@ -150,7 +150,7 @@ Describe 'Get-LFMArtistTopTag: Interface' -Tag Interface {
         Context 'Parameter [AutoCorrect] attribute validation' {
 
             BeforeAll {
-                $parameter = $parameterSet.Parameters | Where-Object Name -eq AutoCorrect
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ AutoCorrect
             }
 
             It 'Should not be null or empty' {
@@ -186,7 +186,17 @@ Describe 'Get-LFMArtistTopTag: Interface' -Tag Interface {
 
 Describe 'Get-LFMArtistTopTag: Unit' -Tag Unit {
 
+    #region Discovery
+
+    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+    $contextMock = $mocks.'Get-LFMArtistTopTag'.ArtistTopTag
+
+    #endregion Discovery
+
     BeforeAll {
+        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+        $contextMock = $mocks.'Get-LFMArtistTopTag'.ArtistTopTag
+
         Mock Remove-CommonParameter {
             [hashtable] @{
                 Artist = 'Artist'
@@ -249,17 +259,7 @@ Describe 'Get-LFMArtistTopTag: Unit' -Tag Unit {
 
     Context 'Output' {
 
-        #region Discovery
-
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMArtistTopTag'.ArtistTopTag
-
-        #endregion Discovery
-
         BeforeAll {
-            $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-            $contextMock = $mocks.'Get-LFMArtistTopTag'.ArtistTopTag
-
             $output = Get-LFMArtistTopTag -Artist Artist
         }
 

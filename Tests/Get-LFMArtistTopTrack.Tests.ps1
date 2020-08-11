@@ -28,13 +28,13 @@ Describe 'Get-LFMArtistTopTrack: Interface' -Tag Interface {
         }
 
         BeforeAll {
-            $parameterSet = $command.ParameterSets | Where-Object Name -eq artist
+            $parameterSet = $command.ParameterSets | Where-Object Name -EQ artist
         }
 
         Context 'Parameter [Artist] attribute validation' {
 
             BeforeAll {
-                $parameter = $parameterSet.Parameters | Where-Object Name -eq Artist
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ Artist
             }
 
             It 'Should not be null or empty' {
@@ -69,7 +69,7 @@ Describe 'Get-LFMArtistTopTrack: Interface' -Tag Interface {
         Context 'Parameter [Limit] attribute validation' {
 
             BeforeAll {
-                $parameter = $parameterSet.Parameters | Where-Object Name -eq Limit
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ Limit
             }
 
             It 'Should not be null or empty' {
@@ -104,7 +104,7 @@ Describe 'Get-LFMArtistTopTrack: Interface' -Tag Interface {
         Context 'Parameter [Page] attribute validation' {
 
             BeforeAll {
-                $parameter = $parameterSet.Parameters | Where-Object Name -eq Page
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ Page
             }
 
             It 'Should not be null or empty' {
@@ -139,7 +139,7 @@ Describe 'Get-LFMArtistTopTrack: Interface' -Tag Interface {
         Context 'Parameter [AutoCorrect] attribute validation' {
 
             BeforeAll {
-                $parameter = $parameterSet.Parameters | Where-Object Name -eq AutoCorrect
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ AutoCorrect
             }
 
             It 'Should not be null or empty' {
@@ -179,13 +179,13 @@ Describe 'Get-LFMArtistTopTrack: Interface' -Tag Interface {
         }
 
         BeforeAll {
-            $parameterSet = $command.ParameterSets | Where-Object Name -eq id
+            $parameterSet = $command.ParameterSets | Where-Object Name -EQ id
         }
 
         Context 'Parameter [Id] attribute validation' {
 
             BeforeAll {
-                $parameter = $parameterSet.Parameters | Where-Object Name -eq Id
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ Id
             }
 
             It 'Should not be null or empty' {
@@ -220,7 +220,7 @@ Describe 'Get-LFMArtistTopTrack: Interface' -Tag Interface {
         Context 'Parameter [Limit] attribute validation' {
 
             BeforeAll {
-                $parameter = $parameterSet.Parameters | Where-Object Name -eq Limit
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ Limit
             }
 
             It 'Should not be null or empty' {
@@ -255,7 +255,7 @@ Describe 'Get-LFMArtistTopTrack: Interface' -Tag Interface {
         Context 'Parameter [Page] attribute validation' {
 
             BeforeAll {
-                $parameter = $parameterSet.Parameters | Where-Object Name -eq Page
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ Page
             }
 
             It 'Should not be null or empty' {
@@ -290,7 +290,7 @@ Describe 'Get-LFMArtistTopTrack: Interface' -Tag Interface {
         Context 'Parameter [AutoCorrect] attribute validation' {
 
             BeforeAll {
-                $parameter = $parameterSet.Parameters | Where-Object Name -eq AutoCorrect
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ AutoCorrect
             }
 
             It 'Should not be null or empty' {
@@ -326,7 +326,17 @@ Describe 'Get-LFMArtistTopTrack: Interface' -Tag Interface {
 
 Describe 'Get-LFMArtistTopTrack: Unit' -Tag Unit {
 
+    #region Discovery
+
+    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+    $contextMock = $mocks.'Get-LFMArtistTopTrack'.ArtistTopTrack
+
+    #endregion Discovery
+
     BeforeAll {
+        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+        $contextMock = $mocks.'Get-LFMArtistTopTrack'.ArtistTopTrack
+
         Mock Remove-CommonParameter {
             [hashtable] @{
                 Artist = 'Artist'
@@ -389,17 +399,7 @@ Describe 'Get-LFMArtistTopTrack: Unit' -Tag Unit {
 
     Context 'Output' {
 
-        #region Discovery
-
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMArtistTopTrack'.ArtistTopTrack
-
-        #endregion Discovery
-
         BeforeAll {
-            $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-            $contextMock = $mocks.'Get-LFMArtistTopTrack'.ArtistTopTrack
-
             $output = Get-LFMArtistTopTrack -Artist Artist
         }
 

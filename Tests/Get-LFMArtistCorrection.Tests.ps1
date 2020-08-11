@@ -24,13 +24,13 @@ Describe 'Get-LFMArtistCorrection: Interface' -Tag Interface {
         }
 
         BeforeAll {
-            $parameterSet = $command.ParameterSets | Where-Object Name -eq __AllParameterSets
+            $parameterSet = $command.ParameterSets | Where-Object Name -EQ __AllParameterSets
         }
 
         Context 'Parameter [Artist] attribute validation' {
 
             BeforeAll {
-                $parameter = $parameterSet.Parameters | Where-Object Name -eq Artist
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ Artist
             }
 
             It 'Should not be null or empty' {
@@ -66,7 +66,17 @@ Describe 'Get-LFMArtistCorrection: Interface' -Tag Interface {
 
 Describe 'Get-LFMArtistCorrection: Unit' -Tag Unit {
 
+    #region Discovery
+
+    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+    $contextMock = $mocks.'Get-LFMArtistCorrection'.ArtistCorrection
+
+    #endregion Discovery
+
     BeforeAll {
+        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+        $contextMock = $mocks.'Get-LFMArtistCorrection'.ArtistCorrection
+
         Mock Remove-CommonParameter {
             [hashtable] @{
                 Artist = 'Artist'
@@ -129,17 +139,7 @@ Describe 'Get-LFMArtistCorrection: Unit' -Tag Unit {
 
     Context 'Output' {
 
-        #region Discovery
-
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMArtistCorrection'.ArtistCorrection
-
-        #endregion Discovery
-
         BeforeAll {
-            $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-            $contextMock = $mocks.'Get-LFMArtistCorrection'.ArtistCorrection
-
             $output = Get-LFMArtistCorrection -Artist Artist
         }
 

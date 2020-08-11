@@ -24,13 +24,13 @@ Describe 'Get-LFMChartTopArtist: Interface' -Tag Interface {
         }
 
         BeforeAll {
-            $parameterSet = $command.ParameterSets | Where-Object Name -eq __AllParameterSets
+            $parameterSet = $command.ParameterSets | Where-Object Name -EQ __AllParameterSets
         }
 
         Context 'Parameter [Limit] attribute validation' {
 
             BeforeAll {
-                $parameter = $parameterSet.Parameters | Where-Object Name -eq Limit
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ Limit
             }
 
             It 'Should not be null or empty' {
@@ -65,7 +65,7 @@ Describe 'Get-LFMChartTopArtist: Interface' -Tag Interface {
         Context 'Parameter [Page] attribute validation' {
 
             BeforeAll {
-                $parameter = $parameterSet.Parameters | Where-Object Name -eq Page
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ Page
             }
 
             It 'Should not be null or empty' {
@@ -101,7 +101,17 @@ Describe 'Get-LFMChartTopArtist: Interface' -Tag Interface {
 
 Describe 'Get-LFMChartTopArtist: Unit' -Tag Unit {
 
+    #region Discovery
+
+    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+    $contextMock = $mocks.'Get-LFMChartTopArtist'.ChartTopArtist
+
+    #endregion Discovery
+
     BeforeAll {
+        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+        $contextMock = $mocks.'Get-LFMChartTopArtist'.ChartTopArtist
+
         Mock Remove-CommonParameter {
             [hashtable] @{ }
         } -ModuleName 'PowerLFM'
@@ -162,17 +172,7 @@ Describe 'Get-LFMChartTopArtist: Unit' -Tag Unit {
 
     Context 'Output' {
 
-        #region Discovery
-
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMChartTopArtist'.ChartTopArtist
-
-        #endregion Discovery
-
         BeforeAll {
-            $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-            $contextMock = $mocks.'Get-LFMChartTopArtist'.ChartTopArtist
-
             $output = Get-LFMChartTopArtist
         }
 
