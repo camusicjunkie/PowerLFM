@@ -1,10 +1,12 @@
-Remove-Module -Name PowerLFM -ErrorAction Ignore
-Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
+BeforeAll {
+    Remove-Module -Name PowerLFM -ErrorAction Ignore
+    Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
+}
 
 Describe 'Get-LFMTrackTopTag: Interface' -Tag Interface {
 
     BeforeAll {
-        $script:command = (Get-Command -Name 'Get-LFMTrackTopTag')
+        $command = Get-Command -Name 'Get-LFMTrackTopTag'
     }
 
     It 'CmdletBinding should be declared' {
@@ -25,11 +27,15 @@ Describe 'Get-LFMTrackTopTag: Interface' -Tag Interface {
             $command.ParameterSets.Name | Should -Contain 'track'
         }
 
-        $parameterSet = $command.ParameterSets | Where-Object Name -eq track
+        BeforeAll {
+            $parameterSet = $command.ParameterSets | Where-Object Name -EQ track
+        }
 
         Context 'Parameter [Track] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object Name -eq Track
+            BeforeAll {
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ Track
+            }
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
@@ -62,7 +68,9 @@ Describe 'Get-LFMTrackTopTag: Interface' -Tag Interface {
 
         Context 'Parameter [Artist] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object Name -eq Artist
+            BeforeAll {
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ Artist
+            }
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
@@ -95,7 +103,9 @@ Describe 'Get-LFMTrackTopTag: Interface' -Tag Interface {
 
         Context 'Parameter [AutoCorrect] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object Name -eq AutoCorrect
+            BeforeAll {
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ AutoCorrect
+            }
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
@@ -133,11 +143,15 @@ Describe 'Get-LFMTrackTopTag: Interface' -Tag Interface {
             $command.ParameterSets.Name | Should -Contain 'id'
         }
 
-        $parameterSet = $command.ParameterSets | Where-Object Name -eq id
+        BeforeAll {
+            $parameterSet = $command.ParameterSets | Where-Object Name -EQ id
+        }
 
         Context 'Parameter [Id] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object Name -eq Id
+            BeforeAll {
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ Id
+            }
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
@@ -170,7 +184,9 @@ Describe 'Get-LFMTrackTopTag: Interface' -Tag Interface {
 
         Context 'Parameter [AutoCorrect] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object Name -eq AutoCorrect
+            BeforeAll {
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ AutoCorrect
+            }
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
@@ -203,119 +219,135 @@ Describe 'Get-LFMTrackTopTag: Interface' -Tag Interface {
     }
 }
 
-InModuleScope PowerLFM {
+Describe 'Get-LFMTrackTopTag: Unit' -Tag Unit {
+
+    #region Discovery
 
     $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
     $contextMock = $mocks.'Get-LFMTrackTopTag'.TrackTopTag
 
-    Describe 'Get-LFMTrackTopTag: Unit' -Tag Unit {
+    #endregion Discovery
+
+    BeforeAll {
+        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+        $contextMock = $mocks.'Get-LFMTrackTopTag'.TrackTopTag
 
         Mock Remove-CommonParameter {
             [hashtable] @{
-                Track = 'Track'
+                Track  = 'Track'
                 Artist = 'Artist'
             }
+        } -ModuleName 'PowerLFM'
+        Mock ConvertTo-LFMParameter -ModuleName 'PowerLFM'
+        Mock New-LFMApiQuery -ModuleName 'PowerLFM'
+        Mock Invoke-LFMApiUri { $contextMock } -ModuleName 'PowerLFM'
+    }
+
+    Context 'Input' {
+
+        It 'Should throw when track is null' {
+            { Get-LFMTrackTopTag -Track $null } | Should -Throw
         }
-        Mock ConvertTo-LFMParameter
-        Mock New-LFMApiQuery
-        Mock Invoke-LFMApiUri {$contextMock}
+    }
 
-        Context 'Input' {
+    Context 'Execution' {
 
-            It 'Should throw when track is null' {
-                {Get-LFMTrackTopTag -Track $null} | Should -Throw
+        BeforeAll {
+            Get-LFMTrackTopTag -Track Track -Artist Artist
+        }
+
+        It 'Should remove common parameters from bound parameters' {
+            $siParams = @{
+                CommandName     = 'Remove-CommonParameter'
+                ModuleName      = 'PowerLFM'
+                Scope           = 'Context'
+                Exactly         = $true
+                Times           = 1
+                ParameterFilter = {
+                    $PSBoundParameters
+                }
             }
+            Should -Invoke @siParams
         }
 
-        Context 'Execution' {
+        It 'Should convert parameters to format API expects after signing' {
+            $siParams = @{
+                CommandName = 'ConvertTo-LFMParameter'
+                ModuleName  = 'PowerLFM'
+                Scope       = 'Context'
+                Exactly     = $true
+                Times       = 1
+            }
+            Should -Invoke @siParams
+        }
 
+        It 'Should take hashtable and build a query for a uri' {
+            $siParams = @{
+                CommandName = 'New-LFMApiQuery'
+                ModuleName  = 'PowerLFM'
+                Scope       = 'Context'
+                Exactly     = $true
+                Times       = 1
+            }
+            Should -Invoke @siParams
+        }
+    }
+
+    Context 'Output' {
+
+        BeforeAll {
+            $output = Get-LFMTrackTopTag -Artist Artist -Track Track
+        }
+
+        It "Track first top tag should have name of $($contextMock.TopTags.Tag[0].Name)" {
+            $output[0].Tag | Should -Be $contextMock.TopTags.Tag[0].Name
+        }
+
+        It "Track second tag should have url of $($contextMock.TopTags.Tag[1].Url)" {
+            $output[1].Url | Should -Be $contextMock.TopTags.Tag[1].Url
+        }
+
+        It "Track first tag should have match of $($contextMock.TopTags.Tag[0].Count)" {
+            $output[0].Match | Should -Be $contextMock.TopTags.Tag[0].Count
+        }
+
+        It "Track second tag should have match of $($contextMock.TopTags.Tag[1].Count)" {
+            $output[1].Match | Should -Be $contextMock.TopTags.Tag[1].Count
+        }
+
+        It 'Track should have two tags' {
+            $output.Tag | Should -HaveCount 2
+        }
+
+        It 'Track should not have more than two tags' {
+            $output.Tag | Should -Not -BeNullOrEmpty
+            $output.Tag | Should -Not -HaveCount 3
+        }
+
+        It 'Track should have two tags when id parameter is used' {
+            $output = Get-LFMTrackTopTag -Id (New-Guid)
+            $output.Tag | Should -HaveCount 2
+        }
+
+        It 'Should call the correct Last.fm get method' {
             Get-LFMTrackTopTag -Track Track -Artist Artist
 
-            It 'Should remove common parameters from bound parameters' {
-                $amParams = @{
-                    CommandName     = 'Remove-CommonParameter'
-                    Exactly         = $true
-                    Times           = 1
-                    ParameterFilter = {
-                        $PSBoundParameters
-                    }
+            $siParams = @{
+                CommandName     = 'Invoke-LFMApiUri'
+                ModuleName      = 'PowerLFM'
+                Exactly         = $true
+                Times           = 1
+                ParameterFilter = {
+                    $Uri -like 'https://ws.audioscrobbler.com/2.0*'
                 }
-                Assert-MockCalled @amParams
             }
-
-            It 'Should convert parameters to format API expects after signing' {
-                $amParams = @{
-                    CommandName = 'ConvertTo-LFMParameter'
-                    Exactly     = $true
-                    Times       = 1
-                }
-                Assert-MockCalled @amParams
-            }
-
-            It 'Should take hashtable and build a query for a uri' {
-                $amParams = @{
-                    CommandName = 'New-LFMApiQuery'
-                    Exactly     = $true
-                    Times       = 1
-                }
-                Assert-MockCalled @amParams
-            }
+            Should -Invoke @siParams
         }
 
-        Context 'Output' {
+        It 'Should throw when an error is returned in the response' {
+            Mock Invoke-LFMApiUri { throw 'Error' } -ModuleName 'PowerLFM'
 
-            $output = Get-LFMTrackTopTag -Artist Artist -Track Track
-
-            It "Track first top tag should have name of $($contextMock.TopTags.Tag[0].Name)" {
-                $output[0].Tag | Should -Be $contextMock.TopTags.Tag[0].Name
-            }
-
-            It "Track second tag should have url of $($contextMock.TopTags.Tag[1].Url)" {
-                $output[1].Url | Should -Be $contextMock.TopTags.Tag[1].Url
-            }
-
-            It "Track first tag should have match of $($contextMock.TopTags.Tag[0].Count)" {
-                $output[0].Match | Should -Be $contextMock.TopTags.Tag[0].Count
-            }
-
-            It "Track second tag should have match of $($contextMock.TopTags.Tag[1].Count)" {
-                $output[1].Match | Should -Be $contextMock.TopTags.Tag[1].Count
-            }
-
-            It 'Track should have two tags' {
-                $output.Tag | Should -HaveCount 2
-            }
-
-            It 'Track should not have more than two tags' {
-                $output.Tag | Should -Not -BeNullOrEmpty
-                $output.Tag | Should -Not -HaveCount 3
-            }
-
-            It 'Track should have two tags when id parameter is used' {
-                $output = Get-LFMTrackTopTag -Id (New-Guid)
-                $output.Tag | Should -HaveCount 2
-            }
-
-            It 'Should call the correct Last.fm get method' {
-                Get-LFMTrackTopTag -Track Track -Artist Artist
-
-                $amParams = @{
-                    CommandName = 'Invoke-LFMApiUri'
-                    Exactly = $true
-                    Times = 1
-                    Scope = 'It'
-                    ParameterFilter = {
-                        $Uri -like 'https://ws.audioscrobbler.com/2.0*'
-                    }
-                }
-                Assert-MockCalled @amParams
-            }
-
-            It 'Should throw when an error is returned in the response' {
-                Mock Invoke-LFMApiUri { throw 'Error' }
-
-                { Get-LFMTrackTopTag -Track Track -Artist Artist } | Should -Throw 'Error'
-            }
+            { Get-LFMTrackTopTag -Track Track -Artist Artist } | Should -Throw 'Error'
         }
     }
 }

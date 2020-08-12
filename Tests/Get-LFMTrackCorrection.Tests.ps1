@@ -106,7 +106,6 @@ Describe 'Get-LFMTrackCorrection: Unit' -Tag Unit {
     $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
     $contextMock = $mocks.'Get-LFMTrackCorrection'.TrackCorrection
 
-
     #endregion Discovery
 
     BeforeAll {
