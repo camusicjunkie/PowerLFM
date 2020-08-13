@@ -1,10 +1,12 @@
-Remove-Module -Name PowerLFM -ErrorAction Ignore
-Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
+BeforeAll {
+    Remove-Module -Name PowerLFM -ErrorAction Ignore
+    Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
+}
 
 Describe 'Request-LFMToken: Interface' -Tag Interface {
 
     BeforeAll {
-        $script:command = (Get-Command -Name 'Request-LFMToken')
+        $command = Get-Command -Name 'Request-LFMToken'
     }
 
     It 'CmdletBinding should be declared' {
@@ -21,11 +23,15 @@ Describe 'Request-LFMToken: Interface' -Tag Interface {
             $command.ParameterSets.Name | Should -Contain '__AllParameterSets'
         }
 
-        $parameterSet = $command.ParameterSets | Where-Object Name -eq __AllParameterSets
+        BeforeAll {
+            $parameterSet = $command.ParameterSets | Where-Object Name -EQ __AllParameterSets
+        }
 
         Context 'Parameter [ApiKey] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object Name -eq ApiKey
+            BeforeAll {
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ ApiKey
+            }
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
@@ -58,7 +64,9 @@ Describe 'Request-LFMToken: Interface' -Tag Interface {
 
         Context 'Parameter [SharedSecret] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object Name -eq SharedSecret
+            BeforeAll {
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ SharedSecret
+            }
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
@@ -91,82 +99,98 @@ Describe 'Request-LFMToken: Interface' -Tag Interface {
     }
 }
 
-InModuleScope PowerLFM {
+Describe 'Request-LFMToken: Unit' -Tag Unit {
+
+    #region Discovery
 
     $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
     $contextMock = $mocks.'Request-LFMToken'.Token
 
-    Describe 'Request-LFMToken: Unit' -Tag Unit {
+    #endregion Discovery
+
+    BeforeAll {
+        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+        $contextMock = $mocks.'Request-LFMToken'.Token
 
         Mock Remove-CommonParameter {
             [hashtable] @{
-                ApiKey = 'ApiKey'
+                ApiKey       = 'ApiKey'
                 SharedSecret = 'SharedSecret'
             }
-        }
-        Mock Get-LFMSignature
-        Mock New-LFMApiQuery
-        Mock Show-LFMAuthWindow
-        Mock Invoke-LFMApiUri {$contextMock}
+        } -ModuleName 'PowerLFM'
+        Mock Get-LFMSignature -ModuleName 'PowerLFM'
+        Mock New-LFMApiQuery -ModuleName 'PowerLFM'
+        Mock Show-LFMAuthWindow -ModuleName 'PowerLFM'
+        Mock Invoke-LFMApiUri { $contextMock } -ModuleName 'PowerLFM'
+    }
 
-        Context 'Input' {
+    Context 'Input' {
 
-            It 'Should throw when api key is null' {
-                {Request-LFMToken -ApiKey $null} | Should -Throw
-            }
-
-            It 'Should throw when shared secret is null' {
-                {Request-LFMToken -SharedSecret $null} | Should -Throw
-            }
+        It 'Should throw when api key is null' {
+            { Request-LFMToken -ApiKey $null } | Should -Throw
         }
 
-        Context 'Execution' {
+        It 'Should throw when shared secret is null' {
+            { Request-LFMToken -SharedSecret $null } | Should -Throw
+        }
+    }
 
+    Context 'Execution' {
+
+        BeforeAll {
             Request-LFMToken -ApiKey 'ApiKey' -SharedSecret 'SharedSecret'
-
-            It 'Should remove common parameters from bound parameters' {
-                $amParams = @{
-                    CommandName     = 'Remove-CommonParameter'
-                    Exactly         = $true
-                    Times           = 1
-                    ParameterFilter = {
-                        $PSBoundParameters
-                    }
-                }
-                Assert-MockCalled @amParams
-            }
-
-            It 'Should create a signature' {
-                $amParams = @{
-                    CommandName = 'Get-LFMSignature'
-                    Exactly = $true
-                    Times = 1
-                    ParameterFilter = {
-                        $ApiKey -eq 'ApiKey' -and
-                        $SharedSecret -eq 'SharedSecret' -and
-                        $Method -eq 'auth.getToken'
-                    }
-                }
-                Assert-MockCalled @amParams
-            }
-
-            It 'Should take hashtable and build a query for a uri' {
-                $amParams = @{
-                    CommandName = 'New-LFMApiQuery'
-                    Exactly     = $true
-                    Times       = 1
-                }
-                Assert-MockCalled @amParams
-            }
         }
 
-        Context 'Output' {
-
-            $output = Request-LFMToken -ApiKey 'ApiKey' -SharedSecret 'SharedSecret'
-
-            It "Token key should have a value of $($contextMock.Token)" {
-                $output.Token | Should -Be $contextMock.Token
+        It 'Should remove common parameters from bound parameters' {
+            $siParams = @{
+                CommandName     = 'Remove-CommonParameter'
+                ModuleName      = 'PowerLFM'
+                Scope           = 'Context'
+                Exactly         = $true
+                Times           = 1
+                ParameterFilter = {
+                    $PSBoundParameters
+                }
             }
+            Should -Invoke @siParams
+        }
+
+        It 'Should create a signature' {
+            $siParams = @{
+                CommandName     = 'Get-LFMSignature'
+                ModuleName      = 'PowerLFM'
+                Scope           = 'Context'
+                Exactly         = $true
+                Times           = 1
+                ParameterFilter = {
+                    $ApiKey -eq 'ApiKey' -and
+                    $SharedSecret -eq 'SharedSecret' -and
+                    $Method -eq 'auth.getToken'
+                }
+            }
+            Should -Invoke @siParams
+        }
+
+        It 'Should take hashtable and build a query for a uri' {
+            $siParams = @{
+                CommandName = 'New-LFMApiQuery'
+                ModuleName  = 'PowerLFM'
+                Scope       = 'Context'
+                Exactly     = $true
+                Times       = 1
+            }
+            Should -Invoke @siParams
+        }
+    }
+
+    Context 'Output' {
+
+        BeforeAll {
+            $output = Request-LFMToken -ApiKey 'ApiKey' -SharedSecret 'SharedSecret'
+        }
+
+        It "Token key should have a value of $($contextMock.Token)" {
+            $output.Token | Should -Be $contextMock.Token
         }
     }
 }

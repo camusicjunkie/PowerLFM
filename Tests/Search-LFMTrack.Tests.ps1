@@ -1,10 +1,12 @@
-Remove-Module -Name PowerLFM -ErrorAction Ignore
-Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
+BeforeAll {
+    Remove-Module -Name PowerLFM -ErrorAction Ignore
+    Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
+}
 
 Describe 'Search-LFMTrack: Interface' -Tag Interface {
 
     BeforeAll {
-        $script:command = (Get-Command -Name 'Search-LFMTrack')
+        $command = Get-Command -Name 'Search-LFMTrack'
     }
 
     It 'CmdletBinding should be declared' {
@@ -21,11 +23,15 @@ Describe 'Search-LFMTrack: Interface' -Tag Interface {
             $command.ParameterSets.Name | Should -Contain '__AllParameterSets'
         }
 
-        $parameterSet = $command.ParameterSets | Where-Object Name -eq __AllParameterSets
+        BeforeAll {
+            $parameterSet = $command.ParameterSets | Where-Object Name -EQ __AllParameterSets
+        }
 
         Context 'Parameter [Track] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object Name -eq Track
+            BeforeAll {
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ Track
+            }
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
@@ -58,7 +64,9 @@ Describe 'Search-LFMTrack: Interface' -Tag Interface {
 
         Context 'Parameter [Limit] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object Name -eq Limit
+            BeforeAll {
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ Limit
+            }
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
@@ -91,7 +99,9 @@ Describe 'Search-LFMTrack: Interface' -Tag Interface {
 
         Context 'Parameter [Page] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object Name -eq Page
+            BeforeAll {
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ Page
+            }
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
@@ -124,126 +134,143 @@ Describe 'Search-LFMTrack: Interface' -Tag Interface {
     }
 }
 
-InModuleScope PowerLFM {
+Describe 'Search-LFMTrack: Unit' -Tag Unit {
+
+    #region Discovery
 
     $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
     $contextMock = $mocks.'Search-LFMTrack'.Track
 
-    Describe 'Search-LFMTrack: Unit' -Tag Unit {
+    #endregion Discovery
+
+    BeforeAll {
+        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+        $contextMock = $mocks.'Search-LFMTrack'.Track
 
         Mock Remove-CommonParameter {
             [hashtable] @{
                 Track = 'Track'
             }
-        }
-        Mock ConvertTo-LFMParameter
-        Mock New-LFMApiQuery
-        Mock Invoke-LFMApiUri {$contextMock}
+        } -ModuleName 'PowerLFM'
+        Mock ConvertTo-LFMParameter -ModuleName 'PowerLFM'
+        Mock New-LFMApiQuery -ModuleName 'PowerLFM'
+        Mock Invoke-LFMApiUri { $contextMock } -ModuleName 'PowerLFM'
+    }
 
-        Context 'Input' {
+    Context 'Input' {
 
-            It 'Should throw when track is null' {
-                {Search-LFMTrack -Track $null} | Should -Throw
-            }
-
-            It 'Should throw when limit has a value of 51' {
-                {Search-LFMTrack -Track Track -Limit 51} | Should -Throw
-            }
-
-            It 'Should not throw when limit has a value of 1 to 50' {
-                {Search-LFMTrack -Track Track -Limit 50} | Should -Not -Throw
-            }
+        It 'Should throw when track is null' {
+            { Search-LFMTrack -Track $null } | Should -Throw
         }
 
-        Context 'Execution' {
+        It 'Should throw when limit has a value of 51' {
+            { Search-LFMTrack -Track Track -Limit 51 } | Should -Throw
+        }
 
+        It 'Should not throw when limit has a value of 1 to 50' {
+            { Search-LFMTrack -Track Track -Limit 50 } | Should -Not -Throw
+        }
+    }
+
+    Context 'Execution' {
+
+        BeforeAll {
             Search-LFMTrack -Track Track
-
-            It 'Should remove common parameters from bound parameters' {
-                $amParams = @{
-                    CommandName     = 'Remove-CommonParameter'
-                    Exactly         = $true
-                    Times           = 1
-                    ParameterFilter = {
-                        $PSBoundParameters
-                    }
-                }
-                Assert-MockCalled @amParams
-            }
-
-            It 'Should convert parameters to format API expects after signing' {
-                $amParams = @{
-                    CommandName = 'ConvertTo-LFMParameter'
-                    Exactly     = $true
-                    Times       = 1
-                }
-                Assert-MockCalled @amParams
-            }
-
-            It 'Should take hashtable and build a query for a uri' {
-                $amParams = @{
-                    CommandName = 'New-LFMApiQuery'
-                    Exactly     = $true
-                    Times       = 1
-                }
-                Assert-MockCalled @amParams
-            }
         }
 
-        Context 'Output' {
-
-            $output = Search-LFMTrack -Track Track
-
-            It "Searched first track should have name of $($contextMock.Results.TrackMatches.Track[0].Name)" {
-                $output[0].Track | Should -Be $contextMock.Results.TrackMatches.Track[0].Name
-            }
-
-            It "Searched first track should have artist name of $($contextMock.Results.TrackMatches.Track[0].Artist)" {
-                $output[0].Artist | Should -Be $contextMock.Results.TrackMatches.Track[0].Artist
-            }
-
-            It "Searched first track should have url of $($contextMock.Results.TrackMatches.Track[0].Url)" {
-                $output[0].Url | Should -Be $contextMock.Results.TrackMatches.Track[0].Url
-            }
-
-            It "Searched first track should have $($contextMock.Results.TrackMatches.Track[0].Listeners) listener" {
-                $output[0].Listeners | Should -Be $contextMock.Results.TrackMatches.Track[0].Listeners
-            }
-
-            It "Searched second track should have url of $($contextMock.Results.TrackMatches.Track[1].Url)" {
-                $output[1].Url | Should -Be $contextMock.Results.TrackMatches.Track[1].Url
-            }
-
-            It "Searched second track should have artist id with a value of $($contextMock.Results.TrackMatches.Track[1].Mbid)" {
-                $output[1].Id | Should -Be $contextMock.Results.TrackMatches.Track[1].Mbid
-            }
-
-            It 'Searched result should have two tracks' {
-                $output | Should -HaveCount 2
-            }
-
-            It 'Searched result should not have more than two tracks' {
-                $output | Should -Not -HaveCount 3
-            }
-
-            It 'Should call the correct Last.fm get method' {
-                $amParams = @{
-                    CommandName = 'Invoke-LFMApiUri'
-                    Exactly = $true
-                    Times = 1
-                    Scope = 'Context'
-                    ParameterFilter = {
-                        $Uri -like 'https://ws.audioscrobbler.com/2.0*'
-                    }
+        It 'Should remove common parameters from bound parameters' {
+            $siParams = @{
+                CommandName     = 'Remove-CommonParameter'
+                ModuleName      = 'PowerLFM'
+                Scope           = 'Context'
+                Exactly         = $true
+                Times           = 1
+                ParameterFilter = {
+                    $PSBoundParameters
                 }
-                Assert-MockCalled @amParams
             }
+            Should -Invoke @siParams
+        }
 
-            It 'Should throw when an error is returned in the response' {
-                Mock Invoke-LFMApiUri { throw 'Error' }
-
-                { Search-LFMTrack -Track Track } | Should -Throw 'Error'
+        It 'Should convert parameters to format API expects after signing' {
+            $siParams = @{
+                CommandName = 'ConvertTo-LFMParameter'
+                ModuleName  = 'PowerLFM'
+                Scope       = 'Context'
+                Exactly     = $true
+                Times       = 1
             }
+            Should -Invoke @siParams
+        }
+
+        It 'Should take hashtable and build a query for a uri' {
+            $siParams = @{
+                CommandName = 'New-LFMApiQuery'
+                ModuleName  = 'PowerLFM'
+                Scope       = 'Context'
+                Exactly     = $true
+                Times       = 1
+            }
+            Should -Invoke @siParams
+        }
+    }
+
+    Context 'Output' {
+
+        BeforeAll {
+            $output = Search-LFMTrack -Track Track
+        }
+
+        It "Searched first track should have name of $($contextMock.Results.TrackMatches.Track[0].Name)" {
+            $output[0].Track | Should -Be $contextMock.Results.TrackMatches.Track[0].Name
+        }
+
+        It "Searched first track should have artist name of $($contextMock.Results.TrackMatches.Track[0].Artist)" {
+            $output[0].Artist | Should -Be $contextMock.Results.TrackMatches.Track[0].Artist
+        }
+
+        It "Searched first track should have url of $($contextMock.Results.TrackMatches.Track[0].Url)" {
+            $output[0].Url | Should -Be $contextMock.Results.TrackMatches.Track[0].Url
+        }
+
+        It "Searched first track should have $($contextMock.Results.TrackMatches.Track[0].Listeners) listener" {
+            $output[0].Listeners | Should -Be $contextMock.Results.TrackMatches.Track[0].Listeners
+        }
+
+        It "Searched second track should have url of $($contextMock.Results.TrackMatches.Track[1].Url)" {
+            $output[1].Url | Should -Be $contextMock.Results.TrackMatches.Track[1].Url
+        }
+
+        It "Searched second track should have artist id with a value of $($contextMock.Results.TrackMatches.Track[1].Mbid)" {
+            $output[1].Id | Should -Be $contextMock.Results.TrackMatches.Track[1].Mbid
+        }
+
+        It 'Searched result should have two tracks' {
+            $output | Should -HaveCount 2
+        }
+
+        It 'Searched result should not have more than two tracks' {
+            $output | Should -Not -HaveCount 3
+        }
+
+        It 'Should call the correct Last.fm get method' {
+            $siParams = @{
+                CommandName     = 'Invoke-LFMApiUri'
+                ModuleName      = 'PowerLFM'
+                Scope           = 'Context'
+                Exactly         = $true
+                Times           = 1
+                ParameterFilter = {
+                    $Uri -like 'https://ws.audioscrobbler.com/2.0*'
+                }
+            }
+            Should -Invoke @siParams
+        }
+
+        It 'Should throw when an error is returned in the response' {
+            Mock Invoke-LFMApiUri { throw 'Error' } -ModuleName 'PowerLFM'
+
+            { Search-LFMTrack -Track Track } | Should -Throw 'Error'
         }
     }
 }
