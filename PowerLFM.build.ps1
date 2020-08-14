@@ -56,7 +56,7 @@ Task Clean RemoveTestResults
 Task Build Clean, ShowInfo, GenerateExternalHelp, CopyModuleFiles, CreateManifest, CompileModule
 
 # Synopsis: Run all tests
-Task Test Build, RunPester, CleanBuild, PublishTestToAppveyor
+Task Test Build, RunPester, CleanModule, PublishTestToAppveyor
 
 # Synopsis: Publish
 Task Publish Test, PublishToGitHub, PublishToPSGallery, PublishToLocalGallery
@@ -147,13 +147,17 @@ Task CreateManifest GetNextVersion, {
         ProjectUri         = 'https://github.com/camusicjunkie/PowerLFM'
     }
     New-ModuleManifest @nmmParams
+
+    $lines = [System.IO.File]::ReadAllLines($env:BHBuildManifestPath)
+    $content = $lines[0..($lines.Count - 2)]
+    Set-Content -Path $env:BHBuildManifestPath -Value $content
 }
 
 # Synopsis: Compile all functions into the build output module file
 Task CompileModule {
     $regionsToKeep = @('Init', 'Variables')
 
-    $content = Get-Content -Encoding UTF8 -LiteralPath $env:BHBuildModulePath
+    $content = Get-Content -Path $env:BHBuildModulePath -Encoding UTF8
     $capture = $false
     $compiled = ''
 
@@ -171,7 +175,11 @@ Task CompileModule {
         Get-Content -Path $function.FullName -Raw
     }
 
-    Set-Content -LiteralPath $env:BHBuildModulePath -Value $compiled, $content -Encoding UTF8 -Force
+    Set-Content -Path $env:BHBuildModulePath -Value $compiled, $content -Encoding UTF8 -Force
+
+    $lines = [System.IO.File]::ReadAllLines($env:BHBuildModulePath)
+    $content = $lines[0..($lines.Count - 2)]
+    Set-Content -Path $env:BHBuildModulePath -Value $content
 }
 
 # Synopsis: Copy test files to the build output folder
@@ -186,19 +194,21 @@ Task RunPester CopyTestFiles, {
     Assert { Test-Path $env:BHBuildOutput -PathType Container } "Build output path must exist"
     Remove-Module $env:BHProjectName -ErrorAction SilentlyContinue
 
-    $timestamp = Get-Date -UFormat "%Y%m%d-%H%M%S"
-
     $ipParams = @{
-        Script       = "$env:BHBuildOutput\Tests\"
-        Tag          = $Tag
-        Show         = 'Failed', 'Summary'
-        PassThru     = $true
-        OutputFile   = "$env:BHBuildOutput\testResults\Test-{0}-{1}.xml" -f $PSVersionTable.PSVersion, $timestamp
-        OutputFormat = 'NUnitXml'
+        Path      = "$env:BHBuildOutput\Tests\"
+        TagFilter = $Tag
+        Output    = 'None'
+        CI        = $true
+        Passthru  = $true
     }
     $testResults = Invoke-Pester @ipParams
 
     Equals $testResults.FailedCount 0
+}, MoveTestResults
+
+# Synopsis: Move test results to the test results folder
+Task MoveTestResults {
+    Move-Item -Path $BuildRoot\testResults.xml -Destination $env:BHBuildOutput\testResults -Force
 }
 
 # Synopsis: Publish tests to Appveyor
@@ -210,41 +220,42 @@ Task PublishTestToAppveyor -If ($env:APPVEYOR) {
 }
 
 # Synopsis: Remove private/public folders from module in the build output folder
-Task CleanBuild CompileModule, {
+Task CleanModule CompileModule, {
     "Private", "Public" | ForEach-Object { Remove "$env:BHBuildOutput\$env:BHProjectName\$_" }
 }
 
 # Synopsis: Create a ZIP file from this build
 Task Package {
     $ciParams = @{
-        Path = "$env:BHBuildOutput\$env:BHProjectName"
+        Path        = "$env:BHBuildOutput\$env:BHProjectName"
         Destination = "$env:BHBuildOutput\downloads\$env:BHProjectName"
-        Recurse = $true
-        Force = $true
+        Recurse     = $true
+        Force       = $true
     }
     Copy-Item @ciParams
 
     Write-Build Gray "  Creating Release ZIP..."
 
     $caParams = @{
-        Path = "$env:BHBuildOutput\downloads\$env:BHProjectName"
+        Path            = "$env:BHBuildOutput\downloads\$env:BHProjectName"
         DestinationPath = "$env:BHBuildOutput\downloads\$env:BHProjectName.zip"
-        Force = $true
+        Force           = $true
     }
     Compress-Archive @caParams
 }
 
 # Synopsis: Remove Pester results
 Task RemoveTestResults {
-    Remove "$env:BHBuildOutput\testResults\Test-*.xml"
+    Remove "$env:BHBuildOutput\testResults\testResults.xml"
+    Remove "$BuildRoot\coverage.xml"
 }
 
 $gitHubConditions = {
-   -not [String]::IsNullOrEmpty($GithubAccessToken) -and
-   -not [String]::IsNullOrEmpty($env:NextBuildVersion) -and
-   $env:BHBuildSystem -eq 'APPVEYOR' -and
-   $env:BHCommitMessage -match '!deploy' -and
-   $env:BHBranchName -eq "master"
+    -not [String]::IsNullOrEmpty($GithubAccessToken) -and
+    -not [String]::IsNullOrEmpty($env:NextBuildVersion) -and
+    $env:BHBuildSystem -eq 'APPVEYOR' -and
+    $env:BHCommitMessage -match '!deploy' -and
+    $env:BHBranchName -eq "master"
 }
 
 # Synopsis: Publish module to Github Releases
@@ -288,7 +299,7 @@ $psGalleryConditions = {
 
 # Synopsis: Publish module to the PSGallery
 Task PublishToPSGallery -If $psGalleryConditions {
-    Assert {Get-Module -Name $env:BHProjectName} "Module $env:BHProjectName is not available"
+    Assert { Get-Module -name $env:BHProjectName } "Module $env:BHProjectName is not available"
 
     Write-Build Gray "  Publishing version [$($env:NextBuildVersion)] to PSGallery"
     Publish-Module -Path $env:BHBuildOutput\$env:BHProjectName -NuGetApiKey $NuGetApiKey -Repository PSGallery
@@ -304,7 +315,7 @@ $localGalleryConditions = {
 
 # Synopsis: Publish module to local NuGet repository
 Task PublishToLocalGallery -If $localGalleryConditions {
-    Assert {Get-Module -Name $env:BHProjectName} "Module $env:BHProjectName is not available"
+    Assert { Get-Module -name $env:BHProjectName } "Module $env:BHProjectName is not available"
 
     Write-Build Gray "  Publishing version [$($env:NextBuildVersion)] to local gallery"
     Publish-Module -Path $env:BHBuildOutput\$env:BHProjectName -NuGetApiKey $NuGetApiKey -Repository Local

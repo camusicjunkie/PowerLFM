@@ -1,10 +1,12 @@
-Remove-Module -Name PowerLFM -ErrorAction Ignore
-Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
+BeforeAll {
+    Remove-Module -Name PowerLFM -ErrorAction Ignore
+    Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
+}
 
 Describe 'Get-LFMUserRecentTrack: Interface' -Tag Interface {
 
     BeforeAll {
-        $script:command = (Get-Command -Name 'Get-LFMUserRecentTrack')
+        $command = Get-Command -Name 'Get-LFMUserRecentTrack'
     }
 
     It 'CmdletBinding should be declared' {
@@ -21,21 +23,25 @@ Describe 'Get-LFMUserRecentTrack: Interface' -Tag Interface {
             $command.ParameterSets.Name | Should -Contain '__AllParameterSets'
         }
 
-        $parameterSet = $command.ParameterSets | Where-Object Name -eq __AllParameterSets
+        BeforeAll {
+            $parameterSet = $command.ParameterSets | Where-Object Name -EQ __AllParameterSets
+        }
 
-        Context 'Parameter [UserName] attribute validation' {
+        Context 'Parameter [StartDate] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object Name -eq UserName
+            BeforeAll {
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ StartDate
+            }
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It 'Should be of type System.String' {
-                $parameter.ParameterType.ToString() | Should -Be System.String
+            It 'Should be of type System.DateTime' {
+                $parameter.ParameterType.ToString() | Should -Be System.DateTime
             }
 
-            It 'Mandatory should be set to True' {
+            It 'Mandatory should be set to False' {
                 $parameter.IsMandatory | Should -BeFalse
             }
 
@@ -52,13 +58,15 @@ Describe 'Get-LFMUserRecentTrack: Interface' -Tag Interface {
             }
 
             It 'Should have a position of 0' {
-                $parameter.Position | Should -Be 2
+                $parameter.Position | Should -Be 0
             }
         }
 
-        Context 'Parameter [StartDate] attribute validation' {
+        Context 'Parameter [EndDate] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object Name -eq StartDate
+            BeforeAll {
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ EndDate
+            }
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
@@ -85,20 +93,22 @@ Describe 'Get-LFMUserRecentTrack: Interface' -Tag Interface {
             }
 
             It 'Should have a position of 1' {
-                $parameter.Position | Should -Be 0
+                $parameter.Position | Should -Be 1
             }
         }
 
-        Context 'Parameter [EndDate] attribute validation' {
+        Context 'Parameter [UserName] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object Name -eq EndDate
+            BeforeAll {
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ UserName
+            }
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It 'Should be of type System.DateTime' {
-                $parameter.ParameterType.ToString() | Should -Be System.DateTime
+            It 'Should be of type System.String' {
+                $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
             It 'Mandatory should be set to False' {
@@ -118,13 +128,15 @@ Describe 'Get-LFMUserRecentTrack: Interface' -Tag Interface {
             }
 
             It 'Should have a position of 2' {
-                $parameter.Position | Should -Be 1
+                $parameter.Position | Should -Be 2
             }
         }
 
         Context 'Parameter [Limit] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object Name -eq Limit
+            BeforeAll {
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ Limit
+            }
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
@@ -157,7 +169,9 @@ Describe 'Get-LFMUserRecentTrack: Interface' -Tag Interface {
 
         Context 'Parameter [Page] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object Name -eq Page
+            BeforeAll {
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ Page
+            }
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
@@ -190,149 +204,167 @@ Describe 'Get-LFMUserRecentTrack: Interface' -Tag Interface {
     }
 }
 
-InModuleScope PowerLFM {
+Describe 'Get-LFMUserRecentTrack: Unit' -Tag Unit {
+
+    #region Discovery
 
     $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
     $contextMock = $mocks.'Get-LFMUserRecentTrack'.UserRecentTrack
 
-    Describe 'Get-LFMUserRecentTrack: Unit' -Tag Unit {
+    #endregion Discovery
+
+    BeforeAll {
+        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+        $contextMock = $mocks.'Get-LFMUserRecentTrack'.UserRecentTrack
 
         Mock Remove-CommonParameter {
             [hashtable] @{ }
-        }
-        Mock ConvertTo-LFMParameter
-        Mock New-LFMApiQuery
-        Mock Invoke-LFMApiUri {$contextMock}
-        Mock ConvertFrom-UnixTime
+        } -ModuleName 'PowerLFM'
+        Mock ConvertTo-LFMParameter -ModuleName 'PowerLFM'
+        Mock New-LFMApiQuery -ModuleName 'PowerLFM'
+        Mock Invoke-LFMApiUri { $contextMock } -ModuleName 'PowerLFM'
+        Mock ConvertFrom-UnixTime -ModuleName 'PowerLFM'
+    }
 
-        Context 'Input' {
+    Context 'Input' {
 
-            It 'Should throw when username is null' {
-                {Get-LFMUserRecentTrack -UserName $null} | Should -Throw
-            }
-
-            It 'Should throw when limit has a value of 51' {
-                $gurtParams = @{
-                    UserName = 'UserName'
-                    Limit = 51
-                }
-                {Get-LFMUserRecentTrack @gurtParams} | Should -Throw
-            }
-
-            It 'Should not throw when limit has a value of 1 to 50' {
-                $gurtParams = @{
-                    UserName = 'UserName'
-                    Limit = 50
-                }
-                {Get-LFMUserRecentTrack @gurtParams} | Should -Not -Throw
-            }
+        It 'Should throw when username is null' {
+            { Get-LFMUserRecentTrack -UserName $null } | Should -Throw
         }
 
-        Context 'Execution' {
+        It 'Should throw when limit has a value of 51' {
+            $gurtParams = @{
+                UserName = 'UserName'
+                Limit    = 51
+            }
+            { Get-LFMUserRecentTrack @gurtParams } | Should -Throw
+        }
 
+        It 'Should not throw when limit has a value of 1 to 50' {
+            $gurtParams = @{
+                UserName = 'UserName'
+                Limit    = 50
+            }
+            { Get-LFMUserRecentTrack @gurtParams } | Should -Not -Throw
+        }
+    }
+
+    Context 'Execution' {
+
+        BeforeAll {
             Get-LFMUserRecentTrack
-
-            It 'Should remove common parameters from bound parameters' {
-                $amParams = @{
-                    CommandName     = 'Remove-CommonParameter'
-                    Exactly         = $true
-                    Times           = 1
-                    ParameterFilter = {
-                        $PSBoundParameters
-                    }
-                }
-                Assert-MockCalled @amParams
-            }
-
-            It 'Should convert parameters to format API expects after signing' {
-                $amParams = @{
-                    CommandName = 'ConvertTo-LFMParameter'
-                    Exactly     = $true
-                    Times       = 1
-                }
-                Assert-MockCalled @amParams
-            }
-
-            It 'Should take hashtable and build a query for a uri' {
-                $amParams = @{
-                    CommandName = 'New-LFMApiQuery'
-                    Exactly     = $true
-                    Times       = 1
-                }
-                Assert-MockCalled @amParams
-            }
         }
 
-        Context 'Output' {
+        It 'Should remove common parameters from bound parameters' {
+            $siParams = @{
+                CommandName     = 'Remove-CommonParameter'
+                ModuleName      = 'PowerLFM'
+                Scope           = 'Context'
+                Exactly         = $true
+                Times           = 1
+                ParameterFilter = {
+                    $PSBoundParameters
+                }
+            }
+            Should -Invoke @siParams
+        }
 
+        It 'Should convert parameters to format API expects after signing' {
+            $siParams = @{
+                CommandName = 'ConvertTo-LFMParameter'
+                ModuleName  = 'PowerLFM'
+                Scope       = 'Context'
+                Exactly     = $true
+                Times       = 1
+            }
+            Should -Invoke @siParams
+        }
+
+        It 'Should take hashtable and build a query for a uri' {
+            $siParams = @{
+                CommandName = 'New-LFMApiQuery'
+                ModuleName  = 'PowerLFM'
+                Scope       = 'Context'
+                Exactly     = $true
+                Times       = 1
+            }
+            Should -Invoke @siParams
+        }
+    }
+
+    Context 'Output' {
+
+        BeforeAll {
             $output = Get-LFMUserRecentTrack
+        }
 
-            It 'User first recent track should be playing now' {
-                $output[0].ScrobbleTime | Should -Be 'Now Playing'
-            }
+        It 'User first recent track should be playing now' {
+            $output[0].ScrobbleTime | Should -Be 'Now Playing'
+        }
 
-            It "User first recent track should have a name of $($contextMock.RecentTracks.Track[0].Name)" {
-                $output[0].Track | Should -Be $contextMock.RecentTracks.Track[0].Name
-            }
+        It "User first recent track should have a name of $($contextMock.RecentTracks.Track[0].Name)" {
+            $output[0].Track | Should -Be $contextMock.RecentTracks.Track[0].Name
+        }
 
-            It "User first recent track should have an artist name of $($contextMock.RecentTracks.Track[0].Artist.Name)" {
-                $output[0].Artist | Should -Be $contextMock.RecentTracks.Track[0].Artist.Name
-            }
+        It "User first recent track should have an artist name of $($contextMock.RecentTracks.Track[0].Artist.Name)" {
+            $output[0].Artist | Should -Be $contextMock.RecentTracks.Track[0].Artist.Name
+        }
 
-            It "User second recent track should have an album name of $($contextMock.RecentTracks.Track[1].Album.'#Text')" {
-                $output[1].Album | Should -Be $contextMock.RecentTracks.Track[1].Album.'#Text'
-            }
+        It "User second recent track should have an album name of $($contextMock.RecentTracks.Track[1].Album.'#Text')" {
+            $output[1].Album | Should -Be $contextMock.RecentTracks.Track[1].Album.'#Text'
+        }
 
-            It 'User second recent track should be loved' {
-                $output[1].Loved | Should -Be 'Yes'
-            }
+        It 'User second recent track should be loved' {
+            $output[1].Loved | Should -Be 'Yes'
+        }
 
-            It "User third recent track should have an artist name of $($contextMock.RecentTracks.Track[2].Artist.Name)" {
-                $output[2].Artist | Should -Be $contextMock.RecentTracks.Track[2].Artist.Name
-            }
+        It "User third recent track should have an artist name of $($contextMock.RecentTracks.Track[2].Artist.Name)" {
+            $output[2].Artist | Should -Be $contextMock.RecentTracks.Track[2].Artist.Name
+        }
 
-            It 'User should have two recent tracks' {
-                $output | Should -HaveCount 2
-            }
+        It 'User should have two recent tracks' {
+            $output | Should -HaveCount 2
+        }
 
-            It 'User should not have more than two recent tracks' {
-                $output | Should -Not -BeNullOrEmpty
-                $output | Should -Not -HaveCount 3
-            }
+        It 'User should not have more than two recent tracks' {
+            $output | Should -Not -BeNullOrEmpty
+            $output | Should -Not -HaveCount 3
+        }
 
-            It 'Should call the correct Last.fm get method' {
-                $amParams = @{
-                    CommandName = 'Invoke-LFMApiUri'
-                    Exactly = $true
-                    Times = 1
-                    Scope = 'Context'
-                    ParameterFilter = {
-                        $Uri -like 'https://ws.audioscrobbler.com/2.0*'
-                    }
+        It 'Should call the correct Last.fm get method' {
+            $siParams = @{
+                CommandName     = 'Invoke-LFMApiUri'
+                ModuleName      = 'PowerLFM'
+                Scope           = 'Context'
+                Exactly         = $true
+                Times           = 1
+                ParameterFilter = {
+                    $Uri -like 'https://ws.audioscrobbler.com/2.0*'
                 }
-                Assert-MockCalled @amParams
             }
+            Should -Invoke @siParams
+        }
 
-            It 'Should convert the date from unix time to the local time' {
-                $amParams = @{
-                    CommandName = 'ConvertFrom-UnixTime'
-                    Exactly = $true
-                    Times = 2
-                    Scope = 'Context'
-                    ParameterFilter = {
-                        $UnixTime -eq 0 -or
-                        $UnixTime -eq 60 -and
-                        $Local -eq $true
-                    }
+        It 'Should convert the date from unix time to the local time' {
+            $siParams = @{
+                CommandName     = 'ConvertFrom-UnixTime'
+                ModuleName      = 'PowerLFM'
+                Scope           = 'Context'
+                Exactly         = $true
+                Times           = 2
+                ParameterFilter = {
+                    $UnixTime -eq 0 -or
+                    $UnixTime -eq 60 -and
+                    $Local -eq $true
                 }
-                Assert-MockCalled @amParams
             }
+            Should -Invoke @siParams
+        }
 
-            It 'Should throw when an error is returned in the response' {
-                Mock Invoke-LFMApiUri { throw 'Error' }
+        It 'Should throw when an error is returned in the response' {
+            Mock Invoke-LFMApiUri { throw 'Error' } -ModuleName 'PowerLFM'
 
-                { Get-LFMUserRecentTrack } | Should -Throw 'Error'
-            }
+            { Get-LFMUserRecentTrack } | Should -Throw 'Error'
         }
     }
 }

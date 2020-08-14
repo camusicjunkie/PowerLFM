@@ -1,10 +1,12 @@
-Remove-Module -Name PowerLFM -ErrorAction Ignore
-Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
+BeforeAll {
+    Remove-Module -Name PowerLFM -ErrorAction Ignore
+    Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
+}
 
 Describe 'Add-LFMConfiguration: Interface' -Tag Interface {
 
     BeforeAll {
-        $script:command = (Get-Command -Name 'Add-LFMConfiguration')
+        $command = Get-Command -Name 'Add-LFMConfiguration'
     }
 
     It 'CmdletBinding should be declared' {
@@ -17,11 +19,15 @@ Describe 'Add-LFMConfiguration: Interface' -Tag Interface {
             $command.ParameterSets.Name | Should -Contain '__AllParameterSets'
         }
 
-        $parameterSet = $command.ParameterSets | Where-Object Name -eq __AllParameterSets
+        BeforeAll {
+            $parameterSet = $command.ParameterSets | Where-Object Name -eq __AllParameterSets
+        }
 
         Context 'Parameter [ApiKey] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object Name -eq ApiKey
+            BeforeAll {
+                $parameter = $parameterSet.Parameters | Where-Object Name -eq ApiKey
+            }
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
@@ -54,7 +60,9 @@ Describe 'Add-LFMConfiguration: Interface' -Tag Interface {
 
         Context 'Parameter [SessionKey] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object Name -eq SessionKey
+            BeforeAll {
+                $parameter = $parameterSet.Parameters | Where-Object Name -eq SessionKey
+            }
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
@@ -87,7 +95,9 @@ Describe 'Add-LFMConfiguration: Interface' -Tag Interface {
 
         Context 'Parameter [SharedSecret] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object Name -eq SharedSecret
+            BeforeAll {
+                $parameter = $parameterSet.Parameters | Where-Object Name -eq SharedSecret
+            }
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
@@ -120,128 +130,141 @@ Describe 'Add-LFMConfiguration: Interface' -Tag Interface {
     }
 }
 
-InModuleScope PowerLFM {
+Describe 'Add-LFMConfiguration: Unit' -Tag Unit {
 
-    Describe 'Add-LFMConfiguration: Unit' -Tag Unit {
+    BeforeAll {
+        Mock Get-Secret -ModuleName 'PowerLFM'
+        Mock Set-Secret -ModuleName 'PowerLFM'
+    }
 
-        Mock Get-Secret
-        Mock Set-Secret
+    Context 'Input' {
 
-        Context 'Input' {
-
-            It 'Should throw when apiKey is null' {
-                {Add-LFMConfiguration -ApiKey $null} | Should -Throw
-            }
-
-            It 'Should throw when sessionKey is null' {
-                {Add-LFMConfiguration -SessionKey $null} | Should -Throw
-            }
-
-            It 'Should throw when sharedSecret is null' {
-                {Add-LFMConfiguration -SharedSecret $null} | Should -Throw
-            }
+        It 'Should throw when apiKey is null' {
+            { Add-LFMConfiguration -ApiKey $null } | Should -Throw
         }
 
-        Context 'Execution' {
+        It 'Should throw when sessionKey is null' {
+            { Add-LFMConfiguration -SessionKey $null } | Should -Throw
+        }
 
+        It 'Should throw when sharedSecret is null' {
+            { Add-LFMConfiguration -SharedSecret $null } | Should -Throw
+        }
+    }
+
+    Context 'Execution' {
+
+        BeforeAll {
             $acParams = @{
-                ApiKey = 'ApiKey'
-                SessionKey = 'SessionKey'
+                ApiKey       = 'ApiKey'
+                SessionKey   = 'SessionKey'
                 SharedSecret = 'SharedSecret'
-                Confirm = $false
+                Confirm      = $false
             }
             Add-LFMConfiguration @acParams
-
-            It 'Should get the configuration for ApiKey' {
-                $amParams = @{
-                    CommandName     = 'Get-Secret'
-                    Exactly         = $true
-                    Times           = 1
-                    ParameterFilter = {
-                        $Name -eq 'LFMApiKey'
-                    }
-                }
-                Assert-MockCalled @amParams
-            }
-
-            It 'Should get the configuration for SessionKey' {
-                $amParams = @{
-                    CommandName     = 'Get-Secret'
-                    Exactly         = $true
-                    Times           = 1
-                    ParameterFilter = {
-                        $Name -eq 'LFMSessionKey'
-                    }
-                }
-                Assert-MockCalled @amParams
-            }
-
-            It 'Should get the configuration for SharedSecret' {
-                $amParams = @{
-                    CommandName     = 'Get-Secret'
-                    Exactly         = $true
-                    Times           = 1
-                    ParameterFilter = {
-                        $Name -eq 'LFMSharedSecret'
-                    }
-                }
-                Assert-MockCalled @amParams
-            }
-
-            It 'Should add the configuration for ApiKey' {
-                $amParams = @{
-                    CommandName     = 'Set-Secret'
-                    Exactly         = $true
-                    Times           = 1
-                    ParameterFilter = {
-                        $Name -eq 'LFMApiKey' -and
-                        $Secret -eq 'ApiKey'
-                    }
-                }
-                Assert-MockCalled @amParams
-            }
-
-            It 'Should add the configuration for SessionKey' {
-                $amParams = @{
-                    CommandName     = 'Set-Secret'
-                    Exactly         = $true
-                    Times           = 1
-                    ParameterFilter = {
-                        $Name -eq 'LFMSessionKey' -and
-                        $Secret -eq 'SessionKey'
-                    }
-                }
-                Assert-MockCalled @amParams
-            }
-
-            It 'Should add the configuration for SharedSecret' {
-                $amParams = @{
-                    CommandName     = 'Set-Secret'
-                    Exactly         = $true
-                    Times           = 1
-                    ParameterFilter = {
-                        $Name -eq 'LFMSharedSecret' -and
-                        $Secret -eq 'SharedSecret'
-                    }
-                }
-                Assert-MockCalled @amParams
-            }
         }
 
-        Context 'Output' {
-
-            It 'Should throw when an error is returned in the response' {
-                $acParams = @{
-                    ApiKey = 'ApiKey'
-                    SessionKey = 'SessionKey'
-                    SharedSecret = 'SharedSecret'
-                    Confirm = $false
+        It 'Should get the configuration for ApiKey' {
+            $siParams = @{
+                CommandName     = 'Get-Secret'
+                ModuleName      = 'PowerLFM'
+                Scope           = 'Context'
+                Exactly         = $true
+                Times           = 1
+                ParameterFilter = {
+                    $Name -eq 'LFMApiKey'
                 }
-
-                Mock Set-Secret { throw 'Error' }
-
-                { Add-LFMConfiguration @acParams } | Should -Throw 'Error'
             }
+            Should -Invoke @siParams
+        }
+
+        It 'Should get the configuration for SessionKey' {
+            $siParams = @{
+                CommandName     = 'Get-Secret'
+                ModuleName      = 'PowerLFM'
+                Scope           = 'Context'
+                Exactly         = $true
+                Times           = 1
+                ParameterFilter = {
+                    $Name -eq 'LFMSessionKey'
+                }
+            }
+            Should -Invoke @siParams
+        }
+
+        It 'Should get the configuration for SharedSecret' {
+            $siParams = @{
+                CommandName     = 'Get-Secret'
+                ModuleName      = 'PowerLFM'
+                Scope           = 'Context'
+                Exactly         = $true
+                Times           = 1
+                ParameterFilter = {
+                    $Name -eq 'LFMSharedSecret'
+                }
+            }
+            Should -Invoke @siParams
+        }
+
+        It 'Should add the configuration for ApiKey' {
+            $siParams = @{
+                CommandName     = 'Set-Secret'
+                ModuleName      = 'PowerLFM'
+                Scope           = 'Context'
+                Exactly         = $true
+                Times           = 1
+                ParameterFilter = {
+                    $Name -eq 'LFMApiKey' -and
+                    $Secret -eq 'ApiKey'
+                }
+            }
+            Should -Invoke @siParams
+        }
+
+        It 'Should add the configuration for SessionKey' {
+            $siParams = @{
+                CommandName     = 'Set-Secret'
+                ModuleName      = 'PowerLFM'
+                Scope           = 'Context'
+                Exactly         = $true
+                Times           = 1
+                ParameterFilter = {
+                    $Name -eq 'LFMSessionKey' -and
+                    $Secret -eq 'SessionKey'
+                }
+            }
+            Should -Invoke @siParams
+        }
+
+        It 'Should add the configuration for SharedSecret' {
+            $siParams = @{
+                CommandName     = 'Set-Secret'
+                ModuleName      = 'PowerLFM'
+                Scope           = 'Context'
+                Exactly         = $true
+                Times           = 1
+                ParameterFilter = {
+                    $Name -eq 'LFMSharedSecret' -and
+                    $Secret -eq 'SharedSecret'
+                }
+            }
+            Should -Invoke @siParams
+        }
+    }
+
+    Context 'Output' {
+
+        It 'Should throw when an error is returned in the response' {
+            $acParams = @{
+                ApiKey       = 'ApiKey'
+                SessionKey   = 'SessionKey'
+                SharedSecret = 'SharedSecret'
+                Confirm      = $false
+            }
+
+            Mock Set-Secret { throw 'Error' }
+
+            { Add-LFMConfiguration @acParams } | Should -Throw 'Error'
         }
     }
 }

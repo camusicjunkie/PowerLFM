@@ -1,10 +1,12 @@
-Remove-Module -Name PowerLFM -ErrorAction Ignore
-Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
+BeforeAll {
+    Remove-Module -Name PowerLFM -ErrorAction Ignore
+    Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
+}
 
 Describe 'Get-LFMUserPersonalTag: Interface' -Tag Interface {
 
     BeforeAll {
-        $script:command = (Get-Command -Name 'Get-LFMUserPersonalTag')
+        $command = Get-Command -Name 'Get-LFMUserPersonalTag'
     }
 
     It 'CmdletBinding should be declared' {
@@ -21,11 +23,15 @@ Describe 'Get-LFMUserPersonalTag: Interface' -Tag Interface {
             $command.ParameterSets.Name | Should -Contain '__AllParameterSets'
         }
 
-        $parameterSet = $command.ParameterSets | Where-Object Name -eq __AllParameterSets
+        BeforeAll {
+            $parameterSet = $command.ParameterSets | Where-Object Name -EQ __AllParameterSets
+        }
 
-        Context 'Parameter [UserName] attribute validation' {
+        Context 'Parameter [Tag] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object Name -eq UserName
+            BeforeAll {
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ Tag
+            }
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
@@ -36,7 +42,7 @@ Describe 'Get-LFMUserPersonalTag: Interface' -Tag Interface {
             }
 
             It 'Mandatory should be set to True' {
-                $parameter.IsMandatory | Should -BeFalse
+                $parameter.IsMandatory | Should -BeTrue
             }
 
             It 'ValueFromPipeline should be set to False' {
@@ -52,13 +58,15 @@ Describe 'Get-LFMUserPersonalTag: Interface' -Tag Interface {
             }
 
             It 'Should have a position of 0' {
-                $parameter.Position | Should -Be 2
+                $parameter.Position | Should -Be 0
             }
         }
 
-        Context 'Parameter [Tag] attribute validation' {
+        Context 'Parameter [TagType] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object Name -eq Tag
+            BeforeAll {
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ TagType
+            }
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
@@ -85,13 +93,15 @@ Describe 'Get-LFMUserPersonalTag: Interface' -Tag Interface {
             }
 
             It 'Should have a position of 1' {
-                $parameter.Position | Should -Be 0
+                $parameter.Position | Should -Be 1
             }
         }
 
-        Context 'Parameter [TagType] attribute validation' {
+        Context 'Parameter [UserName] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object Name -eq TagType
+            BeforeAll {
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ UserName
+            }
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
@@ -101,8 +111,8 @@ Describe 'Get-LFMUserPersonalTag: Interface' -Tag Interface {
                 $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
-            It 'Mandatory should be set to True' {
-                $parameter.IsMandatory | Should -BeTrue
+            It 'Mandatory should be set to False' {
+                $parameter.IsMandatory | Should -BeFalse
             }
 
             It 'ValueFromPipeline should be set to False' {
@@ -118,13 +128,15 @@ Describe 'Get-LFMUserPersonalTag: Interface' -Tag Interface {
             }
 
             It 'Should have a position of 2' {
-                $parameter.Position | Should -Be 1
+                $parameter.Position | Should -Be 2
             }
         }
 
         Context 'Parameter [Limit] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object Name -eq Limit
+            BeforeAll {
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ Limit
+            }
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
@@ -157,7 +169,9 @@ Describe 'Get-LFMUserPersonalTag: Interface' -Tag Interface {
 
         Context 'Parameter [Page] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object Name -eq Page
+            BeforeAll {
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ Page
+            }
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
@@ -190,128 +204,145 @@ Describe 'Get-LFMUserPersonalTag: Interface' -Tag Interface {
     }
 }
 
-InModuleScope PowerLFM {
+Describe 'Get-LFMUserPersonalTag: Unit' -Tag Unit {
+
+    #region Discovery
 
     $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
     $contextMock = $mocks.'Get-LFMUserPersonalTag'.UserPersonalTag
 
-    Describe 'Get-LFMUserPersonalTag: Unit' -Tag Unit {
+    #endregion Discovery
+
+    BeforeAll {
+        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+        $contextMock = $mocks.'Get-LFMUserPersonalTag'.UserPersonalTag
 
         Mock Remove-CommonParameter {
             [hashtable] @{
-                Tag = 'Tag'
+                Tag     = 'Tag'
                 TagType = 'Artist'
             }
-        }
-        Mock ConvertTo-LFMParameter
-        Mock New-LFMApiQuery
-        Mock Invoke-LFMApiUri {$contextMock}
+        } -ModuleName 'PowerLFM'
+        Mock ConvertTo-LFMParameter -ModuleName 'PowerLFM'
+        Mock New-LFMApiQuery -ModuleName 'PowerLFM'
+        Mock Invoke-LFMApiUri { $contextMock } -ModuleName 'PowerLFM'
+    }
 
-        Context 'Input' {
+    Context 'Input' {
 
-            It 'Should throw when username is null' {
-                {Get-LFMUserPersonalTag -UserName $null} | Should -Throw
-            }
-
-            It 'Should throw when limit has a value of 51' {
-                $guptParams = @{
-                    UserName = 'UserName'
-                    Tag = 'Tag'
-                    TagType = 'Artist'
-                    Limit = 51
-                }
-                {Get-LFMUserPersonalTag @guptParams} | Should -Throw
-            }
-
-            It 'Should not throw when limit has a value of 1 to 50' {
-                $guptParams = @{
-                    UserName = 'UserName'
-                    Tag = 'Tag'
-                    TagType = 'Album'
-                    Limit = 50
-                }
-                {Get-LFMUserPersonalTag @guptParams} | Should -Not -Throw
-            }
+        It 'Should throw when username is null' {
+            { Get-LFMUserPersonalTag -UserName $null } | Should -Throw
         }
 
-        Context 'Execution' {
+        It 'Should throw when limit has a value of 51' {
+            $guptParams = @{
+                UserName = 'UserName'
+                Tag      = 'Tag'
+                TagType  = 'Artist'
+                Limit    = 51
+            }
+            { Get-LFMUserPersonalTag @guptParams } | Should -Throw
+        }
 
+        It 'Should not throw when limit has a value of 1 to 50' {
+            $guptParams = @{
+                UserName = 'UserName'
+                Tag      = 'Tag'
+                TagType  = 'Album'
+                Limit    = 50
+            }
+            { Get-LFMUserPersonalTag @guptParams } | Should -Not -Throw
+        }
+    }
+
+    Context 'Execution' {
+
+        BeforeAll {
             Get-LFMUserPersonalTag -Tag Tag -TagType Artist
-
-            It 'Should remove common parameters from bound parameters' {
-                $amParams = @{
-                    CommandName     = 'Remove-CommonParameter'
-                    Exactly         = $true
-                    Times           = 1
-                    ParameterFilter = {
-                        $PSBoundParameters
-                    }
-                }
-                Assert-MockCalled @amParams
-            }
-
-            It 'Should convert parameters to format API expects after signing' {
-                $amParams = @{
-                    CommandName = 'ConvertTo-LFMParameter'
-                    Exactly     = $true
-                    Times       = 1
-                }
-                Assert-MockCalled @amParams
-            }
-
-            It 'Should take hashtable and build a query for a uri' {
-                $amParams = @{
-                    CommandName = 'New-LFMApiQuery'
-                    Exactly     = $true
-                    Times       = 1
-                }
-                Assert-MockCalled @amParams
-            }
         }
 
-        Context 'Output' {
-
-            $output = Get-LFMUserPersonalTag -Tag Tag -TagType Artist
-
-            It "User first personal tag artist should have a name of $($contextMock.Taggings.Artists.Artist[0].Name)" {
-                $output[0].Artist | Should -Be $contextMock.Taggings.Artists.Artist[0].Name
-            }
-
-            It "User first personal tag artist should have an id of $($contextMock.Taggings.Artists.Artist[0].Mbid)" {
-                $output[0].Id | Should -Be $contextMock.Taggings.Artists.Artist[0].Mbid
-            }
-
-            It "User second personal tag artist should have a url of $($contextMock.Taggings.Artists.Artist[1].Url)" {
-                $output[1].Url | Should -Be $contextMock.Taggings.Artists.Artist[1].Url
-            }
-
-            It 'User should have two personal tag artists' {
-                $output.UserName | Should -HaveCount 2
-            }
-
-            It 'User should not have more than two personal tag artists' {
-                $output.UserName | Should -Not -BeNullOrEmpty
-                $output.UserName | Should -Not -HaveCount 3
-            }
-
-            It 'Should call the correct Last.fm get method' {
-                $amParams = @{
-                    CommandName = 'Invoke-LFMApiUri'
-                    Exactly = $true
-                    Times = 1
-                    Scope = 'Context'
-                    ParameterFilter = {
-                        $Uri -like 'https://ws.audioscrobbler.com/2.0*'
-                    }
+        It 'Should remove common parameters from bound parameters' {
+            $siParams = @{
+                CommandName     = 'Remove-CommonParameter'
+                ModuleName      = 'PowerLFM'
+                Scope           = 'Context'
+                Exactly         = $true
+                Times           = 1
+                ParameterFilter = {
+                    $PSBoundParameters
                 }
-                Assert-MockCalled @amParams
             }
+            Should -Invoke @siParams
+        }
 
-            It 'Should throw when an error is returned in the response' {
-                Mock Invoke-LFMApiUri { throw 'Error' }
-
-                { Get-LFMUserPersonalTag -Tag Tag -TagType Artist } | Should -Throw 'Error'
+        It 'Should convert parameters to format API expects after signing' {
+            $siParams = @{
+                CommandName = 'ConvertTo-LFMParameter'
+                ModuleName  = 'PowerLFM'
+                Scope       = 'Context'
+                Exactly     = $true
+                Times       = 1
             }
+            Should -Invoke @siParams
+        }
+
+        It 'Should take hashtable and build a query for a uri' {
+            $siParams = @{
+                CommandName = 'New-LFMApiQuery'
+                ModuleName  = 'PowerLFM'
+                Scope       = 'Context'
+                Exactly     = $true
+                Times       = 1
+            }
+            Should -Invoke @siParams
+        }
+    }
+
+    Context 'Output' {
+
+        BeforeAll {
+            $output = Get-LFMUserPersonalTag -Tag Tag -TagType Artist
+        }
+
+        It "User first personal tag artist should have a name of $($contextMock.Taggings.Artists.Artist[0].Name)" {
+            $output[0].Artist | Should -Be $contextMock.Taggings.Artists.Artist[0].Name
+        }
+
+        It "User first personal tag artist should have an id of $($contextMock.Taggings.Artists.Artist[0].Mbid)" {
+            $output[0].Id | Should -Be $contextMock.Taggings.Artists.Artist[0].Mbid
+        }
+
+        It "User second personal tag artist should have a url of $($contextMock.Taggings.Artists.Artist[1].Url)" {
+            $output[1].Url | Should -Be $contextMock.Taggings.Artists.Artist[1].Url
+        }
+
+        It 'User should have two personal tag artists' {
+            $output.UserName | Should -HaveCount 2
+        }
+
+        It 'User should not have more than two personal tag artists' {
+            $output.UserName | Should -Not -BeNullOrEmpty
+            $output.UserName | Should -Not -HaveCount 3
+        }
+
+        It 'Should call the correct Last.fm get method' {
+            $siParams = @{
+                CommandName     = 'Invoke-LFMApiUri'
+                ModuleName      = 'PowerLFM'
+                Scope           = 'Context'
+                Exactly         = $true
+                Times           = 1
+                ParameterFilter = {
+                    $Uri -like 'https://ws.audioscrobbler.com/2.0*'
+                }
+            }
+            Should -Invoke @siParams
+        }
+
+        It 'Should throw when an error is returned in the response' {
+            Mock Invoke-LFMApiUri { throw 'Error' } -ModuleName 'PowerLFM'
+
+            { Get-LFMUserPersonalTag -Tag Tag -TagType Artist } | Should -Throw 'Error'
         }
     }
 }

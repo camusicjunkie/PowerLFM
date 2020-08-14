@@ -1,10 +1,12 @@
-Remove-Module -Name PowerLFM -ErrorAction Ignore
-Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
+BeforeAll {
+    Remove-Module -Name PowerLFM -ErrorAction Ignore
+    Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
+}
 
 Describe 'Get-LFMConfiguration: Interface' -Tag Interface {
 
     BeforeAll {
-        $script:command = (Get-Command -Name 'Get-LFMConfiguration')
+        $command = Get-Command -Name 'Get-LFMConfiguration'
     }
 
     It 'CmdletBinding should be declared' {
@@ -19,39 +21,38 @@ Describe 'Get-LFMConfiguration: Interface' -Tag Interface {
     }
 }
 
-InModuleScope PowerLFM {
+Describe 'Get-LFMConfiguration: Unit' -Tag Unit {
 
-    Describe 'Get-LFMConfiguration: Unit' -Tag Unit {
+    BeforeAll {
+        Mock Get-Secret -ModuleName 'PowerLFM'
+    }
 
-        Mock Get-Secret
+    Context 'Execution' {
 
-        Context 'Execution' {
+        It 'Should retrieve the passwords from the BuiltInLocalVault' {
+            Get-LFMConfiguration
 
-            It 'Should retrieve the passwords from the BuiltInLocalVault' {
-                Get-LFMConfiguration
-
-                $amParams = @{
-                    CommandName = 'Get-Secret'
-                    Exactly = $true
-                    Times = 3
-                    Scope = 'It'
-                    ParameterFilter = {
-                        $Name -eq 'LFMApiKey' -or
-                        $Name -eq 'LFMSessionKey' -or
-                        $Name -eq 'LFMSharedSecret'
-                    }
+            $siParams = @{
+                CommandName     = 'Get-Secret'
+                ModuleName      = 'PowerLFM'
+                Exactly         = $true
+                Times           = 3
+                ParameterFilter = {
+                    $Name -eq 'LFMApiKey' -or
+                    $Name -eq 'LFMSessionKey' -or
+                    $Name -eq 'LFMSharedSecret'
                 }
-                Assert-MockCalled @amParams
             }
+            Should -Invoke @siParams
         }
+    }
 
-        Context 'Output' {
+    Context 'Output' {
 
-            It 'Should throw when an error is returned in the response' {
-                Mock Get-Secret { throw 'Error' }
+        It 'Should throw when an error is returned in the response' {
+            Mock Get-Secret { throw 'Error' }
 
-                { Get-LFMConfiguration } | Should -Throw 'Error'
-            }
+            { Get-LFMConfiguration } | Should -Throw 'Error'
         }
     }
 }

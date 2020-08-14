@@ -1,10 +1,12 @@
-Remove-Module -Name PowerLFM -ErrorAction Ignore
-Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
+BeforeAll {
+    Remove-Module -Name PowerLFM -ErrorAction Ignore
+    Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
+}
 
 Describe 'Get-LFMTagWeeklyChartList: Interface' -Tag Interface {
 
     BeforeAll {
-        $script:command = (Get-Command -Name 'Get-LFMTagWeeklyChartList')
+        $command = Get-Command -Name 'Get-LFMTagWeeklyChartList'
     }
 
     It 'CmdletBinding should be declared' {
@@ -21,11 +23,15 @@ Describe 'Get-LFMTagWeeklyChartList: Interface' -Tag Interface {
             $command.ParameterSets.Name | Should -Contain '__AllParameterSets'
         }
 
-        $parameterSet = $command.ParameterSets | Where-Object Name -eq __AllParameterSets
+        BeforeAll {
+            $parameterSet = $command.ParameterSets | Where-Object Name -eq __AllParameterSets
+        }
 
         Context 'Parameter [Tag] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object Name -eq Tag
+            BeforeAll {
+                $parameter = $parameterSet.Parameters | Where-Object Name -eq Tag
+            }
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
@@ -58,111 +64,129 @@ Describe 'Get-LFMTagWeeklyChartList: Interface' -Tag Interface {
     }
 }
 
-InModuleScope PowerLFM {
+Describe 'Get-LFMTagWeeklyChartList: Unit' -Tag Unit {
+
+    #region Discovery
 
     $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
     $contextMock = $mocks.'Get-LFMTagWeeklyChartList'.TagWeeklyChartList
 
-    Describe 'Get-LFMTagWeeklyChartList: Unit' -Tag Unit {
+    #endregion Discovery
+
+    BeforeAll {
+        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+        $contextMock = $mocks.'Get-LFMTagWeeklyChartList'.TagWeeklyChartList
 
         Mock Remove-CommonParameter {
             [hashtable] @{
                 Tag = 'Tag'
             }
+        } -ModuleName 'PowerLFM'
+        Mock ConvertTo-LFMParameter -ModuleName 'PowerLFM'
+        Mock New-LFMApiQuery -ModuleName 'PowerLFM'
+        Mock Invoke-LFMApiUri { $contextMock } -ModuleName 'PowerLFM'
+        Mock ConvertFrom-UnixTime -ModuleName 'PowerLFM'
+    }
+
+    Context 'Input' {
+
+        It 'Should throw when tag is null' {
+            { Get-LFMTagWeeklyChartList -Tag $null } | Should -Throw
         }
-        Mock ConvertTo-LFMParameter
-        Mock New-LFMApiQuery
-        Mock Invoke-LFMApiUri {$contextMock}
-        Mock ConvertFrom-UnixTime
+    }
 
-        Context 'Input' {
+    Context 'Execution' {
 
-            It 'Should throw when tag is null' {
-                {Get-LFMTagWeeklyChartList -Tag $null} | Should -Throw
-            }
-        }
-
-        Context 'Execution' {
-
+        BeforeAll {
             Get-LFMTagWeeklyChartList -Tag Tag
-
-            It 'Should remove common parameters from bound parameters' {
-                $amParams = @{
-                    CommandName     = 'Remove-CommonParameter'
-                    Exactly         = $true
-                    Times           = 1
-                    ParameterFilter = {
-                        $PSBoundParameters
-                    }
-                }
-                Assert-MockCalled @amParams
-            }
-
-            It 'Should convert parameters to format API expects after signing' {
-                $amParams = @{
-                    CommandName = 'ConvertTo-LFMParameter'
-                    Exactly     = $true
-                    Times       = 1
-                }
-                Assert-MockCalled @amParams
-            }
-
-            It 'Should take hashtable and build a query for a uri' {
-                $amParams = @{
-                    CommandName = 'New-LFMApiQuery'
-                    Exactly     = $true
-                    Times       = 1
-                }
-                Assert-MockCalled @amParams
-            }
         }
 
-        Context 'Output' {
+        It 'Should remove common parameters from bound parameters' {
+            $siParams = @{
+                CommandName     = 'Remove-CommonParameter'
+                ModuleName      = 'PowerLFM'
+                Scope           = 'Context'
+                Exactly         = $true
+                Times           = 1
+                ParameterFilter = {
+                    $PSBoundParameters
+                }
+            }
+            Should -Invoke @siParams
+        }
 
+        It 'Should convert parameters to format API expects after signing' {
+            $siParams = @{
+                CommandName = 'ConvertTo-LFMParameter'
+                ModuleName  = 'PowerLFM'
+                Scope       = 'Context'
+                Exactly     = $true
+                Times       = 1
+            }
+            Should -Invoke @siParams
+        }
+
+        It 'Should take hashtable and build a query for a uri' {
+            $siParams = @{
+                CommandName = 'New-LFMApiQuery'
+                ModuleName  = 'PowerLFM'
+                Scope       = 'Context'
+                Exactly     = $true
+                Times       = 1
+            }
+            Should -Invoke @siParams
+        }
+    }
+
+    Context 'Output' {
+
+        BeforeAll {
             $output = Get-LFMTagWeeklyChartList -Tag Tag
+        }
 
-            It 'Tag should have two charts' {
-                $output | Should -HaveCount 1
-            }
+        It 'Tag should have two charts' {
+            $output | Should -HaveCount 1
+        }
 
-            It 'Tag should not have more than two charts' {
-                $output | Should -Not -BeNullOrEmpty
-                $output | Should -Not -HaveCount 2
-            }
+        It 'Tag should not have more than two charts' {
+            $output | Should -Not -BeNullOrEmpty
+            $output | Should -Not -HaveCount 2
+        }
 
-            It 'Should call the correct Last.fm get method' {
-                $amParams = @{
-                    CommandName = 'Invoke-LFMApiUri'
-                    Exactly = $true
-                    Times = 1
-                    Scope = 'Context'
-                    ParameterFilter = {
-                        $Uri -like 'https://ws.audioscrobbler.com/2.0*'
-                    }
+        It 'Should call the correct Last.fm get method' {
+            $siParams = @{
+                CommandName     = 'Invoke-LFMApiUri'
+                ModuleName      = 'PowerLFM'
+                Scope           = 'Context'
+                Exactly         = $true
+                Times           = 1
+                ParameterFilter = {
+                    $Uri -like 'https://ws.audioscrobbler.com/2.0*'
                 }
-                Assert-MockCalled @amParams
             }
+            Should -Invoke @siParams
+        }
 
-            It 'Should convert the date from unix time to the local time' {
-                $amParams = @{
-                    CommandName = 'ConvertFrom-UnixTime'
-                    Exactly = $true
-                    Times = 2
-                    Scope = 'Context'
-                    ParameterFilter = {
-                        $UnixTime -eq 0 -or
-                        $UnixTime -eq 60 -and
-                        $Local -eq $true
-                    }
+        It 'Should convert the date from unix time to the local time' {
+            $siParams = @{
+                CommandName     = 'ConvertFrom-UnixTime'
+                ModuleName      = 'PowerLFM'
+                Scope           = 'Context'
+                Exactly         = $true
+                Times           = 2
+                ParameterFilter = {
+                    $UnixTime -eq 0 -or
+                    $UnixTime -eq 60 -and
+                    $Local -eq $true
                 }
-                Assert-MockCalled @amParams
             }
+            Should -Invoke @siParams
+        }
 
-            It 'Should throw when an error is returned in the response' {
-                Mock Invoke-LFMApiUri { throw 'Error' }
+        It 'Should throw when an error is returned in the response' {
+            Mock Invoke-LFMApiUri { throw 'Error' } -ModuleName 'PowerLFM'
 
-                { Get-LFMTagWeeklyChartList -Tag Tag } | Should -Throw 'Error'
-            }
+            { Get-LFMTagWeeklyChartList -Tag Tag } | Should -Throw 'Error'
         }
     }
 }

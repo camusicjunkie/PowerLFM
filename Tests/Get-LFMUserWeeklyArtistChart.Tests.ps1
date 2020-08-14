@@ -1,10 +1,12 @@
-Remove-Module -Name PowerLFM -ErrorAction Ignore
-Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
+BeforeAll {
+    Remove-Module -Name PowerLFM -ErrorAction Ignore
+    Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
+}
 
 Describe 'Get-LFMUserWeeklyArtistChart: Interface' -Tag Interface {
 
     BeforeAll {
-        $script:command = (Get-Command -Name 'Get-LFMUserWeeklyArtistChart')
+        $command = Get-Command -Name 'Get-LFMUserWeeklyArtistChart'
     }
 
     It 'CmdletBinding should be declared' {
@@ -21,21 +23,25 @@ Describe 'Get-LFMUserWeeklyArtistChart: Interface' -Tag Interface {
             $command.ParameterSets.Name | Should -Contain '__AllParameterSets'
         }
 
-        $parameterSet = $command.ParameterSets | Where-Object Name -eq __AllParameterSets
+        BeforeAll {
+            $parameterSet = $command.ParameterSets | Where-Object Name -EQ __AllParameterSets
+        }
 
-        Context 'Parameter [UserName] attribute validation' {
+        Context 'Parameter [StartDate] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object Name -eq UserName
+            BeforeAll {
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ StartDate
+            }
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It 'Should be of type System.String' {
-                $parameter.ParameterType.ToString() | Should -Be System.String
+            It 'Should be of type System.DateTime' {
+                $parameter.ParameterType.ToString() | Should -Be System.DateTime
             }
 
-            It 'Mandatory should be set to True' {
+            It 'Mandatory should be set to False' {
                 $parameter.IsMandatory | Should -BeFalse
             }
 
@@ -52,13 +58,15 @@ Describe 'Get-LFMUserWeeklyArtistChart: Interface' -Tag Interface {
             }
 
             It 'Should have a position of 0' {
-                $parameter.Position | Should -Be 2
+                $parameter.Position | Should -Be 0
             }
         }
 
-        Context 'Parameter [StartDate] attribute validation' {
+        Context 'Parameter [EndDate] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object Name -eq StartDate
+            BeforeAll {
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ EndDate
+            }
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
@@ -85,20 +93,22 @@ Describe 'Get-LFMUserWeeklyArtistChart: Interface' -Tag Interface {
             }
 
             It 'Should have a position of 1' {
-                $parameter.Position | Should -Be 0
+                $parameter.Position | Should -Be 1
             }
         }
 
-        Context 'Parameter [EndDate] attribute validation' {
+        Context 'Parameter [UserName] attribute validation' {
 
-            $parameter = $parameterSet.Parameters | Where-Object Name -eq EndDate
+            BeforeAll {
+                $parameter = $parameterSet.Parameters | Where-Object Name -EQ UserName
+            }
 
             It 'Should not be null or empty' {
                 $parameter | Should -Not -BeNullOrEmpty
             }
 
-            It 'Should be of type System.DateTime' {
-                $parameter.ParameterType.ToString() | Should -Be System.DateTime
+            It 'Should be of type System.String' {
+                $parameter.ParameterType.ToString() | Should -Be System.String
             }
 
             It 'Mandatory should be set to False' {
@@ -118,119 +128,136 @@ Describe 'Get-LFMUserWeeklyArtistChart: Interface' -Tag Interface {
             }
 
             It 'Should have a position of 2' {
-                $parameter.Position | Should -Be 1
+                $parameter.Position | Should -Be 2
             }
         }
     }
 }
 
-InModuleScope PowerLFM {
+Describe 'Get-LFMUserWeeklyArtistChart: Unit' -Tag Unit {
+
+    #region Discovery
 
     $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
     $contextMock = $mocks.'Get-LFMUserWeeklyArtistChart'.UserWeeklyArtistChart
 
-    Describe 'Get-LFMUserWeeklyArtistChart: Unit' -Tag Unit {
+    #endregion Discovery
+
+    BeforeAll {
+        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+        $contextMock = $mocks.'Get-LFMUserWeeklyArtistChart'.UserWeeklyArtistChart
 
         Mock Remove-CommonParameter {
             [hashtable] @{ }
+        } -ModuleName 'PowerLFM'
+        Mock ConvertTo-LFMParameter -ModuleName 'PowerLFM'
+        Mock New-LFMApiQuery -ModuleName 'PowerLFM'
+        Mock Invoke-LFMApiUri { $contextMock } -ModuleName 'PowerLFM'
+    }
+
+    Context 'Input' {
+
+        It 'Should throw when username is null' {
+            { Get-LFMUserWeeklyArtistChart -UserName $null } | Should -Throw
         }
-        Mock ConvertTo-LFMParameter
-        Mock New-LFMApiQuery
-        Mock Invoke-LFMApiUri {$contextMock}
+    }
 
-        Context 'Input' {
+    Context 'Execution' {
 
-            It 'Should throw when username is null' {
-                {Get-LFMUserWeeklyArtistChart -UserName $null} | Should -Throw
-            }
-        }
-
-        Context 'Execution' {
-
+        BeforeAll {
             Get-LFMUserWeeklyArtistChart
-
-            It 'Should remove common parameters from bound parameters' {
-                $amParams = @{
-                    CommandName     = 'Remove-CommonParameter'
-                    Exactly         = $true
-                    Times           = 1
-                    ParameterFilter = {
-                        $PSBoundParameters
-                    }
-                }
-                Assert-MockCalled @amParams
-            }
-
-            It 'Should convert parameters to format API expects after signing' {
-                $amParams = @{
-                    CommandName = 'ConvertTo-LFMParameter'
-                    Exactly     = $true
-                    Times       = 1
-                }
-                Assert-MockCalled @amParams
-            }
-
-            It 'Should take hashtable and build a query for a uri' {
-                $amParams = @{
-                    CommandName = 'New-LFMApiQuery'
-                    Exactly     = $true
-                    Times       = 1
-                }
-                Assert-MockCalled @amParams
-            }
         }
 
-        Context 'Output' {
-
-            $output = Get-LFMUserWeeklyArtistChart
-
-            It "User weekly artist chart first artist should have name of $($contextMock.WeeklyArtistChart.Artist[0].Name)" {
-                $output[0].Artist | Should -Be $contextMock.WeeklyArtistChart.Artist[0].Name
-            }
-
-            It "User weekly artist chart first artist should have url of $($contextMock.WeeklyArtistChart.Artist[0].Url)" {
-                $output[0].Url | Should -Be $contextMock.WeeklyArtistChart.Artist[0].Url
-            }
-
-            It "User weekly artist chart second artist should have url of $($contextMock.WeeklyArtistChart.Artist[1].Url)" {
-                $output[1].Url | Should -Be $contextMock.WeeklyArtistChart.Artist[1].Url
-            }
-
-            It "User weekly artist chart second artist should have an id with a value of $($contextMock.WeeklyArtistChart.Artist[1].Mbid)" {
-                $output[1].Id | Should -Be $contextMock.WeeklyArtistChart.Artist[1].Mbid
-            }
-
-            It "User weekly artist chart second artist should have a playcount of $($contextMock.WeeklyArtistChart.Artist[1].PlayCount)" {
-                $output[1].PlayCount | Should -Be $contextMock.WeeklyArtistChart.Artist[1].PlayCount
-            }
-
-            It 'User weekly artist chart should have two artists' {
-                $output.Artist | Should -HaveCount 2
-            }
-
-            It 'User weekly artist chart should not have more than two artists' {
-                $output.Artist | Should -Not -BeNullOrEmpty
-                $output.Artist | Should -Not -HaveCount 3
-            }
-
-            It 'Should call the correct Last.fm get method' {
-                $amParams = @{
-                    CommandName = 'Invoke-LFMApiUri'
-                    Exactly = $true
-                    Times = 1
-                    Scope = 'Context'
-                    ParameterFilter = {
-                        $Uri -like 'https://ws.audioscrobbler.com/2.0*'
-                    }
+        It 'Should remove common parameters from bound parameters' {
+            $siParams = @{
+                CommandName     = 'Remove-CommonParameter'
+                ModuleName      = 'PowerLFM'
+                Scope           = 'Context'
+                Exactly         = $true
+                Times           = 1
+                ParameterFilter = {
+                    $PSBoundParameters
                 }
-                Assert-MockCalled @amParams
             }
+            Should -Invoke @siParams
+        }
 
-            It 'Should throw when an error is returned in the response' {
-                Mock Invoke-LFMApiUri { throw 'Error' }
-
-                { Get-LFMUserWeeklyArtistChart } | Should -Throw 'Error'
+        It 'Should convert parameters to format API expects after signing' {
+            $siParams = @{
+                CommandName = 'ConvertTo-LFMParameter'
+                ModuleName  = 'PowerLFM'
+                Scope       = 'Context'
+                Exactly     = $true
+                Times       = 1
             }
+            Should -Invoke @siParams
+        }
+
+        It 'Should take hashtable and build a query for a uri' {
+            $siParams = @{
+                CommandName = 'New-LFMApiQuery'
+                ModuleName  = 'PowerLFM'
+                Scope       = 'Context'
+                Exactly     = $true
+                Times       = 1
+            }
+            Should -Invoke @siParams
+        }
+    }
+
+    Context 'Output' {
+
+        BeforeAll {
+            $output = Get-LFMUserWeeklyArtistChart
+        }
+
+        It "User weekly artist chart first artist should have name of $($contextMock.WeeklyArtistChart.Artist[0].Name)" {
+            $output[0].Artist | Should -Be $contextMock.WeeklyArtistChart.Artist[0].Name
+        }
+
+        It "User weekly artist chart first artist should have url of $($contextMock.WeeklyArtistChart.Artist[0].Url)" {
+            $output[0].Url | Should -Be $contextMock.WeeklyArtistChart.Artist[0].Url
+        }
+
+        It "User weekly artist chart second artist should have url of $($contextMock.WeeklyArtistChart.Artist[1].Url)" {
+            $output[1].Url | Should -Be $contextMock.WeeklyArtistChart.Artist[1].Url
+        }
+
+        It "User weekly artist chart second artist should have an id with a value of $($contextMock.WeeklyArtistChart.Artist[1].Mbid)" {
+            $output[1].Id | Should -Be $contextMock.WeeklyArtistChart.Artist[1].Mbid
+        }
+
+        It "User weekly artist chart second artist should have a playcount of $($contextMock.WeeklyArtistChart.Artist[1].PlayCount)" {
+            $output[1].PlayCount | Should -Be $contextMock.WeeklyArtistChart.Artist[1].PlayCount
+        }
+
+        It 'User weekly artist chart should have two artists' {
+            $output.Artist | Should -HaveCount 2
+        }
+
+        It 'User weekly artist chart should not have more than two artists' {
+            $output.Artist | Should -Not -BeNullOrEmpty
+            $output.Artist | Should -Not -HaveCount 3
+        }
+
+        It 'Should call the correct Last.fm get method' {
+            $siParams = @{
+                CommandName     = 'Invoke-LFMApiUri'
+                ModuleName      = 'PowerLFM'
+                Scope           = 'Context'
+                Exactly         = $true
+                Times           = 1
+                ParameterFilter = {
+                    $Uri -like 'https://ws.audioscrobbler.com/2.0*'
+                }
+            }
+            Should -Invoke @siParams
+        }
+
+        It 'Should throw when an error is returned in the response' {
+            Mock Invoke-LFMApiUri { throw 'Error' } -ModuleName 'PowerLFM'
+
+            { Get-LFMUserWeeklyArtistChart } | Should -Throw 'Error'
         }
     }
 }
