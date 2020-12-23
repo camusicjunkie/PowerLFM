@@ -299,7 +299,7 @@ $psGalleryConditions = {
 
 # Synopsis: Publish module to the PSGallery
 Task PublishToPSGallery -If $psGalleryConditions {
-    Assert { Get-Module -name $env:BHProjectName } "Module $env:BHProjectName is not available"
+    Assert { Get-Module -Name $env:BHProjectName } "Module $env:BHProjectName is not available"
 
     Write-Build Gray "  Publishing version [$($env:NextBuildVersion)] to PSGallery"
     Publish-Module -Path $env:BHBuildOutput\$env:BHProjectName -NuGetApiKey $NuGetApiKey -Repository PSGallery
@@ -315,7 +315,7 @@ $localGalleryConditions = {
 
 # Synopsis: Publish module to local NuGet repository
 Task PublishToLocalGallery -If $localGalleryConditions {
-    Assert { Get-Module -name $env:BHProjectName } "Module $env:BHProjectName is not available"
+    Assert { Get-Module -Name $env:BHProjectName } "Module $env:BHProjectName is not available"
 
     Write-Build Gray "  Publishing version [$($env:NextBuildVersion)] to local gallery"
     Publish-Module -Path $env:BHBuildOutput\$env:BHProjectName -NuGetApiKey $NuGetApiKey -Repository Local
