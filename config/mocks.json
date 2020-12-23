@@ -1,6 +1,6 @@
-{
-  "Get-LFMAlbumInfo": [
-    {
+[
+  {
+    "Get-LFMAlbumInfo": {
       "AlbumInfo": {
         "album": {
           "name": "Album",
@@ -42,9 +42,9 @@
         }
       }
     }
-  ],
-  "Get-LFMAlbumTag": [
-    {
+  },
+  {
+    "Get-LFMAlbumTag": {
       "AlbumTag": {
         "tags": {
           "tag": [
@@ -60,9 +60,9 @@
         }
       }
     }
-  ],
-  "Get-LFMAlbumTopTag": [
-    {
+  },
+  {
+    "Get-LFMAlbumTopTag": {
       "AlbumTopTag": {
         "topTags": {
           "tag": [
@@ -80,9 +80,9 @@
         }
       }
     }
-  ],
-  "Get-LFMArtistCorrection": [
-    {
+  },
+  {
+    "Get-LFMArtistCorrection": {
       "ArtistCorrection": {
         "corrections": {
           "correction": {
@@ -95,9 +95,9 @@
         }
       }
     }
-  ],
-  "Get-LFMArtistInfo": [
-    {
+  },
+  {
+    "Get-LFMArtistInfo": {
       "ArtistInfo": {
         "artist": {
           "name": "Artist",
@@ -139,9 +139,9 @@
         }
       }
     }
-  ],
-  "Get-LFMArtistSimilar": [
-    {
+  },
+  {
+    "Get-LFMArtistSimilar": {
       "ArtistSimilar": {
         "similarartists": {
           "artist": [
@@ -161,9 +161,9 @@
         }
       }
     }
-  ],
-  "Get-LFMArtistTag": [
-    {
+  },
+  {
+    "Get-LFMArtistTag": {
       "ArtistTag": {
         "tags": {
           "tag": [
@@ -179,9 +179,9 @@
         }
       }
     }
-  ],
-  "Get-LFMArtistTopAlbum": [
-    {
+  },
+  {
+    "Get-LFMArtistTopAlbum": {
       "ArtistTopAlbum": {
         "topalbums": {
           "album": [
@@ -201,9 +201,9 @@
         }
       }
     }
-  ],
-  "Get-LFMArtistTopTag": [
-    {
+  },
+  {
+    "Get-LFMArtistTopTag": {
       "ArtistTopTag": {
         "toptags": {
           "tag": [
@@ -221,9 +221,9 @@
         }
       }
     }
-  ],
-  "Get-LFMArtistTopTrack": [
-    {
+  },
+  {
+    "Get-LFMArtistTopTrack": {
       "ArtistTopTrack": {
         "toptracks": {
           "track": [
@@ -245,9 +245,9 @@
         }
       }
     }
-  ],
-  "Get-LFMChartTopArtist": [
-    {
+  },
+  {
+    "Get-LFMChartTopArtist": {
       "ChartTopArtist": {
         "artists": {
           "artist": [
@@ -269,9 +269,9 @@
         }
       }
     }
-  ],
-  "Get-LFMChartTopTag": [
-    {
+  },
+  {
+    "Get-LFMChartTopTag": {
       "ChartTopTag": {
         "tags": {
           "tag": [
@@ -291,9 +291,9 @@
         }
       }
     }
-  ],
-  "Get-LFMChartTopTrack": [
-    {
+  },
+  {
+    "Get-LFMChartTopTrack": {
       "ChartTopTrack": {
         "tracks": {
           "track": [
@@ -327,9 +327,9 @@
         }
       }
     }
-  ],
-  "Get-LFMGeoTopArtist": [
-    {
+  },
+  {
+    "Get-LFMGeoTopArtist": {
       "GeoTopArtist": {
         "topartists": {
           "artist": [
@@ -349,9 +349,9 @@
         }
       }
     }
-  ],
-  "Get-LFMGeoTopTrack": [
-    {
+  },
+  {
+    "Get-LFMGeoTopTrack": {
       "GeoTopTrack": {
         "tracks": {
           "track": [
@@ -387,9 +387,9 @@
         }
       }
     }
-  ],
-  "Get-LFMLibraryArtist": [
-    {
+  },
+  {
+    "Get-LFMLibraryArtist": {
       "LibraryArtist": {
         "artists": {
           "artist": [
@@ -409,9 +409,9 @@
         }
       }
     }
-  ],
-  "Get-LFMTagInfo": [
-    {
+  },
+  {
+    "Get-LFMTagInfo": {
       "TagInfo": {
         "tag": {
           "name": "Tag",
@@ -423,9 +423,9 @@
         }
       }
     }
-  ],
-  "Get-LFMTagSimilar": [
-    {
+  },
+  {
+    "Get-LFMTagSimilar": {
       "TagSimilar": {
         "tag": {
           "name": "Tag",
@@ -433,9 +433,9 @@
         }
       }
     }
-  ],
-  "Get-LFMTagTopAlbum": [
-    {
+  },
+  {
+    "Get-LFMTagTopAlbum": {
       "TagTopAlbum": {
         "albums": {
           "album": [
@@ -469,9 +469,9 @@
         }
       }
     }
-  ],
-  "Get-LFMTagTopArtist": [
-    {
+  },
+  {
+    "Get-LFMTagTopArtist": {
       "TagTopArtist": {
         "topartists": {
           "artist": [
@@ -495,9 +495,9 @@
         }
       }
     }
-  ],
-  "Get-LFMTagTopTag": [
-    {
+  },
+  {
+    "Get-LFMTagTopTag": {
       "TagTopTag": {
         "toptags": {
           "tag": [
@@ -515,9 +515,9 @@
         }
       }
     }
-  ],
-  "Get-LFMTagTopTrack": [
-    {
+  },
+  {
+    "Get-LFMTagTopTrack": {
       "TagTopTrack": {
         "tracks": {
           "track": [
@@ -553,9 +553,9 @@
         }
       }
     }
-  ],
-  "Get-LFMTagWeeklyChartList": [
-    {
+  },
+  {
+    "Get-LFMTagWeeklyChartList": {
       "TagWeeklyChartList": {
         "weeklychartlist": {
           "chart": [
@@ -567,9 +567,9 @@
         }
       }
     }
-  ],
-  "Get-LFMTrackCorrection": [
-    {
+  },
+  {
+    "Get-LFMTrackCorrection": {
       "TrackCorrection": {
         "corrections": {
           "correction": {
@@ -586,9 +586,9 @@
         }
       }
     }
-  ],
-  "Get-LFMTrackInfo": [
-    {
+  },
+  {
+    "Get-LFMTrackInfo": {
       "TrackInfo": {
         "track": {
           "name": "Track",
@@ -619,9 +619,9 @@
         }
       }
     }
-  ],
-  "Get-LFMTrackSimilar": [
-    {
+  },
+  {
+    "Get-LFMTrackSimilar": {
       "TrackSimilar": {
         "similartracks": {
           "track": [
@@ -647,9 +647,9 @@
         }
       }
     }
-  ],
-  "Get-LFMTrackTag": [
-    {
+  },
+  {
+    "Get-LFMTrackTag": {
       "TrackTag": {
         "tags": {
           "tag": [
@@ -665,9 +665,9 @@
         }
       }
     }
-  ],
-  "Get-LFMTrackTopTag": [
-    {
+  },
+  {
+    "Get-LFMTrackTopTag": {
       "TrackTopTag": {
         "toptags": {
           "tag": [
@@ -685,9 +685,9 @@
         }
       }
     }
-  ],
-  "Get-LFMUserFriend": [
-    {
+  },
+  {
+    "Get-LFMUserFriend": {
       "UserFriend": {
         "friends": {
           "user": [
@@ -715,9 +715,9 @@
         }
       }
     }
-  ],
-  "Get-LFMUserInfo": [
-    {
+  },
+  {
+    "Get-LFMUserInfo": {
       "UserInfo": {
         "user": {
           "realname": "Name",
@@ -732,9 +732,9 @@
         }
       }
     }
-  ],
-  "Get-LFMUserLovedTrack": [
-    {
+  },
+  {
+    "Get-LFMUserLovedTrack": {
       "UserLovedTrack": {
         "lovedtracks": {
           "track": [
@@ -768,9 +768,9 @@
         }
       }
     }
-  ],
-  "Get-LFMUserPersonalTag": [
-    {
+  },
+  {
+    "Get-LFMUserPersonalTag": {
       "UserPersonalTag": {
         "taggings": {
           "artists": {
@@ -790,9 +790,9 @@
         }
       }
     }
-  ],
-  "Get-LFMUserRecentTrack": [
-    {
+  },
+  {
+    "Get-LFMUserRecentTrack": {
       "UserRecentTrack": {
         "recenttracks": {
           "track": [
@@ -829,9 +829,9 @@
         }
       }
     }
-  ],
-  "Get-LFMUserTopAlbum": [
-    {
+  },
+  {
+    "Get-LFMUserTopAlbum": {
       "UserTopAlbum": {
         "topalbums": {
           "album": [
@@ -861,9 +861,9 @@
         }
       }
     }
-  ],
-  "Get-LFMUserTopArtist": [
-    {
+  },
+  {
+    "Get-LFMUserTopArtist": {
       "UserTopArtist": {
         "topartists": {
           "artist": [
@@ -883,9 +883,9 @@
         }
       }
     }
-  ],
-  "Get-LFMUserTopTag": [
-    {
+  },
+  {
+    "Get-LFMUserTopTag": {
       "UserTopTag": {
         "toptags": {
           "tag": [
@@ -903,9 +903,9 @@
         }
       }
     }
-  ],
-  "Get-LFMUserTopTrack": [
-    {
+  },
+  {
+    "Get-LFMUserTopTrack": {
       "UserTopTrack": {
         "toptracks": {
           "track": [
@@ -935,9 +935,9 @@
         }
       }
     }
-  ],
-  "Get-LFMUserTrackScrobble": [
-    {
+  },
+  {
+    "Get-LFMUserTrackScrobble": {
       "UserTrackScrobble": {
         "trackscrobbles": {
           "track": [
@@ -973,9 +973,9 @@
         }
       }
     }
-  ],
-  "Get-LFMUserWeeklyAlbumChart": [
-    {
+  },
+  {
+    "Get-LFMUserWeeklyAlbumChart": {
       "UserWeeklyAlbumChart": {
         "weeklyalbumchart": {
           "album": [
@@ -1003,9 +1003,9 @@
         }
       }
     }
-  ],
-  "Get-LFMUserWeeklyArtistChart": [
-    {
+  },
+  {
+    "Get-LFMUserWeeklyArtistChart": {
       "UserWeeklyArtistChart": {
         "weeklyartistchart": {
           "artist": [
@@ -1025,9 +1025,9 @@
         }
       }
     }
-  ],
-  "Get-LFMUserWeeklyChartList": [
-    {
+  },
+  {
+    "Get-LFMUserWeeklyChartList": {
       "UserWeeklyChartList": {
         "weeklychartlist": {
           "chart": [
@@ -1039,9 +1039,9 @@
         }
       }
     }
-  ],
-  "Get-LFMUserWeeklyTrackChart": [
-    {
+  },
+  {
+    "Get-LFMUserWeeklyTrackChart": {
       "UserWeeklyTrackChart": {
         "weeklytrackchart": {
           "track": [
@@ -1069,25 +1069,25 @@
         }
       }
     }
-  ],
-  "Request-LFMSession": [
-    {
+  },
+  {
+    "Request-LFMSession": {
       "Session": {
         "session": {
           "key": "SessionKey"
         }
       }
     }
-  ],
-  "Request-LFMToken": [
-    {
+  },
+  {
+    "Request-LFMToken": {
       "Token": {
         "token": "Token"
       }
     }
-  ],
-  "Search-LFMAlbum": [
-    {
+  },
+  {
+    "Search-LFMAlbum": {
       "Album": {
         "results": {
           "albummatches": {
@@ -1109,9 +1109,9 @@
         }
       }
     }
-  ],
-  "Search-LFMArtist": [
-    {
+  },
+  {
+    "Search-LFMArtist": {
       "Artist": {
         "results": {
           "artistmatches": {
@@ -1133,9 +1133,9 @@
         }
       }
     }
-  ],
-  "Search-LFMTrack": [
-    {
+  },
+  {
+    "Search-LFMTrack": {
       "Track": {
         "results": {
           "trackmatches": {
@@ -1159,9 +1159,9 @@
         }
       }
     }
-  ],
-  "Set-LFMTrackNowPlaying": [
-    {
+  },
+  {
+    "Set-LFMTrackNowPlaying": {
       "TrackNowPlaying": {
         "nowplaying": {
           "artist": {
@@ -1176,8 +1176,10 @@
         }
       }
     }
-  ],
-  "Lfm": {
-    "status": "ok"
+  },
+  {
+    "Lfm": {
+      "status": "ok"
+    }
   }
-}
+]
