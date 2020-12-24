@@ -111,7 +111,9 @@ Task CopyModuleFiles {
     $null = New-Item -Path "$env:BHBuildOutput\$env:BHProjectName\lib" -ItemType Directory -Force
 
     # Copy module
-    Copy-Item -Path "$env:BHModulePath\*" -Destination "$env:BHBuildOutput\$env:BHProjectName" -Recurse -Force
+    Get-ChildItem -Path "$env:BHModulePath\" -Directory |
+        Where-Object Name -notin 'lib' |
+        Copy-Item -Destination "$env:BHBuildOutput\$env:BHProjectName" -Recurse -Force
 
     # Copy dependencies
     Copy-Item -Path @(
