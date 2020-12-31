@@ -3,110 +3,12 @@ BeforeAll {
     Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
 }
 
-Describe 'Get-LFMUserTopTag: Interface' -Tag Interface {
-
-    BeforeAll {
-        $command = Get-Command -Name 'Get-LFMUserTopTag'
-    }
-
-    It 'CmdletBinding should be declared' {
-        $command.CmdletBinding | Should -BeTrue
-    }
-
-    It 'Should contain an output type of PowerLFM.User.TopTag' {
-        $command.OutputType.Name | Should -Be 'PowerLFM.User.TopTag'
-    }
-
-    Context 'ParameterSetName __AllParameterSets' {
-
-        It 'Should have a parameter set of __AllParameterSets' {
-            $command.ParameterSets.Name | Should -Contain '__AllParameterSets'
-        }
-
-        BeforeAll {
-            $parameterSet = $command.ParameterSets | Where-Object Name -EQ __AllParameterSets
-        }
-
-        Context 'Parameter [UserName] attribute validation' {
-
-            BeforeAll {
-                $parameter = $parameterSet.Parameters | Where-Object Name -EQ UserName
-            }
-
-            It 'Should not be null or empty' {
-                $parameter | Should -Not -BeNullOrEmpty
-            }
-
-            It 'Should be of type System.String' {
-                $parameter.ParameterType.ToString() | Should -Be System.String
-            }
-
-            It 'Mandatory should be set to False' {
-                $parameter.IsMandatory | Should -BeFalse
-            }
-
-            It 'ValueFromPipeline should be set to False' {
-                $parameter.ValueFromPipeline | Should -BeFalse
-            }
-
-            It 'ValueFromPipelineByPropertyName should be set to True' {
-                $parameter.ValueFromPipelineByPropertyName | Should -BeTrue
-            }
-
-            It 'ValueFromRemainingArguments should be set to False' {
-                $parameter.ValueFromRemainingArguments | Should -BeFalse
-            }
-
-            It 'Should have a position of 0' {
-                $parameter.Position | Should -Be 0
-            }
-        }
-
-        Context 'Parameter [Limit] attribute validation' {
-
-            BeforeAll {
-                $parameter = $parameterSet.Parameters | Where-Object Name -EQ Limit
-            }
-
-            It 'Should not be null or empty' {
-                $parameter | Should -Not -BeNullOrEmpty
-            }
-
-            It 'Should be of type System.Int32' {
-                $parameter.ParameterType.ToString() | Should -Be System.Int32
-            }
-
-            It 'Mandatory should be set to False' {
-                $parameter.IsMandatory | Should -BeFalse
-            }
-
-            It 'ValueFromPipeline should be set to False' {
-                $parameter.ValueFromPipeline | Should -BeFalse
-            }
-
-            It 'ValueFromPipelineByPropertyName should be set to False' {
-                $parameter.ValueFromPipelineByPropertyName | Should -BeFalse
-            }
-
-            It 'ValueFromRemainingArguments should be set to False' {
-                $parameter.ValueFromRemainingArguments | Should -BeFalse
-            }
-
-            It 'Should have a position of 1' {
-                $parameter.Position | Should -Be 1
-            }
-        }
-    }
-}
-
 Describe 'Get-LFMUserTopTag: Unit' -Tag Unit {
 
-    #region Discovery
-
-    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-    $contextMock = $mocks.'Get-LFMUserTopTag'.UserTopTag
-
-    #endregion Discovery
+    BeforeDiscovery {
+        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+        $contextMock = $mocks.'Get-LFMUserTopTag'.UserTopTag
+    }
 
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
@@ -205,7 +107,7 @@ Describe 'Get-LFMUserTopTag: Unit' -Tag Unit {
                 Exactly         = $true
                 Times           = 1
                 ParameterFilter = {
-                    $Uri -like 'https://ws.audioscrobbler.com/2.0*'
+                    $Uri -like "$baseUrl*"
                 }
             }
             Should -Invoke @siParams

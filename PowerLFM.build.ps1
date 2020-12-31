@@ -111,7 +111,13 @@ Task CopyModuleFiles {
     $null = New-Item -Path "$env:BHBuildOutput\$env:BHProjectName\lib" -ItemType Directory -Force
 
     # Copy module
-    Copy-Item -Path "$env:BHModulePath\*" -Destination "$env:BHBuildOutput\$env:BHProjectName" -Recurse -Force
+    $ciParams = @{
+        Path        = (Get-ChildItem -Path "$env:BHModulePath\*" | Where-Object Name -NotIn 'lib')
+        Destination = "$env:BHBuildOutput\$env:BHProjectName"
+        Recurse     = $true
+        Force       = $true
+    }
+    Copy-Item @ciParams
 
     # Copy dependencies
     Copy-Item -Path @(
@@ -193,22 +199,23 @@ Task CopyTestFiles {
 Task RunPester CopyTestFiles, {
     Assert { Test-Path $env:BHBuildOutput -PathType Container } "Build output path must exist"
     Remove-Module $env:BHProjectName -ErrorAction SilentlyContinue
+    Import-Module -Name Pester
 
-    $ipParams = @{
-        Path      = "$env:BHBuildOutput\Tests\"
-        TagFilter = $Tag
-        Output    = 'None'
-        CI        = $true
-        Passthru  = $true
+    $config = [PesterConfiguration] @{
+        Run        = @{ Path = "$env:BHBuildOutput\Tests\"; Exit = $true; Passthru = $true }
+        TestResult = @{ Enabled = $true; OutputPath = "$env:BHBuildOutput\testResults\testResults.xml" }
+        Output     = @{ Verbosity = 'None' }
     }
-    $testResults = Invoke-Pester @ipParams
+    if ($null -ne $Tag) { $config.Filter.Tag = $Tag }
+
+    $testResults = Invoke-Pester -Configuration $config
 
     Equals $testResults.FailedCount 0
-}, MoveTestResults
+}
 
-# Synopsis: Move test results to the test results folder
-Task MoveTestResults {
-    Move-Item -Path $BuildRoot\testResults.xml -Destination $env:BHBuildOutput\testResults -Force
+# Synopsis: Remove private/public folders from module in the build output folder
+Task CleanModule CompileModule, {
+    "Private", "Public" | ForEach-Object { Remove "$env:BHBuildOutput\$env:BHProjectName\$_" }
 }
 
 # Synopsis: Publish tests to Appveyor
@@ -217,11 +224,6 @@ Task PublishTestToAppveyor -If ($env:APPVEYOR) {
 
     $TestResultFiles = Get-ChildItem -Path "$env:BHBuildOutput\testResults" -Filter *.xml
     $TestResultFiles | Add-TestResultToAppveyor
-}
-
-# Synopsis: Remove private/public folders from module in the build output folder
-Task CleanModule CompileModule, {
-    "Private", "Public" | ForEach-Object { Remove "$env:BHBuildOutput\$env:BHProjectName\$_" }
 }
 
 # Synopsis: Create a ZIP file from this build
@@ -299,7 +301,7 @@ $psGalleryConditions = {
 
 # Synopsis: Publish module to the PSGallery
 Task PublishToPSGallery -If $psGalleryConditions {
-    Assert { Get-Module -name $env:BHProjectName } "Module $env:BHProjectName is not available"
+    Assert { Get-Module -Name $env:BHProjectName } "Module $env:BHProjectName is not available"
 
     Write-Build Gray "  Publishing version [$($env:NextBuildVersion)] to PSGallery"
     Publish-Module -Path $env:BHBuildOutput\$env:BHProjectName -NuGetApiKey $NuGetApiKey -Repository PSGallery
@@ -315,7 +317,7 @@ $localGalleryConditions = {
 
 # Synopsis: Publish module to local NuGet repository
 Task PublishToLocalGallery -If $localGalleryConditions {
-    Assert { Get-Module -name $env:BHProjectName } "Module $env:BHProjectName is not available"
+    Assert { Get-Module -Name $env:BHProjectName } "Module $env:BHProjectName is not available"
 
     Write-Build Gray "  Publishing version [$($env:NextBuildVersion)] to local gallery"
     Publish-Module -Path $env:BHBuildOutput\$env:BHProjectName -NuGetApiKey $NuGetApiKey -Repository Local

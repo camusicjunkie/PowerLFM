@@ -3,36 +3,12 @@ BeforeAll {
     Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
 }
 
-Describe 'Get-LFMTagTopTag: Interface' -Tag Interface {
-
-    BeforeAll {
-        $command = Get-Command -Name 'Get-LFMTagTopTag'
-    }
-
-    It 'CmdletBinding should be declared' {
-        $command.CmdletBinding | Should -BeTrue
-    }
-
-    It 'Should contain an output type of PowerLFM.Tag.TopTags' {
-        $command.OutputType.Name | Should -Be 'PowerLFM.Tag.TopTags'
-    }
-
-    Context 'ParameterSetName __AllParameterSets' {
-
-        It 'Should have a parameter set of __AllParameterSets' {
-            $command.ParameterSets.Name | Should -Contain '__AllParameterSets'
-        }
-    }
-}
-
 Describe 'Get-LFMTagTopTag: Unit' -Tag Unit {
 
-    #region Discovery
-
-    $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-    $contextMock = $mocks.'Get-LFMTagTopTag'.TagTopTag
-
-    #endregion Discovery
+    BeforeDiscovery {
+        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+        $contextMock = $mocks.'Get-LFMTagTopTag'.TagTopTag
+    }
 
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
@@ -132,7 +108,7 @@ Describe 'Get-LFMTagTopTag: Unit' -Tag Unit {
                 Exactly         = $true
                 Times           = 1
                 ParameterFilter = {
-                    $Uri -like 'https://ws.audioscrobbler.com/2.0*'
+                    $Uri -like "$baseUrl*"
                 }
             }
             Should -Invoke @siParams

@@ -3,24 +3,6 @@ BeforeAll {
     Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
 }
 
-Describe 'Get-LFMConfiguration: Interface' -Tag Interface {
-
-    BeforeAll {
-        $command = Get-Command -Name 'Get-LFMConfiguration'
-    }
-
-    It 'CmdletBinding should be declared' {
-        $command.CmdletBinding | Should -BeTrue
-    }
-
-    Context 'ParameterSetName __AllParameterSets' {
-
-        It 'Should have a parameter set of __AllParameterSets' {
-            $command.ParameterSets.Name | Should -Contain '__AllParameterSets'
-        }
-    }
-}
-
 Describe 'Get-LFMConfiguration: Unit' -Tag Unit {
 
     BeforeAll {
