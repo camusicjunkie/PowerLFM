@@ -13,7 +13,7 @@
     PSDeploy = 'latest'
 
     'Microsoft.PowerShell.SecretManagement' = @{
-        Version = 'latest'
+        Version = '0.2.1'
         Parameters = @{
             AllowPrerelease = $true
         }
