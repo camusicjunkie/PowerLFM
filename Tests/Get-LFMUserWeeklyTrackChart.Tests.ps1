@@ -123,7 +123,7 @@ Describe 'Get-LFMUserWeeklyTrackChart: Unit' -Tag Unit {
                 Exactly         = $true
                 Times           = 1
                 ParameterFilter = {
-                    $Uri -like 'https://ws.audioscrobbler.com/2.0*'
+                    $Uri -like "$baseUrl*"
                 }
             }
             Should -Invoke @siParams

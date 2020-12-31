@@ -108,7 +108,7 @@ Describe 'Add-LFMAlbumTag: Unit' -Tag Unit {
                 Times           = 1
                 ParameterFilter = {
                     $Method -eq 'Post' -and
-                    $Uri -like 'https://ws.audioscrobbler.com/2.0*'
+                    $Uri -like "$baseUrl*"
                 }
             }
             Should -Invoke @siParams
