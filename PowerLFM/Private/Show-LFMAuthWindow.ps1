@@ -1,4 +1,4 @@
-Function Show-LFMAuthWindow {
+function Show-LFMAuthWindow {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]
