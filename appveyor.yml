@@ -8,9 +8,9 @@ environment:
     LFMSharedSecret:
         secure: LA1YzNyJRI0WpbZ+HAWU9uXyalNMw3y24+9FHoFeFIHWXX8tm52CBfi/nz84wYke
     NuGetApiKey:
-        secure: Q9M3EY6VUzeBPpz1d8x1fgJaVx2O6H4hLmeSmSx4B/Ln/RprDEBKAErkPYArt+Dz
+        secure: f8ak1KjHv2xDmtvH+LBrXiMlP5MifdvUw6xzsZoZ41ud86F7653cd5zjsRfgKcdg
     GithubPAT:
-        secure: 1Bo0wzOBrK82haALqyLZ0gVv2EKS9LKWtmUadLv04PM5pUG0ZL5lZYpWF4KqJikH
+        secure: a9ZIHAbmcyTAvD9rA9fEG6UcCKCs4UbmStMSgO6MHV2KLwGt8ZOOFLFLY+pmkU8a
 
 # Allow WMF5 (i.e. PowerShellGallery functionality)
 image: Visual Studio 2017
