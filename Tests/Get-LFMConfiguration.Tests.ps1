@@ -1,57 +1,40 @@
-Remove-Module -Name PowerLFM -ErrorAction Ignore
-Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
-
-Describe 'Get-LFMConfiguration: Interface' -Tag Interface {
-
-    BeforeAll {
-        $script:command = (Get-Command -Name 'Get-LFMConfiguration')
-    }
-
-    It 'CmdletBinding should be declared' {
-        $command.CmdletBinding | Should -BeTrue
-    }
-
-    Context 'ParameterSetName __AllParameterSets' {
-
-        It 'Should have a parameter set of __AllParameterSets' {
-            $command.ParameterSets.Name | Should -Contain '__AllParameterSets'
-        }
-    }
+BeforeAll {
+    Remove-Module -Name PowerLFM -ErrorAction Ignore
+    Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
 }
 
-InModuleScope PowerLFM {
+Describe 'Get-LFMConfiguration: Unit' -Tag Unit {
 
-    Describe 'Get-LFMConfiguration: Unit' -Tag Unit {
+    BeforeAll {
+        Mock Get-Secret -ModuleName 'PowerLFM'
+    }
 
-        Mock Get-LFMVaultCredential
+    Context 'Execution' {
 
-        Context 'Execution' {
+        It 'Should retrieve the passwords from the BuiltInLocalVault' {
+            Get-LFMConfiguration
 
-            It 'Should retrieve the password from the Windows Credential Manager' {
-                Get-LFMConfiguration
-
-                $amParams = @{
-                    CommandName = 'Get-LFMVaultCredential'
-                    Exactly = $true
-                    Times = 3
-                    Scope = 'It'
-                    ParameterFilter = {
-                        $UserName -eq 'ApiKey' -or
-                        $UserName -eq 'SessionKey' -or
-                        $UserName -eq 'SharedSecret'
-                    }
+            $siParams = @{
+                CommandName     = 'Get-Secret'
+                ModuleName      = 'PowerLFM'
+                Exactly         = $true
+                Times           = 3
+                ParameterFilter = {
+                    $Name -eq 'LFMApiKey' -or
+                    $Name -eq 'LFMSessionKey' -or
+                    $Name -eq 'LFMSharedSecret'
                 }
-                Assert-MockCalled @amParams
             }
+            Should -Invoke @siParams
         }
+    }
 
-        Context 'Output' {
+    Context 'Output' {
 
-            It 'Should throw when an error is returned in the response' {
-                Mock Get-LFMVaultCredential { throw 'Error' }
+        It 'Should throw when an error is returned in the response' {
+            Mock Get-Secret { throw 'Error' }
 
-                { Get-LFMConfiguration } | Should -Throw 'Error'
-            }
+            { Get-LFMConfiguration } | Should -Throw 'Error'
         }
     }
 }

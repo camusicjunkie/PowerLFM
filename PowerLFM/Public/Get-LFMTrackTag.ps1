@@ -32,7 +32,7 @@ function Get-LFMTrackTag {
     begin {
         $apiParams = @{
             'method' = 'track.getTags'
-            'api_key' = $script:LFMConfig.APIKey
+            'api_key' = $script:LFMConfig.ApiKey
             'sk' = $script:LFMConfig.SessionKey
             'format' = 'json'
         }

@@ -1,52 +1,40 @@
-﻿Remove-Module -Name PowerLFM -ErrorAction Ignore
-Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
-
-Describe 'Remove-LFMConfiguration: Interface' -Tag Interface {
-
-    BeforeAll {
-        $script:command = (Get-Command -Name 'Remove-LFMConfiguration')
-    }
-
-    It 'CmdletBinding should be declared' {
-        $command.CmdletBinding | Should -BeTrue
-    }
-
-    Context 'ParameterSetName __AllParameterSets' {
-
-        It 'Should have a parameter set of __AllParameterSets' {
-            $command.ParameterSets.Name | Should -Contain '__AllParameterSets'
-        }
-    }
+﻿BeforeAll {
+    Remove-Module -Name PowerLFM -ErrorAction Ignore
+    Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
 }
 
-InModuleScope PowerLFM {
+Describe 'Remove-LFMConfiguration: Unit' -Tag Unit {
 
-    Describe 'Remove-LFMConfiguration: Unit' -Tag Unit {
+    BeforeAll {
+        Mock Get-SecretInfo {
+            @{ Name = 'LFMApiKey' },
+            @{ Name = 'LFMSessionKey' },
+            @{ Name = 'LFMSharedSecret' }
+        } -ModuleName 'PowerLFM'
+        Mock Remove-Secret -ModuleName 'PowerLFM'
+    }
 
-        Mock Remove-LFMVaultCredential
+    Context 'Execution' {
 
-        Context 'Execution' {
+        It 'Should remove the passwords from the BuiltInLocalVault' {
+            Remove-LFMConfiguration -Confirm:$false
 
-            It 'Should remove the passwords from the Windows Credential Manager' {
-                Remove-LFMConfiguration
-
-                $amParams = @{
-                    CommandName = 'Remove-LFMVaultCredential'
-                    Exactly = $true
-                    Times = 1
-                    Scope = 'It'
-                }
-                Assert-MockCalled @amParams
+            $siParams = @{
+                CommandName = 'Remove-Secret'
+                ModuleName  = 'PowerLFM'
+                Exactly     = $true
+                Times       = 3
             }
+            Should -Invoke @siParams
         }
+    }
 
-        Context 'Output' {
+    Context 'Output' {
 
-            It 'Should throw when an error is returned in the response' {
-                Mock Remove-LFMVaultCredential { throw 'Error' }
+        It 'Should throw when an error is returned in the response' {
+            Mock Remove-Secret { throw 'Error' } -ModuleName 'PowerLFM'
 
-                { Remove-LFMConfiguration } | Should -Throw 'Error'
-            }
+            { Remove-LFMConfiguration -Confirm:$false } | Should -Throw 'Error'
         }
     }
 }

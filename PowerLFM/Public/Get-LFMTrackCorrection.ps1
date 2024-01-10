@@ -18,7 +18,7 @@ function Get-LFMTrackCorrection {
     begin {
         $apiParams = @{
             'method' = 'track.getCorrection'
-            'api_key' = $script:LFMConfig.APIKey
+            'api_key' = $script:LFMConfig.ApiKey
             'format' = 'json'
         }
     }

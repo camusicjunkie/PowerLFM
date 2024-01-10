@@ -25,7 +25,7 @@ function Get-LFMArtistSimilar {
     begin {
         $apiParams = @{
             'method' = 'artist.getSimilar'
-            'api_key' = $script:LFMConfig.APIKey
+            'api_key' = $script:LFMConfig.ApiKey
             'format' = 'json'
         }
     }

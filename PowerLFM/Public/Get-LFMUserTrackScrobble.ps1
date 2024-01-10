@@ -28,7 +28,7 @@ function Get-LFMUserTrackScrobble {
     begin {
         $apiParams = @{
             'method' = 'user.getTrackScrobbles'
-            'api_key' = $script:LFMConfig.APIKey
+            'api_key' = $script:LFMConfig.ApiKey
             'sk' = $script:LFMConfig.SessionKey
             'format' = 'json'
         }

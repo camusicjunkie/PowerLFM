@@ -22,7 +22,7 @@ function Get-LFMUserRecentTrack {
     begin {
         $apiParams = @{
             'method' = 'user.getRecentTracks'
-            'api_key' = $script:LFMConfig.APIKey
+            'api_key' = $script:LFMConfig.ApiKey
             'sk' = $script:LFMConfig.SessionKey
             'extended' = 1
             'format' = 'json'
@@ -39,6 +39,7 @@ function Get-LFMUserRecentTrack {
         try {
             $irm = Invoke-LFMApiUri -Uri $apiUrl
 
+            $i = 0
             foreach ($track in $irm.RecentTracks.Track) {
                 switch ($track.Loved) {
                     '0' {$loved = 'No'}
@@ -59,9 +60,22 @@ function Get-LFMUserRecentTrack {
                     $null {$trackInfo.Add('ScrobbleTime', $scrobbleTime)}
                 }
 
+                # This prevents a track that is currently playing from being displayed when
+                # an end date is specified because the tracks should only be in the past.
                 if ($PSBoundParameters.ContainsKey('EndDate') -and $track.'@attr'.NowPlaying -eq 'true') {
                     $trackInfo = $trackInfo[1]
                 }
+
+                # This prevents more tracks in the output than specified with the limit
+                # parameter when a track is currently playing. Previously, if the limit
+                # was set to two there would be three objects in the output including
+                # the currently playing track.
+                if ($irm.RecentTracks.Track[0].'@attr'.NowPlaying -and
+                    $PSBoundParameters.ContainsKey('Limit') -and
+                    $Limit -eq $i) {
+                    break
+                }
+                $i++
 
                 $trackInfo = [pscustomobject] $trackInfo
                 Write-Output $trackInfo

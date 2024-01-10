@@ -6,9 +6,9 @@ function Get-LFMConfiguration {
 
     try {
         $script:LFMConfig = [pscustomobject] @{
-            'APIKey' = (Get-LFMVaultCredential -UserName 'ApiKey').Password
-            'SessionKey' = (Get-LFMVaultCredential -UserName 'SessionKey').Password
-            'SharedSecret' = (Get-LFMVaultCredential -UserName 'SharedSecret').Password
+            'ApiKey' = Get-Secret -Name LFMApiKey -Vault BuiltInLocalVault -AsPlainText
+            'SessionKey' = Get-Secret -Name LFMSessionKey -Vault BuiltInLocalVault -AsPlainText
+            'SharedSecret' = Get-Secret -Name LFMSharedSecret -Vault BuiltInLocalVault -AsPlainText
         }
         Write-Verbose $localizedData.configInSession
     }

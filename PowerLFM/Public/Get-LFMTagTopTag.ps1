@@ -8,7 +8,7 @@ function Get-LFMTagTopTag {
     begin {
         $apiParams = @{
             'method' = 'tag.getTopTags'
-            'api_key' = $script:LFMConfig.APIKey
+            'api_key' = $script:LFMConfig.ApiKey
             'format' = 'json'
         }
     }

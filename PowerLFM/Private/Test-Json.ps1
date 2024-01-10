@@ -5,14 +5,16 @@ function Test-Json {
         [string] $Json
     )
 
-    $result = $true
+    process {
+        $result = $true
 
-    try {
-        $null = [Newtonsoft.Json.Linq.JObject]::Parse($Json)
-    }
-    catch {
-        $result = $false
-    }
+        try {
+            $null = [Newtonsoft.Json.Linq.JObject]::Parse($Json)
+        }
+        catch {
+            $result = $false
+        }
 
-    Write-Output $result
+        Write-Output $result
+    }
 }

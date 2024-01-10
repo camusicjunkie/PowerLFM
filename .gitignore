@@ -1,6 +1,9 @@
 /BuildOutput/
 /output/
 [Bb]in/
+[Ll]ib/
+coverage.xml
+testResults.xml
 
 # VSCode directories that are not at the repository root
 .vscode/

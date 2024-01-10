@@ -12,7 +12,7 @@
 RootModule = 'PowerLFM.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.9.0'
+ModuleVersion = '0.1.0'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -33,7 +33,7 @@ Copyright = '(c) 2018 John Steele. All rights reserved.'
 Description = 'Module to leverage the Last.fm API'
 
 # Minimum version of the Windows PowerShell engine required by this module
-# PowerShellVersion = ''
+PowerShellVersion = '5.1'
 
 # Name of the Windows PowerShell host required by this module
 # PowerShellHostName = ''
@@ -54,7 +54,7 @@ Description = 'Module to leverage the Last.fm API'
 # RequiredModules = @()
 
 # Assemblies that must be loaded prior to importing this module
-RequiredAssemblies = @('bin\Newtonsoft.Json.dll')
+RequiredAssemblies = @('lib\Newtonsoft.Json.dll')
 
 # Script files (.ps1) that are run in the caller's environment prior to importing this module.
 # ScriptsToProcess = @()
@@ -66,7 +66,7 @@ RequiredAssemblies = @('bin\Newtonsoft.Json.dll')
 # FormatsToProcess = @()
 
 # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
-# NestedModules = @()
+NestedModules = @('lib\Microsoft.PowerShell.SecretManagement\0.2.1\Microsoft.PowerShell.SecretManagement.dll')
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
 FunctionsToExport = 'Add-LFMAlbumTag', 'Add-LFMArtistTag', 'Add-LFMConfiguration',

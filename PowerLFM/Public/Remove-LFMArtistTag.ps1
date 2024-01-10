@@ -18,7 +18,7 @@ function Remove-LFMArtistTag {
     begin {
         $apiParams = @{
             'method' = 'artist.removeTag'
-            'api_key' = $script:LFMConfig.APIKey
+            'api_key' = $script:LFMConfig.ApiKey
             'sk' = $script:LFMConfig.SessionKey
         }
     }

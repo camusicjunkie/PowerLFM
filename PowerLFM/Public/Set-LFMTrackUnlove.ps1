@@ -18,7 +18,7 @@ function Set-LFMTrackUnlove {
     begin {
         $apiParams = @{
             'method' = 'track.unlove'
-            'api_key' = $script:LFMConfig.APIKey
+            'api_key' = $script:LFMConfig.ApiKey
             'sk' = $script:LFMConfig.SessionKey
         }
     }

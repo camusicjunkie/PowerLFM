@@ -19,7 +19,7 @@ function Search-LFMArtist {
     begin {
         $apiParams = @{
             'method' = 'artist.search'
-            'api_key' = $script:LFMConfig.APIKey
+            'api_key' = $script:LFMConfig.ApiKey
             'format' = 'json'
         }
     }

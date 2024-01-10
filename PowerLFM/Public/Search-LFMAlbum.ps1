@@ -18,7 +18,7 @@ function Search-LFMAlbum {
     begin {
         $apiParams = @{
             'method' = 'album.search'
-            'api_key' = $script:LFMConfig.APIKey
+            'api_key' = $script:LFMConfig.ApiKey
             'format' = 'json'
         }
     }
