@@ -1,5 +1,6 @@
 #region Init
 using namespace System.Management.Automation
+Import-LocalizedData -BindingVariable localizedData -FileName localizedData
 #endregion Init
 
 #region Variables
@@ -16,6 +17,6 @@ foreach ($import in @($public + $private)) {
         . $import.FullName
     }
     catch {
-        Write-Error -Message "Failed to import function $($import.FullName): $_"
+        Write-Error -Message ($localizedData.errorFunctionImport -f $import.FullName)
     }
 }

@@ -41,8 +41,8 @@ function Invoke-LFMApiUri {
             $errorCategory = 'ObjectNotFound'
         }
 
-        $messagePart1 = '. Run Get-LFMConfiguration if token and session keys have already been requested.'
-        $messagePart2 = 'This is not a valid request.'
+        $messagePart1 = $localizedData.errorInvalidApiKey
+        $messagePart2 = $localizedData.errorInvalidRequest
 
         # Constructing error message from response object.
         # Capitalizing first letter in sentence.
