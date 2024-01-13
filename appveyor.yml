@@ -8,9 +8,7 @@ environment:
     LFMSharedSecret:
         secure: LA1YzNyJRI0WpbZ+HAWU9uXyalNMw3y24+9FHoFeFIHWXX8tm52CBfi/nz84wYke
     NuGetApiKey:
-        secure: f8ak1KjHv2xDmtvH+LBrXiMlP5MifdvUw6xzsZoZ41ud86F7653cd5zjsRfgKcdg
-    GithubPAT:
-        secure: a9ZIHAbmcyTAvD9rA9fEG6UcCKCs4UbmStMSgO6MHV2KLwGt8ZOOFLFLY+pmkU8a
+        secure: oy2eiysz253xdhzatkea5kgum4ttxrzehnyibtehyfoktu
 
 # Allow WMF5 (i.e. PowerShellGallery functionality)
 image: Visual Studio 2017
@@ -24,4 +22,4 @@ build: false
 
 #Kick off the CI/CD pipeline
 build_script:
-    - ps: .\build.ps1 -ResolveDependency -GithubAccessToken $env:GithubPAT -NuGetApiKey $env:NuGetApiKey
+    - ps: .\build.ps1 -ResolveDependency -NuGetApiKey $env:NuGetApiKey
