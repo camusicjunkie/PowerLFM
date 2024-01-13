@@ -29,18 +29,18 @@ Describe 'Get-LFMUserRecentTrack: Unit' -Tag Unit {
             { Get-LFMUserRecentTrack -UserName $null } | Should -Throw
         }
 
-        It 'Should throw when limit has a value of 51' {
+        It 'Should throw when limit has a value of 201' {
             $gurtParams = @{
                 UserName = 'UserName'
-                Limit    = 51
+                Limit    = 201
             }
             { Get-LFMUserRecentTrack @gurtParams } | Should -Throw
         }
 
-        It 'Should not throw when limit has a value of 1 to 50' {
+        It 'Should not throw when limit has a value of 1 to 200' {
             $gurtParams = @{
                 UserName = 'UserName'
-                Limit    = 50
+                Limit    = 200
             }
             { Get-LFMUserRecentTrack @gurtParams } | Should -Not -Throw
         }
