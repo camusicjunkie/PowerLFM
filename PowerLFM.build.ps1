@@ -6,10 +6,7 @@ param(
     $Tag,
 
     [string]
-    $NuGetApiKey,
-
-    [string]
-    $GithubAccessToken
+    $NuGetApiKey
 )
 
 $WarningPreference = "Continue"
@@ -252,44 +249,44 @@ Task RemoveTestResults {
     Remove "$BuildRoot\coverage.xml"
 }
 
-$gitHubConditions = {
-    -not [String]::IsNullOrEmpty($GithubAccessToken) -and
-    -not [String]::IsNullOrEmpty($env:NextBuildVersion) -and
-    $env:BHBuildSystem -eq 'APPVEYOR' -and
-    $env:BHCommitMessage -match '!deploy' -and
-    $env:BHBranchName -eq "master"
-}
+# $gitHubConditions = {
+#     -not [String]::IsNullOrEmpty($GithubAccessToken) -and
+#     -not [String]::IsNullOrEmpty($env:NextBuildVersion) -and
+#     $env:BHBuildSystem -eq 'APPVEYOR' -and
+#     $env:BHCommitMessage -match '!deploy' -and
+#     $env:BHBranchName -eq "master"
+# }
 
-# Synopsis: Publish module to Github Releases
-Task PublishToGitHub -If $gitHubConditions GetNextVersion, Package, {
-    # Add GithubPAT to the git credentials store file
-    Add-Content "$HOME\.git-credentials" "https://$($env:GithubPAT):x-oauth-basic@github.com`n"
+# # Synopsis: Publish module to Github Releases
+# Task PublishToGitHub -If $gitHubConditions GetNextVersion, Package, {
+#     # Add GithubPAT to the git credentials store file
+#     Add-Content "$HOME\.git-credentials" "https://$($env:GithubPAT):x-oauth-basic@github.com`n"
 
-    # Push a tag to the repository
-    Write-Build Gray "  git checkout $ENV:BHBranchName"
-    $null = cmd /c "git checkout $ENV:BHBranchName 2>&1"
+#     # Push a tag to the repository
+#     Write-Build Gray "  git checkout $ENV:BHBranchName"
+#     $null = cmd /c "git checkout $ENV:BHBranchName 2>&1"
 
-    Write-Build Gray "  git tag -a v$env:NextBuildVersion -m 'PowerLFM Release v$env:NextBuildVersion'"
-    $null = cmd /c "git tag -a v$env:NextBuildVersion -m "PowerLFM Release v$env:NextBuildVersion" 2>&1"
+#     Write-Build Gray "  git tag -a v$env:NextBuildVersion -m 'PowerLFM Release v$env:NextBuildVersion'"
+#     $null = cmd /c "git tag -a v$env:NextBuildVersion -m "PowerLFM Release v$env:NextBuildVersion" 2>&1"
 
-    Write-Build Gray "  git push origin v$env:NextBuildVersion"
-    $null = cmd /c "git push origin v$env:NextBuildVersion 2>&1"
+#     Write-Build Gray "  git push origin v$env:NextBuildVersion"
+#     $null = cmd /c "git push origin v$env:NextBuildVersion 2>&1"
 
-    Write-Build Gray "  Publishing Release v$env:NextBuildVersion to GitHub..."
+#     Write-Build Gray "  Publishing Release v$env:NextBuildVersion to GitHub..."
 
-    $gitHubParams = @{
-        Name            = "PowerLFM v$env:NextBuildVersion"
-        TagName         = "v$env:NextBuildVersion"
-        ReleaseText     = "PowerLFM Release v$env:NextBuildVersion"
-        RepositoryOwner = 'camusicjunkie'
-        RepositoryName  = $env:BHProjectName
-        AccessToken     = $env:GithubPAT
-        Artifact        = "$env:BHBuildOutput\downloads\$env:BHProjectName.zip"
-    }
-    $null = Publish-GithubRelease @gitHubParams
+#     $gitHubParams = @{
+#         Name            = "PowerLFM v$env:NextBuildVersion"
+#         TagName         = "v$env:NextBuildVersion"
+#         ReleaseText     = "PowerLFM Release v$env:NextBuildVersion"
+#         RepositoryOwner = 'camusicjunkie'
+#         RepositoryName  = $env:BHProjectName
+#         AccessToken     = $env:GithubPAT
+#         Artifact        = "$env:BHBuildOutput\downloads\$env:BHProjectName.zip"
+#     }
+#     $null = Publish-GithubRelease @gitHubParams
 
-    Write-Build Gray "  Github release created."
-}
+#     Write-Build Gray "  Github release created."
+# }
 
 $psGalleryConditions = {
     -not [String]::IsNullOrEmpty($NuGetApiKey) -and

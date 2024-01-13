@@ -6,9 +6,7 @@ param(
     # Install all modules and packages in *.depend.psd1
     [switch] $ResolveDependency,
 
-    [string] $NuGetApiKey,
-
-    [string] $GithubAccessToken
+    [string] $NuGetApiKey
 )
 
 Import-Module "$PSScriptRoot\BuildTools\BuildTools.psm1" -Force
@@ -28,7 +26,6 @@ $ibParams = @{
     Result = 'Result'
 }
 if ($PSBoundParameters.ContainsKey('NuGetApiKey')) { $ibParams.Add('NuGetApiKey', $NuGetApiKey) }
-if ($PSBoundParameters.ContainsKey('GithubAccessToken')) { $ibParams.Add('GithubAccessToken', $GithubAccessToken) }
 Invoke-Build @ibParams
 
 if ($Result.Error)
