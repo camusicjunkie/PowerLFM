@@ -56,7 +56,7 @@ Task Build Clean, ShowInfo, GenerateExternalHelp, CopyModuleFiles, CreateManifes
 Task Test Build, RunPester, CleanModule, PublishTestToAppveyor
 
 # Synopsis: Publish
-Task Publish Test, PublishToGitHub, PublishToPSGallery, PublishToLocalGallery
+Task Publish Test, PublishToPSGallery, PublishToLocalGallery
 
 # Synopsis: Get the next build version
 Task GetNextVersion {
