@@ -104,30 +104,20 @@ Task GenerateExternalHelp {
 
 # Synopsis: Copy module files to the build output folder
 Task CopyModuleFiles {
-    # Setup
-    $null = New-Item -Path "$env:BHBuildOutput\$env:BHProjectName\lib" -ItemType Directory -Force
-
     # Copy module
     $ciParams = @{
-        Path        = (Get-ChildItem -Path "$env:BHModulePath\*" | Where-Object Name -NotIn 'lib')
+        Path        = (Get-ChildItem -Path "$env:BHModulePath\*")
         Destination = "$env:BHBuildOutput\$env:BHProjectName"
         Recurse     = $true
         Force       = $true
     }
     Copy-Item @ciParams
 
-    # Copy dependencies
-    Copy-Item -Path @(
-        "$env:BHBuildOutput\modules\Microsoft.PowerShell.SecretManagement"
-    ) -Destination "$env:BHBuildOutput\$env:BHProjectName\lib" -Recurse -Force
-
     # Copy additional files
     Copy-Item -Path @(
         "$env:BHProjectPath\LICENSE"
         "$env:BHProjectPath\README.md"
     ) -Destination "$env:BHBuildOutput\$env:BHProjectName" -Force
-
-    Invoke-PSDepend -Tags Copy -Confirm:$false
 }
 
 # Synopsis: Update the manifest of the build output module
@@ -140,8 +130,7 @@ Task CreateManifest GetNextVersion, {
         ModuleVersion      = $env:NextBuildVersion
         Author             = 'John Steele'
         Description        = 'Module to leverage the Last.fm API'
-        RequiredAssemblies = 'lib\Newtonsoft.Json.dll'
-        NestedModules      = 'lib\Microsoft.PowerShell.SecretManagement\0.2.1\Microsoft.PowerShell.SecretManagement.dll'
+        RequiredModules    = @('newtonsoft.json', 'Microsoft.PowerShell.SecretManagement')
         FunctionsToExport  = $public.BaseName
         CmdletsToExport    = @()
         AliasesToExport    = @()

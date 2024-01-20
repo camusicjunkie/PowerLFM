@@ -28,16 +28,16 @@ function Add-LFMConfiguration {
                 $ssParams = @{
                     Name = "LFM$param"
                     Secret = $PSBoundParameters[$param]
-                    Vault = 'BuiltInLocalVault'
+                    Vault = 'Microsoft.PowerShell.SecretStore'
                     NoClobber = $true
                 }
 
                 try {
                     $null = Get-Secret -Name "LFM$param" -ErrorAction Stop
 
-                    $message = "There is already a value present for $param, do you wish to update the value?"
+                    $message = $localizedData.vaultCredPresent -f $param
 
-                    if ($PSCmdlet.ShouldProcess('BuiltInLocalVault', $message)) {
+                    if ($PSCmdlet.ShouldProcess('SecretStore', $message)) {
                         $ssParams.Remove('NoClobber')
                         Set-Secret @ssParams
                     }

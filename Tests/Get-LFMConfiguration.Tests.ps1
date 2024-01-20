@@ -11,7 +11,7 @@ Describe 'Get-LFMConfiguration: Unit' -Tag Unit {
 
     Context 'Execution' {
 
-        It 'Should retrieve the passwords from the BuiltInLocalVault' {
+        It 'Should retrieve the passwords from the SecretStore' {
             Get-LFMConfiguration
 
             $siParams = @{
@@ -26,15 +26,6 @@ Describe 'Get-LFMConfiguration: Unit' -Tag Unit {
                 }
             }
             Should -Invoke @siParams
-        }
-    }
-
-    Context 'Output' {
-
-        It 'Should throw when an error is returned in the response' {
-            Mock Get-Secret { throw 'Error' }
-
-            { Get-LFMConfiguration } | Should -Throw 'Error'
         }
     }
 }

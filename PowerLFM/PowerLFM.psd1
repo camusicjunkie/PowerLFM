@@ -54,7 +54,7 @@ PowerShellVersion = '5.1'
 # RequiredModules = @()
 
 # Assemblies that must be loaded prior to importing this module
-RequiredAssemblies = @('lib\Newtonsoft.Json.dll')
+# RequiredAssemblies = @()
 
 # Script files (.ps1) that are run in the caller's environment prior to importing this module.
 # ScriptsToProcess = @()
@@ -66,31 +66,10 @@ RequiredAssemblies = @('lib\Newtonsoft.Json.dll')
 # FormatsToProcess = @()
 
 # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
-NestedModules = @('lib\Microsoft.PowerShell.SecretManagement\0.2.1\Microsoft.PowerShell.SecretManagement.dll')
+# NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = 'Add-LFMAlbumTag', 'Add-LFMArtistTag', 'Add-LFMConfiguration',
-               'Add-LFMTrackTag', 'Get-LFMAlbumInfo', 'Get-LFMAlbumTag',
-               'Get-LFMAlbumTopTag', 'Get-LFMArtistCorrection', 'Get-LFMArtistInfo',
-               'Get-LFMArtistSimilar', 'Get-LFMArtistTag', 'Get-LFMArtistTopAlbum',
-               'Get-LFMArtistTopTag', 'Get-LFMArtistTopTrack',
-               'Get-LFMChartTopArtist', 'Get-LFMChartTopTag', 'Get-LFMChartTopTrack',
-               'Get-LFMConfiguration', 'Get-LFMGeoTopArtist', 'Get-LFMGeoTopTrack',
-               'Get-LFMLibraryArtist', 'Get-LFMTrackCorrection', 'Get-LFMTrackInfo',
-               'Get-LFMTrackSimilar', 'Get-LFMTrackTag', 'Get-LFMTrackTopTag',
-               'Get-LFMUserArtistTrack', 'Get-LFMUserFriend', 'Get-LFMUserInfo',
-               'Get-LFMUserLovedTrack', 'Get-LFMUserTopAlbum',
-               'Get-LFMUserTopArtist', 'Get-LFMUserTopTag', 'Get-LFMUserTopTrack',
-               'Get-LFMUserWeeklyAlbumChart', 'Get-LFMUserWeeklyArtistChart',
-               'Get-LFMUserWeeklyChartList', 'Get-LFMUserWeeklyTrackChart',
-               'Remove-LFMAlbumTag', 'Remove-LFMArtistTag', 'Remove-LFMTrackTag',
-               'Request-LFMSession', 'Request-LFMToken', 'Search-LFMAlbum',
-               'Search-LFMArtist', 'Search-LFMTrack', 'Set-LFMTrackLove',
-               'Set-LFMTrackUnlove', 'Get-LFMUserPersonalTag', 'Get-LFMUserRecentTrack',
-               'Get-LFMTagInfo', 'Get-LFMTagSimilar', 'Get-LFMTagTopAlbum',
-               'Get-LFMTagTopArtist', 'Get-LFMTagTopTag', 'Get-LFMTagTopTrack',
-               'Get-LFMTagWeeklyChartList', 'Remove-LFMConfiguration', 'Get-LFMUserTrackScrobble',
-               'Set-LFMTrackNowPlaying', 'Set-LFMTrackScrobble'
+FunctionsToExport = @()
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()

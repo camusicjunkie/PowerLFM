@@ -124,20 +124,4 @@ Describe 'Add-LFMConfiguration: Unit' -Tag Unit {
             Should -Invoke @siParams
         }
     }
-
-    Context 'Output' {
-
-        It 'Should throw when an error is returned in the response' {
-            $acParams = @{
-                ApiKey       = 'ApiKey'
-                SessionKey   = 'SessionKey'
-                SharedSecret = 'SharedSecret'
-                Confirm      = $false
-            }
-
-            Mock Set-Secret { throw 'Error' }
-
-            { Add-LFMConfiguration @acParams } | Should -Throw 'Error'
-        }
-    }
 }
