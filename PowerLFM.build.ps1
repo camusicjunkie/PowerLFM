@@ -60,10 +60,11 @@ Task Publish Test, PublishToPSGallery, PublishToLocalGallery
 
 # Synopsis: Get the next build version
 Task GetNextVersion {
-    Use "$env:BHBuildOutput\downloads\GitVersion.CommandLine\tools" gitversion
+    # Use "$env:BHBuildOutput\downloads\GitVersion.CommandLine\tools" gitversion
 
-    $gitversion = Exec { gitversion | ConvertFrom-Json }
-    $env:NextBuildVersion = $gitversion.MajorMinorPatch
+    # $gitversion = Exec { gitversion | ConvertFrom-Json }
+    # $env:NextBuildVersion = $gitversion.MajorMinorPatch
+    $env:NextBuildVersion = '2.3.1'
 }
 
 # Synopsis: Display build information
