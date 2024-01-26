@@ -12,6 +12,7 @@
     PlatyPS = 'latest'
     PSDeploy = 'latest'
     'Microsoft.PowerShell.SecretManagement' = 'latest'
+    'Microsoft.PowerShell.SecretStore' = 'latest'
 
     'Gitversion.CommandLine' = @{
         DependencyType = 'Nuget'
