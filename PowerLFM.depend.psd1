@@ -5,6 +5,7 @@
         Tags = 'Build'
     }
 
+    ModuleBuilder = 'latest'
     InvokeBuild = 'latest'
     Pester = 'latest'
     PSScriptAnalyzer = 'latest'
