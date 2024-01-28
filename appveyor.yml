@@ -30,6 +30,7 @@ build: false
 
 install:
   - ps: .\build.ps1 -ResolveDependency
+  - ps: (Import-PowerShellDataFile .\PowerLFM.depend.psd1).GetEnumerator().Where({ $_.Name -ne 'PSDependOptions' }).Name | Get-Module
 
 build_script:
   - ps: .\build.ps1 -Task Build
