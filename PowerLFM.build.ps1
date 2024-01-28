@@ -36,6 +36,7 @@ Task . Clean, Build, Test
 
 # Synopsis: Get the next build version
 Task GetNextVersion {
+    Exec gitversion
     $gitversion = Exec { gitversion | ConvertFrom-Json }
     $env:NextBuildVersion = $gitversion.MajorMinorPatch
 }
