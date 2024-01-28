@@ -9,6 +9,7 @@ environment:
     secure: LA1YzNyJRI0WpbZ+HAWU9uXyalNMw3y24+9FHoFeFIHWXX8tm52CBfi/nz84wYke
   NuGetApiKey:
     secure: XFJ8cN2cPIpThLPwSbaTdgsKzVoyg9bbJpafpyxvFcoDNTrKHQ4B4MlfILzZC149
+  IGNORE_NORMALISATION_GIT_HEAD_MOVE: 1
 
 # Allow WMF5 (i.e. PowerShellGallery functionality)
 image: Visual Studio 2022
@@ -31,7 +32,7 @@ install:
   - ps: .\build.ps1 -ResolveDependency
 
 build_script:
-  - ps: .\build.ps1 -Task Clean, Build
+  - ps: .\build.ps1 -Task Build
 
 test_script:
   - ps: .\build.ps1 -Task Test
