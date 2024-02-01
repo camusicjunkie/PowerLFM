@@ -1,15 +1,16 @@
 @{
-    PSDependOptions = @{
+    PSDependOptions                         = @{
         AddToPath = $True
-        Target = 'build\modules'
-        Tags = 'Build'
+        Target    = 'build\modules'
+        Tags      = 'Build'
     }
 
-    ModuleBuilder = 'latest'
-    InvokeBuild = 'latest'
-    Pester = 'latest'
-    PSScriptAnalyzer = 'latest'
-    PlatyPS = 'latest'
+    ModuleBuilder                           = 'latest'
+    InvokeBuild                             = 'latest'
+    Pester                                  = 'latest'
+    PSScriptAnalyzer                        = 'latest'
+    PlatyPS                                 = 'latest'
     'Microsoft.PowerShell.SecretManagement' = 'latest'
-    'Microsoft.PowerShell.SecretStore' = 'latest'
+    'Microsoft.PowerShell.SecretStore'      = 'latest'
+    'newtonsoft.json'                       = 'latest'
 }
