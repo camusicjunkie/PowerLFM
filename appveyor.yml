@@ -12,7 +12,7 @@ environment:
   IGNORE_NORMALISATION_GIT_HEAD_MOVE: 1
 
 # Allow WMF5 (i.e. PowerShellGallery functionality)
-image: Visual Studio 2022
+image: Visual Studio 2019
 
 branches:
   only:
@@ -29,8 +29,8 @@ skip_commits:
 build: false
 
 install:
-  - ps: .\build.ps1 -ResolveDependency
-  - ps: (Import-PowerShellDataFile .\PowerLFM.depend.psd1).GetEnumerator().Where({ $_.Name -ne 'PSDependOptions' }).Name | Get-Module
+  - ps: Install-Module PSDepend
+  - ps: Invoke-PSDepend -Path .\PowerLFM.depend.psd1 -Force
 
 build_script:
   - ps: .\build.ps1 -Task Build
