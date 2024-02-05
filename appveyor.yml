@@ -28,6 +28,9 @@ skip_commits:
 
 build: false
 
+init:
+  - ps: Set-TimeZone -Id 'W. Europe Standard Time' -PassThru
+
 install:
   - ps: Install-Module PSDepend
   - ps: Invoke-PSDepend -Path .\PowerLFM.depend.psd1 -Force

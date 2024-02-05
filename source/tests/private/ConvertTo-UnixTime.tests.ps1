@@ -1,7 +1,6 @@
 Describe 'ConvertTo-UnixTime: Unit' -Tag Unit {
     BeforeAll {
         $module = @{ ModuleName = 'PowerLFM' }
-        Set-TimeZone -Id 'W. Europe Standard Time'
     }
 
     It 'Converts local to UTC when DateTimeKind is local' {

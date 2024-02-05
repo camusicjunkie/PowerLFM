@@ -2,7 +2,6 @@
 Describe 'ConvertFrom-UnixTime: Unit' -Tag Unit {
     BeforeAll {
         $module = @{ ModuleName = 'PowerLFM' }
-        Set-TimeZone -Id 'W. Europe Standard Time'
     }
 
     It 'Converts UnixTime to November 14, 2006 08:00:00' {
