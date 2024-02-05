@@ -7,14 +7,10 @@ function ConvertTo-UnixTime {
         [datetime] $Date
     )
 
-    begin {
-        [datetime] $epoch = '1/1/1970 00:00:00'
+    if ($Date.Kind -eq 'Local') {
+        ([DateTimeOffset] $Date).ToUniversalTime().ToUnixTimeSeconds()
     }
-    process {
-        if ($Date.Kind -eq 'Local') {
-            $date = $Date.ToUniversalTime()
-        }
-
-        (New-TimeSpan -Start $epoch -End $date).TotalSeconds
+    else {
+        ([DateTimeOffset] $Date).ToUnixTimeSeconds()
     }
 }
