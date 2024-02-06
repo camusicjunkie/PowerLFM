@@ -82,9 +82,6 @@ Task Test {
     Equals $testResults.FailedCount 0
 }
 
-# Synopsis: Publish
-Task Publish PublishToPSGallery
-
 # Synopsis: Generate external help for each public function
 Task GenerateExternalHelp {
     $neParams = @{
@@ -95,20 +92,17 @@ Task GenerateExternalHelp {
     $null = New-ExternalHelp @neParams
 }
 
-$psGalleryConditions = {
-    -not [String]::IsNullOrEmpty($NuGetApiKey) -and
-    -not [String]::IsNullOrEmpty($env:NextBuildVersion) -and
-    $env:BHBuildSystem -eq 'APPVEYOR' -and
-    $env:BHCommitMessage -match '!deploy' -and
-    $env:BHBranchName -eq "master"
-}
+# Synopsis: Publish
+Task Publish PublishToPSGallery
 
 # Synopsis: Publish module to the PSGallery
-Task PublishToPSGallery -If $psGalleryConditions {
-    Assert { Get-Module -Name $env:BHProjectName } "Module $env:BHProjectName is not available"
+Task PublishToPSGallery {
+    $modulePath = Get-Item -Path "$PSScriptRoot\build\*\*\*.psd1" |
+        Where-Object { $_.BaseName -eq $_.Directory.Parent.Name } |
+        Select-Object -ExpandProperty Directory
 
-    Write-Build Gray "  Publishing version [$($env:NextBuildVersion)] to PSGallery"
-    Publish-Module -Path $env:BHBuildOutput\$env:BHProjectName -NuGetApiKey $NuGetApiKey -Repository PSGallery
+        Write-Build Gray "  Publishing version [$($env:NextBuildVersion)] to PSGallery"
+        Publish-Module -Path $modulePath.FullName -NuGetApiKey $env:NuGetApiKey -Repository PSGallery -ErrorAction Stop
 }
 
 # Synopsis: Empty task that's useful to test the bootstrap process

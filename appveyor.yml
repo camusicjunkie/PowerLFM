@@ -38,3 +38,30 @@ build_script:
 
 test_script:
   - ps: .\build.ps1 -Task Test
+
+on_success:
+  - ps: |
+      $tagVersion = (git describe --tags --abbrev=0 2>$null) -replace '^v' -as [Version]
+
+      $shouldPublish = $env:APPVEYOR_REPO_BRANCH -in 'master', 'main' -and
+          $tagVersion -and
+          -not $env:APPVEYOR_PULL_REQUEST_NUMBER
+
+      if ($shouldPublish) {
+          $moduleManifestPath = Get-Item -Path "$env:APPVEYOR_BUILD_FOLDER\build\*\*\*.psd1" |
+              Where-Object { $_.BaseName -eq $_.Directory.Parent.Name }
+          $moduleManifest = Import-PowerShellDataFile -Path $moduleManifestPath.FullName
+          $buildVersion = $moduleManifest['ModuleVersion'] -as [Version]
+
+          if ($tagVersion -eq $buildVersion) {
+              $galleryModule = Find-Module $moduleManifestPath.BaseName -ErrorAction SilentlyContinue
+
+              if (-not $galleryModule -or $buildVersion -gt $galleryModule.Version) {
+                  .\build.ps1 -Task Publish
+              } else {
+                  Write-Host ('Skipping publish: {0} is already published' -f $buildVersion) -ForegroundColor Green
+              }
+          } else {
+              Write-Host ('Skipping publish: Tag {0} does not match build version {1}' -f $tagVersion, $buildVersion)
+          }
+      }
