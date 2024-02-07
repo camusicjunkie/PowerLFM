@@ -1,23 +1,16 @@
 @{
-    PSDependOptions = @{
+    PSDependOptions                         = @{
         AddToPath = $True
-        Target = 'BuildOutput\modules'
-        Tags = 'Build'
+        Target    = 'build\modules'
+        Tags      = 'Build'
     }
 
-    BuildHelpers = 'latest'
-    InvokeBuild = 'latest'
-    Pester = 'latest'
-    PSScriptAnalyzer = 'latest'
-    PlatyPS = 'latest'
-    PSDeploy = 'latest'
+    ModuleBuilder                           = 'latest'
+    InvokeBuild                             = 'latest'
+    Pester                                  = 'latest'
+    PSScriptAnalyzer                        = 'latest'
+    PlatyPS                                 = 'latest'
     'Microsoft.PowerShell.SecretManagement' = 'latest'
-
-    'Gitversion.CommandLine' = @{
-        DependencyType = 'Nuget'
-        Target = 'BuildOutput\downloads'
-        Parameters = @{
-            Name = 'Gitversion'
-        }
-    }
+    'Microsoft.PowerShell.SecretStore'      = 'latest'
+    'newtonsoft.json'                       = 'latest'
 }

@@ -36,52 +36,6 @@ function Resolve-Dependency {
     Write-Verbose "Project bootstrapped. Returning to Invoke-Build"
 }
 
-function ConvertTo-JsonFromCommand {
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory, ValueFromPipelineByPropertyName, ValueFromPipeline)]
-        [System.Management.Automation.CommandInfo[]]
-        $Command
-    )
-
-    $builtInParameters = ([Management.Automation.PSCmdlet]::CommonParameters +
-                          [Management.Automation.PSCmdlet]::OptionalCommonParameters)
-
-    $interface = foreach ($cmd in $Command) {
-        $parameterSets = foreach ($parameterSet in $cmd.ParameterSets) {
-            $parameters = $parameterSet.Parameters.Where({ $_.Name -notin $builtInParameters })
-
-            [pscustomobject] @{
-                Name = $parameterSet.Name
-                Parameters = foreach ($parameter in $parameters) {
-                    [pscustomobject] @{
-                        'Name' = $parameter.Name
-                        'ParameterType' = $parameter.ParameterType.Name
-                        'Mandatory' = $parameter.IsMandatory
-                        'ValueFromPipeline' = $parameter.ValueFromPipeline
-                        'ValueFromPipelineByPropertyName' = $parameter.ValueFromPipelineByPropertyName
-                        'ValueFromRemainingArguments' = $parameter.ValueFromRemainingArguments
-                        'Position' = $parameter.Position
-                    }
-                }
-            }
-        }
-
-        [pscustomobject] @{
-            $cmd.Name = @{
-                'Interface' = [pscustomobject] @{
-                    'CmdletBinding' = $cmd.CmdletBinding
-                    'DefaultParameterSet' = $cmd.DefaultParameterSet
-                    'OutputType' = $cmd.OutputType.Name
-                    'ParameterSet' = $parameterSets
-                }
-            }
-        }
-    }
-
-    $interface | ConvertTo-Json -Depth 7
-}
-
 <#PSScriptInfo
 .VERSION 1.0.2
 .AUTHOR Roman Kuzmin
