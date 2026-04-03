@@ -75,7 +75,7 @@ Task Test {
         TestResult   = @{ Enabled = $true; OutputPath = "$PSScriptRoot\build\testResults.xml" }
         Output       = @{ Verbosity = 'Detailed' }
     }
-    if ($null -ne $Tag) { $config.Filter.Tag = $Tag }
+    if ($null -ne $Tag) { $configuration.Filter = @{ Tag = $Tag } }
 
     $testResults = Invoke-Pester -Configuration $configuration
 
@@ -84,9 +84,12 @@ Task Test {
 
 # Synopsis: Generate external help for each public function
 Task GenerateExternalHelp {
+    $modulePath = Get-Item "$PSScriptRoot\build\*\*\*.psd1" | Where-Object {
+        $_.BaseName -eq $_.Directory.Parent.Name
+    }
     $neParams = @{
         Path       = "$PSScriptRoot\docs"
-        OutputPath = "$PSScriptRoot\build\*\*\$PSCulture"
+        OutputPath = "$($modulePath.Directory.FullName)\$PSCulture"
         Force      = $true
     }
     $null = New-ExternalHelp @neParams
@@ -102,7 +105,7 @@ Task PublishToPSGallery {
         Select-Object -ExpandProperty Directory
 
         Write-Build Gray "  Publishing version [$($env:NextBuildVersion)] to PSGallery"
-        Publish-Module -Path $modulePath.FullName -NuGetApiKey $env:NuGetApiKey -Repository PSGallery -ErrorAction Stop
+        Publish-Module -Path $modulePath.FullName -NuGetApiKey ($NuGetApiKey ?? $env:NuGetApiKey) -Repository PSGallery -ErrorAction Stop
 }
 
 # Synopsis: Empty task that's useful to test the bootstrap process

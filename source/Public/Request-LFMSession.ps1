@@ -32,7 +32,7 @@ function Request-LFMSession {
         $apiSig = Get-LFMSignature -Method $apiParams.Method @noCommonParams
         $apiParams.Add('api_sig', $apiSig)
 
-        $query = New-LFMApiQuery ($convertedParams + $apiParams)
+        $query = New-LFMApiQuery $apiParams
         $apiUrl = "$baseUrl/?$query"
 
         try {

@@ -63,7 +63,7 @@ function Get-LFMUserRecentTrack {
                 # This prevents a track that is currently playing from being displayed when
                 # an end date is specified because the tracks should only be in the past.
                 if ($PSBoundParameters.ContainsKey('EndDate') -and $track.'@attr'.NowPlaying -eq 'true') {
-                    $trackInfo = $trackInfo[1]
+                    continue
                 }
 
                 # This prevents more tracks in the output than specified with the limit

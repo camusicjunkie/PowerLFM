@@ -2,10 +2,11 @@ function New-LFMApiQuery {
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseShouldProcessForStateChangingFunctions", "")]
 
     param (
-        [psobject] $InputObject
+        [psobject] $InputObject,
+        [switch] $Signature
     )
 
-    if ((Get-PSCallStack)[1].Command -like '*Signature') {
+    if ($Signature) {
         $keyValues = $InputObject.GetEnumerator() | Sort-Object Key | ForEach-Object {
             "$($_.Key)$($_.Value)"
         }
