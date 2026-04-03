@@ -105,7 +105,7 @@ Task PublishToPSGallery {
         Select-Object -ExpandProperty Directory
 
         Write-Build Gray "  Publishing version [$($env:NextBuildVersion)] to PSGallery"
-        Publish-Module -Path $modulePath.FullName -NuGetApiKey ($NuGetApiKey ?? $env:NuGetApiKey) -Repository PSGallery -ErrorAction Stop
+        Publish-Module -Path $modulePath.FullName -NuGetApiKey (if ($NuGetApiKey) { $NuGetApiKey } else { $env:NuGetApiKey }) -Repository PSGallery -ErrorAction Stop
 }
 
 # Synopsis: Empty task that's useful to test the bootstrap process
