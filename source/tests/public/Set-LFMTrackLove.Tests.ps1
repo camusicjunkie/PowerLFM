@@ -29,6 +29,14 @@ Describe 'Set-LFMTrackLove: Unit' -Tag Unit {
         It 'Should throw when track is null' {
             { Set-LFMTrackLove -Track $null } | Should -Throw
         }
+
+        It 'Should not throw when multiple objects are piped' {
+            $tracks = @(
+                [pscustomobject] @{ Artist = 'Artist1'; Track = 'Track1' }
+                [pscustomobject] @{ Artist = 'Artist2'; Track = 'Track2' }
+            )
+            { $tracks | Set-LFMTrackLove -Confirm:$false } | Should -Not -Throw
+        }
     }
 
     Context 'Execution' {
@@ -111,6 +119,23 @@ Describe 'Set-LFMTrackLove: Unit' -Tag Unit {
         It 'Should send proper output when -Whatif is used' {
             $output = Set-LFMTrackLove -Artist Artist -Track Track -Confirm:$false -Verbose 4>&1
             $output | Should -Match 'Performing the operation "Adding love" on target "Track: Track".'
+        }
+
+        It 'Should call Invoke-LFMApiUri once per piped object' {
+            $tracks = @(
+                [pscustomobject] @{ Artist = 'Artist1'; Track = 'Track1' }
+                [pscustomobject] @{ Artist = 'Artist2'; Track = 'Track2' }
+            )
+            $tracks | Set-LFMTrackLove -Confirm:$false
+
+            $siParams = @{
+                CommandName = 'Invoke-LFMApiUri'
+                ModuleName  = 'PowerLFM'
+                Scope       = 'It'
+                Exactly     = $true
+                Times       = 2
+            }
+            Should -Invoke @siParams
         }
 
         It 'Should throw when an error is returned in the response' {
