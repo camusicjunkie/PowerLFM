@@ -6,11 +6,6 @@
 
 Describe 'Get-LFMChartTopTag: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMChartTopTag'.ChartTopTag
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMChartTopTag'.ChartTopTag
@@ -79,25 +74,25 @@ Describe 'Get-LFMChartTopTag: Unit' -Tag Unit {
             $output = Get-LFMChartTopTag
         }
 
-        It "Chart first top tag should have name of $($contextMock.Tags.Tag[0].Name)" {
+        It 'Should return the correct first top tag name' {
             $output[0].Tag | Should -Be $contextMock.Tags.Tag[0].Name
         }
 
-        It "Chart first top tag should have total tags with a value of $($contextMock.Tags.Tag[0].Taggings)" {
+        It 'Should return the correct first top tag total tags count' {
             $output[0].TotalTags | Should -Be $contextMock.Tags.Tag[0].Taggings
         }
 
-        It "Chart first top tag should have reach with a value of $($contextMock.Tags.Tag[0].reach)" {
+        It 'Should return the correct first top tag reach' {
             $output[0].Reach | Should -BeOfType [int]
             $output[0].Reach | Should -Be $contextMock.Tags.Tag[0].reach
         }
 
-        It "Chart second top tag should have reach with a value of $($contextMock.Tags.Tag[1].reach)" {
+        It 'Should return the correct second top tag reach' {
             $output[1].Reach | Should -BeOfType [int]
             $output[1].Reach | Should -Be $contextMock.Tags.Tag[1].reach
         }
 
-        It "Chart second top tag should have url of $($contextMock.Tags.Tag[1].Url)" {
+        It 'Should return the correct second top tag url' {
             $output[1].Url | Should -Be $contextMock.Tags.Tag[1].Url
         }
 

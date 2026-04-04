@@ -6,11 +6,6 @@
 
 Describe 'Get-LFMArtistTopTag: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMArtistTopTag'.ArtistTopTag
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMArtistTopTag'.ArtistTopTag
@@ -81,19 +76,19 @@ Describe 'Get-LFMArtistTopTag: Unit' -Tag Unit {
             $output = Get-LFMArtistTopTag -Artist Artist
         }
 
-        It "Artist first top tag should have name of $($contextMock.TopTags.Tag[0].Name)" {
+        It 'Should return the correct first top tag name' {
             $output[0].Tag | Should -Be $contextMock.TopTags.Tag[0].Name
         }
 
-        It "Artist second tag should have url of $($contextMock.TopTags.Tag[1].Url)" {
+        It 'Should return the correct second tag url' {
             $output[1].Url | Should -Be $contextMock.TopTags.Tag[1].Url
         }
 
-        It "Artist first tag should have match of $($contextMock.TopTags.Tag[0].Count)" {
+        It 'Should return the correct first tag match count' {
             $output[0].Match | Should -Be $contextMock.TopTags.Tag[0].Count
         }
 
-        It "Artist second tag should have match of $($contextMock.TopTags.Tag[1].Count)" {
+        It 'Should return the correct second tag match count' {
             $output[1].Match | Should -Be $contextMock.TopTags.Tag[1].Count
         }
 

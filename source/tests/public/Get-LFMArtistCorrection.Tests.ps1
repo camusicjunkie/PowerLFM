@@ -6,11 +6,6 @@
 
 Describe 'Get-LFMArtistCorrection: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMArtistCorrection'.ArtistCorrection
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMArtistCorrection'.ArtistCorrection
@@ -81,15 +76,15 @@ Describe 'Get-LFMArtistCorrection: Unit' -Tag Unit {
             $output = Get-LFMArtistCorrection -Artist Artist
         }
 
-        It "Artist should have corrected name of $($contextMock.Corrections.Correction.Artist.Name)" {
+        It 'Should return the correct corrected artist name' {
             $output.Artist | Should -Be $contextMock.Corrections.Correction.Artist.Name
         }
 
-        It "Artist correction should have url of $($contextMock.Corrections.Correction.Artist.Url)" {
+        It 'Should return the correct artist correction url' {
             $output.Url | Should -Be $contextMock.Corrections.Correction.Artist.Url
         }
 
-        It "Artist correction should have id of $($contextMock.Corrections.Correction.Artist.Mbid)" {
+        It 'Should return the correct artist correction id' {
             $output.Id | Should -Be $contextMock.Corrections.Correction.Artist.Mbid
         }
 

@@ -6,11 +6,6 @@
 
 Describe 'Get-LFMTagSimilar: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMTagSimilar'.TagSimilar
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMTagSimilar'.TagSimilar
@@ -81,11 +76,11 @@ Describe 'Get-LFMTagSimilar: Unit' -Tag Unit {
             $output = Get-LFMTagSimilar -Tag Tag
         }
 
-        It "Tag should have name of $($contextMock.Tag.Name)" {
+        It 'Should return the correct tag name' {
             $output.Tag | Should -Be $contextMock.Tag.Name
         }
 
-        It "Tag should have url of $($contextMock.Tag.Url)" {
+        It 'Should return the correct tag url' {
             $output.Url | Should -Be $($contextMock.Tag.Url)
         }
 

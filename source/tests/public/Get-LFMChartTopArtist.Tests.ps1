@@ -6,11 +6,6 @@
 
 Describe 'Get-LFMChartTopArtist: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMChartTopArtist'.ChartTopArtist
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMChartTopArtist'.ChartTopArtist
@@ -79,29 +74,29 @@ Describe 'Get-LFMChartTopArtist: Unit' -Tag Unit {
             $output = Get-LFMChartTopArtist
         }
 
-        It "Chart first top artist should have name of $($contextMock.Artists.Artist[0].Name)" {
+        It 'Should return the correct first top artist name' {
             $output[0].Artist | Should -Be $contextMock.Artists.Artist[0].Name
         }
 
-        It "Chart first top artist should have id of $($contextMock.Artists.Artist[0].Mbid)" {
+        It 'Should return the correct first top artist id' {
             $output[0].Id | Should -Be $contextMock.Artists.Artist[0].Mbid
         }
 
-        It "Chart first top artist should have listeners with a value of $($contextMock.Artists.Artist[0].Listeners)" {
+        It 'Should return the correct first top artist listener count' {
             $output[0].Listeners | Should -BeOfType [int]
             $output[0].Listeners | Should -Be $contextMock.Artists.Artist[0].Listeners
         }
 
-        It "Chart second top artist should have listeners with a value of $($contextMock.Artists.Artist[1].Listeners)" {
+        It 'Should return the correct second top artist listener count' {
             $output[1].Listeners | Should -BeOfType [int]
             $output[1].Listeners | Should -Be $contextMock.Artists.Artist[1].Listeners
         }
 
-        It "Chart second top artist should have url of $($contextMock.Artists.Artist[1].Url)" {
+        It 'Should return the correct second top artist url' {
             $output[1].Url | Should -Be $contextMock.Artists.Artist[1].Url
         }
 
-        It "Chart second top artist should have playcount with a value of $($contextMock.Artists.Artist[1].PlayCount)" {
+        It 'Should return the correct second top artist play count' {
             $output[1].PlayCount | Should -BeOfType [int]
             $output[1].PlayCount | Should -Be $contextMock.Artists.Artist[1].PlayCount
         }

@@ -6,11 +6,6 @@
 
 Describe 'Search-LFMTrack: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Search-LFMTrack'.Track
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Search-LFMTrack'.Track
@@ -89,27 +84,27 @@ Describe 'Search-LFMTrack: Unit' -Tag Unit {
             $output = Search-LFMTrack -Track Track
         }
 
-        It "Searched first track should have name of $($contextMock.Results.TrackMatches.Track[0].Name)" {
+        It 'Should return the correct first searched track name' {
             $output[0].Track | Should -Be $contextMock.Results.TrackMatches.Track[0].Name
         }
 
-        It "Searched first track should have artist name of $($contextMock.Results.TrackMatches.Track[0].Artist)" {
+        It 'Should return the correct first searched track artist name' {
             $output[0].Artist | Should -Be $contextMock.Results.TrackMatches.Track[0].Artist
         }
 
-        It "Searched first track should have url of $($contextMock.Results.TrackMatches.Track[0].Url)" {
+        It 'Should return the correct first searched track url' {
             $output[0].Url | Should -Be $contextMock.Results.TrackMatches.Track[0].Url
         }
 
-        It "Searched first track should have $($contextMock.Results.TrackMatches.Track[0].Listeners) listener" {
+        It 'Should return the correct first searched track listener count' {
             $output[0].Listeners | Should -Be $contextMock.Results.TrackMatches.Track[0].Listeners
         }
 
-        It "Searched second track should have url of $($contextMock.Results.TrackMatches.Track[1].Url)" {
+        It 'Should return the correct second searched track url' {
             $output[1].Url | Should -Be $contextMock.Results.TrackMatches.Track[1].Url
         }
 
-        It "Searched second track should have artist id with a value of $($contextMock.Results.TrackMatches.Track[1].Mbid)" {
+        It 'Should return the correct second searched track id' {
             $output[1].Id | Should -Be $contextMock.Results.TrackMatches.Track[1].Mbid
         }
 

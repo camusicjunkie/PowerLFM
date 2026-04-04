@@ -6,11 +6,6 @@
 
 Describe 'Get-LFMTrackSimilar: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMTrackSimilar'.TrackSimilar
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMTrackSimilar'.TrackSimilar
@@ -82,23 +77,23 @@ Describe 'Get-LFMTrackSimilar: Unit' -Tag Unit {
             $output = Get-LFMTrackSimilar -Track Track -Artist Artist
         }
 
-        It "Track first similar track should have name of $($contextMock.SimilarTracks.Track[0].Name)" {
+        It 'Should return the correct first similar track name' {
             $output[0].Track | Should -Be $contextMock.SimilarTracks.Track[0].Name
         }
 
-        It "Track first similar track match should have value of $($contextMock.SimilarTracks.Track[0].Match)" {
+        It 'Should return the correct first similar track match value' {
             $output[0].Match | Should -Be $contextMock.SimilarTracks.Track[0].Match
         }
 
-        It "Track first similar track should have an artist name of $($contextMock.SimilarTracks.Track[0].Artist.Name)" {
+        It 'Should return the correct first similar track artist name' {
             $output[0].Artist | Should -Be $contextMock.SimilarTracks.Track[0].Artist.Name
         }
 
-        It "Track second similar track match should have value of $($contextMock.SimilarTracks.Track[1].Match)" {
+        It 'Should return the correct second similar track match value' {
             $output[1].Match | Should -Be $contextMock.SimilarTracks.Track[1].Match
         }
 
-        It "Track second similar track should have url of $($contextMock.SimilarTracks.Track[1].Url)" {
+        It 'Should return the correct second similar track url' {
             $output[1].Url | Should -Be $contextMock.SimilarTracks.Track[1].Url
         }
 

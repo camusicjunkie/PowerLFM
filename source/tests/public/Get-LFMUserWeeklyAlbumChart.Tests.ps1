@@ -6,11 +6,6 @@
 
 Describe 'Get-LFMUserWeeklyAlbumChart: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMUserWeeklyAlbumChart'.UserWeeklyAlbumChart
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMUserWeeklyAlbumChart'.UserWeeklyAlbumChart
@@ -79,27 +74,27 @@ Describe 'Get-LFMUserWeeklyAlbumChart: Unit' -Tag Unit {
             $output = Get-LFMUserWeeklyAlbumChart
         }
 
-        It "User weekly album chart first album should have name of $($contextMock.WeeklyAlbumChart.Album[0].Name)" {
+        It 'Should return the correct first weekly album chart name' {
             $output[0].Album | Should -Be $contextMock.WeeklyAlbumChart.Album[0].Name
         }
 
-        It "User weekly album chart first album should have artist name of $($contextMock.WeeklyAlbumChart.Album[0].Artist.'#Text')" {
+        It 'Should return the correct first weekly album chart artist name' {
             $output[0].Artist | Should -Be $contextMock.WeeklyAlbumChart.Album[0].Artist.'#Text'
         }
 
-        It "User weekly album chart first album should have url of $($contextMock.WeeklyAlbumChart.Album[0].Url)" {
+        It 'Should return the correct first weekly album chart url' {
             $output[0].Url | Should -Be $contextMock.WeeklyAlbumChart.Album[0].Url
         }
 
-        It "User weekly album chart second album should have url of $($contextMock.WeeklyAlbumChart.Album[1].Url)" {
+        It 'Should return the correct second weekly album chart url' {
             $output[1].Url | Should -Be $contextMock.WeeklyAlbumChart.Album[1].Url
         }
 
-        It "User weekly album chart second album should have artist id with a value of $($contextMock.WeeklyAlbumChart.Album[1].Artist.Mbid)" {
+        It 'Should return the correct second weekly album chart artist id' {
             $output[1].ArtistId | Should -Be $contextMock.WeeklyAlbumChart.Album[1].Artist.Mbid
         }
 
-        It "User weekly album chart second album should have a playcount of $($contextMock.WeeklyAlbumChart.Album[1].PlayCount)" {
+        It 'Should return the correct second weekly album chart play count' {
             $output[1].PlayCount | Should -Be $contextMock.WeeklyAlbumChart.Album[1].PlayCount
         }
 

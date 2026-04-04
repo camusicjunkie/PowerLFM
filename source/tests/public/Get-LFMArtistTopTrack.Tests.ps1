@@ -6,11 +6,6 @@
 
 Describe 'Get-LFMArtistTopTrack: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMArtistTopTrack'.ArtistTopTrack
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMArtistTopTrack'.ArtistTopTrack
@@ -81,29 +76,29 @@ Describe 'Get-LFMArtistTopTrack: Unit' -Tag Unit {
             $output = Get-LFMArtistTopTrack -Artist Artist
         }
 
-        It "Artist first top track should have name of $($contextMock.Toptracks.Track[0].Name)" {
+        It 'Should return the correct first top track name' {
             $output[0].Track | Should -Be $contextMock.Toptracks.Track[0].Name
         }
 
-        It "Artist first top track should have id of $($contextMock.Toptracks.Track[0].Mbid)" {
+        It 'Should return the correct first top track id' {
             $output[0].Id | Should -Be $contextMock.Toptracks.Track[0].Mbid
         }
 
-        It "Artist first top track should have listeners with a value of $($contextMock.Toptracks.Track[0].Listeners)" {
+        It 'Should return the correct first top track listener count' {
             $output[0].Listeners | Should -BeOfType [int]
             $output[0].Listeners | Should -Be $contextMock.Toptracks.Track[0].Listeners
         }
 
-        It "Artist second top track should have listeners with a value of $($contextMock.Toptracks.Track[1].Listeners)" {
+        It 'Should return the correct second top track listener count' {
             $output[1].Listeners | Should -BeOfType [int]
             $output[1].Listeners | Should -Be $contextMock.Toptracks.Track[1].Listeners
         }
 
-        It "Artist second top track should have url of $($contextMock.Toptracks.Track[1].Url)" {
+        It 'Should return the correct second top track url' {
             $output[1].Url | Should -Be $contextMock.Toptracks.Track[1].Url
         }
 
-        It "Artist second top track should have playcount with a value of $($contextMock.Toptracks.Track[1].PlayCount)" {
+        It 'Should return the correct second top track play count' {
             $output[1].PlayCount | Should -BeOfType [int]
             $output[1].PlayCount | Should -Be $contextMock.Toptracks.Track[1].PlayCount
         }

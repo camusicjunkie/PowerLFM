@@ -6,11 +6,6 @@
 
 Describe 'Get-LFMAlbumTag: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMAlbumTag'.AlbumTag
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMAlbumTag'.AlbumTag
@@ -82,11 +77,11 @@ Describe 'Get-LFMAlbumTag: Unit' -Tag Unit {
             $output = Get-LFMAlbumTag -Album Album -Artist Artist
         }
 
-        It "Album first tag should have name of $($contextMock.Tags.Tag[0].Name)" {
+        It 'Should return the correct first tag name' {
             $output[0].Tag | Should -Be $contextMock.Tags.Tag[0].Name
         }
 
-        It "Album second tag should have url of $($contextMock.Tags.Tag[1].Url)" {
+        It 'Should return the correct second tag url' {
             $output[1].Url | Should -Be $contextMock.Tags.Tag[1].Url
         }
 

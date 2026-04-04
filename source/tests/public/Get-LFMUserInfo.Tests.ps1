@@ -6,11 +6,6 @@
 
 Describe 'Get-LFMUserInfo: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMUserInfo'.UserInfo
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMUserInfo'.UserInfo
@@ -80,27 +75,27 @@ Describe 'Get-LFMUserInfo: Unit' -Tag Unit {
             $output = Get-LFMUserInfo
         }
 
-        It "User should have a name of $($contextMock.User[0].RealName)" {
+        It 'Should return the correct user real name' {
             $output[0].RealName | Should -Be $contextMock.User[0].RealName
         }
 
-        It "User should have a username of $($contextMock.User[0].Name)" {
+        It 'Should return the correct username' {
             $output[0].UserName | Should -Be $contextMock.User[0].Name
         }
 
-        It "User should have a playcount of $($contextMock.User[0].PlayCount)" {
+        It 'Should return the correct user play count' {
             $output[0].PlayCount | Should -Be $contextMock.User[0].PlayCount
         }
 
-        It "User should have $($contextMock.User[0].PlayLists) playlists" {
+        It 'Should return the correct user playlist count' {
             $output[0].PlayLists | Should -Be $contextMock.User[0].PlayLists
         }
 
-        It "User should have a url of $($contextMock.User[0].Url)" {
+        It 'Should return the correct user url' {
             $output[0].Url | Should -Be $contextMock.User[0].Url
         }
 
-        It "User should have registered in $($contextMock.User[0].Country)" {
+        It 'Should return the correct user country' {
             $output[0].Country | Should -Be $contextMock.User[0].Country
         }
 

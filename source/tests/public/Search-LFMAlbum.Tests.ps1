@@ -6,11 +6,6 @@
 
 Describe 'Search-LFMAlbum: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Search-LFMAlbum'.Album
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Search-LFMAlbum'.Album
@@ -89,23 +84,23 @@ Describe 'Search-LFMAlbum: Unit' -Tag Unit {
             $output = Search-LFMAlbum -Album Album
         }
 
-        It "Searched first album should have name of $($contextMock.Results.AlbumMatches.Album[0].Name)" {
+        It 'Should return the correct first searched album name' {
             $output[0].Album | Should -Be $contextMock.Results.AlbumMatches.Album[0].Name
         }
 
-        It "Searched first album should have artist name of $($contextMock.Results.AlbumMatches.Album[0].Artist)" {
+        It 'Should return the correct first searched album artist name' {
             $output[0].Artist | Should -Be $contextMock.Results.AlbumMatches.Album[0].Artist
         }
 
-        It "Searched first album should have url of $($contextMock.Results.AlbumMatches.Album[0].Url)" {
+        It 'Should return the correct first searched album url' {
             $output[0].Url | Should -Be $contextMock.Results.AlbumMatches.Album[0].Url
         }
 
-        It "Searched second album should have url of $($contextMock.Results.AlbumMatches.Album[1].Url)" {
+        It 'Should return the correct second searched album url' {
             $output[1].Url | Should -Be $contextMock.Results.AlbumMatches.Album[1].Url
         }
 
-        It "Searched second album should have artist id with a value of $($contextMock.Results.AlbumMatches.Album[1].Mbid)" {
+        It 'Should return the correct second searched album id' {
             $output[1].Id | Should -Be $contextMock.Results.AlbumMatches.Album[1].Mbid
         }
 

@@ -6,11 +6,6 @@
 
 Describe 'Get-LFMUserWeeklyArtistChart: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMUserWeeklyArtistChart'.UserWeeklyArtistChart
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMUserWeeklyArtistChart'.UserWeeklyArtistChart
@@ -79,23 +74,23 @@ Describe 'Get-LFMUserWeeklyArtistChart: Unit' -Tag Unit {
             $output = Get-LFMUserWeeklyArtistChart
         }
 
-        It "User weekly artist chart first artist should have name of $($contextMock.WeeklyArtistChart.Artist[0].Name)" {
+        It 'Should return the correct first weekly artist chart name' {
             $output[0].Artist | Should -Be $contextMock.WeeklyArtistChart.Artist[0].Name
         }
 
-        It "User weekly artist chart first artist should have url of $($contextMock.WeeklyArtistChart.Artist[0].Url)" {
+        It 'Should return the correct first weekly artist chart url' {
             $output[0].Url | Should -Be $contextMock.WeeklyArtistChart.Artist[0].Url
         }
 
-        It "User weekly artist chart second artist should have url of $($contextMock.WeeklyArtistChart.Artist[1].Url)" {
+        It 'Should return the correct second weekly artist chart url' {
             $output[1].Url | Should -Be $contextMock.WeeklyArtistChart.Artist[1].Url
         }
 
-        It "User weekly artist chart second artist should have an id with a value of $($contextMock.WeeklyArtistChart.Artist[1].Mbid)" {
+        It 'Should return the correct second weekly artist chart id' {
             $output[1].Id | Should -Be $contextMock.WeeklyArtistChart.Artist[1].Mbid
         }
 
-        It "User weekly artist chart second artist should have a playcount of $($contextMock.WeeklyArtistChart.Artist[1].PlayCount)" {
+        It 'Should return the correct second weekly artist chart play count' {
             $output[1].PlayCount | Should -Be $contextMock.WeeklyArtistChart.Artist[1].PlayCount
         }
 

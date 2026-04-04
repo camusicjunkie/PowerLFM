@@ -6,11 +6,6 @@
 
 Describe 'Get-LFMUserFriend: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMUserFriend'.UserFriend
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMUserFriend'.UserFriend
@@ -80,23 +75,23 @@ Describe 'Get-LFMUserFriend: Unit' -Tag Unit {
             $output = Get-LFMUserFriend
         }
 
-        It "User first friend should have a name of $($contextMock.Friends.User[0].RealName)" {
+        It 'Should return the correct first friend real name' {
             $output[0].RealName | Should -Be $contextMock.Friends.User[0].RealName
         }
 
-        It "User first friend should have a username of $($contextMock.Friends.User[0].Name)" {
+        It 'Should return the correct first friend username' {
             $output[0].UserName | Should -Be $contextMock.Friends.User[0].Name
         }
 
-        It "User first friend should have $($contextMock.Friends.User[0].PlayLists) playlists" {
+        It 'Should return the correct first friend playlist count' {
             $output[0].PlayLists | Should -Be $contextMock.Friends.User[0].PlayLists
         }
 
-        It "User second friend should have a url of $($contextMock.Friends.User[1].Url)" {
+        It 'Should return the correct second friend url' {
             $output[1].Url | Should -Be $contextMock.Friends.User[1].Url
         }
 
-        It "User second friend should have registered in $($contextMock.Friends.User[1].Country)" {
+        It 'Should return the correct second friend country' {
             $output[1].Country | Should -Be $contextMock.Friends.User[1].Country
         }
 

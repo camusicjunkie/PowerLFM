@@ -6,11 +6,6 @@
 
 Describe 'Request-LFMToken: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Request-LFMToken'.Token
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Request-LFMToken'.Token
@@ -92,7 +87,7 @@ Describe 'Request-LFMToken: Unit' -Tag Unit {
             $output = Request-LFMToken -ApiKey 'ApiKey' -SharedSecret 'SharedSecret'
         }
 
-        It "Token key should have a value of $($contextMock.Token)" {
+        It 'Should return the correct token value' {
             $output.Token | Should -Be $contextMock.Token
         }
     }

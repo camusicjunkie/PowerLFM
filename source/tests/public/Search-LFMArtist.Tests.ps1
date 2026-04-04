@@ -6,11 +6,6 @@
 
 Describe 'Search-LFMArtist: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Search-LFMArtist'.Artist
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Search-LFMArtist'.Artist
@@ -89,23 +84,23 @@ Describe 'Search-LFMArtist: Unit' -Tag Unit {
             $output = Search-LFMArtist -Artist Artist
         }
 
-        It "Searched first artist should have name of $($contextMock.Results.ArtistMatches.Artist[0].Name)" {
+        It 'Should return the correct first searched artist name' {
             $output[0].Artist | Should -Be $contextMock.Results.ArtistMatches.Artist[0].Name
         }
 
-        It "Searched first artist should have $($contextMock.Results.ArtistMatches.Artist[0].Listeners) listener" {
+        It 'Should return the correct first searched artist listener count' {
             $output[0].Listeners | Should -Be $contextMock.Results.ArtistMatches.Artist[0].Listeners
         }
 
-        It "Searched first artist should have url of $($contextMock.Results.ArtistMatches.Artist[0].Url)" {
+        It 'Should return the correct first searched artist url' {
             $output[0].Url | Should -Be $contextMock.Results.ArtistMatches.Artist[0].Url
         }
 
-        It "Searched second artist should have url of $($contextMock.Results.ArtistMatches.Artist[1].Url)" {
+        It 'Should return the correct second searched artist url' {
             $output[1].Url | Should -Be $contextMock.Results.ArtistMatches.Artist[1].Url
         }
 
-        It "Searched second artist should have artist id with a value of $($contextMock.Results.ArtistMatches.Artist[1].Mbid)" {
+        It 'Should return the correct second searched artist id' {
             $output[1].Id | Should -Be $contextMock.Results.ArtistMatches.Artist[1].Mbid
         }
 

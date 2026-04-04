@@ -6,11 +6,6 @@
 
 Describe 'Get-LFMArtistSimilar: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMArtistSimilar'.ArtistSimilar
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMArtistSimilar'.ArtistSimilar
@@ -81,11 +76,11 @@ Describe 'Get-LFMArtistSimilar: Unit' -Tag Unit {
             $output = Get-LFMArtistSimilar -Artist Artist
         }
 
-        It "Artist first similar artist should have name of $($contextMock.Similarartists.Artist[0].Name)" {
+        It 'Should return the correct first similar artist name' {
             $output[0].Artist | Should -Be $contextMock.Similarartists.Artist[0].Name
         }
 
-        It "Artist second similar artist should have url of $($contextMock.Similarartists.Artist[1].Url)" {
+        It 'Should return the correct second similar artist url' {
             $output[1].Url | Should -Be $contextMock.Similarartists.Artist[1].Url
         }
 
@@ -98,11 +93,11 @@ Describe 'Get-LFMArtistSimilar: Unit' -Tag Unit {
             $output.Artist | Should -Not -HaveCount 3
         }
 
-        It "Artist first match should have value of $($contextMock.Similarartists.Artist[0].Match)" {
+        It 'Should return the correct first similar artist match value' {
             $output[0].Match | Should -Be $contextMock.Similarartists.Artist[0].Match
         }
 
-        It "Artist second match should have value of $($contextMock.Similarartists.Artist[1].Match)" {
+        It 'Should return the correct second similar artist match value' {
             $output[1].Match | Should -Be $contextMock.Similarartists.Artist[1].Match
         }
 
