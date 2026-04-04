@@ -47,8 +47,7 @@ function Set-LFMTrackNowPlaying {
         $convertedParams = ConvertTo-LFMParameter $noCommonParams
         $query = New-LFMApiQuery ($convertedParams + $apiParams)
         $apiUrl = "$baseUrl/?$query"
-    }
-    end {
+
         if ($PSCmdlet.ShouldProcess("Track: $Track", "Setting track to now playing")) {
             try {
                 $irm = Invoke-LFMApiUri -Uri $apiUrl -Method Post

@@ -35,8 +35,7 @@ function Add-LFMAlbumTag {
         $convertedParams = ConvertTo-LFMParameter $noCommonParams
         $query = New-LFMApiQuery ($convertedParams + $apiParams)
         $apiUrl = "$baseUrl/?$query"
-    }
-    end {
+
         if ($PSCmdlet.ShouldProcess("Album: $Album", "Adding album tag: $Tag")) {
             try {
                 $irm = Invoke-LFMApiUri -Uri $apiUrl -Method Post
