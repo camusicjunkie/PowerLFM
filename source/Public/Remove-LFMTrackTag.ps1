@@ -35,8 +35,7 @@ function Remove-LFMTrackTag {
         $convertedParams = ConvertTo-LFMParameter $noCommonParams
         $query = New-LFMApiQuery ($convertedParams + $apiParams)
         $apiUrl = "$baseUrl/?$query"
-    }
-    end {
+
         if ($PSCmdlet.ShouldProcess("Track: $Track", "Removing track tag: $Tag")) {
             try {
                 $irm = Invoke-LFMApiUri -Uri $apiUrl -Method Post
