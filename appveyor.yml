@@ -8,7 +8,7 @@ environment:
   LFMSharedSecret:
     secure: LA1YzNyJRI0WpbZ+HAWU9uXyalNMw3y24+9FHoFeFIHWXX8tm52CBfi/nz84wYke
   NuGetApiKey:
-    secure: XFJ8cN2cPIpThLPwSbaTdgsKzVoyg9bbJpafpyxvFcoDNTrKHQ4B4MlfILzZC149
+    secure: IvmDKAPkd98eHcGlAvBkFYJpTFKGPlzmDOkcgGkXQ7gmf4k91rH4vOI4edPJNiCB
   IGNORE_NORMALISATION_GIT_HEAD_MOVE: 1
 
 # Allow WMF5 (i.e. PowerShellGallery functionality)
