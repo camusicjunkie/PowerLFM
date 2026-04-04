@@ -6,11 +6,6 @@
 
 Describe 'Get-LFMUserWeeklyChartList: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMUserWeeklyChartList'.UserWeeklyChartList
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMUserWeeklyChartList'.UserWeeklyChartList

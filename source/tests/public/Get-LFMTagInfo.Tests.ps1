@@ -6,11 +6,6 @@
 
 Describe 'Get-LFMTagInfo: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMTagInfo'.TagInfo
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMTagInfo'.TagInfo
@@ -81,15 +76,15 @@ Describe 'Get-LFMTagInfo: Unit' -Tag Unit {
             $output = Get-LFMTagInfo -Tag Tag
         }
 
-        It "Tag should have name of $($contextMock.Tag.Name)" {
+        It 'Should return the correct tag name' {
             $output.Tag | Should -Be $contextMock.Tag.Name
         }
 
-        It "Tag should have total tags with a value of $($contextMock.Tag.total)" {
+        It 'Should return the correct total tags count' {
             $output.TotalTags | Should -Be $contextMock.Tag.total
         }
 
-        It "Tag should have reach with a value of $($contextMock.Tag.reach)" {
+        It 'Should return the correct tag reach' {
             $output.Reach | Should -BeOfType [int]
             $output.Reach | Should -Be $contextMock.Tag.reach
         }

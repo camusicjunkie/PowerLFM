@@ -6,11 +6,6 @@
 
 Describe 'Get-LFMGeoTopTrack: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMGeoTopTrack'.GeoTopTrack
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMGeoTopTrack'.GeoTopTrack
@@ -81,37 +76,37 @@ Describe 'Get-LFMGeoTopTrack: Unit' -Tag Unit {
             $output = Get-LFMGeoTopTrack -Country Country
         }
 
-        It "Country first top track should have track name of $($contextMock.Tracks.Track[0].Name)" {
+        It 'Should return the correct first top track name' {
             $output[0].Track | Should -Be $contextMock.Tracks.Track[0].Name
         }
 
-        It "Country first top track should have artist name of $($contextMock.Tracks.Track[0].Artist.Name)" {
+        It 'Should return the correct first top track artist name' {
             $output[0].Artist | Should -Be $contextMock.Tracks.Track[0].Artist.Name
         }
 
-        It "Country first top track should have track id with a value of $($contextMock.Tracks.Track[0].Mbid)" {
+        It 'Should return the correct first top track id' {
             $output[0].TrackId | Should -Be $contextMock.Tracks.Track[0].Mbid
         }
 
-        It "Country first top track should have listeners with a value of $($contextMock.Tracks.Track[0].Listeners)" {
+        It 'Should return the correct first top track listener count' {
             $output[0].Listeners | Should -BeOfType [int]
             $output[0].Listeners | Should -Be $contextMock.Tracks.Track[0].Listeners
         }
 
-        It "Country second top track should have listeners with a value of $($contextMock.Tracks.Track[1].Listeners)" {
+        It 'Should return the correct second top track listener count' {
             $output[1].Listeners | Should -BeOfType [int]
             $output[1].Listeners | Should -Be $contextMock.Tracks.Track[1].Listeners
         }
 
-        It "Country second top track should have artist id with a value of $($contextMock.Tracks.Track[1].Artist.Mbid)" {
+        It 'Should return the correct second top track artist id' {
             $output[1].ArtistId | Should -Be $contextMock.Tracks.Track[1].Artist.Mbid
         }
 
-        It "Country second top track should have artist url of $($contextMock.Tracks.Track[1].Artist.Url)" {
+        It 'Should return the correct second top track artist url' {
             $output[1].ArtistUrl | Should -Be $contextMock.Tracks.Track[1].Artist.Url
         }
 
-        It "Country second top track should have track url of $($contextMock.Tracks.Track[1].Url)" {
+        It 'Should return the correct second top track url' {
             $output[1].TrackUrl | Should -Be $contextMock.Tracks.Track[1].Url
         }
 

@@ -6,11 +6,6 @@
 
 Describe 'Get-LFMUserTopTag: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMUserTopTag'.UserTopTag
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMUserTopTag'.UserTopTag
@@ -79,15 +74,15 @@ Describe 'Get-LFMUserTopTag: Unit' -Tag Unit {
             $output = Get-LFMUserTopTag
         }
 
-        It "User first top tag should have name of $($contextMock.TopTags.Tag[0].Name)" {
+        It 'Should return the correct first top tag name' {
             $output[0].Tag | Should -Be $contextMock.TopTags.Tag[0].Name
         }
 
-        It "User second top tag should have url of $($contextMock.TopTags.Tag[1].Url)" {
+        It 'Should return the correct second top tag url' {
             $output[1].TagUrl | Should -Be $contextMock.TopTags.Tag[1].Url
         }
 
-        It "User second top tag should have a count of $($contextMock.TopTags.Tag[1].Count)" {
+        It 'Should return the correct second top tag count' {
             $output[1].Count | Should -Be $contextMock.TopTags.Tag[1].Count
         }
 

@@ -6,11 +6,6 @@
 
 Describe 'Get-LFMUserTopArtist: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMUserTopArtist'.UserTopArtist
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMUserTopArtist'.UserTopArtist
@@ -87,19 +82,19 @@ Describe 'Get-LFMUserTopArtist: Unit' -Tag Unit {
             $output = Get-LFMUserTopArtist
         }
 
-        It "User first top artist should have name of $($contextMock.TopArtists.Artist[0].Name)" {
+        It 'Should return the correct first top artist name' {
             $output[0].Artist | Should -Be $contextMock.TopArtists.Artist[0].Name
         }
 
-        It "User first top artist should have id of $($contextMock.TopArtists.Artist[0].Mbid)" {
+        It 'Should return the correct first top artist id' {
             $output[0].Id | Should -Be $contextMock.TopArtists.Artist[0].Mbid
         }
 
-        It "User second top artist should have url of $($contextMock.TopArtists.Artist[1].Url)" {
+        It 'Should return the correct second top artist url' {
             $output[1].Url | Should -Be $contextMock.TopArtists.Artist[1].Url
         }
 
-        It "User second top artist should have playcount with a value of $($contextMock.TopArtists.Artist[1].PlayCount)" {
+        It 'Should return the correct second top artist play count' {
             $output[1].PlayCount | Should -BeOfType [int]
             $output[1].PlayCount | Should -Be $contextMock.TopArtists.Artist[1].PlayCount
         }

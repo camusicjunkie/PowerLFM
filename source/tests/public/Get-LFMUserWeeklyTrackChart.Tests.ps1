@@ -6,11 +6,6 @@
 
 Describe 'Get-LFMUserWeeklyTrackChart: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMUserWeeklyTrackChart'.UserWeeklyTrackChart
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMUserWeeklyTrackChart'.UserWeeklyTrackChart
@@ -79,31 +74,31 @@ Describe 'Get-LFMUserWeeklyTrackChart: Unit' -Tag Unit {
             $output = Get-LFMUserWeeklyTrackChart
         }
 
-        It "User weekly track chart first track should have name of $($contextMock.WeeklyTrackChart.Track[0].Name)" {
+        It 'Should return the correct first weekly track chart name' {
             $output[0].Track | Should -Be $contextMock.WeeklyTrackChart.Track[0].Name
         }
 
-        It "User weekly track chart first track should have name of $($contextMock.WeeklyTrackChart.Track[0].Mbid)" {
+        It 'Should return the correct first weekly track chart id' {
             $output[0].Id | Should -Be $contextMock.WeeklyTrackChart.Track[0].Mbid
         }
 
-        It "User weekly track chart first track should have artist name of $($contextMock.WeeklyTrackChart.Track[0].Artist.'#Text')" {
+        It 'Should return the correct first weekly track chart artist name' {
             $output[0].Artist | Should -Be $contextMock.WeeklyTrackChart.Track[0].Artist.'#Text'
         }
 
-        It "User weekly track chart first track should have url of $($contextMock.WeeklyTrackChart.Track[0].Url)" {
+        It 'Should return the correct first weekly track chart url' {
             $output[0].Url | Should -Be $contextMock.WeeklyTrackChart.Track[0].Url
         }
 
-        It "User weekly track chart second track should have url of $($contextMock.WeeklyTrackChart.Track[1].Url)" {
+        It 'Should return the correct second weekly track chart url' {
             $output[1].Url | Should -Be $contextMock.WeeklyTrackChart.Track[1].Url
         }
 
-        It "User weekly track chart second track should have artist id with a value of $($contextMock.WeeklyTrackChart.Track[1].Artist.Mbid)" {
+        It 'Should return the correct second weekly track chart artist id' {
             $output[1].ArtistId | Should -Be $contextMock.WeeklyTrackChart.Track[1].Artist.Mbid
         }
 
-        It "User weekly track chart second track should have a playcount of $($contextMock.WeeklyTrackChart.Track[1].PlayCount)" {
+        It 'Should return the correct second weekly track chart play count' {
             $output[1].PlayCount | Should -Be $contextMock.WeeklyTrackChart.Track[1].PlayCount
         }
 

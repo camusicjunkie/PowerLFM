@@ -17,14 +17,32 @@ Describe 'Remove-LFMConfiguration: Unit' -Tag Unit {
 
     Context 'Execution' {
 
-        It 'Should remove the passwords from the BuiltInLocalVault' {
+        It 'Should query secrets from the Microsoft.PowerShell.SecretStore vault' {
             Remove-LFMConfiguration -Confirm:$false
 
             $siParams = @{
-                CommandName = 'Remove-Secret'
-                ModuleName  = 'PowerLFM'
-                Exactly     = $true
-                Times       = 3
+                CommandName     = 'Get-SecretInfo'
+                ModuleName      = 'PowerLFM'
+                Exactly         = $true
+                Times           = 1
+                ParameterFilter = {
+                    $Vault -eq 'Microsoft.PowerShell.SecretStore'
+                }
+            }
+            Should -Invoke @siParams
+        }
+
+        It 'Should remove the passwords from the Microsoft.PowerShell.SecretStore vault' {
+            Remove-LFMConfiguration -Confirm:$false
+
+            $siParams = @{
+                CommandName     = 'Remove-Secret'
+                ModuleName      = 'PowerLFM'
+                Exactly         = $true
+                Times           = 3
+                ParameterFilter = {
+                    $Vault -eq 'Microsoft.PowerShell.SecretStore'
+                }
             }
             Should -Invoke @siParams
         }

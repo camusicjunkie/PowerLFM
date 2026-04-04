@@ -6,11 +6,6 @@
 
 Describe 'Get-LFMUserLovedTrack: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMUserLovedTrack'.UserLovedTrack
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMUserLovedTrack'.UserLovedTrack
@@ -80,27 +75,27 @@ Describe 'Get-LFMUserLovedTrack: Unit' -Tag Unit {
             $output = Get-LFMUserLovedTrack
         }
 
-        It "User first loved track should have a name of $($contextMock.LovedTracks.Track[0].Name)" {
+        It 'Should return the correct first loved track name' {
             $output[0].Track | Should -Be $contextMock.LovedTracks.Track[0].Name
         }
 
-        It "User first loved track should have artist name of $($contextMock.LovedTracks.Track[0].Artist.Name)" {
+        It 'Should return the correct first loved track artist name' {
             $output[0].Artist | Should -Be $contextMock.LovedTracks.Track[0].Artist.Name
         }
 
-        It "User first loved track should have track id with a value of $($contextMock.LovedTracks.Track[0].Mbid)" {
+        It 'Should return the correct first loved track id' {
             $output[0].TrackId | Should -Be $contextMock.LovedTracks.Track[0].Mbid
         }
 
-        It "User second loved track should have artist id with a value of $($contextMock.LovedTracks.Track[1].Artist.Mbid)" {
+        It 'Should return the correct second loved track artist id' {
             $output[1].ArtistId | Should -Be $contextMock.LovedTracks.Track[1].Artist.Mbid
         }
 
-        It "User second loved track should have artist url of $($contextMock.LovedTracks.Track[1].Artist.Url)" {
+        It 'Should return the correct second loved track artist url' {
             $output[1].ArtistUrl | Should -Be $contextMock.LovedTracks.Track[1].Artist.Url
         }
 
-        It "User second loved track should have track url of $($contextMock.LovedTracks.Track[1].Url)" {
+        It 'Should return the correct second loved track url' {
             $output[1].TrackUrl | Should -Be $contextMock.LovedTracks.Track[1].Url
         }
 

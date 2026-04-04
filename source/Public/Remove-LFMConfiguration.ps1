@@ -7,11 +7,11 @@ function Remove-LFMConfiguration {
 
     process {
         try {
-            $secrets = Get-SecretInfo -Name LFM* -Vault BuiltInLocalVault
+            $secrets = Get-SecretInfo -Name LFM* -Vault Microsoft.PowerShell.SecretStore
 
             foreach ($secret in $secrets) {
-                if ($PSCmdlet.ShouldProcess('BuiltInLocalVault', "Removing secret: $($secret.Name)")) {
-                    Remove-Secret -Name $secret.Name -Vault BuiltInLocalVault -Verbose
+                if ($PSCmdlet.ShouldProcess('Microsoft.PowerShell.SecretStore', "Removing secret: $($secret.Name)")) {
+                    Remove-Secret -Name $secret.Name -Vault Microsoft.PowerShell.SecretStore -Verbose
                 }
             }
         } catch {

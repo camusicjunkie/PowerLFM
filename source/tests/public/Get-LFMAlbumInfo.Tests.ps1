@@ -5,11 +5,6 @@
 
 Describe 'Get-LFMAlbumInfo: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMAlbumInfo'.AlbumInfo
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMAlbumInfo'.AlbumInfo
@@ -81,37 +76,37 @@ Describe 'Get-LFMAlbumInfo: Unit' -Tag Unit {
             $output = Get-LFMAlbumInfo -Album Album -Artist Artist
         }
 
-        It "Album should have name of $($contextMock.Album.Name)" {
+        It 'Should return the correct album name' {
             $output.Album | Should -Be $contextMock.Album.Name
         }
 
-        It "Album should have artist name of $($contextMock.Album.Artist)" {
+        It 'Should return the correct artist name' {
             $output.Artist | Should -Be $contextMock.Album.Artist
         }
 
-        It "Album should have id of $($contextMock.Album.Mbid)" {
+        It 'Should return the correct album id' {
             $output.Id | Should -Be $contextMock.Album.Mbid
         }
 
-        It "Album should have url of $($contextMock.Album.Url)" {
+        It 'Should return the correct album url' {
             $output.Url | Should -Be $contextMock.Album.Url
         }
 
-        It "Album should have listeners with a value of $($contextMock.Album.Listeners)" {
+        It 'Should return the correct listener count' {
             $output.Listeners | Should -BeOfType [int]
             $output.Listeners | Should -Be $contextMock.Album.Listeners
         }
 
-        It "Album should have playcount with a value of $($contextMock.Album.PlayCount)" {
+        It 'Should return the correct play count' {
             $output.PlayCount | Should -BeOfType [int]
             $output.PlayCount | Should -Be $contextMock.Album.PlayCount
         }
 
-        It "Album first track should have name of $($contextMock.Album.Tracks.Track[0].Name)" {
+        It 'Should return the correct first track name' {
             $output.Tracks[0].Track | Should -Be $contextMock.Album.Tracks.Track[0].Name
         }
 
-        It "Album second track should have a duration of $($contextMock.Album.Tracks.Track[1].Duration)" {
+        It 'Should return the correct second track duration' {
             $output.Tracks[1].Duration | Should -Be $contextMock.Album.Tracks.Track[1].Duration
         }
 
@@ -124,11 +119,11 @@ Describe 'Get-LFMAlbumInfo: Unit' -Tag Unit {
             $output.Tracks | Should -Not -HaveCount 3
         }
 
-        It "Album first tag should have name of $($contextMock.Album.Tags.Tag[0].Name)" {
+        It 'Should return the correct first tag name' {
             $output.Tags[0].Tag | Should -Be $contextMock.Album.Tags.Tag[0].Name
         }
 
-        It "Album second tag should have url of $($contextMock.Album.Tags.Tag[1].Url)" {
+        It 'Should return the correct second tag url' {
             $output.Tags[1].Url | Should -Be $contextMock.Album.Tags.Tag[1].Url
         }
 
@@ -140,11 +135,11 @@ Describe 'Get-LFMAlbumInfo: Unit' -Tag Unit {
             $output.Tags | Should -Not -HaveCount 3
         }
 
-        It "Album should have summary of '$($contextMock.Album.Wiki.Summary)'" {
+        It 'Should return the correct album summary' {
             $output.Summary | Should -BeExactly $contextMock.Album.Wiki.Summary
         }
 
-        It "Album should have a user play count of $($contextMock.Album.UserPlayCount)" {
+        It 'Should return the correct user play count' {
             $output = Get-LFMAlbumInfo -Artist Artist -Album Album -UserName camusicjunkie
             $output.UserPlayCount | Should -Be $contextMock.Album.UserPlayCount
         }

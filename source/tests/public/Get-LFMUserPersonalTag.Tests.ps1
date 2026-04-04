@@ -6,11 +6,6 @@
 
 Describe 'Get-LFMUserPersonalTag: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMUserPersonalTag'.UserPersonalTag
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMUserPersonalTag'.UserPersonalTag
@@ -102,15 +97,15 @@ Describe 'Get-LFMUserPersonalTag: Unit' -Tag Unit {
             $output = Get-LFMUserPersonalTag -Tag Tag -TagType Artist
         }
 
-        It "User first personal tag artist should have a name of $($contextMock.Taggings.Artists.Artist[0].Name)" {
+        It 'Should return the correct first personal tag artist name' {
             $output[0].Artist | Should -Be $contextMock.Taggings.Artists.Artist[0].Name
         }
 
-        It "User first personal tag artist should have an id of $($contextMock.Taggings.Artists.Artist[0].Mbid)" {
+        It 'Should return the correct first personal tag artist id' {
             $output[0].Id | Should -Be $contextMock.Taggings.Artists.Artist[0].Mbid
         }
 
-        It "User second personal tag artist should have a url of $($contextMock.Taggings.Artists.Artist[1].Url)" {
+        It 'Should return the correct second personal tag artist url' {
             $output[1].Url | Should -Be $contextMock.Taggings.Artists.Artist[1].Url
         }
 

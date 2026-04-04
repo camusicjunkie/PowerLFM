@@ -104,8 +104,9 @@ Task PublishToPSGallery {
         Where-Object { $_.BaseName -eq $_.Directory.Parent.Name } |
         Select-Object -ExpandProperty Directory
 
+        $apiKey = if ($NuGetApiKey) { $NuGetApiKey } else { $env:NuGetApiKey }
         Write-Build Gray "  Publishing version [$($env:NextBuildVersion)] to PSGallery"
-        Publish-Module -Path $modulePath.FullName -NuGetApiKey (if ($NuGetApiKey) { $NuGetApiKey } else { $env:NuGetApiKey }) -Repository PSGallery -ErrorAction Stop
+        Publish-Module -Path $modulePath.FullName -NuGetApiKey $apiKey -Repository PSGallery -ErrorAction Stop
 }
 
 # Synopsis: Empty task that's useful to test the bootstrap process

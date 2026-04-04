@@ -6,11 +6,6 @@
 
 Describe 'Get-LFMUserRecentTrack: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMUserRecentTrack'.UserRecentTrack
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMUserRecentTrack'.UserRecentTrack
@@ -100,15 +95,15 @@ Describe 'Get-LFMUserRecentTrack: Unit' -Tag Unit {
             $output[0].ScrobbleTime | Should -Be 'Now Playing'
         }
 
-        It "User first recent track should have a name of $($contextMock.RecentTracks.Track[0].Name)" {
+        It 'Should return the correct first recent track name' {
             $output[0].Track | Should -Be $contextMock.RecentTracks.Track[0].Name
         }
 
-        It "User first recent track should have an artist name of $($contextMock.RecentTracks.Track[0].Artist.Name)" {
+        It 'Should return the correct first recent track artist name' {
             $output[0].Artist | Should -Be $contextMock.RecentTracks.Track[0].Artist.Name
         }
 
-        It "User second recent track should have an album name of $($contextMock.RecentTracks.Track[1].Album.'#Text')" {
+        It 'Should return the correct second recent track album name' {
             $output[1].Album | Should -Be $contextMock.RecentTracks.Track[1].Album.'#Text'
         }
 
@@ -116,7 +111,7 @@ Describe 'Get-LFMUserRecentTrack: Unit' -Tag Unit {
             $output[1].Loved | Should -Be 'Yes'
         }
 
-        It "User third recent track should have an artist name of $($contextMock.RecentTracks.Track[2].Artist.Name)" {
+        It 'Should return the correct third recent track artist name' {
             $output[2].Artist | Should -Be $contextMock.RecentTracks.Track[2].Artist.Name
         }
 

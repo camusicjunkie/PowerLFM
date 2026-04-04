@@ -6,11 +6,6 @@
 
 Describe 'Get-LFMTrackCorrection: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMTrackCorrection'.TrackCorrection
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMTrackCorrection'.TrackCorrection
@@ -82,23 +77,23 @@ Describe 'Get-LFMTrackCorrection: Unit' -Tag Unit {
             $output = Get-LFMTrackCorrection -Track Track -Artist Artist
         }
 
-        It "Corrected track should have a name of $($contextMock.Corrections.Correction.Track.Name)" {
+        It 'Should return the correct corrected track name' {
             $output.Track | Should -Be $contextMock.Corrections.Correction.Track.Name
         }
 
-        It "Corrected track should have a url of $($contextMock.Corrections.Correction.Track.Url)" {
+        It 'Should return the correct corrected track url' {
             $output.TrackUrl | Should -Be $contextMock.Corrections.Correction.Track.Url
         }
 
-        It "Corrected track should have an artist name of $($contextMock.Corrections.Correction.Track.Artist.Name)" {
+        It 'Should return the correct corrected track artist name' {
             $output.Artist | Should -Be $contextMock.Corrections.Correction.Track.Artist.Name
         }
 
-        It "Corrected track should have an artist id of $($contextMock.Corrections.Correction.Track.Artist.Mbid)" {
+        It 'Should return the correct corrected track artist id' {
             $output.ArtistId | Should -Be $contextMock.Corrections.Correction.Track.Artist.Mbid
         }
 
-        It "Corrected track should have an artist url of $($contextMock.Corrections.Correction.Track.Artist.Url)" {
+        It 'Should return the correct corrected track artist url' {
             $output.ArtistUrl | Should -Be $contextMock.Corrections.Correction.Track.Artist.Url
         }
 

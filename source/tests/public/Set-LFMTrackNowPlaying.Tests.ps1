@@ -6,11 +6,6 @@
 
 Describe 'Set-LFMTrackNowPlaying: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Set-LFMTrackNowPlaying'.TrackNowPlaying
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Set-LFMTrackNowPlaying'.TrackNowPlaying

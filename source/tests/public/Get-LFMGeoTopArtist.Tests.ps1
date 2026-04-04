@@ -6,11 +6,6 @@
 
 Describe 'Get-LFMGeoTopArtist: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMGeoTopArtist'.GeoTopArtist
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMGeoTopArtist'.GeoTopArtist
@@ -81,25 +76,25 @@ Describe 'Get-LFMGeoTopArtist: Unit' -Tag Unit {
             $output = Get-LFMGeoTopArtist -Country Country
         }
 
-        It "Country first top artist should have name of $($contextMock.TopArtists.Artist[0].Name)" {
+        It 'Should return the correct first top artist name' {
             $output[0].Artist | Should -Be $contextMock.TopArtists.Artist[0].Name
         }
 
-        It "Country first top artist should have id of $($contextMock.TopArtists.Artist[0].Mbid)" {
+        It 'Should return the correct first top artist id' {
             $output[0].Id | Should -Be $contextMock.TopArtists.Artist[0].Mbid
         }
 
-        It "Country first top artist should have listeners with a value of $($contextMock.TopArtists.Artist[0].Listeners)" {
+        It 'Should return the correct first top artist listener count' {
             $output[0].Listeners | Should -BeOfType [int]
             $output[0].Listeners | Should -Be $contextMock.TopArtists.Artist[0].Listeners
         }
 
-        It "Country second top artist should have listeners with a value of $($contextMock.TopArtists.Artist[1].Listeners)" {
+        It 'Should return the correct second top artist listener count' {
             $output[1].Listeners | Should -BeOfType [int]
             $output[1].Listeners | Should -Be $contextMock.TopArtists.Artist[1].Listeners
         }
 
-        It "Country second top artist should have track url of $($contextMock.TopArtists.Artist[1].Url)" {
+        It 'Should return the correct second top artist url' {
             $output[1].Url | Should -Be $contextMock.TopArtists.Artist[1].Url
         }
 

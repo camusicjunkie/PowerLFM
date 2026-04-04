@@ -6,11 +6,6 @@
 
 Describe 'Get-LFMTagTopArtist: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMTagTopArtist'.TagTopArtist
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMTagTopArtist'.TagTopArtist
@@ -81,27 +76,27 @@ Describe 'Get-LFMTagTopArtist: Unit' -Tag Unit {
             $output = Get-LFMTagTopArtist -Tag Tag
         }
 
-        It "Tag first top artist should have name of $($contextMock.TopArtists.Artist[0].Name)" {
+        It 'Should return the correct first top artist name' {
             $output[0].Artist | Should -Be $contextMock.TopArtists.Artist[0].Name
         }
 
-        It "Tag first top artist should have url of $($contextMock.TopArtists.Artist[0].Url)" {
+        It 'Should return the correct first top artist url' {
             $output[0].ArtistUrl | Should -Be $contextMock.TopArtists.Artist[0].Url
         }
 
-        It "Tag first top artist should have rank with a value of $($contextMock.TopArtists.Artist[0].'@attr'.Rank)" {
+        It 'Should return the correct first top artist rank' {
             $output[0].Rank | Should -Be $contextMock.TopArtists.Artist[0].'@attr'.Rank
         }
 
-        It "Tag second top artist should have rank with a value of $($contextMock.TopArtists.Artist[1].'@attr'.Rank)" {
+        It 'Should return the correct second top artist rank' {
             $output[1].Rank | Should -Be $contextMock.TopArtists.Artist[1].'@attr'.Rank
         }
 
-        It "Tag second top artist should have id with a value of $($contextMock.TopArtists.Artist[1].Mbid)" {
+        It 'Should return the correct second top artist id' {
             $output[1].ArtistId | Should -Be $contextMock.TopArtists.Artist[1].Mbid
         }
 
-        It "Tag second top artist should have url of $($contextMock.TopArtists.Artist[1].Url)" {
+        It 'Should return the correct second top artist url' {
             $output[1].ArtistUrl | Should -Be $contextMock.TopArtists.Artist[1].Url
         }
 

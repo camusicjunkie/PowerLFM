@@ -6,11 +6,6 @@
 
 Describe 'Get-LFMTagTopTag: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMTagTopTag'.TagTopTag
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMTagTopTag'.TagTopTag
@@ -72,23 +67,23 @@ Describe 'Get-LFMTagTopTag: Unit' -Tag Unit {
             $output = Get-LFMTagTopTag
         }
 
-        It "Tag first top tag should have name of $($contextMock.TopTags.Tag[0].Name)" {
+        It 'Should return the correct first top tag name' {
             $output[0].Tag | Should -Be $contextMock.TopTags.Tag[0].Name
         }
 
-        It "Tag first top tag should have reach of $($contextMock.TopTags.Tag[0].Reach)" {
+        It 'Should return the correct first top tag reach' {
             $output[0].Reach | Should -Be $contextMock.TopTags.Tag[0].Reach
         }
 
-        It "Tag first top tag should have count with a value of $($contextMock.TopTags.Tag[0].Count)" {
+        It 'Should return the correct first top tag count' {
             $output[0].Count | Should -Be $contextMock.TopTags.Tag[0].Count
         }
 
-        It "Tag second top tag should have count with a value of $($contextMock.TopTags.Tag[1].Count)" {
+        It 'Should return the correct second top tag count' {
             $output[1].Count | Should -Be $contextMock.TopTags.Tag[1].Count
         }
 
-        It "Tag second top tag should have reach with a value of $($contextMock.TopTags.Tag[1].Reach)" {
+        It 'Should return the correct second top tag reach' {
             $output[1].Reach | Should -Be $contextMock.TopTags.Tag[1].Reach
         }
 

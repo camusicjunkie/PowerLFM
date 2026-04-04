@@ -6,11 +6,6 @@
 
 Describe 'Get-LFMUserTrackScrobble: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMUserTrackScrobble'.UserTrackScrobble
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMUserTrackScrobble'.UserTrackScrobble
@@ -91,23 +86,23 @@ Describe 'Get-LFMUserTrackScrobble: Unit' -Tag Unit {
             $output = Get-LFMUserTrackScrobble -Track Track -Artist Artist
         }
 
-        It "User first scrobbled track should have a name of $($contextMock.TrackScrobbles.Track[0].Name)" {
+        It 'Should return the correct first scrobbled track name' {
             $output[0].Track | Should -Be $contextMock.TrackScrobbles.Track[0].Name
         }
 
-        It "User first scrobbled track should have artist name of $($contextMock.TrackScrobbles.Track[0].Artist.'#text')" {
+        It 'Should return the correct first scrobbled track artist name' {
             $output[0].Artist | Should -Be $contextMock.TrackScrobbles.Track[0].Artist.'#text'
         }
 
-        It "User first scrobbled track should have track id with a value of $($contextMock.TrackScrobbles.Track[0].Mbid)" {
+        It 'Should return the correct first scrobbled track id' {
             $output[0].TrackId | Should -Be $contextMock.TrackScrobbles.Track[0].Mbid
         }
 
-        It "User second scrobbled track should have track url of $($contextMock.TrackScrobbles.Track[1].Url)" {
+        It 'Should return the correct second scrobbled track url' {
             $output[1].TrackUrl | Should -Be $contextMock.TrackScrobbles.Track[1].Url
         }
 
-        It "User second scrobbled track should have artist name of $($contextMock.TrackScrobbles.Track[1].Album.'#text')" {
+        It 'Should return the correct second scrobbled track album name' {
             $output[1].Album | Should -Be $contextMock.TrackScrobbles.Track[1].Album.'#text'
         }
 

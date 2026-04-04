@@ -6,11 +6,6 @@
 
 Describe 'Get-LFMTagTopAlbum: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMTagTopAlbum'.TagTopAlbum
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMTagTopAlbum'.TagTopAlbum
@@ -81,35 +76,35 @@ Describe 'Get-LFMTagTopAlbum: Unit' -Tag Unit {
             $output = Get-LFMTagTopAlbum -Tag Tag
         }
 
-        It "Tag first top album should have name of $($contextMock.Albums.Album[0].Name)" {
+        It 'Should return the correct first top album name' {
             $output[0].Album | Should -Be $contextMock.Albums.Album[0].Name
         }
 
-        It "Tag first top album should have artist name of $($contextMock.Albums.Album[0].Artist.Name)" {
+        It 'Should return the correct first top album artist name' {
             $output[0].Artist | Should -Be $contextMock.Albums.Album[0].Artist.Name
         }
 
-        It "Tag first top album should have url of $($contextMock.Albums.Album[0].Url)" {
+        It 'Should return the correct first top album url' {
             $output[0].AlbumUrl | Should -Be $contextMock.Albums.Album[0].Url
         }
 
-        It "Tag first top album should have rank with a value of $($contextMock.Albums.Album[0].'@attr'.Rank)" {
+        It 'Should return the correct first top album rank' {
             $output[0].Rank | Should -Be $contextMock.Albums.Album[0].'@attr'.Rank
         }
 
-        It "Tag second top album should have rank with a value of $($contextMock.Albums.Album[1].'@attr'.Rank)" {
+        It 'Should return the correct second top album rank' {
             $output[1].Rank | Should -Be $contextMock.Albums.Album[1].'@attr'.Rank
         }
 
-        It "Tag second top album should have url of $($contextMock.Albums.Album[1].Url)" {
+        It 'Should return the correct second top album url' {
             $output[1].AlbumUrl | Should -Be $contextMock.Albums.Album[1].Url
         }
 
-        It "Tag second top album should have artist id with a value of $($contextMock.Albums.Album[1].Artist.Mbid)" {
+        It 'Should return the correct second top album artist id' {
             $output[1].ArtistId | Should -Be $contextMock.Albums.Album[1].Artist.Mbid
         }
 
-        It "Tag second top album should have artist url of $($contextMock.Albums.Album[1].Artist.Url)" {
+        It 'Should return the correct second top album artist url' {
             $output[1].ArtistUrl | Should -Be $contextMock.Albums.Album[1].Artist.Url
         }
 

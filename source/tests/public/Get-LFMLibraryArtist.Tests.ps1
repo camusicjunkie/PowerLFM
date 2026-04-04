@@ -6,11 +6,6 @@
 
 Describe 'Get-LFMLibraryArtist: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMLibraryArtist'.LibraryArtist
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMLibraryArtist'.LibraryArtist
@@ -79,25 +74,25 @@ Describe 'Get-LFMLibraryArtist: Unit' -Tag Unit {
             $output = Get-LFMLibraryArtist
         }
 
-        It "Library first artist should have name of $($contextMock.Artists.Artist[0].Name)" {
+        It 'Should return the correct first artist name' {
             $output[0].Artist | Should -Be $contextMock.Artists.Artist[0].Name
         }
 
-        It "Library first artist should have id of $($contextMock.Artists.Artist[0].Mbid)" {
+        It 'Should return the correct first artist id' {
             $output[0].Id | Should -Be $contextMock.Artists.Artist[0].Mbid
         }
 
-        It "Library first artist should have playcount with a value of $($contextMock.Artists.Artist[0].PlayCount)" {
+        It 'Should return the correct first artist play count' {
             $output[0].PlayCount | Should -BeOfType [int]
             $output[0].PlayCount | Should -Be $contextMock.Artists.Artist[0].PlayCount
         }
 
-        It "Library second artist should have playcount with a value of $($contextMock.Artists.Artist[1].PlayCount)" {
+        It 'Should return the correct second artist play count' {
             $output[1].PlayCount | Should -BeOfType [int]
             $output[1].PlayCount | Should -Be $contextMock.Artists.Artist[1].PlayCount
         }
 
-        It "Library second artist should have track url of $($contextMock.Artists.Artist[1].Url)" {
+        It 'Should return the correct second artist url' {
             $output[1].Url | Should -Be $contextMock.Artists.Artist[1].Url
         }
 

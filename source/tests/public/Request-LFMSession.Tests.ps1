@@ -6,11 +6,6 @@
 
 Describe 'Request-LFMSession: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Request-LFMSession'.Session
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Request-LFMSession'.Session
@@ -97,7 +92,7 @@ Describe 'Request-LFMSession: Unit' -Tag Unit {
             $output = Request-LFMSession -ApiKey 'ApiKey' -Token 'Token' -SharedSecret 'SharedSecret'
         }
 
-        It "Session key should have a value of $($contextMock.Session.Key)" {
+        It 'Should return the correct session key' {
             $output.SessionKey | Should -Be $contextMock.Session.Key
         }
     }

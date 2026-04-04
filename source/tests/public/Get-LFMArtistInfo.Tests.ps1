@@ -6,11 +6,6 @@
 
 Describe 'Get-LFMArtistInfo: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMArtistInfo'.ArtistInfo
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMArtistInfo'.ArtistInfo
@@ -81,33 +76,33 @@ Describe 'Get-LFMArtistInfo: Unit' -Tag Unit {
             $output = Get-LFMArtistInfo -Artist Artist
         }
 
-        It "Artist should have artist name of $($contextMock.Artist.Name)" {
+        It 'Should return the correct artist name' {
             $output.Artist | Should -Be $contextMock.Artist.Name
         }
 
-        It "Artist should have id of $($contextMock.Artist.Mbid)" {
+        It 'Should return the correct artist id' {
             $output.Id | Should -Be $contextMock.Artist.Mbid
         }
 
-        It "Artist should have url of $($contextMock.Artist.Url)" {
+        It 'Should return the correct artist url' {
             $output.Url | Should -Be $contextMock.Artist.Url
         }
 
-        It "Artist should have listeners with a value of $($contextMock.Artist.Stats.Listeners)" {
+        It 'Should return the correct listener count' {
             $output.Listeners | Should -BeOfType [int]
             $output.Listeners | Should -Be $contextMock.Artist.Stats.Listeners
         }
 
-        It "Artist should have playcount with a value of $($contextMock.Artist.Stats.PlayCount)" {
+        It 'Should return the correct play count' {
             $output.PlayCount | Should -BeOfType [int]
             $output.PlayCount | Should -Be $contextMock.Artist.Stats.PlayCount
         }
 
-        It "Artist first similar artist should have name of $($contextMock.Artist.Similar.Artist[0].Name)" {
+        It 'Should return the correct first similar artist name' {
             $output.SimilarArtists[0].Artist | Should -Be $contextMock.Artist.Similar.Artist[0].Name
         }
 
-        It "Artist second similar artist should have url of $($contextMock.Artist.Similar.Artist[1].Url)" {
+        It 'Should return the correct second similar artist url' {
             $output.SimilarArtists[1].Url | Should -Be $contextMock.Artist.Similar.Artist[1].Url
         }
 
@@ -120,11 +115,11 @@ Describe 'Get-LFMArtistInfo: Unit' -Tag Unit {
             $output.SimilarArtists | Should -Not -HaveCount 3
         }
 
-        It "Artist first tag should have name of $($contextMock.Artist.Tags.Tag[0].Name)" {
+        It 'Should return the correct first tag name' {
             $output.Tags[0].Tag | Should -Be $contextMock.Artist.Tags.Tag[0].Name
         }
 
-        It "Artist second tag should have url of $($contextMock.Artist.Tags.Tag[1].Url)" {
+        It 'Should return the correct second tag url' {
             $output.Tags[1].Url | Should -Be $contextMock.Artist.Tags.Tag[1].Url
         }
 
@@ -136,11 +131,15 @@ Describe 'Get-LFMArtistInfo: Unit' -Tag Unit {
             $output.Tags | Should -Not -HaveCount 3
         }
 
-        It "Artist should have summary of '$($contextMock.Artist.Bio.Summary)'" {
+        It 'Should return the correct artist biography summary' {
             $output.Summary | Should -BeExactly $contextMock.Artist.Bio.Summary
         }
 
-        It "Artist should have a user play count of $($contextMock.Artist.Stats.UserPlayCount)" {
+        It "Artist should have OnTour of 'Yes' when ontour is 1" {
+            $output.OnTour | Should -Be 'Yes'
+        }
+
+        It 'Should return the correct user play count' {
             $output = Get-LFMArtistInfo -Artist Artist -UserName camusicjunkie
             $output.UserPlayCount | Should -Be $contextMock.Artist.Stats.UserPlayCount
         }

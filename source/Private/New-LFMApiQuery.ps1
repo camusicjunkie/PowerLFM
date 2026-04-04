@@ -15,7 +15,7 @@ function New-LFMApiQuery {
     }
     else {
         $keyValues = $InputObject.GetEnumerator() | ForEach-Object {
-            "$($_.Key)=$($_.Value)"
+            "$($_.Key)=$([Uri]::EscapeDataString($_.Value))"
         }
 
         $query = $keyValues -join '&'

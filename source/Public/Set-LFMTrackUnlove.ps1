@@ -25,13 +25,12 @@ function Set-LFMTrackUnlove {
     process {
         $noCommonParams = Remove-CommonParameter $PSBoundParameters
         $apiSig = Get-LFMSignature -Method $apiParams.Method @noCommonParams
-        $apiParams.Add('api_sig', $apiSig)
+        $apiParams['api_sig'] = $apiSig
 
         $convertedParams = ConvertTo-LFMParameter $noCommonParams
         $query = New-LFMApiQuery ($convertedParams + $apiParams)
         $apiUrl = "$baseUrl/?$query"
-    }
-    end {
+
         if ($PSCmdlet.ShouldProcess("Track: $Track", "Removing love")) {
             try {
                 $irm = Invoke-LFMApiUri -Uri $apiUrl -Method Post

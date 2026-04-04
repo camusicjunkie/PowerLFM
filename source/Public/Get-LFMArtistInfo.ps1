@@ -60,9 +60,9 @@ function Get-LFMArtistInfo {
                 Write-Output $tagInfo
             }
 
-            switch ($irm.Artist.OnTour) {
-                '0' {$tour = 'No'}
-                '1' {$tour = 'Yes'}
+            switch ([int]$irm.Artist.OnTour) {
+                0 {$tour = 'No'}
+                1 {$tour = 'Yes'}
             }
 
             $artistInfo = @{

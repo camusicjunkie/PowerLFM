@@ -6,11 +6,6 @@
 
 Describe 'Get-LFMTagTopTrack: Unit' -Tag Unit {
 
-    BeforeDiscovery {
-        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
-        $contextMock = $mocks.'Get-LFMTagTopTrack'.TagTopTrack
-    }
-
     BeforeAll {
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMTagTopTrack'.TagTopTrack
@@ -81,35 +76,35 @@ Describe 'Get-LFMTagTopTrack: Unit' -Tag Unit {
             $output = Get-LFMTagTopTrack -Tag Tag
         }
 
-        It "Tag first top track should have name of $($contextMock.Tracks.Track[0].Name)" {
+        It 'Should return the correct first top track name' {
             $output[0].Track | Should -Be $contextMock.Tracks.Track[0].Name
         }
 
-        It "Tag first top track should have artist name of $($contextMock.Tracks.Track[0].Artist.Name)" {
+        It 'Should return the correct first top track artist name' {
             $output[0].Artist | Should -Be $contextMock.Tracks.Track[0].Artist.Name
         }
 
-        It "Tag first top track should have url of $($contextMock.Tracks.Track[0].Url)" {
+        It 'Should return the correct first top track url' {
             $output[0].TrackUrl | Should -Be $contextMock.Tracks.Track[0].Url
         }
 
-        It "Tag first top track should have rank with a value of $($contextMock.Tracks.Track[0].'@attr'.Rank)" {
+        It 'Should return the correct first top track rank' {
             $output[0].Rank | Should -Be $contextMock.Tracks.Track[0].'@attr'.Rank
         }
 
-        It "Tag second top track should have duration with a value of $($contextMock.Tracks.Track[1].Duration)" {
+        It 'Should return the correct second top track duration' {
             $output[1].Duration | Should -Be $contextMock.Tracks.Track[1].Duration
         }
 
-        It "Tag second top track should have url of $($contextMock.Tracks.Track[1].Url)" {
+        It 'Should return the correct second top track url' {
             $output[1].TrackUrl | Should -Be $contextMock.Tracks.Track[1].Url
         }
 
-        It "Tag second top track should have artist id with a value of $($contextMock.Tracks.Track[1].Artist.Mbid)" {
+        It 'Should return the correct second top track artist id' {
             $output[1].ArtistId | Should -Be $contextMock.Tracks.Track[1].Artist.Mbid
         }
 
-        It "Tag second top track should have artist url of $($contextMock.Tracks.Track[1].Artist.Url)" {
+        It 'Should return the correct second top track artist url' {
             $output[1].ArtistUrl | Should -Be $contextMock.Tracks.Track[1].Artist.Url
         }
 
