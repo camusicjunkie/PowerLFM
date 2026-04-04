@@ -1,4 +1,6 @@
 function Get-LFMUserRecentTrack {
+    # .ExternalHelp PowerLFM-help.xml
+
     [CmdletBinding()]
     [OutputType('PowerLFM.User.RecentTrack')]
     param (
@@ -41,9 +43,9 @@ function Get-LFMUserRecentTrack {
 
             $i = 0
             foreach ($track in $irm.RecentTracks.Track) {
-                switch ($track.Loved) {
-                    '0' {$loved = 'No'}
-                    '1' {$loved = 'Yes'}
+                switch ([int]$track.Loved) {
+                    0 {$loved = 'No'}
+                    1 {$loved = 'Yes'}
                 }
 
                 $trackInfo = @{

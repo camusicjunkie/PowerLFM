@@ -8,6 +8,8 @@ function ConvertTo-TitleCase {
     )
 
     process {
-        (Get-Culture).TextInfo.ToTitleCase($String)
+        foreach ($s in $String) {
+            (Get-Culture).TextInfo.ToTitleCase($s)
+        }
     }
 }
