@@ -33,6 +33,14 @@ Describe 'Add-LFMAlbumTag: Unit' -Tag Unit {
         It 'Should not throw when tag has 1 to 10 values' {
             { Add-LFMAlbumTag -Album Album -Artist Artist -Tag @(1..10) -Confirm:$false } | Should -Not -Throw
         }
+
+        It 'Should not throw when multiple objects are piped' {
+            $albums = @(
+                [pscustomobject] @{ Album = 'Album1'; Artist = 'Artist1'; Tag = 'Tag' }
+                [pscustomobject] @{ Album = 'Album2'; Artist = 'Artist2'; Tag = 'Tag' }
+            )
+            { $albums | Add-LFMAlbumTag -Confirm:$false } | Should -Not -Throw
+        }
     }
 
     Context 'Execution' {
@@ -117,6 +125,23 @@ Describe 'Add-LFMAlbumTag: Unit' -Tag Unit {
         It 'Should send proper output when -Whatif is used' {
             $output = Add-LFMAlbumTag  -Album Album -Artist Artist -Tag Tag -Confirm:$false -Verbose 4>&1
             $output | Should -Match 'Performing the operation "Adding album tag: Tag" on target "Album: Album".'
+        }
+
+        It 'Should call Invoke-LFMApiUri once per piped object' {
+            $albums = @(
+                [pscustomobject] @{ Album = 'Album1'; Artist = 'Artist1'; Tag = 'Tag' }
+                [pscustomobject] @{ Album = 'Album2'; Artist = 'Artist2'; Tag = 'Tag' }
+            )
+            $albums | Add-LFMAlbumTag -Confirm:$false
+
+            $siParams = @{
+                CommandName = 'Invoke-LFMApiUri'
+                ModuleName  = 'PowerLFM'
+                Scope       = 'It'
+                Exactly     = $true
+                Times       = 2
+            }
+            Should -Invoke @siParams
         }
 
         It 'Should throw when an error is returned in the response' {

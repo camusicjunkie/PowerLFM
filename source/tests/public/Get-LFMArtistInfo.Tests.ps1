@@ -135,6 +135,10 @@ Describe 'Get-LFMArtistInfo: Unit' -Tag Unit {
             $output.Summary | Should -BeExactly $contextMock.Artist.Bio.Summary
         }
 
+        It "Artist should have OnTour of 'Yes' when ontour is 1" {
+            $output.OnTour | Should -Be 'Yes'
+        }
+
         It 'Should return the correct user play count' {
             $output = Get-LFMArtistInfo -Artist Artist -UserName camusicjunkie
             $output.UserPlayCount | Should -Be $contextMock.Artist.Stats.UserPlayCount
