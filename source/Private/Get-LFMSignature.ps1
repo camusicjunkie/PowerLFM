@@ -39,12 +39,12 @@ function Get-LFMSignature {
         $query = New-LFMApiQuery ($convertedParams + $sigParams) -Signature
 
         Get-Md5Hash -String "$query$($SharedSecret)"
-        Write-Verbose "$query$($SharedSecret)"
+        Write-Verbose $query
     }
     else {
         $query = New-LFMApiQuery ($convertedParams + $sigParams) -Signature
 
         Get-Md5Hash -String "$query$($script:LFMConfig.SharedSecret)"
-        Write-Verbose "$query$($script:LFMConfig.SharedSecret)"
+        Write-Verbose $query
     }
 }

@@ -31,27 +31,22 @@ function Get-LFMUserWeeklyAlbumChart {
         $apiUrl = "$baseUrl/?$query"
     }
     end {
-        try {
-            $irm = Invoke-LFMApiUri -Uri $apiUrl
+        $irm = Invoke-LFMApiUri -Uri $apiUrl
 
-            foreach ($album in $irm.WeeklyAlbumChart.Album) {
-                $albumInfo = [pscustomobject] @{
-                    'PSTypeName' = 'PowerLFM.User.WeeklyChartList'
-                    'Album' = $album.Name
-                    'Url' = [uri] $album.Url
-                    'Id' = $album.Mbid
-                    'Artist' = $album.Artist.'#text'
-                    'ArtistId' = $album.Artist.Mbid
-                    'PlayCount' = [int] $album.PlayCount
-                    'StartDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyAlbumChart.'@attr'.From -Local
-                    'EndDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyAlbumChart.'@attr'.To -Local
-                }
-
-                Write-Output $albumInfo
+        foreach ($album in $irm.WeeklyAlbumChart.Album) {
+            $albumInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.User.WeeklyChartList'
+                'Album' = $album.Name
+                'Url' = [uri] $album.Url
+                'Id' = $album.Mbid
+                'Artist' = $album.Artist.'#text'
+                'ArtistId' = $album.Artist.Mbid
+                'PlayCount' = [int] $album.PlayCount
+                'StartDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyAlbumChart.'@attr'.From -Local
+                'EndDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyAlbumChart.'@attr'.To -Local
             }
-        }
-        catch {
-            throw $_
+
+            $albumInfo
         }
     }
 }

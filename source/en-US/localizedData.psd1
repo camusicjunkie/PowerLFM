@@ -14,6 +14,7 @@ ConvertFrom-StringData @'
     errorInvalidApiKey = . Run Get-LFMConfiguration if token and session key have already been requested.
     errorInvalidRequest = This is not a valid request.
     errorFunctionImport = Failed to import function {0}
+    errorUnmappedParameter = Parameter '{0}' does not have a defined Last.fm API mapping
     tagAdded = Tag: {0} has been added
     tagRemoved = Tag: {0} has been removed
     trackLoved = Track: {0} has been loved

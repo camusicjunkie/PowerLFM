@@ -23,22 +23,17 @@ function Get-LFMChartTopTag {
     $query = New-LFMApiQuery ($convertedParams + $apiParams)
     $apiUrl = "$baseUrl/?$query"
 
-    try {
-        $irm = Invoke-LFMApiUri -Uri $apiUrl
+    $irm = Invoke-LFMApiUri -Uri $apiUrl
 
-        foreach ($tag in $irm.Tags.Tag) {
-            $tagInfo = [pscustomobject] @{
-                'PSTypeName' = 'PowerLFM.Chart.TopTags'
-                'Tag' = ConvertTo-TitleCase -String $tag.Name
-                'Url' = [uri] $tag.Url
-                'Reach' = [int] $tag.Reach
-                'TotalTags' = [int] $tag.Taggings
-            }
-
-            Write-Output $tagInfo
+    foreach ($tag in $irm.Tags.Tag) {
+        $tagInfo = [pscustomobject] @{
+            'PSTypeName' = 'PowerLFM.Chart.TopTags'
+            'Tag' = ConvertTo-TitleCase -String $tag.Name
+            'Url' = [uri] $tag.Url
+            'Reach' = [int] $tag.Reach
+            'TotalTags' = [int] $tag.Taggings
         }
-    }
-    catch {
-        throw $_
+
+        $tagInfo
     }
 }

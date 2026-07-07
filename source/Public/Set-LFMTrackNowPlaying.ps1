@@ -49,30 +49,25 @@ function Set-LFMTrackNowPlaying {
         $apiUrl = "$baseUrl/?$query"
 
         if ($PSCmdlet.ShouldProcess("Track: $Track", "Setting track to now playing")) {
-            try {
-                $irm = Invoke-LFMApiUri -Uri $apiUrl -Method Post
+            $irm = Invoke-LFMApiUri -Uri $apiUrl -Method Post
 
-                $code = Get-LFMIgnoredMessage -Code $irm.NowPlaying.IgnoredMessage.Code
-                if ($code.Code -ne 0) {
-                    if ($null -eq $code.Message) {
-                        throw $localizedData.errorFiltered2
-                    }
-                    else {
-                        throw ($localizedData.errorFiltered -f $code.Message)
-                    }
+            $code = Get-LFMIgnoredMessage -Code $irm.NowPlaying.IgnoredMessage.Code
+            if ($code.Code -ne 0) {
+                if ($null -eq $code.Message) {
+                    throw $localizedData.errorFiltered2
                 }
-
-                if ($PassThru) {
-                    [pscustomobject] @{
-                        PSTypeName = 'PowerLFM.Track.NowPlaying'
-                        Artist = $irm.NowPlaying.Artist.'#text'
-                        Album = $irm.NowPlaying.Album.'#text'
-                        Track = $irm.NowPlaying.Track.'#text'
-                    }
+                else {
+                    throw ($localizedData.errorFiltered -f $code.Message)
                 }
             }
-            catch {
-                throw $_
+
+            if ($PassThru) {
+                [pscustomobject] @{
+                    PSTypeName = 'PowerLFM.Track.NowPlaying'
+                    Artist = $irm.NowPlaying.Artist.'#text'
+                    Album = $irm.NowPlaying.Album.'#text'
+                    Track = $irm.NowPlaying.Track.'#text'
+                }
             }
         }
     }

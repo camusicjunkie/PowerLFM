@@ -11,7 +11,7 @@ function Invoke-LFMApiUri {
         # If Invoke-RestMethod returns, say HTTP 403, it will cause a terminating
         # error and drop down in to the catch block. In most other cases if a bad
         # request is made it will actually return a JSON object with the error.
-        $irm = Invoke-RestMethod -Method $Method -Uri $Uri -ErrorAction Stop
+        $irm = Invoke-RestMethod -Method $Method -Uri $Uri -UserAgent $script:userAgent -ErrorAction Stop
 
         # Api call could return an object with an error code as shown below. This
         # will account for that and throw the object down to the catch block.
@@ -22,7 +22,7 @@ function Invoke-LFMApiUri {
             throw $irm
         }
 
-        Write-Output $irm
+        $irm
     }
     catch {
         $response = if ($null -ne $_.ErrorDetails) {

@@ -32,23 +32,18 @@ function Get-LFMGeoTopArtist {
         $apiUrl = "$baseUrl/?$query"
     }
     end {
-        try {
-            $irm = Invoke-LFMApiUri -Uri $apiUrl
+        $irm = Invoke-LFMApiUri -Uri $apiUrl
 
-            foreach ($artist in $irm.TopArtists.Artist) {
-                $artistInfo = [pscustomobject] @{
-                    'PSTypeName' = 'PowerLFM.Geo.TopArtists'
-                    'Artist' = $artist.Name
-                    'Id' = $artist.Mbid
-                    'Url' = [uri] $artist.Url
-                    'Listeners' = [int] $artist.Listeners
-                }
-
-                Write-Output $artistInfo
+        foreach ($artist in $irm.TopArtists.Artist) {
+            $artistInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.Geo.TopArtists'
+                'Artist' = $artist.Name
+                'Id' = $artist.Mbid
+                'Url' = [uri] $artist.Url
+                'Listeners' = [int] $artist.Listeners
             }
-        }
-        catch {
-            throw $_
+
+            $artistInfo
         }
     }
 }

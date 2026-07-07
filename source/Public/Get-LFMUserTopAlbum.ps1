@@ -36,26 +36,21 @@ function Get-LFMUserTopAlbum {
         $apiUrl = "$baseUrl/?$query"
     }
     end {
-        try {
-            $irm = Invoke-LFMApiUri -Uri $apiUrl
+        $irm = Invoke-LFMApiUri -Uri $apiUrl
 
-            foreach ($album in $irm.TopAlbums.Album) {
-                $albumInfo = [pscustomobject] @{
-                    'PSTypeName' = 'PowerLFM.User.Album'
-                    'Album' = $album.Name
-                    'PlayCount' = [int] $album.PlayCount
-                    'AlbumUrl' = [uri] $album.Url
-                    'AlbumId' = $album.Mbid
-                    'Artist' = $album.Artist.Name
-                    'ArtistUrl' = [uri] $album.Artist.Url
-                    'ArtistId' = $album.Artist.Mbid
-                }
-
-                Write-Output $albumInfo
+        foreach ($album in $irm.TopAlbums.Album) {
+            $albumInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.User.Album'
+                'Album' = $album.Name
+                'PlayCount' = [int] $album.PlayCount
+                'AlbumUrl' = [uri] $album.Url
+                'AlbumId' = $album.Mbid
+                'Artist' = $album.Artist.Name
+                'ArtistUrl' = [uri] $album.Artist.Url
+                'ArtistId' = $album.Artist.Mbid
             }
-        }
-        catch {
-            throw $_
+
+            $albumInfo
         }
     }
 }

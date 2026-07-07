@@ -2,7 +2,7 @@ function Request-LFMSession {
     # .ExternalHelp PowerLFM-help.xml
 
     [CmdletBinding()]
-    [OutputType('System.String')]
+    [OutputType('System.Management.Automation.PSCustomObject')]
     param (
         [Parameter(Mandatory,
                    ValueFromPipelineByPropertyName)]
@@ -35,18 +35,13 @@ function Request-LFMSession {
         $query = New-LFMApiQuery $apiParams
         $apiUrl = "$baseUrl/?$query"
 
-        try {
-            $irm = Invoke-LFMApiUri -Uri $apiUrl
+        $irm = Invoke-LFMApiUri -Uri $apiUrl
 
-            $obj = [pscustomobject] @{
-                'ApiKey' = $ApiKey
-                'SessionKey' = $irm.Session.Key
-                'SharedSecret' = $SharedSecret
-            }
-            Write-Output $obj
+        $obj = [pscustomobject] @{
+            'ApiKey' = $ApiKey
+            'SessionKey' = $irm.Session.Key
+            'SharedSecret' = $SharedSecret
         }
-        catch {
-            throw $_
-        }
+        $obj
     }
 }

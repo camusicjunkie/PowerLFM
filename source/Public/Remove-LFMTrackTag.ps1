@@ -37,13 +37,8 @@ function Remove-LFMTrackTag {
         $apiUrl = "$baseUrl/?$query"
 
         if ($PSCmdlet.ShouldProcess("Track: $Track", "Removing track tag: $Tag")) {
-            try {
-                $irm = Invoke-LFMApiUri -Uri $apiUrl -Method Post
-                if ($irm.Lfm.Status -eq 'ok') {Write-Verbose ($localizedData.tagRemoved -f $Tag)}
-            }
-            catch {
-                throw $_
-            }
+            $irm = Invoke-LFMApiUri -Uri $apiUrl -Method Post
+            if ($irm.Lfm.Status -eq 'ok') {Write-Verbose ($localizedData.tagRemoved -f $Tag)}
         }
     }
 }

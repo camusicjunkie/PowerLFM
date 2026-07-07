@@ -9,12 +9,12 @@ function Test-LFMJson {
         $result = $true
 
         try {
-            $null = [Newtonsoft.Json.Linq.JObject]::Parse($Json)
+            $null = ConvertFrom-Json -InputObject $Json -ErrorAction Stop
         }
         catch {
             $result = $false
         }
 
-        Write-Output $result
+        $result
     }
 }

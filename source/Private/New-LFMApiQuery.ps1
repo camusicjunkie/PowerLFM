@@ -21,5 +21,5 @@ function New-LFMApiQuery {
         $query = $keyValues -join '&'
     }
 
-    Write-Output $query
+    $query
 }

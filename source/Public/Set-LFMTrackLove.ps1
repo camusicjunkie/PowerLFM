@@ -32,13 +32,8 @@ function Set-LFMTrackLove {
         $apiUrl = "$baseUrl/?$query"
 
         if ($PSCmdlet.ShouldProcess("Track: $Track", "Adding love")) {
-            try {
-                $irm = Invoke-LFMApiUri -Uri $apiUrl -Method Post
-                if ($irm.Lfm.Status -eq 'ok') {Write-Verbose ($localizedData.trackLoved -f $Track)}
-            }
-            catch {
-                throw $_
-            }
+            $irm = Invoke-LFMApiUri -Uri $apiUrl -Method Post
+            if ($irm.Lfm.Status -eq 'ok') {Write-Verbose ($localizedData.trackLoved -f $Track)}
         }
     }
 }

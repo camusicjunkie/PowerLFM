@@ -23,23 +23,18 @@ function Get-LFMChartTopArtist {
     $query = New-LFMApiQuery ($convertedParams + $apiParams)
     $apiUrl = "$baseUrl/?$query"
 
-    try {
-        $irm = Invoke-LFMApiUri -Uri $apiUrl
+    $irm = Invoke-LFMApiUri -Uri $apiUrl
 
-        foreach ($artist in $irm.Artists.Artist) {
-            $artistInfo = [pscustomobject] @{
-                'PSTypeName' = 'PowerLFM.Chart.TopArtists'
-                'Artist' = $artist.Name
-                'Id' = $artist.Mbid
-                'Url' = [uri] $artist.Url
-                'Listeners' = [int] $artist.Listeners
-                'PlayCount' = [int] $artist.PlayCount
-            }
-
-            Write-Output $artistInfo
+    foreach ($artist in $irm.Artists.Artist) {
+        $artistInfo = [pscustomobject] @{
+            'PSTypeName' = 'PowerLFM.Chart.TopArtists'
+            'Artist' = $artist.Name
+            'Id' = $artist.Mbid
+            'Url' = [uri] $artist.Url
+            'Listeners' = [int] $artist.Listeners
+            'PlayCount' = [int] $artist.PlayCount
         }
-    }
-    catch {
-        throw $_
+
+        $artistInfo
     }
 }

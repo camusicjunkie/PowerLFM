@@ -1,16 +1,16 @@
 function Get-Md5Hash {
     [CmdletBinding()]
+    [OutputType('System.String')]
     param (
         [Parameter()]
         [string] $String
     )
 
-    $md5 = New-Object -TypeName System.Security.Cryptography.MD5CryptoServiceProvider
-    $utf8 = New-Object -TypeName System.Text.UTF8Encoding
+    $md5 = [System.Security.Cryptography.MD5]::Create()
 
     try {
-        $hash = ([System.BitConverter]::ToString($md5.ComputeHash($utf8.GetBytes($String)))) -replace '-'
-        Write-Output $hash
+        $bytes = [System.Text.Encoding]::UTF8.GetBytes($String)
+        ([System.BitConverter]::ToString($md5.ComputeHash($bytes))) -replace '-'
     }
     finally {
         $md5.Dispose()

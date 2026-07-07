@@ -32,18 +32,13 @@ function Add-LFMAlbumTag {
         $apiSig = Get-LFMSignature -Method $apiParams.Method @noCommonParams
         $apiParams['api_sig'] = $apiSig
 
-        $convertedParams = ConvertTo-LFMParameter $noCommonParams
+        $convertedParams = ConvertTo-LFMParameter $noCommonParams -Method $apiParams.Method
         $query = New-LFMApiQuery ($convertedParams + $apiParams)
         $apiUrl = "$baseUrl/?$query"
 
         if ($PSCmdlet.ShouldProcess("Album: $Album", "Adding album tag: $Tag")) {
-            try {
-                $irm = Invoke-LFMApiUri -Uri $apiUrl -Method Post
-                if ($irm.Lfm.Status -eq 'ok') {Write-Verbose ($localizedData.tagAdded -f $Tag)}
-            }
-            catch {
-                throw $_
-            }
+            $irm = Invoke-LFMApiUri -Uri $apiUrl -Method Post
+            if ($irm.Lfm.Status -eq 'ok') {Write-Verbose ($localizedData.tagAdded -f $Tag)}
         }
     }
 }

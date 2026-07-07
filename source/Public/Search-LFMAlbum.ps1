@@ -30,23 +30,18 @@ function Search-LFMAlbum {
         $apiUrl = "$baseUrl/?$query"
     }
     end {
-        try {
-            $irm = Invoke-LFMApiUri -Uri $apiUrl
+        $irm = Invoke-LFMApiUri -Uri $apiUrl
 
-            foreach ($match in $irm.Results.AlbumMatches.Album) {
-                $matchInfo = [pscustomobject] @{
-                    'PSTypeName' = 'PowerLFM.Album.Search'
-                    'Album' = $match.Name
-                    'Artist' = $match.Artist
-                    'Id' = $match.Mbid
-                    'Url' = [uri] $match.Url
-                }
-
-                Write-Output $matchInfo
+        foreach ($match in $irm.Results.AlbumMatches.Album) {
+            $matchInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.Album.Search'
+                'Album' = $match.Name
+                'Artist' = $match.Artist
+                'Id' = $match.Mbid
+                'Url' = [uri] $match.Url
             }
-        }
-        catch {
-            throw $_
+
+            $matchInfo
         }
     }
 }

@@ -29,26 +29,21 @@ function Get-LFMTagTopAlbum {
         $apiUrl = "$baseUrl/?$query"
     }
     end {
-        try {
-            $irm = Invoke-LFMApiUri -Uri $apiUrl
+        $irm = Invoke-LFMApiUri -Uri $apiUrl
 
-            foreach ($album in $irm.Albums.Album) {
-                $albumInfo = [pscustomobject] @{
-                    'PSTypeName' = 'PowerLFM.Tag.TopAlbums'
-                    'Album' = $album.Name
-                    'AlbumId' = $album.Mbid
-                    'AlbumUrl' = [uri] $album.Url
-                    'Artist' = $album.Artist.Name
-                    'ArtistId' = $album.Artist.Mbid
-                    'ArtistUrl' = [uri] $album.Artist.Url
-                    'Rank' = [int] $album.'@attr'.Rank
-                }
-
-                Write-Output $albumInfo
+        foreach ($album in $irm.Albums.Album) {
+            $albumInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.Tag.TopAlbums'
+                'Album' = $album.Name
+                'AlbumId' = $album.Mbid
+                'AlbumUrl' = [uri] $album.Url
+                'Artist' = $album.Artist.Name
+                'ArtistId' = $album.Artist.Mbid
+                'ArtistUrl' = [uri] $album.Artist.Url
+                'Rank' = [int] $album.'@attr'.Rank
             }
-        }
-        catch {
-            throw $_
+
+            $albumInfo
         }
     }
 }

@@ -1,6 +1,8 @@
 function ConvertTo-LFMParameter {
     param (
-        [psobject] $InputObject
+        [psobject] $InputObject,
+
+        [string] $Method
     )
 
     $lfmParameter = @{
@@ -21,6 +23,7 @@ function ConvertTo-LFMParameter {
         'TimePeriod'  = 'period'
         'Timestamp'   = 'timestamp'
         'Track'       = 'track'
+        'TrackNumber' = 'trackNumber'
         'UserName'    = 'user'
         'Token'       = 'token'
         'ApiKey'      = 'api_key'
@@ -35,9 +38,13 @@ function ConvertTo-LFMParameter {
         '1 Year' = '12month'
     }
 
-    $callingCommand = (Get-PSCallStack)[-2].Command
-    if ($callingCommand -like 'Get-LFM*Info') { $lfmParameter['UserName'] = 'username' }
-    if ($callingCommand -like 'Add-LFM*Tag') { $lfmParameter['Tag'] = 'tags' }
+    if (-not $Method -and $InputObject.ContainsKey('Method')) { $Method = $InputObject['Method'] }
+
+    # album/artist/track.getInfo take 'username' while every other method,
+    # including user.getInfo, takes 'user'. The addTags methods take a comma
+    # delimited 'tags' list while removeTag takes a single 'tag'.
+    if ($Method -in 'album.getInfo', 'artist.getInfo', 'track.getInfo') { $lfmParameter['UserName'] = 'username' }
+    if ($Method -like '*.addTags') { $lfmParameter['Tag'] = 'tags' }
 
     if ($InputObject.ContainsKey('Timestamp')) { $InputObject['Timestamp'] = (ConvertTo-UnixTime -Date $InputObject['Timestamp']) }
     if ($InputObject.ContainsKey('StartDate')) { $InputObject['StartDate'] = (ConvertTo-UnixTime -Date $InputObject['StartDate']) }
@@ -50,8 +57,15 @@ function ConvertTo-LFMParameter {
 
     $hash = @{ }
     foreach ($key in $InputObject.Keys) {
-        $hash.Add($lfmParameter[$key], $InputObject[$key])
+        if (-not $lfmParameter.ContainsKey($key)) {
+            throw ($localizedData.errorUnmappedParameter -f $key)
+        }
+
+        $value = $InputObject[$key]
+        if ($value -is [array]) { $value = $value -join ',' }
+
+        $hash.Add($lfmParameter[$key], $value)
     }
 
-    Write-Output $hash
+    $hash
 }

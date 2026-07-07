@@ -20,22 +20,17 @@ function Get-LFMTagTopTag {
         $apiUrl = "$baseUrl/?$query"
     }
     end {
-        try {
-            $irm = Invoke-LFMApiUri -Uri $apiUrl
+        $irm = Invoke-LFMApiUri -Uri $apiUrl
 
-            foreach ($tag in $irm.TopTags.Tag) {
-                $tagInfo = [pscustomobject] @{
-                    'PSTypeName' = 'PowerLFM.Tag.TopTags'
-                    'Tag' = $tag.Name
-                    'Count' = [int] $tag.Count
-                    'Reach' = [int] $tag.Reach
-                }
-
-                Write-Output $tagInfo
+        foreach ($tag in $irm.TopTags.Tag) {
+            $tagInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.Tag.TopTags'
+                'Tag' = $tag.Name
+                'Count' = [int] $tag.Count
+                'Reach' = [int] $tag.Reach
             }
-        }
-        catch {
-            throw $_
+
+            $tagInfo
         }
     }
 }

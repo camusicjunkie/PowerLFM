@@ -11,5 +11,5 @@ function Remove-CommonParameter {
     $keysToRemove = $InputObject.Keys.Where({ $_ -in $commonParams })
     $null = $keysToRemove | ForEach-Object { $InputObject.Remove($_) }
 
-    Write-Output $InputObject
+    $InputObject
 }

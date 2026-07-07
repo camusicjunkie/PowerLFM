@@ -21,34 +21,29 @@ function Add-LFMConfiguration {
     )
 
     process {
-        try {
-            $keys = $PSBoundParameters.Keys.Where({$_ -in  @('ApiKey', 'SessionKey', 'SharedSecret')})
+        $keys = $PSBoundParameters.Keys.Where({$_ -in  @('ApiKey', 'SessionKey', 'SharedSecret')})
 
-            foreach ($param in $keys) {
-                $ssParams = @{
-                    Name = "LFM$param"
-                    Secret = $PSBoundParameters[$param]
-                    Vault = 'Microsoft.PowerShell.SecretStore'
-                    NoClobber = $true
-                }
+        foreach ($param in $keys) {
+            $ssParams = @{
+                Name = "LFM$param"
+                Secret = $PSBoundParameters[$param]
+                Vault = 'Microsoft.PowerShell.SecretStore'
+                NoClobber = $true
+            }
 
-                try {
-                    $null = Get-Secret -Name "LFM$param" -ErrorAction Stop
+            try {
+                $null = Get-Secret -Name "LFM$param" -ErrorAction Stop
 
-                    $message = $localizedData.vaultCredPresent -f $param
+                $message = $localizedData.vaultCredPresent -f $param
 
-                    if ($PSCmdlet.ShouldProcess('SecretStore', $message)) {
-                        $ssParams.Remove('NoClobber')
-                        Set-Secret @ssParams
-                    }
-                }
-                catch {
+                if ($PSCmdlet.ShouldProcess('SecretStore', $message)) {
+                    $ssParams.Remove('NoClobber')
                     Set-Secret @ssParams
                 }
             }
-        }
-        catch {
-            throw $_
+            catch {
+                Set-Secret @ssParams
+            }
         }
     }
 }

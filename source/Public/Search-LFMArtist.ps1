@@ -31,23 +31,18 @@ function Search-LFMArtist {
         $apiUrl = "$baseUrl/?$query"
     }
     end {
-        try {
-            $irm = Invoke-LFMApiUri -Uri $apiUrl
+        $irm = Invoke-LFMApiUri -Uri $apiUrl
 
-            foreach ($match in $irm.Results.ArtistMatches.Artist) {
-                $matchInfo = [pscustomobject] @{
-                    'PSTypeName' = 'PowerLFM.Artist.Search'
-                    'Artist' = $match.Name
-                    'Id' = $match.Mbid
-                    'Listeners' = [int] $match.Listeners
-                    'Url' = [uri] $match.Url
-                }
-
-                Write-Output $matchInfo
+        foreach ($match in $irm.Results.ArtistMatches.Artist) {
+            $matchInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.Artist.Search'
+                'Artist' = $match.Name
+                'Id' = $match.Mbid
+                'Listeners' = [int] $match.Listeners
+                'Url' = [uri] $match.Url
             }
-        }
-        catch {
-            throw $_
+
+            $matchInfo
         }
     }
 }

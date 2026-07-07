@@ -36,23 +36,18 @@ function Get-LFMUserTopArtist {
         $apiUrl = "$baseUrl/?$query"
     }
     end {
-        try {
-            $irm = Invoke-LFMApiUri -Uri $apiUrl
+        $irm = Invoke-LFMApiUri -Uri $apiUrl
 
-            foreach ($artist in $irm.TopArtists.Artist) {
-                $artistInfo = [pscustomobject] @{
-                    'PSTypeName' = 'PowerLFM.User.Artist'
-                    'Artist' = $artist.Name
-                    'PlayCount' = [int] $artist.PlayCount
-                    'Url' = [uri] $artist.Url
-                    'Id' = $artist.Mbid
-                }
-
-                Write-Output $artistInfo
+        foreach ($artist in $irm.TopArtists.Artist) {
+            $artistInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.User.Artist'
+                'Artist' = $artist.Name
+                'PlayCount' = [int] $artist.PlayCount
+                'Url' = [uri] $artist.Url
+                'Id' = $artist.Mbid
             }
-        }
-        catch {
-            throw $_
+
+            $artistInfo
         }
     }
 }

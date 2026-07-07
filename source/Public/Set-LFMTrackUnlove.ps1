@@ -32,13 +32,8 @@ function Set-LFMTrackUnlove {
         $apiUrl = "$baseUrl/?$query"
 
         if ($PSCmdlet.ShouldProcess("Track: $Track", "Removing love")) {
-            try {
-                $irm = Invoke-LFMApiUri -Uri $apiUrl -Method Post
-                if ($irm.Lfm.Status -eq 'ok') {Write-Verbose ($localizedData.trackUnloved -f $Track)}
-            }
-            catch {
-                throw $_
-            }
+            $irm = Invoke-LFMApiUri -Uri $apiUrl -Method Post
+            if ($irm.Lfm.Status -eq 'ok') {Write-Verbose ($localizedData.trackUnloved -f $Track)}
         }
     }
 }

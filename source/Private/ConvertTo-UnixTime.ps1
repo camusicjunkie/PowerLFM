@@ -1,6 +1,6 @@
 function ConvertTo-UnixTime {
     [CmdletBinding()]
-    [OutputType('System.TimeSpan')]
+    [OutputType('System.Int64')]
     param (
         [Parameter(Mandatory,
                    ValueFromPipeline)]

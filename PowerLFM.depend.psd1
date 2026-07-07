@@ -12,5 +12,4 @@
     PlatyPS                                 = 'latest'
     'Microsoft.PowerShell.SecretManagement' = 'latest'
     'Microsoft.PowerShell.SecretStore'      = 'latest'
-    'newtonsoft.json'                       = 'latest'
 }

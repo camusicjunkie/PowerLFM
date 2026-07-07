@@ -45,25 +45,20 @@ function Get-LFMTrackSimilar {
         $apiUrl = "$baseUrl/?$query"
     }
     end {
-        try {
-            $irm = Invoke-LFMApiUri -Uri $apiUrl
+        $irm = Invoke-LFMApiUri -Uri $apiUrl
 
-            foreach ($similar in $irm.SimilarTracks.Track) {
-                $similarInfo = [pscustomobject] @{
-                    'PSTypeName' = 'PowerLFM.Track.Similar'
-                    'Track' = $similar.Name
-                    'Artist' = $similar.Artist.Name
-                    'Id' = $similar.Mbid
-                    'PlayCount' = [int] $similar.PlayCount
-                    'Url' = [uri] $similar.Url
-                    'Match' = [math]::Round($similar.Match, 2)
-                }
-
-                Write-Output $similarInfo
+        foreach ($similar in $irm.SimilarTracks.Track) {
+            $similarInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.Track.Similar'
+                'Track' = $similar.Name
+                'Artist' = $similar.Artist.Name
+                'Id' = $similar.Mbid
+                'PlayCount' = [int] $similar.PlayCount
+                'Url' = [uri] $similar.Url
+                'Match' = [math]::Round($similar.Match, 2)
             }
-        }
-        catch {
-            throw $_
+
+            $similarInfo
         }
     }
 }

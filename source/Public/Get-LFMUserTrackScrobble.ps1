@@ -41,25 +41,20 @@ function Get-LFMUserTrackScrobble {
         $apiUrl = "$baseUrl/?$query"
     }
     end {
-        try {
-            $irm = Invoke-LFMApiUri -Uri $apiUrl
+        $irm = Invoke-LFMApiUri -Uri $apiUrl
 
-            foreach ($scrobble in $irm.TrackScrobbles.Track) {
-                $scrobbleInfo = [pscustomobject] @{
-                    'PSTypeName' = 'PowerLFM.User.TrackScrobble'
-                    'Track' = $scrobble.Name
-                    'TrackId' = $scrobble.Mbid
-                    'TrackUrl' = $scrobble.Url
-                    'Artist' = $scrobble.Artist.'#text'
-                    'Album' = $scrobble.Album.'#text'
-                    'Date' = ConvertFrom-UnixTime -UnixTime $scrobble.Date.Uts -Local
-                }
-
-                Write-Output $scrobbleInfo
+        foreach ($scrobble in $irm.TrackScrobbles.Track) {
+            $scrobbleInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.User.TrackScrobble'
+                'Track' = $scrobble.Name
+                'TrackId' = $scrobble.Mbid
+                'TrackUrl' = $scrobble.Url
+                'Artist' = $scrobble.Artist.'#text'
+                'Album' = $scrobble.Album.'#text'
+                'Date' = ConvertFrom-UnixTime -UnixTime $scrobble.Date.Uts -Local
             }
-        }
-        catch {
-            throw $_
+
+            $scrobbleInfo
         }
     }
 }

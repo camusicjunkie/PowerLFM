@@ -2,7 +2,7 @@ function Request-LFMToken {
     # .ExternalHelp PowerLFM-help.xml
 
     [CmdletBinding()]
-    [OutputType('System.String')]
+    [OutputType('System.Management.Automation.PSCustomObject')]
     param (
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
@@ -26,20 +26,16 @@ function Request-LFMToken {
     $query = New-LFMApiQuery $apiParams
     $apiUrl = "$baseUrl/?$query"
 
-    try {
-        Write-Verbose ($localizedData.tokenRequest -f $baseUrl)
-        $token = (Invoke-LFMApiUri -Uri $apiUrl).Token
+    Write-Verbose ($localizedData.tokenRequest -f $baseUrl)
+    $token = (Invoke-LFMApiUri -Uri $apiUrl).Token
 
-        Write-Verbose ($localizedData.tokenAuthorizing)
-        Show-LFMAuthWindow -Url "http://www.last.fm/api/auth/?api_key=$ApiKey&token=$token"
+    Write-Verbose ($localizedData.tokenAuthorizing)
+    Show-LFMAuthWindow -Url "http://www.last.fm/api/auth/?api_key=$ApiKey&token=$token"
 
-        $obj = [pscustomobject] @{
-            'ApiKey' = $ApiKey
-            'Token' = $token
-            'SharedSecret' = $SharedSecret
-        }
-        Write-Output $obj
-    } catch {
-        throw $_
+    $obj = [pscustomobject] @{
+        'ApiKey' = $ApiKey
+        'Token' = $token
+        'SharedSecret' = $SharedSecret
     }
+    $obj
 }

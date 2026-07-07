@@ -57,31 +57,26 @@ function Set-LFMTrackScrobble {
         $query = New-LFMApiQuery ($convertedParams + $apiParams)
         $apiUrl = "$baseUrl/?$query"
 
-        if ($PSCmdlet.ShouldProcess("Track: $Track", "Setting track to now playing")) {
-            try {
-                $irm = Invoke-LFMApiUri -Uri $apiUrl -Method Post
+        if ($PSCmdlet.ShouldProcess("Track: $Track", "Scrobbling track")) {
+            $irm = Invoke-LFMApiUri -Uri $apiUrl -Method Post
 
-                $code = Get-LFMIgnoredMessage -Code $irm.Scrobbles.Scrobble.IgnoredMessage.Code
-                if ($code.Code -ne 0) {
-                    if ($null -eq $code.Message) {
-                        throw $localizedData.errorFiltered2
-                    }
-                    else {
-                        throw ($localizedData.errorFiltered -f $code.Message)
-                    }
+            $code = Get-LFMIgnoredMessage -Code $irm.Scrobbles.Scrobble.IgnoredMessage.Code
+            if ($code.Code -ne 0) {
+                if ($null -eq $code.Message) {
+                    throw $localizedData.errorFiltered2
                 }
-
-                if ($PassThru) {
-                    [pscustomobject] @{
-                        PSTypeName = 'PowerLFM.Track.Scrobble'
-                        Artist = $irm.Scrobbles.Scrobble.Artist.'#text'
-                        Album = $irm.Scrobbles.Scrobble.Album.'#text'
-                        Track = $irm.Scrobbles.Scrobble.Track.'#text'
-                    }
+                else {
+                    throw ($localizedData.errorFiltered -f $code.Message)
                 }
             }
-            catch {
-                throw $_
+
+            if ($PassThru) {
+                [pscustomobject] @{
+                    PSTypeName = 'PowerLFM.Track.Scrobble'
+                    Artist = $irm.Scrobbles.Scrobble.Artist.'#text'
+                    Album = $irm.Scrobbles.Scrobble.Album.'#text'
+                    Track = $irm.Scrobbles.Scrobble.Track.'#text'
+                }
             }
         }
     }

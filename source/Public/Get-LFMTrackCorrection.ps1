@@ -30,23 +30,18 @@ function Get-LFMTrackCorrection {
         $apiUrl = "$baseUrl/?$query"
     }
     end {
-        try {
-            $irm = Invoke-LFMApiUri -Uri $apiUrl
+        $irm = Invoke-LFMApiUri -Uri $apiUrl
 
-            $correction = $irm.Corrections.Correction.Track
-            $correctedTrackInfo = [pscustomobject] @{
-                'PSTypeName' = 'PowerLFM.Track.Correction'
-                'Track' = $correction.Name
-                'TrackUrl' = [uri] $correction.Url
-                'Artist' = $correction.Artist.Name
-                'ArtistUrl' = [uri] $correction.Artist.Url
-                'ArtistId' = $correction.Artist.Mbid
-            }
+        $correction = $irm.Corrections.Correction.Track
+        $correctedTrackInfo = [pscustomobject] @{
+            'PSTypeName' = 'PowerLFM.Track.Correction'
+            'Track' = $correction.Name
+            'TrackUrl' = [uri] $correction.Url
+            'Artist' = $correction.Artist.Name
+            'ArtistUrl' = [uri] $correction.Artist.Url
+            'ArtistId' = $correction.Artist.Mbid
+        }
 
-            Write-Output $correctedTrackInfo
-        }
-        catch {
-            throw $_
-        }
+        $correctedTrackInfo
     }
 }

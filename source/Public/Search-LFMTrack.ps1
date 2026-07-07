@@ -30,24 +30,19 @@ function Search-LFMTrack {
         $apiUrl = "$baseUrl/?$query"
     }
     end {
-        try {
-            $irm = Invoke-LFMApiUri -Uri $apiUrl
+        $irm = Invoke-LFMApiUri -Uri $apiUrl
 
-            foreach ($match in $irm.Results.TrackMatches.Track) {
-                $matchInfo = [pscustomobject] @{
-                    'PSTypeName' = 'PowerLFM.Track.Search'
-                    'Track' = $match.Name
-                    'Artist' = $match.Artist
-                    'Id' = $match.Mbid
-                    'Listeners' = [int] $match.Listeners
-                    'Url' = [uri] $match.Url
-                }
-
-                Write-Output $matchInfo
+        foreach ($match in $irm.Results.TrackMatches.Track) {
+            $matchInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.Track.Search'
+                'Track' = $match.Name
+                'Artist' = $match.Artist
+                'Id' = $match.Mbid
+                'Listeners' = [int] $match.Listeners
+                'Url' = [uri] $match.Url
             }
-        }
-        catch {
-            throw $_
+
+            $matchInfo
         }
     }
 }
