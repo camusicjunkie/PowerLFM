@@ -1,6 +1,6 @@
 # PowerLFM
 
-[![PowerShell Gallery Version](https://img.shields.io/powershellgallery/v/PowerLFM?style=flat-square)](https://www.powershellgallery.com/packages/PowerLFM) [![AppVeyor](https://img.shields.io/appveyor/ci/camusicjunkie/PowerLFM?style=flat-square)](https://ci.appveyor.com/project/camusicjunkie/powerlfm) [![GitHub](https://img.shields.io/github/license/camusicjunkie/PowerLFM?style=flat-square)](https://github.com/camusicjunkie/PowerLFM/blob/master/LICENSE)
+[![PowerShell Gallery Version](https://img.shields.io/powershellgallery/v/PowerLFM?style=flat-square)](https://www.powershellgallery.com/packages/PowerLFM) [![CI](https://img.shields.io/github/actions/workflow/status/camusicjunkie/PowerLFM/ci.yml?branch=main&style=flat-square)](https://github.com/camusicjunkie/PowerLFM/actions/workflows/ci.yml) [![GitHub](https://img.shields.io/github/license/camusicjunkie/PowerLFM?style=flat-square)](https://github.com/camusicjunkie/PowerLFM/blob/master/LICENSE)
 
 PowerShell module to leverage the Last.fm API.
 

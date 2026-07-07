@@ -1,0 +1,103 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+    paths-ignore:
+      - 'README.md'
+      - 'docs/**'
+      - 'mkdocs.yml'
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - 'README.md'
+      - 'docs/**'
+      - 'mkdocs.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  IGNORE_NORMALISATION_GIT_HEAD_MOVE: 1
+
+jobs:
+  build:
+    name: Build, test and publish
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # GitVersion needs the full history and all tags to calculate the version
+          fetch-depth: 0
+
+      # The ConvertFrom-UnixTime tests assert local-time conversions in UTC+1
+      - name: Set time zone
+        shell: powershell
+        run: Set-TimeZone -Id 'W. Europe Standard Time' -PassThru
+
+      # The GetNextVersion build task shells out to the gitversion CLI.
+      # Pinned to 5.x; there is no GitVersion.yml so 6.x defaults would
+      # change the calculated version.
+      - name: Install GitVersion
+        shell: powershell
+        run: choco install gitversion.portable -y --version=5.12.0 --no-progress
+
+      - name: Install dependencies
+        shell: powershell
+        run: |
+          Install-Module -Name PSDepend -Force -Scope CurrentUser
+          Invoke-PSDepend -Path .\PowerLFM.depend.psd1 -Force
+
+          # PSDepend targets build\modules with a session-scoped path change;
+          # persist it so the later steps can find the build dependencies.
+          "PSModulePath=$env:GITHUB_WORKSPACE\build\modules;$env:PSModulePath" |
+              Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Build
+        shell: powershell
+        run: .\build.ps1 -Task Build
+
+      - name: Test
+        shell: powershell
+        run: .\build.ps1 -Task Test
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            build/testResults.xml
+            build/codecoverage.xml
+          if-no-files-found: ignore
+
+      - name: Publish to PowerShell Gallery
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: powershell
+        env:
+          NuGetApiKey: ${{ secrets.NUGET_API_KEY }}
+        run: |
+          $tagVersion = '${{ github.ref_name }}' -replace '^v' -as [Version]
+
+          $moduleManifestPath = Get-Item -Path "$env:GITHUB_WORKSPACE\build\*\*\*.psd1" |
+              Where-Object { $_.BaseName -eq $_.Directory.Parent.Name }
+          $moduleManifest = Import-PowerShellDataFile -Path $moduleManifestPath.FullName
+          $buildVersion = $moduleManifest['ModuleVersion'] -as [Version]
+
+          if ($tagVersion -ne $buildVersion) {
+              throw ('Tag {0} does not match build version {1}' -f $tagVersion, $buildVersion)
+          }
+
+          $galleryModule = Find-Module -Name $moduleManifestPath.BaseName -ErrorAction SilentlyContinue
+
+          if (-not $galleryModule -or $buildVersion -gt $galleryModule.Version) {
+              .\build.ps1 -Task Publish
+          }
+          else {
+              Write-Host ('Skipping publish: {0} is already published' -f $buildVersion) -ForegroundColor Green
+          }
