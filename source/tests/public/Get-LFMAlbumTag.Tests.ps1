@@ -31,14 +31,11 @@ Describe 'Get-LFMAlbumTag: Unit' -Tag Unit {
 
         It 'Should remove common parameters from bound parameters' {
             $siParams = @{
-                CommandName     = 'Remove-CommonParameter'
-                ModuleName      = 'PowerLFM'
-                Scope           = 'Context'
-                Exactly         = $true
-                Times           = 1
-                ParameterFilter = {
-                    $PSBoundParameters
-                }
+                CommandName = 'Remove-CommonParameter'
+                ModuleName  = 'PowerLFM'
+                Scope       = 'Context'
+                Exactly     = $true
+                Times       = 1
             }
             Should -Invoke @siParams
         }
@@ -82,11 +79,6 @@ Describe 'Get-LFMAlbumTag: Unit' -Tag Unit {
 
         It 'Album should have two tags' {
             $output.Tag | Should -HaveCount 2
-        }
-
-        It 'Album should not have more than two tags' {
-            $output.Tag | Should -Not -BeNullOrEmpty
-            $output.Tag | Should -Not -HaveCount 3
         }
 
         It 'Album should have two tags when id parameter is used' {

@@ -28,14 +28,11 @@ Describe 'Get-LFMLibraryArtist: Unit' -Tag Unit {
 
         It 'Should remove common parameters from bound parameters' {
             $siParams = @{
-                CommandName     = 'Remove-CommonParameter'
-                ModuleName      = 'PowerLFM'
-                Scope           = 'Context'
-                Exactly         = $true
-                Times           = 1
-                ParameterFilter = {
-                    $PSBoundParameters
-                }
+                CommandName = 'Remove-CommonParameter'
+                ModuleName  = 'PowerLFM'
+                Scope       = 'Context'
+                Exactly     = $true
+                Times       = 1
             }
             Should -Invoke @siParams
         }
@@ -93,11 +90,6 @@ Describe 'Get-LFMLibraryArtist: Unit' -Tag Unit {
 
         It 'Library should have two artists' {
             $output.Artist | Should -HaveCount 2
-        }
-
-        It 'Library should not have more than two artists' {
-            $output.Artist | Should -Not -BeNullOrEmpty
-            $output.Artist | Should -Not -HaveCount 3
         }
 
         It 'Should call the correct Last.fm get method' {

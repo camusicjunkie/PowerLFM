@@ -31,14 +31,11 @@ Describe 'Get-LFMTrackSimilar: Unit' -Tag Unit {
 
         It 'Should remove common parameters from bound parameters' {
             $siParams = @{
-                CommandName     = 'Remove-CommonParameter'
-                ModuleName      = 'PowerLFM'
-                Scope           = 'Context'
-                Exactly         = $true
-                Times           = 1
-                ParameterFilter = {
-                    $PSBoundParameters
-                }
+                CommandName = 'Remove-CommonParameter'
+                ModuleName  = 'PowerLFM'
+                Scope       = 'Context'
+                Exactly     = $true
+                Times       = 1
             }
             Should -Invoke @siParams
         }
@@ -94,11 +91,6 @@ Describe 'Get-LFMTrackSimilar: Unit' -Tag Unit {
 
         It 'Track should have two similar tracks' {
             $output.Track | Should -HaveCount 2
-        }
-
-        It 'Track should not have more than two similar tracks' {
-            $output.Track | Should -Not -BeNullOrEmpty
-            $output.Track | Should -Not -HaveCount 3
         }
 
         It 'Track should return two similar tracks when id parameter is used' {

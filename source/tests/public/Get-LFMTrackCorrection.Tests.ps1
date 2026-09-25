@@ -31,14 +31,11 @@ Describe 'Get-LFMTrackCorrection: Unit' -Tag Unit {
 
         It 'Should remove common parameters from bound parameters' {
             $siParams = @{
-                CommandName     = 'Remove-CommonParameter'
-                ModuleName      = 'PowerLFM'
-                Scope           = 'Context'
-                Exactly         = $true
-                Times           = 1
-                ParameterFilter = {
-                    $PSBoundParameters
-                }
+                CommandName = 'Remove-CommonParameter'
+                ModuleName  = 'PowerLFM'
+                Scope       = 'Context'
+                Exactly     = $true
+                Times       = 1
             }
             Should -Invoke @siParams
         }
@@ -94,11 +91,6 @@ Describe 'Get-LFMTrackCorrection: Unit' -Tag Unit {
 
         It 'Corrected track should have one track' {
             $output.Track | Should -HaveCount 1
-        }
-
-        It 'Corrected track should not have two tracks' {
-            $output.Track | Should -Not -BeNullOrEmpty
-            $output.Track | Should -Not -HaveCount 2
         }
 
         It 'Should call the correct Last.fm get method' {
