@@ -14,8 +14,7 @@ jobs:
       - name: Set time zone
         shell: powershell
         # Some conversion tests assert local-time strings and assume CET, so
-        # they fail on the UTC runners. AppVeyor sets the same zone in init;
-        # match it here rather than have the two CI systems disagree.
+        # they fail on the UTC runners. release.yml sets the same zone.
         run: Set-TimeZone -Id 'W. Europe Standard Time'
 
       - uses: actions/checkout@v5
@@ -32,18 +31,13 @@ jobs:
         shell: powershell
         # The setup action exposes GITVERSION_PATH but does not add it to
         # PATH, and installs the tool as dotnet-gitversion.exe. The
-        # GetNextVersion build task shells out to bare 'gitversion', which is
-        # what the AppVeyor image provides, so expose it under that name via a
-        # shim rather than teaching the build script about a second spelling.
+        # GetNextVersion build task shells out to bare 'gitversion', so expose
+        # it under that name via a shim rather than teaching the build script
+        # about a second spelling.
         run: |
-          Write-Host "Contents of $env:GITVERSION_PATH :"
-          Get-ChildItem -Path $env:GITVERSION_PATH -Recurse -File |
-              Select-Object -ExpandProperty FullName | Write-Host
-
           $exe = Get-ChildItem -Path $env:GITVERSION_PATH -Filter '*gitversion*.exe' -Recurse |
               Select-Object -First 1
           if (-not $exe) { throw "No gitversion executable found under $env:GITVERSION_PATH" }
-          Write-Host "Using $($exe.FullName)"
 
           $shim = Join-Path $env:RUNNER_TEMP 'gitversion-shim'
           New-Item -ItemType Directory -Path $shim -Force | Out-Null
