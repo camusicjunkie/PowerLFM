@@ -1,8 +1,3 @@
-# BeforeAll {
-#     Remove-Module -Name PowerLFM -ErrorAction Ignore
-#     Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
-# }
-
 Describe 'Get-LFMAlbumInfo: Unit' -Tag Unit {
 
     BeforeAll {

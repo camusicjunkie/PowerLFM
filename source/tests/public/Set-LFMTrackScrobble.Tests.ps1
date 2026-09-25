@@ -1,8 +1,3 @@
-# BeforeAll {
-#     Remove-Module -Name PowerLFM -ErrorAction Ignore
-#     Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
-# }
-
 
 Describe 'Set-LFMTrackScrobble: Unit' -Tag Unit {
 

@@ -1,8 +1,3 @@
-# BeforeAll {
-#     Remove-Module -Name PowerLFM -ErrorAction Ignore
-#     Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
-# }
-
 
 Describe 'Add-LFMArtistTag: Unit' -Tag Unit {
 
@@ -99,7 +94,7 @@ Describe 'Add-LFMArtistTag: Unit' -Tag Unit {
         It 'Should call the correct Last.fm post method' {
             Add-LFMArtistTag -Artist Artist -Tag Tag -Confirm:$false
 
-            $amParams = @{
+            $siParams = @{
                 CommandName     = 'Invoke-LFMApiUri'
                 ModuleName      = 'PowerLFM'
                 Scope           = 'It'
@@ -110,7 +105,7 @@ Describe 'Add-LFMArtistTag: Unit' -Tag Unit {
                     $Uri -like "$baseUrl*"
                 }
             }
-            Assert-MockCalled @amParams
+            Should -Invoke @siParams
         }
 
         It 'Should send proper output when -Whatif is used' {
