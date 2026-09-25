@@ -1,0 +1,92 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Set time zone
+        shell: powershell
+        # Some conversion tests assert local-time strings and assume CET, so
+        # they fail on the UTC runners. AppVeyor sets the same zone in init;
+        # match it here rather than have the two CI systems disagree.
+        run: Set-TimeZone -Id 'W. Europe Standard Time'
+
+      - uses: actions/checkout@v5
+        with:
+          # GitVersion needs the full history to determine the next version
+          fetch-depth: 0
+
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v4
+        with:
+          versionSpec: '6.x'
+
+      - name: Put GitVersion on PATH
+        shell: powershell
+        # The setup action exposes GITVERSION_PATH but does not add it to
+        # PATH, and installs the tool as dotnet-gitversion.exe. The
+        # GetNextVersion build task shells out to bare 'gitversion', which is
+        # what the AppVeyor image provides, so expose it under that name via a
+        # shim rather than teaching the build script about a second spelling.
+        run: |
+          Write-Host "Contents of $env:GITVERSION_PATH :"
+          Get-ChildItem -Path $env:GITVERSION_PATH -Recurse -File |
+              Select-Object -ExpandProperty FullName | Write-Host
+
+          $exe = Get-ChildItem -Path $env:GITVERSION_PATH -Filter '*gitversion*.exe' -Recurse |
+              Select-Object -First 1
+          if (-not $exe) { throw "No gitversion executable found under $env:GITVERSION_PATH" }
+          Write-Host "Using $($exe.FullName)"
+
+          $shim = Join-Path $env:RUNNER_TEMP 'gitversion-shim'
+          New-Item -ItemType Directory -Path $shim -Force | Out-Null
+          if ($exe.Name -eq 'gitversion.exe') {
+              $dir = $exe.Directory.FullName
+          }
+          else {
+              Set-Content -Path (Join-Path $shim 'gitversion.cmd') `
+                  -Value "@echo off`r`n`"$($exe.FullName)`" %*" -Encoding ascii
+              $dir = $shim
+          }
+          $dir | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - name: Verify GitVersion is callable
+        shell: powershell
+        # Same invocation the GetNextVersion task uses, so this fails here
+        # with a clear message rather than deep inside the build.
+        run: (gitversion | ConvertFrom-Json).MajorMinorPatch
+
+      - name: Resolve dependencies
+        shell: powershell
+        run: |
+          Install-Module PSDepend -Force -Scope CurrentUser
+          Invoke-PSDepend -Path .\PowerLFM.depend.psd1 -Force
+          # PSDepend installs to build\modules and only puts it on
+          # PSModulePath for its own session; each step is a fresh shell,
+          # so persist it or Invoke-Build is not found in later steps.
+          "PSModulePath=$env:GITHUB_WORKSPACE\build\modules;$env:PSModulePath" |
+              Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Build
+        shell: powershell
+        run: .\build.ps1 -Task Build
+
+      - name: Test
+        shell: powershell
+        run: .\build.ps1 -Task Test
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: test-results
+          path: |
+            build/testResults.xml
+            build/codecoverage.xml

@@ -62,7 +62,7 @@ Task Build GetNextVersion, {
 
 # Synopsis: Run all Pester tests
 Task Test {
-    Import-Module -Name Pester -RequiredVersion 6.0.0 -Force
+    Import-Module -Name Pester -MinimumVersion 6.0.0 -Force
 
     $modulePath = Get-Item "$PSScriptRoot\build\*\*\*.psd1" | Where-Object {
         $_.BaseName -eq $_.Directory.Parent.Name
