@@ -7,7 +7,7 @@
 
     ModuleBuilder                           = 'latest'
     InvokeBuild                             = 'latest'
-    Pester                                  = 'latest'
+    Pester                                  = '6.0.0'
     PSScriptAnalyzer                        = 'latest'
     PlatyPS                                 = 'latest'
     'Microsoft.PowerShell.SecretManagement' = 'latest'

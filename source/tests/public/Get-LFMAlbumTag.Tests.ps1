@@ -1,8 +1,3 @@
-# BeforeAll {
-#     Remove-Module -Name PowerLFM -ErrorAction Ignore
-#     Import-Module -Name $PSScriptRoot\..\PowerLFM\PowerLFM.psd1
-# }
-
 
 Describe 'Get-LFMAlbumTag: Unit' -Tag Unit {
 
@@ -35,7 +30,7 @@ Describe 'Get-LFMAlbumTag: Unit' -Tag Unit {
         }
 
         It 'Should remove common parameters from bound parameters' {
-            $amParams = @{
+            $siParams = @{
                 CommandName     = 'Remove-CommonParameter'
                 ModuleName      = 'PowerLFM'
                 Scope           = 'Context'
@@ -45,29 +40,29 @@ Describe 'Get-LFMAlbumTag: Unit' -Tag Unit {
                     $PSBoundParameters
                 }
             }
-            Assert-MockCalled @amParams
+            Should -Invoke @siParams
         }
 
         It 'Should convert parameters to format API expects after signing' {
-            $amParams = @{
+            $siParams = @{
                 CommandName = 'ConvertTo-LFMParameter'
                 ModuleName  = 'PowerLFM'
                 Scope       = 'Context'
                 Exactly     = $true
                 Times       = 1
             }
-            Assert-MockCalled @amParams
+            Should -Invoke @siParams
         }
 
         It 'Should take hashtable and build a query for a uri' {
-            $amParams = @{
+            $siParams = @{
                 CommandName = 'New-LFMApiQuery'
                 ModuleName  = 'PowerLFM'
                 Scope       = 'Context'
                 Exactly     = $true
                 Times       = 1
             }
-            Assert-MockCalled @amParams
+            Should -Invoke @siParams
         }
     }
 
@@ -102,7 +97,7 @@ Describe 'Get-LFMAlbumTag: Unit' -Tag Unit {
         It 'Should call the correct Last.fm get method' {
             Get-LFMAlbumTag -Album Album -Artist Artist
 
-            $amParams = @{
+            $siParams = @{
                 CommandName     = 'Invoke-LFMApiUri'
                 ModuleName      = 'PowerLFM'
                 Exactly         = $true
@@ -111,7 +106,7 @@ Describe 'Get-LFMAlbumTag: Unit' -Tag Unit {
                     $Uri -like "$baseUrl*"
                 }
             }
-            Assert-MockCalled @amParams
+            Should -Invoke @siParams
         }
 
         It 'Should throw when an error is returned in the response' {

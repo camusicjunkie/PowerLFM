@@ -62,6 +62,8 @@ Task Build GetNextVersion, {
 
 # Synopsis: Run all Pester tests
 Task Test {
+    Import-Module -Name Pester -RequiredVersion 6.0.0 -Force
+
     $modulePath = Get-Item "$PSScriptRoot\build\*\*\*.psd1" | Where-Object {
         $_.BaseName -eq $_.Directory.Parent.Name
     }
@@ -69,13 +71,16 @@ Task Test {
 
     Import-Module -Name $modulePath -Force -Global
 
-    $configuration = @{
-        Run          = @{ Path = "$PSScriptRoot\source\Tests\"; Passthru = $true }
-        CodeCoverage = @{ Enabled = $true; Path = $rootModule; OutputPath = "$PSScriptRoot\build\codecoverage.xml" }
-        TestResult   = @{ Enabled = $true; OutputPath = "$PSScriptRoot\build\testResults.xml" }
-        Output       = @{ Verbosity = 'Detailed' }
-    }
-    if ($null -ne $Tag) { $configuration.Filter = @{ Tag = $Tag } }
+    $configuration = New-PesterConfiguration
+    $configuration.Run.Path = "$PSScriptRoot\source\Tests\"
+    $configuration.Run.Passthru = $true
+    $configuration.CodeCoverage.Enabled = $true
+    $configuration.CodeCoverage.Path = $rootModule
+    $configuration.CodeCoverage.OutputPath = "$PSScriptRoot\build\codecoverage.xml"
+    $configuration.TestResult.Enabled = $true
+    $configuration.TestResult.OutputPath = "$PSScriptRoot\build\testResults.xml"
+    $configuration.Output.Verbosity = 'Detailed'
+    if ($null -ne $Tag) { $configuration.Filter.Tag = $Tag }
 
     $testResults = Invoke-Pester -Configuration $configuration
 
