@@ -28,14 +28,11 @@ Describe 'Get-LFMUserWeeklyTrackChart: Unit' -Tag Unit {
 
         It 'Should remove common parameters from bound parameters' {
             $siParams = @{
-                CommandName     = 'Remove-CommonParameter'
-                ModuleName      = 'PowerLFM'
-                Scope           = 'Context'
-                Exactly         = $true
-                Times           = 1
-                ParameterFilter = {
-                    $PSBoundParameters
-                }
+                CommandName = 'Remove-CommonParameter'
+                ModuleName  = 'PowerLFM'
+                Scope       = 'Context'
+                Exactly     = $true
+                Times       = 1
             }
             Should -Invoke @siParams
         }
@@ -99,11 +96,6 @@ Describe 'Get-LFMUserWeeklyTrackChart: Unit' -Tag Unit {
 
         It 'User weekly album chart should have two albums' {
             $output.Album | Should -HaveCount 2
-        }
-
-        It 'User weekly album chart should not have more than two albums' {
-            $output.Album | Should -Not -BeNullOrEmpty
-            $output.Album | Should -Not -HaveCount 3
         }
 
         It 'Should call the correct Last.fm get method' {

@@ -29,14 +29,11 @@ Describe 'Get-LFMUserLovedTrack: Unit' -Tag Unit {
 
         It 'Should remove common parameters from bound parameters' {
             $siParams = @{
-                CommandName     = 'Remove-CommonParameter'
-                ModuleName      = 'PowerLFM'
-                Scope           = 'Context'
-                Exactly         = $true
-                Times           = 1
-                ParameterFilter = {
-                    $PSBoundParameters
-                }
+                CommandName = 'Remove-CommonParameter'
+                ModuleName  = 'PowerLFM'
+                Scope       = 'Context'
+                Exactly     = $true
+                Times       = 1
             }
             Should -Invoke @siParams
         }
@@ -96,11 +93,6 @@ Describe 'Get-LFMUserLovedTrack: Unit' -Tag Unit {
 
         It 'User should have two loved tracks' {
             $output.Track | Should -HaveCount 2
-        }
-
-        It 'User should not have more than two loved tracks' {
-            $output.Track | Should -Not -BeNullOrEmpty
-            $output.Track | Should -Not -HaveCount 3
         }
 
         It 'Should call the correct Last.fm get method' {

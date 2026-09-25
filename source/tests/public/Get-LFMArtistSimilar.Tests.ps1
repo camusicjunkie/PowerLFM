@@ -30,14 +30,11 @@ Describe 'Get-LFMArtistSimilar: Unit' -Tag Unit {
 
         It 'Should remove common parameters from bound parameters' {
             $siParams = @{
-                CommandName     = 'Remove-CommonParameter'
-                ModuleName      = 'PowerLFM'
-                Scope           = 'Context'
-                Exactly         = $true
-                Times           = 1
-                ParameterFilter = {
-                    $PSBoundParameters
-                }
+                CommandName = 'Remove-CommonParameter'
+                ModuleName  = 'PowerLFM'
+                Scope       = 'Context'
+                Exactly     = $true
+                Times       = 1
             }
             Should -Invoke @siParams
         }
@@ -81,11 +78,6 @@ Describe 'Get-LFMArtistSimilar: Unit' -Tag Unit {
 
         It 'Artist should have two similar artists' {
             $output.Artist | Should -HaveCount 2
-        }
-
-        It 'Artist should not have more than two similar artists' {
-            $output.Artist | Should -Not -BeNullOrEmpty
-            $output.Artist | Should -Not -HaveCount 3
         }
 
         It 'Should return the correct first similar artist match value' {

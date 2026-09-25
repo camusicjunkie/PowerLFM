@@ -28,14 +28,11 @@ Describe 'Get-LFMChartTopTag: Unit' -Tag Unit {
 
         It 'Should remove common parameters from bound parameters' {
             $siParams = @{
-                CommandName     = 'Remove-CommonParameter'
-                ModuleName      = 'PowerLFM'
-                Scope           = 'Context'
-                Exactly         = $true
-                Times           = 1
-                ParameterFilter = {
-                    $PSBoundParameters
-                }
+                CommandName = 'Remove-CommonParameter'
+                ModuleName  = 'PowerLFM'
+                Scope       = 'Context'
+                Exactly     = $true
+                Times       = 1
             }
             Should -Invoke @siParams
         }
@@ -93,11 +90,6 @@ Describe 'Get-LFMChartTopTag: Unit' -Tag Unit {
 
         It 'Chart should have two top tags' {
             $output.Tag | Should -HaveCount 2
-        }
-
-        It 'Chart should not have more than two top tags' {
-            $output.Tag | Should -Not -BeNullOrEmpty
-            $output.Tag | Should -Not -HaveCount 3
         }
 
         It 'Should call the correct Last.fm get method' {

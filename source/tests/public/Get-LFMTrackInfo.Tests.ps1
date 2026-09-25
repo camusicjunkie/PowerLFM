@@ -31,14 +31,11 @@ Describe 'Get-LFMTrackInfo: Unit' -Tag Unit {
 
         It 'Should remove common parameters from bound parameters' {
             $siParams = @{
-                CommandName     = 'Remove-CommonParameter'
-                ModuleName      = 'PowerLFM'
-                Scope           = 'Context'
-                Exactly         = $true
-                Times           = 1
-                ParameterFilter = {
-                    $PSBoundParameters
-                }
+                CommandName = 'Remove-CommonParameter'
+                ModuleName  = 'PowerLFM'
+                Scope       = 'Context'
+                Exactly     = $true
+                Times       = 1
             }
             Should -Invoke @siParams
         }
@@ -108,11 +105,6 @@ Describe 'Get-LFMTrackInfo: Unit' -Tag Unit {
 
         It 'Track should have two tags' {
             $output.Tags | Should -HaveCount 2
-        }
-
-        It 'Track should not have more than two tags' {
-            $output.Tags | Should -Not -BeNullOrEmpty
-            $output.Tags | Should -Not -HaveCount 3
         }
 
         It 'Should return the correct user play count' {

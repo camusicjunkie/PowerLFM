@@ -30,14 +30,11 @@ Describe 'Get-LFMArtistCorrection: Unit' -Tag Unit {
 
         It 'Should remove common parameters from bound parameters' {
             $siParams = @{
-                CommandName     = 'Remove-CommonParameter'
-                ModuleName      = 'PowerLFM'
-                Scope           = 'Context'
-                Exactly         = $true
-                Times           = 1
-                ParameterFilter = {
-                    $PSBoundParameters
-                }
+                CommandName = 'Remove-CommonParameter'
+                ModuleName  = 'PowerLFM'
+                Scope       = 'Context'
+                Exactly     = $true
+                Times       = 1
             }
             Should -Invoke @siParams
         }
@@ -83,9 +80,8 @@ Describe 'Get-LFMArtistCorrection: Unit' -Tag Unit {
             $output.Id | Should -Be $contextMock.Corrections.Correction.Artist.Mbid
         }
 
-        It 'Artist should not have more than 1 correction' {
-            $output.Artist | Should -Not -BeNullOrEmpty
-            $output.Artist | Should -Not -HaveCount 2
+        It 'Should return a single correction' {
+            $output | Should -HaveCount 1
         }
 
         It 'Should call the correct Last.fm get method' {

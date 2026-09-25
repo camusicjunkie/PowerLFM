@@ -30,14 +30,11 @@ Describe 'Get-LFMArtistInfo: Unit' -Tag Unit {
 
         It 'Should remove common parameters from bound parameters' {
             $siParams = @{
-                CommandName     = 'Remove-CommonParameter'
-                ModuleName      = 'PowerLFM'
-                Scope           = 'Context'
-                Exactly         = $true
-                Times           = 1
-                ParameterFilter = {
-                    $PSBoundParameters
-                }
+                CommandName = 'Remove-CommonParameter'
+                ModuleName  = 'PowerLFM'
+                Scope       = 'Context'
+                Exactly     = $true
+                Times       = 1
             }
             Should -Invoke @siParams
         }
@@ -105,11 +102,6 @@ Describe 'Get-LFMArtistInfo: Unit' -Tag Unit {
             $output.SimilarArtists | Should -HaveCount 2
         }
 
-        It 'Artist should not have more than two similar artists' {
-            $output.SimilarArtists | Should -Not -BeNullOrEmpty
-            $output.SimilarArtists | Should -Not -HaveCount 3
-        }
-
         It 'Should return the correct first tag name' {
             $output.Tags[0].Tag | Should -Be $contextMock.Artist.Tags.Tag[0].Name
         }
@@ -120,10 +112,6 @@ Describe 'Get-LFMArtistInfo: Unit' -Tag Unit {
 
         It 'Artist should have two tags' {
             $output.Tags | Should -HaveCount 2
-        }
-
-        It 'Artist should not have more than two tags' {
-            $output.Tags | Should -Not -HaveCount 3
         }
 
         It 'Should return the correct artist biography summary' {
