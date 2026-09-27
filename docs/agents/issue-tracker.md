@@ -2,6 +2,25 @@
 
 Issues and specs for this repo live as GitHub issues. Use the `gh` CLI for all operations.
 
+## Triage roles
+
+Canonical role names used by `/triage`, and the label strings they map to in this repo.
+The names happen to match one-to-one; `/triage` still reads the mapping from here.
+
+| Role | Label |
+| --- | --- |
+| `bug` | `bug` |
+| `enhancement` | `enhancement` |
+| `needs-triage` | `needs-triage` |
+| `needs-info` | `needs-info` |
+| `ready-for-agent` | `ready-for-agent` |
+| `ready-for-human` | `ready-for-human` |
+| `wontfix` | `wontfix` |
+
+Every triaged issue carries exactly one category role (`bug` or `enhancement`) and one
+state role. The remaining repo labels (`duplicate`, `invalid`, `question`, `good first
+issue`, `help wanted`, `in progress`) are not triage roles and `/triage` ignores them.
+
 ## Conventions
 
 - **Create an issue**: `gh issue create --title "..." --body "..."`. Use a heredoc for multi-line bodies.
