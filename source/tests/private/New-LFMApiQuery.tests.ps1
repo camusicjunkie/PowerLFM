@@ -63,5 +63,42 @@ Describe 'New-LFMApiQuery: Unit' -Tag Unit {
             }
             $result | Should -Be 'artistAC/DC'
         }
+
+        It 'Signs a full write exactly as it did before the sort became ordinal' {
+            $result = InModuleScope @module {
+                $naqParams = @{
+                    method    = 'track.scrobble'
+                    api_key   = 'abc123'
+                    sk        = 'def456'
+                    album     = 'Damnation'
+                    artist    = 'Opeth'
+                    track     = 'Windowpane'
+                    timestamp = 1790596800
+                    duration  = 469
+                    mbid      = '00000000-0000-0000-0000-000000000000'
+                }
+                New-LFMApiQuery -InputObject $naqParams -Signature
+            }
+            $expected = 'albumDamnation' +
+                        'api_keyabc123' +
+                        'artistOpeth' +
+                        'duration469' +
+                        'mbid00000000-0000-0000-0000-000000000000' +
+                        'methodtrack.scrobble' +
+                        'skdef456' +
+                        'timestamp1790596800' +
+                        'trackWindowpane'
+            $result | Should -Be $expected
+        }
+
+        It 'Sorts a batched scrobble the way Last.fm sorts it, bytewise' {
+            $result = InModuleScope @module {
+                New-LFMApiQuery -InputObject @{
+                    'artist[10]' = 'Ten'
+                    'artist[2]'  = 'Two'
+                } -Signature
+            }
+            $result | Should -Be 'artist[10]Tenartist[2]Two'
+        }
     }
 }

@@ -7,6 +7,7 @@ pages:
     - Add-LFMAlbumTag: Add-LFMAlbumTag.md
     - Add-LFMArtistTag: Add-LFMArtistTag.md
     - Add-LFMConfiguration: Add-LFMConfiguration.md
+    - Clear-LFMScrobbleQueue: Clear-LFMScrobbleQueue.md
     - Get-LFMAlbumInfo: Get-LFMAlbumInfo.md
     - Get-LFMAlbumTag: Get-LFMAlbumTag.md
     - Get-LFMAlbumTopTag: Get-LFMAlbumTopTag.md
@@ -23,6 +24,7 @@ pages:
     - Get-LFMConfiguration: Get-LFMConfiguration.md
     - Get-LFMGeoTopArtist: Get-LFMGeoTopArtist.md
     - Get-LFMGeoTopTrack: Get-LFMGeoTopTrack.md
+    - Get-LFMScrobbleQueue: Get-LFMScrobbleQueue.md
     - Get-LFMUserArtistTrack: Get-LFMUserArtistTrack.md
     - Get-LFMUserFriend: Get-LFMUserFriend.md
     - Get-LFMUserInfo: Get-LFMUserInfo.md
@@ -41,6 +43,7 @@ pages:
     - Request-LFMToken: Request-LFMToken.md
     - Search-LFMAlbum: Search-LFMAlbum.md
     - Search-LFMArtist: Search-LFMArtist.md
+    - Send-LFMScrobbleQueue: Send-LFMScrobbleQueue.md
     - Set-LFMTrackLove: Set-LFMTrackLove.md
     - Set-LFMTrackUnlove: Set-LFMTrackUnlove.md
     - Index: PowerLFM.md

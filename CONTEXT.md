@@ -101,6 +101,18 @@ created it, so it is not bound to a Configuration and must record which user's C
 each Pending Scrobble was captured under.
 _Avoid_: scrobble cache, offline cache, backlog
 
+**Session Key Fingerprint**:
+A hash of a Session Key, stamped on each Pending Scrobble so the Scrobble Queue records
+which user captured it without holding a credential. Comparing it against the loaded
+Configuration is what decides whether a Pending Scrobble may be Flushed.
+_Avoid_: session hash, account id, owner
+
+**Flush**:
+Submitting the Pending Scrobbles in the Scrobble Queue to Last.fm and removing the ones it
+accounts for. The single word for this: a Flush is attempted automatically before every
+Scrobble and can be run on demand.
+_Avoid_: drain, sync, replay, retry
+
 **Ignored Message**:
 Last.fm's explanation for a Scrobble it accepted over the wire but silently declined to
 record, for example because the Artist is filtered or the timestamp is implausible.

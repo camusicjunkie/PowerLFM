@@ -25,6 +25,18 @@ function Invoke-LFMApiUri {
         Write-Output $irm
     }
     catch {
+        # A failure with no HTTP response behind it means Last.fm was never reached.
+        # Only that is a network failure: a response, including 5xx, may mean the
+        # request was acted on, so it keeps throwing as it always has. See ADR-0004.
+        if (Test-LFMNetworkUnavailable -ErrorRecord $_) {
+            $PSCmdlet.ThrowTerminatingError([ErrorRecord]::new(
+                ($localizedData.errorNetworkUnavailable -f $_.Exception.Message),
+                'PowerLFM.NetworkUnavailable',
+                'ConnectionError',
+                $MyInvocation.MyCommand.Name
+            ))
+        }
+
         $response = if ($null -ne $_.ErrorDetails) {
             if ($_.ErrorDetails.Message | Test-LFMJson) {
                 $_.ErrorDetails.Message | ConvertFrom-Json

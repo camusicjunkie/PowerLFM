@@ -7,8 +7,14 @@ function New-LFMApiQuery {
     )
 
     if ($Signature) {
-        $keyValues = $InputObject.GetEnumerator() | Sort-Object Key | ForEach-Object {
-            "$($_.Key)$($_.Value)"
+        # Ordinal, not culture-aware: Last.fm sorts parameter names bytewise, and a
+        # batched scrobble's names carry brackets, which a culture-aware sort weights
+        # differently from the server would.
+        $keys = [string[]] $InputObject.Keys
+        [array]::Sort($keys, [StringComparer]::Ordinal)
+
+        $keyValues = $keys | ForEach-Object {
+            "$_$($InputObject[$_])"
         }
 
         $query = $keyValues -join ''

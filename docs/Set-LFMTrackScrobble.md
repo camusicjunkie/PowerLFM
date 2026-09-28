@@ -22,6 +22,20 @@ Set-LFMTrackScrobble [-Artist] <String> [-Track] <String> [-Timestamp] <DateTime
 Add a track play to the profile of the currently authenticated user.
 This uses the track.scrobble method from the Last.fm API.
 
+If Last.fm cannot be reached at all, the play is added to the scrobble queue instead of
+being lost, and a warning says so.
+Queued plays survive restarts.
+Use `-WarningAction Stop` in a script that needs an unreachable Last.fm to be fatal.
+
+Only an unreachable Last.fm queues.
+Anything Last.fm answered - a rejected api key, a filtered artist, an outage returning 503 -
+throws as it always has.
+
+Every call attempts to flush the queue before scrobbling, so the queue empties as soon as
+Last.fm can be reached again.
+Use `Get-LFMScrobbleQueue`, `Send-LFMScrobbleQueue` and `Clear-LFMScrobbleQueue` to work
+with the queue directly.
+
 ## EXAMPLES
 
 ### Example 1
@@ -103,6 +117,7 @@ Accept wildcard characters: False
 
 ### -PassThru
 Returns an object with info on the track set to scrobble.
+A queued play returns a `PowerLFM.Track.PendingScrobble` instead.
 
 ```yaml
 Type: SwitchParameter
@@ -209,6 +224,14 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ### PowerLFM.Track.Scrobble
 
+### PowerLFM.Track.PendingScrobble
+
 ## NOTES
 
 ## RELATED LINKS
+
+[Get-LFMScrobbleQueue](Get-LFMScrobbleQueue.md)
+
+[Send-LFMScrobbleQueue](Send-LFMScrobbleQueue.md)
+
+[Clear-LFMScrobbleQueue](Clear-LFMScrobbleQueue.md)

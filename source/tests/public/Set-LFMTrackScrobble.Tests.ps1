@@ -16,6 +16,8 @@ Describe 'Set-LFMTrackScrobble: Unit' -Tag Unit {
         Mock New-LFMApiQuery -ModuleName 'PowerLFM'
         Mock Invoke-LFMApiUri -ModuleName 'PowerLFM'
         Mock Get-LFMIgnoredMessage { @{ Code = 0 } } -ModuleName 'PowerLFM'
+        Mock Send-LFMScrobbleQueue -ModuleName 'PowerLFM'
+        Mock Add-LFMPendingScrobble -ModuleName 'PowerLFM'
     }
 
     Context 'Input' {
@@ -125,6 +127,88 @@ Describe 'Set-LFMTrackScrobble: Unit' -Tag Unit {
             Mock Invoke-LFMApiUri { throw 'Error' } -ModuleName 'PowerLFM'
 
             { Set-LFMTrackScrobble -Artist Artist -Track Track -Timestamp $dateTime } | Should -Throw 'Error'
+        }
+    }
+
+    Context 'Scrobble queue' {
+
+        BeforeAll {
+            $script:networkError = [System.Management.Automation.ErrorRecord]::new(
+                [Exception]::new('Last.fm could not be reached.'),
+                'PowerLFM.NetworkUnavailable',
+                'ConnectionError',
+                $null
+            )
+        }
+
+        It 'Should attempt to flush the queue before submitting' {
+            Set-LFMTrackScrobble -Artist Artist -Track Track -Timestamp $dateTime
+
+            $siParams = @{
+                CommandName = 'Send-LFMScrobbleQueue'
+                ModuleName  = 'PowerLFM'
+                Exactly     = $true
+                Times       = 1
+                Scope       = 'It'
+            }
+            Should -Invoke @siParams
+        }
+
+        It 'Should queue the scrobble when Last.fm could not be reached' {
+            Mock Invoke-LFMApiUri { throw $networkError } -ModuleName 'PowerLFM'
+            Mock Add-LFMPendingScrobble {
+                [pscustomobject] @{ PSTypeName = 'PowerLFM.Track.PendingScrobble'; Track = 'Track' }
+            } -ModuleName 'PowerLFM'
+
+            Set-LFMTrackScrobble -Artist Artist -Track Track -Timestamp $dateTime
+
+            $siParams = @{
+                CommandName     = 'Add-LFMPendingScrobble'
+                ModuleName      = 'PowerLFM'
+                Exactly         = $true
+                Times           = 1
+                Scope           = 'It'
+                ParameterFilter = {
+                    $Artist -eq 'Artist' -and
+                    $Track -eq 'Track' -and
+                    $Timestamp -eq $dateTime
+                }
+            }
+            Should -Invoke @siParams
+        }
+
+        It 'Should output a pending scrobble when queued with -PassThru' {
+            Mock Invoke-LFMApiUri { throw $networkError } -ModuleName 'PowerLFM'
+            Mock Add-LFMPendingScrobble {
+                [pscustomobject] @{ PSTypeName = 'PowerLFM.Track.PendingScrobble'; Track = 'Track' }
+            } -ModuleName 'PowerLFM'
+
+            $output = Set-LFMTrackScrobble -Artist Artist -Track Track -Timestamp $dateTime -PassThru
+
+            $output.PSTypeNames | Should -Contain 'PowerLFM.Track.PendingScrobble'
+        }
+
+        It 'Should not queue the scrobble when Last.fm returned an error' {
+            Mock Invoke-LFMApiUri { throw 'Error' } -ModuleName 'PowerLFM'
+
+            { Set-LFMTrackScrobble -Artist Artist -Track Track -Timestamp $dateTime } | Should -Throw
+
+            $siParams = @{
+                CommandName = 'Add-LFMPendingScrobble'
+                ModuleName  = 'PowerLFM'
+                Exactly     = $true
+                Times       = 0
+                Scope       = 'It'
+            }
+            Should -Invoke @siParams
+        }
+
+        It 'Should throw the original failure when the scrobble could not be queued' {
+            Mock Invoke-LFMApiUri { throw $networkError } -ModuleName 'PowerLFM'
+            Mock Add-LFMPendingScrobble { } -ModuleName 'PowerLFM'
+
+            { Set-LFMTrackScrobble -Artist Artist -Track Track -Timestamp $dateTime } |
+                Should -Throw 'Last.fm could not be reached.'
         }
     }
 }

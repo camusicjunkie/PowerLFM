@@ -47,6 +47,16 @@ function Set-LFMTrackScrobble {
             'sk' = $script:LFMConfig.SessionKey
             'format' = 'json'
         }
+
+        # A queued scrobble would otherwise sit until the user happened to run
+        # Send-LFMScrobbleQueue by hand. Reported, never prompted for, never fatal:
+        # the caller asked to scrobble a track, not to flush a queue.
+        try {
+            Send-LFMScrobbleQueue -Confirm:$false -ErrorAction Stop
+        }
+        catch {
+            Write-Verbose ($localizedData.scrobbleQueueFlushFailed -f $_.Exception.Message)
+        }
     }
     process {
         $noCommonParams = Remove-CommonParameter $PSBoundParameters
@@ -81,7 +91,34 @@ function Set-LFMTrackScrobble {
                 }
             }
             catch {
-                throw $_
+                # Only a transport failure queues. Anything Last.fm answered is a real
+                # error, and swallowing it would hide it behind a growing queue.
+                if ($_.FullyQualifiedErrorId -notlike 'PowerLFM.NetworkUnavailable*') {
+                    throw $_
+                }
+
+                $queueParams = @{
+                    Artist    = $Artist
+                    Track     = $Track
+                    Timestamp = $Timestamp
+                }
+                foreach ($optional in 'Album', 'Id', 'TrackNumber', 'Duration') {
+                    if ($PSBoundParameters.ContainsKey($optional)) {
+                        $queueParams[$optional] = $PSBoundParameters[$optional]
+                    }
+                }
+
+                $pendingScrobble = Add-LFMPendingScrobble @queueParams
+
+                # Queueing failed and warned about why. A visibly failed scrobble beats
+                # a lost one, so the original failure still surfaces.
+                if ($null -eq $pendingScrobble) {
+                    throw $_
+                }
+
+                if ($PassThru) {
+                    $pendingScrobble
+                }
             }
         }
     }
