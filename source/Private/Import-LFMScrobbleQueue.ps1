@@ -23,11 +23,12 @@ function Import-LFMScrobbleQueue {
 
     $queue = $content | ConvertFrom-Json
 
-    # An unrecognised version is refused rather than guessed at: being locked out of
-    # queueing is recoverable, a mangled queue of plays recorded nowhere else is not.
-    if ($queue.Version -ne $scrobbleQueueVersion) {
-        throw ($localizedData.errorScrobbleQueueVersion -f $path, $queue.Version)
-    }
+    # An older queue is brought forward in memory and left on disk as it was: reading
+    # takes no lock, so it is in no position to rewrite the file. The next write stamps
+    # the current version, which is what makes the migration stick. An unrecognised
+    # version is still refused rather than guessed at: being locked out of queueing is
+    # recoverable, a mangled queue of scrobbles recorded nowhere else is not.
+    $queue = Convert-LFMScrobbleQueueVersion -Queue $queue -Path $path
 
     # @($null) is a one-element array, so a queue whose Scrobbles came back null would
     # otherwise read as a single empty Pending Scrobble.

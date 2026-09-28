@@ -16,6 +16,10 @@ ConvertFrom-StringData @'
     errorFunctionImport = Failed to import function {0}
     errorNetworkUnavailable = Last.fm could not be reached. {0}
     errorScrobbleQueueVersion = The scrobble queue at {0} has an unrecognised version ({1}) and can neither be read nor written.
+    errorScrobbleQueueNewer = The scrobble queue at {0} was written by version {1} of the queue format and this PowerLFM understands version {2}. Update PowerLFM to read it.
+    errorScrobbleQueueNoMigration = The scrobble queue at {0} is at version {1} and there is no migration from version {1} to version {2}, so it can neither be read nor written.
+    errorScrobbleQueueMigration = The scrobble queue at {0} could not be migrated from version {1} to version {2}. {3}
+    errorScrobbleQueueMigrationEmpty = The migration returned no queue.
     errorScrobbleQueueNoConfiguration = No configuration is loaded, so the scrobble queue cannot record which account a scrobble belongs to. Run Get-LFMConfiguration.
     errorScrobbleQueueResponse = Last.fm returned {1} results for {0} submitted scrobbles.
     warningScrobbleQueued = Last.fm could not be reached. {0} - {1} has been added to the scrobble queue.
