@@ -107,11 +107,19 @@ which user captured it without holding a credential. Comparing it against the lo
 Configuration is what decides whether a Pending Scrobble may be Flushed.
 _Avoid_: session hash, account id, owner
 
+**Queue Update**:
+The only way the Scrobble Queue is written: an exclusive hold under which the Pending
+Scrobbles are read, changed and committed. Queueing a Pending Scrobble, a Flush and
+clearing the queue are all Queue Updates and differ only in the change they make. Reading
+the queue is not one, and takes no hold.
+_Avoid_: transaction, write, save, commit (for the whole operation)
+
 **Flush**:
 Submitting the Pending Scrobbles in the Scrobble Queue to Last.fm and removing the ones it
 accounts for. The single word for this. A Flush is attempted automatically once before a
 run of Scrobbles rather than before each one, so a pipeline of plays flushes at the start
-and not between every Track, and it can also be run on demand.
+and not between every Track, and it can also be run on demand. One Flush is one Queue
+Update, committing after each batch rather than once at the end.
 _Avoid_: drain, sync, replay, retry
 
 **Ignored Message**:

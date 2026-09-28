@@ -36,6 +36,7 @@ ConvertFrom-StringData @'
     scrobbleQueueFlushSkipped = The scrobble queue is in use by another session and was not flushed.
     scrobbleQueueFlushFailed = The scrobble queue could not be flushed. {0}
     scrobbleQueueCleared = The scrobble queue has been cleared.
+    scrobbleQueueClearSkipped = The scrobble queue is in use by another session and was not cleared.
     tagAdded = Tag: {0} has been added
     tagRemoved = Tag: {0} has been removed
     trackLoved = Track: {0} has been loved

@@ -5,26 +5,12 @@ function Send-LFMScrobbleQueue {
                    ConfirmImpact = 'Medium')]
     param ()
 
-    # Checked before the lock is taken: the common case is an empty queue on a machine
-    # that has never been offline, and that should not create a thing on disk.
-    if (-not (Test-Path -LiteralPath (Get-LFMScrobbleQueuePath))) {
-        Write-Verbose $localizedData.scrobbleQueueEmpty
-        return
-    }
+    # -SkipIfAbsent because the common case is an empty queue on a machine that has never
+    # been offline, and that should not create a thing on disk.
+    $result = Update-LFMScrobbleQueue -SkipIfAbsent -Change {
+        param ($Scrobbles, $Save)
 
-    $lock = Enter-LFMScrobbleQueueLock
-    if ($null -eq $lock) {
-        # Another session is already flushing the queue. Nothing to report and nothing
-        # to do: whatever this one would have sent, that one is sending.
-        Write-Verbose $localizedData.scrobbleQueueFlushSkipped
-        return
-    }
-
-    try {
-        $queue = Import-LFMScrobbleQueue
-        $scrobbles = @($queue.Scrobbles)
-
-        if ($scrobbles.Count -eq 0) {
+        if ($Scrobbles.Count -eq 0) {
             Write-Verbose $localizedData.scrobbleQueueEmpty
             return
         }
@@ -37,9 +23,9 @@ function Send-LFMScrobbleQueue {
         # The queue outlives the session that wrote it, so a play captured under other
         # credentials is left alone: submitting it would write it to someone else's
         # listening history.
-        $allPositions = @(0..($scrobbles.Count - 1))
-        $minePositions = $allPositions.Where({ $scrobbles[$_].SessionKeyFingerprint -eq $fingerprint })
-        $foreignPositions = $allPositions.Where({ $scrobbles[$_].SessionKeyFingerprint -ne $fingerprint })
+        $allPositions = @(0..($Scrobbles.Count - 1))
+        $minePositions = $allPositions.Where({ $Scrobbles[$_].SessionKeyFingerprint -eq $fingerprint })
+        $foreignPositions = $allPositions.Where({ $Scrobbles[$_].SessionKeyFingerprint -ne $fingerprint })
 
         if ($foreignPositions.Count -gt 0) {
             Write-Warning ($localizedData.warningScrobbleQueueForeign -f $foreignPositions.Count)
@@ -48,8 +34,10 @@ function Send-LFMScrobbleQueue {
         if ($minePositions.Count -eq 0) { return }
 
         # Named so -WhatIf answers what would be sent, not merely how much of it, for a
-        # queue whose contents the user has long since forgotten.
-        $timestamps = $minePositions.ForEach({ $scrobbles[$_].Timestamp })
+        # queue whose contents the user has long since forgotten. Prompted inside the
+        # Queue Update, because the span it names is only known once the queue has been
+        # read under the hold.
+        $timestamps = $minePositions.ForEach({ $Scrobbles[$_].Timestamp })
         $oldest = ConvertFrom-UnixTime -UnixTime ($timestamps | Measure-Object -Minimum).Minimum -Local
         $newest = ConvertFrom-UnixTime -UnixTime ($timestamps | Measure-Object -Maximum).Maximum -Local
         $target = $localizedData.scrobbleQueueTarget -f $minePositions.Count, $oldest, $newest
@@ -67,7 +55,7 @@ function Send-LFMScrobbleQueue {
             $batchPositions = @($minePositions[$index..($index + $size - 1)])
 
             try {
-                $results = @(Send-LFMScrobbleBatch -Scrobble @($batchPositions.ForEach({ $scrobbles[$_] })))
+                $results = @(Send-LFMScrobbleBatch -Scrobble @($batchPositions.ForEach({ $Scrobbles[$_] })))
             }
             catch {
                 # Whatever went wrong, the unsent entries stay queued in order. Losing
@@ -85,7 +73,7 @@ function Send-LFMScrobbleQueue {
             }
 
             for ($position = 0; $position -lt $batchPositions.Count; $position++) {
-                $entry = $scrobbles[$batchPositions[$position]]
+                $entry = $Scrobbles[$batchPositions[$position]]
                 $code = Get-LFMIgnoredMessage -Code $results[$position].IgnoredMessage.Code
                 $timestamp = ConvertFrom-UnixTime -UnixTime $entry.Timestamp -Local
 
@@ -109,17 +97,22 @@ function Send-LFMScrobbleQueue {
                 $null = $accounted.Add($batchPositions[$position])
             }
 
-            # Written back per batch, not at the end, so a process killed mid-flush
-            # cannot resubmit plays Last.fm has already accepted.
-            $queue.Scrobbles = @($allPositions.Where({ -not $accounted.Contains($_) }).ForEach({ $scrobbles[$_] }))
-            Export-LFMScrobbleQueue -Queue $queue
+            # Committed per batch, not at the end, so a process killed mid-flush cannot
+            # resubmit plays Last.fm has already accepted.
+            & $Save @($allPositions.Where({ -not $accounted.Contains($_) }).ForEach({ $Scrobbles[$_] }))
 
             $index += $size
         }
 
         Write-Verbose ($localizedData.scrobbleQueueFlushed -f $submitted)
     }
-    finally {
-        $lock.Dispose()
+
+    switch ($result) {
+        'Absent' { Write-Verbose $localizedData.scrobbleQueueEmpty }
+        'Contended' {
+            # Another session is already flushing the queue. Nothing to report and nothing
+            # to do: whatever this one would have sent, that one is sending.
+            Write-Verbose $localizedData.scrobbleQueueFlushSkipped
+        }
     }
 }

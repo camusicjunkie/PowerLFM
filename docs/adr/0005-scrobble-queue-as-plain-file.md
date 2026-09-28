@@ -24,6 +24,8 @@ session cannot act as two users doesn't carry across a reconfiguration.
   the scrobble throw, because being locked out of queueing is recoverable and a mangled queue
   of plays recorded nowhere else is not.
 - Writes go through an exclusive lock on a sidecar file and a temp-file-plus-rename, so
-  concurrent sessions and interrupted writes cannot corrupt the queue.
+  concurrent sessions and interrupted writes cannot corrupt the queue. That sequence lives in
+  one private function (`Update-LFMScrobbleQueue`) rather than at each write site: a caller
+  describes the change it wants to make to the Pending Scrobbles and never sees the lock.
 - Changing the on-disk shape later means bumping the version and writing a migration, not
   reinterpreting whatever is already there.
