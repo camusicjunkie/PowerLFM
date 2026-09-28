@@ -109,8 +109,9 @@ _Avoid_: session hash, account id, owner
 
 **Flush**:
 Submitting the Pending Scrobbles in the Scrobble Queue to Last.fm and removing the ones it
-accounts for. The single word for this: a Flush is attempted automatically before every
-Scrobble and can be run on demand.
+accounts for. The single word for this. A Flush is attempted automatically once before a
+run of Scrobbles rather than before each one, so a pipeline of plays flushes at the start
+and not between every Track, and it can also be run on demand.
 _Avoid_: drain, sync, replay, retry
 
 **Ignored Message**:
