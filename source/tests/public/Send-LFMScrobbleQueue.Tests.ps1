@@ -306,6 +306,31 @@ Describe 'Send-LFMScrobbleQueue: Unit' -Tag Unit {
             $queueWarnings.Message -join "`n" | Should -Match 'still in the scrobble queue'
         }
 
+        It 'Leaves the pending scrobbles it retained in the order they were queued' {
+            Mock Import-LFMScrobbleQueue {
+                [pscustomobject] @{ Version = 1; Scrobbles = $queuedThree }
+            } -ModuleName 'PowerLFM'
+            Mock Send-LFMScrobbleBatch {
+                @(5, 0, 5).ForEach({ [pscustomobject] @{ IgnoredMessage = [pscustomobject] @{ Code = $_ } } })
+            } -ModuleName 'PowerLFM'
+
+            Send-LFMScrobbleQueue -Confirm:$false -WarningAction SilentlyContinue
+
+            $siParams = @{
+                CommandName     = 'Export-LFMScrobbleQueue'
+                ModuleName      = 'PowerLFM'
+                Exactly         = $true
+                Times           = 1
+                Scope           = 'It'
+                ParameterFilter = {
+                    @($Queue.Scrobbles).Count -eq 2 -and
+                    $Queue.Scrobbles[0].Track -eq 'Track 1' -and
+                    $Queue.Scrobbles[1].Track -eq 'Track 3'
+                }
+            }
+            Should -Invoke @siParams
+        }
+
         It 'Names the track and the reason it dropped one' {
             Mock Import-LFMScrobbleQueue {
                 [pscustomobject] @{ Version = 1; Scrobbles = $queuedOne }

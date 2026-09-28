@@ -17,45 +17,44 @@ function Send-LFMScrobbleQueue {
 
         $fingerprint = Get-LFMSessionKeyFingerprint
 
-        # Positions rather than entries throughout: an entry leaves the queue by having
-        # the queue rebuilt without its position, which keeps the survivors in order.
-        #
         # The queue outlives the session that wrote it, so a play captured under other
         # credentials is left alone: submitting it would write it to someone else's
         # listening history.
-        $allPositions = @(0..($Scrobbles.Count - 1))
-        $minePositions = $allPositions.Where({ $Scrobbles[$_].SessionKeyFingerprint -eq $fingerprint })
-        $foreignPositions = $allPositions.Where({ $Scrobbles[$_].SessionKeyFingerprint -ne $fingerprint })
+        $mine = @($Scrobbles.Where({ $_.SessionKeyFingerprint -eq $fingerprint }))
+        $foreign = @($Scrobbles).Count - $mine.Count
 
-        if ($foreignPositions.Count -gt 0) {
-            Write-Warning ($localizedData.warningScrobbleQueueForeign -f $foreignPositions.Count)
+        if ($foreign -gt 0) {
+            Write-Warning ($localizedData.warningScrobbleQueueForeign -f $foreign)
         }
 
-        if ($minePositions.Count -eq 0) { return }
+        if ($mine.Count -eq 0) { return }
 
         # Named so -WhatIf answers what would be sent, not merely how much of it, for a
         # queue whose contents the user has long since forgotten. Prompted inside the
         # Queue Update, because the span it names is only known once the queue has been
         # read under the hold.
-        $timestamps = $minePositions.ForEach({ $Scrobbles[$_].Timestamp })
+        $timestamps = $mine.ForEach({ $_.Timestamp })
         $oldest = ConvertFrom-UnixTime -UnixTime ($timestamps | Measure-Object -Minimum).Minimum -Local
         $newest = ConvertFrom-UnixTime -UnixTime ($timestamps | Measure-Object -Maximum).Maximum -Local
-        $target = $localizedData.scrobbleQueueTarget -f $minePositions.Count, $oldest, $newest
+        $target = $localizedData.scrobbleQueueTarget -f $mine.Count, $oldest, $newest
 
         if (-not $PSCmdlet.ShouldProcess($target, 'Submitting to Last.fm')) {
             return
         }
 
-        $accounted = [Collections.Generic.HashSet[int]]::new()
+        # Accounted for by Scrobble Identity, not by position: the queue is rebuilt after
+        # every batch, and the survivors are the entries whose identity is not in here,
+        # filtered in place so their order is the order they were queued in.
+        $accounted = [Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
         $submitted = 0
         $index = 0
 
-        while ($index -lt $minePositions.Count) {
-            $size = [math]::Min($scrobbleQueueBatchSize, $minePositions.Count - $index)
-            $batchPositions = @($minePositions[$index..($index + $size - 1)])
+        while ($index -lt $mine.Count) {
+            $size = [math]::Min($scrobbleQueueBatchSize, $mine.Count - $index)
+            $batch = @($mine[$index..($index + $size - 1)])
 
             try {
-                $results = @(Send-LFMScrobbleBatch -Scrobble @($batchPositions.ForEach({ $Scrobbles[$_] })))
+                $results = @(Send-LFMScrobbleBatch -Scrobble $batch)
             }
             catch {
                 # Whatever went wrong, the unsent entries stay queued in order. Losing
@@ -66,14 +65,14 @@ function Send-LFMScrobbleQueue {
 
             # Without one result per submitted play there is no way to tell which were
             # taken, so the whole batch is left queued rather than guessed at.
-            if ($results.Count -ne $batchPositions.Count) {
+            if ($results.Count -ne $batch.Count) {
                 Write-Error ($localizedData.scrobbleQueueFlushFailed -f
-                    ($localizedData.errorScrobbleQueueResponse -f $batchPositions.Count, $results.Count))
+                    ($localizedData.errorScrobbleQueueResponse -f $batch.Count, $results.Count))
                 break
             }
 
-            for ($position = 0; $position -lt $batchPositions.Count; $position++) {
-                $entry = $Scrobbles[$batchPositions[$position]]
+            for ($position = 0; $position -lt $batch.Count; $position++) {
+                $entry = $batch[$position]
                 $code = Get-LFMIgnoredMessage -Code $results[$position].IgnoredMessage.Code
                 $timestamp = ConvertFrom-UnixTime -UnixTime $entry.Timestamp -Local
 
@@ -94,12 +93,19 @@ function Send-LFMScrobbleQueue {
                     continue
                 }
 
-                $null = $accounted.Add($batchPositions[$position])
+                $null = $accounted.Add((Get-LFMScrobbleIdentity -Scrobble $entry))
             }
 
             # Committed per batch, not at the end, so a process killed mid-flush cannot
             # resubmit plays Last.fm has already accepted.
-            & $Save @($allPositions.Where({ -not $accounted.Contains($_) }).ForEach({ $Scrobbles[$_] }))
+            #
+            # The fingerprint is checked as well as the identity because a play captured
+            # under other credentials is never this Flush's to remove, whatever it is
+            # identical to.
+            & $Save @($Scrobbles.Where({
+                $_.SessionKeyFingerprint -ne $fingerprint -or
+                -not $accounted.Contains((Get-LFMScrobbleIdentity -Scrobble $_))
+            }))
 
             $index += $size
         }

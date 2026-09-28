@@ -95,6 +95,14 @@ submitted. Unlike a cached value it has no authoritative copy anywhere else: unt
 accepted, the local record is the only one that exists.
 _Avoid_: cached scrobble, offline scrobble, queued track
 
+**Scrobble Identity**:
+What makes a Scrobble one play rather than another: the Artist, the Track and the moment.
+Two Pending Scrobbles sharing all three are the same play: it is why the Scrobble Queue
+refuses to queue one twice, and how a Flush removes the ones Last.fm has accounted for. A
+position in the Scrobble Queue is not an identity; the queue is rewritten on every Queue
+Update.
+_Avoid_: key, index, position, scrobble id
+
 **Scrobble Queue**:
 The durable, ordered store of Pending Scrobbles. Outlives the PowerShell session that
 created it, so it is not bound to a Configuration and must record which user's Credentials

@@ -45,13 +45,10 @@ function Add-LFMPendingScrobble {
         $result = Update-LFMScrobbleQueue -Change {
             param ($Scrobbles, $Save)
 
-            # Artist, track and timestamp identify a play. A second entry with the same
-            # three is the same Scrobble, so it is dropped rather than queued twice.
-            $duplicates = $Scrobbles.Where({
-                $_.Artist -eq $entry.Artist -and
-                $_.Track -eq $entry.Track -and
-                $_.Timestamp -eq $entry.Timestamp
-            })
+            # A second entry with the same Scrobble Identity is the same play, so it is
+            # dropped rather than queued twice.
+            $identity = Get-LFMScrobbleIdentity -Scrobble $entry
+            $duplicates = $Scrobbles.Where({ (Get-LFMScrobbleIdentity -Scrobble $_) -eq $identity })
 
             if ($duplicates.Count -eq 0) {
                 & $Save @($Scrobbles + $entry)
