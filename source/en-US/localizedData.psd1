@@ -8,7 +8,6 @@ ConvertFrom-StringData @'
     codeScrobblesExceeded = Max daily scrobbles exceeded
     errorFiltered = Request has been filtered because of bad meta data. {0}.
     errorFiltered2 = Request has been filtered because of bad meta data.
-    errorPasswordCredentialObject = Could not create PasswordCredential object
     errorCredentials = Could not retrieve credentials for {0}. Run Add-LFMConfiguration with proper keys.
     errorInvalidApiKey = . Run Get-LFMConfiguration if token and session key have already been requested.
     errorInvalidRequest = This is not a valid request.
