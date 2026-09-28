@@ -46,14 +46,14 @@ Describe 'Clear-LFMScrobbleQueue: Unit' -Tag Unit {
                 })
 
                 Mock Enter-LFMScrobbleQueueLock { }
-                Clear-LFMScrobbleQueue -Confirm:$false
+                Clear-LFMScrobbleQueue -Confirm:$false -WarningAction SilentlyContinue
             }
 
             $queue = Get-Content -LiteralPath $queuePath -Raw | ConvertFrom-Json
             @($queue.Scrobbles).Count | Should -Be 1
         }
 
-        It 'Says the queue was not cleared when another session holds it' {
+        It 'Warns that the queue was not cleared when another session holds it' {
             $output = InModuleScope @module {
                 Mock Get-LFMScrobbleQueuePath { $script:testQueuePath }
                 Export-LFMScrobbleQueue -Queue ([pscustomobject] @{
@@ -62,7 +62,7 @@ Describe 'Clear-LFMScrobbleQueue: Unit' -Tag Unit {
                 })
 
                 Mock Enter-LFMScrobbleQueueLock { }
-                Clear-LFMScrobbleQueue -Confirm:$false -Verbose 4>&1
+                Clear-LFMScrobbleQueue -Confirm:$false 3>&1
             }
 
             $output -join "`n" | Should -Match 'was not cleared'

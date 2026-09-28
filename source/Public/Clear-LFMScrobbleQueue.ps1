@@ -29,7 +29,13 @@ function Clear-LFMScrobbleQueue {
     }
 
     switch ($result) {
-        'Absent'    { Write-Verbose $localizedData.scrobbleQueueEmpty }
-        'Contended' { Write-Verbose $localizedData.scrobbleQueueClearSkipped }
+        'Absent' { Write-Verbose $localizedData.scrobbleQueueEmpty }
+        'Contended' {
+            # Warned rather than merely noted, unlike a contended Flush: the user asked for
+            # this and confirmed it, so silence would read as a queue that was discarded.
+            # Nobody else is going to do it for them either - a Flush left to another
+            # session still gets sent, but a Clear left to one never happens.
+            Write-Warning $localizedData.scrobbleQueueClearSkipped
+        }
     }
 }
