@@ -89,6 +89,18 @@ part of the listening history: it is superseded by the next declaration and leav
 record. Commands that return past listening must exclude it.
 _Avoid_: current scrobble, pending scrobble, playing now
 
+**Pending Scrobble**:
+A Scrobble captured locally because Last.fm could not be reached, held until it can be
+submitted. Unlike a cached value it has no authoritative copy anywhere else: until it is
+accepted, the local record is the only one that exists.
+_Avoid_: cached scrobble, offline scrobble, queued track
+
+**Scrobble Queue**:
+The durable, ordered store of Pending Scrobbles. Outlives the PowerShell session that
+created it, so it is not bound to a Configuration and must record which user's Credentials
+each Pending Scrobble was captured under.
+_Avoid_: scrobble cache, offline cache, backlog
+
 **Ignored Message**:
 Last.fm's explanation for a Scrobble it accepted over the wire but silently declined to
 record, for example because the Artist is filtered or the timestamp is implausible.
