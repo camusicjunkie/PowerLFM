@@ -218,6 +218,34 @@ Describe 'Send-LFMScrobbleQueue: Unit' -Tag Unit {
         }
     }
 
+    Context 'Identity' {
+
+        It 'Accounts for a pending scrobble whose name is spelled the other way' {
+            # The accounted set and the queue-side duplicate check read one identity from
+            # Get-LFMScrobbleIdentity. Normalising for one of them only would leave an entry
+            # queued that Last.fm had already recorded.
+            $queuedCombining = & $newQueuedScrobble -Count 1
+            $queuedCombining[0].Artist = 'Beyonce' + [char] 0x0301
+
+            Mock Import-LFMScrobbleQueue {
+                [pscustomobject] @{ Version = 1; Scrobbles = $queuedCombining }
+            } -ModuleName 'PowerLFM'
+            Mock Send-LFMScrobbleBatch { $resultsOne } -ModuleName 'PowerLFM'
+
+            Send-LFMScrobbleQueue -Confirm:$false
+
+            $siParams = @{
+                CommandName     = 'Export-LFMScrobbleQueue'
+                ModuleName      = 'PowerLFM'
+                Exactly         = $true
+                Times           = 1
+                Scope           = 'It'
+                ParameterFilter = { @($Queue.Scrobbles).Count -eq 0 }
+            }
+            Should -Invoke @siParams
+        }
+    }
+
     Context 'Other credentials' {
 
         It 'Submits only the pending scrobbles this configuration captured' {

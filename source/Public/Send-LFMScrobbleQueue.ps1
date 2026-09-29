@@ -45,7 +45,7 @@ function Send-LFMScrobbleQueue {
         # Accounted for by Scrobble Identity, not by position: the queue is rebuilt after
         # every batch, and the survivors are the entries whose identity is not in here,
         # filtered in place so their order is the order they were queued in.
-        $accounted = [Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
+        $accounted = [Collections.Generic.HashSet[string]]::new($scrobbleIdentityComparer)
         $submitted = 0
         $index = 0
 

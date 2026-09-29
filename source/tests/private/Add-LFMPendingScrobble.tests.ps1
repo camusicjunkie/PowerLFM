@@ -104,6 +104,35 @@ Describe 'Add-LFMPendingScrobble: Unit' -Tag Unit {
             @($queue.Scrobbles).Count | Should -Be 1
         }
 
+        It 'Does not queue the same scrobble under the other spelling of the artist' {
+            InModuleScope @module -Parameters @{ Timestamp = $timestamp } {
+                param ($Timestamp)
+                Mock Get-LFMScrobbleQueuePath { $script:testQueuePath }
+                Mock Get-LFMSessionKeyFingerprint { 'FINGERPRINT' }
+                $null = Add-LFMPendingScrobble -Artist ('Beyonc' + [char] 0x00E9) -Track 'Halo' -Timestamp $Timestamp -WarningAction SilentlyContinue
+                $null = Add-LFMPendingScrobble -Artist ('Beyonce' + [char] 0x0301) -Track 'Halo' -Timestamp $Timestamp -WarningAction SilentlyContinue
+            }
+
+            $queue = Get-Content -LiteralPath $queuePath -Raw | ConvertFrom-Json
+            @($queue.Scrobbles).Count | Should -Be 1
+        }
+
+        It 'Queues a name the flush would account for separately' {
+            # A soft hyphen is a different name to Last.fm and to the flush's accounted set,
+            # and the duplicate check has to agree: dropping this as a duplicate would leave
+            # the scrobble recorded nowhere, because the flush would never remove it as one.
+            InModuleScope @module -Parameters @{ Timestamp = $timestamp } {
+                param ($Timestamp)
+                Mock Get-LFMScrobbleQueuePath { $script:testQueuePath }
+                Mock Get-LFMSessionKeyFingerprint { 'FINGERPRINT' }
+                $null = Add-LFMPendingScrobble -Artist 'Opeth' -Track 'Windowpane' -Timestamp $Timestamp -WarningAction SilentlyContinue
+                $null = Add-LFMPendingScrobble -Artist ('Op' + [char] 0x00AD + 'eth') -Track 'Windowpane' -Timestamp $Timestamp -WarningAction SilentlyContinue
+            }
+
+            $queue = Get-Content -LiteralPath $queuePath -Raw | ConvertFrom-Json
+            @($queue.Scrobbles).Count | Should -Be 2
+        }
+
         It 'Queues the same artist, track and timestamp again for another account' {
             InModuleScope @module -Parameters @{ Timestamp = $timestamp } {
                 param ($Timestamp)

@@ -51,10 +51,15 @@ function Add-LFMPendingScrobble {
             # different account's play, however identical it looks - Last.fm accounts for
             # the two separately, and a Flush under these credentials would leave that one
             # queued and this one recorded nowhere. Scoped the way the Flush scopes its own.
+            #
+            # Compared through $scrobbleIdentityComparer rather than with -eq, which is
+            # culture-sensitive: the Flush accounts for entries ordinally, so the operator
+            # and the Flush could disagree about whether two identities are the same, and
+            # the queue would refuse a Scrobble the Flush would have submitted separately.
             $identity = Get-LFMScrobbleIdentity -Scrobble $entry
             $duplicates = $Scrobbles.Where({
                 $_.SessionKeyFingerprint -eq $entry.SessionKeyFingerprint -and
-                (Get-LFMScrobbleIdentity -Scrobble $_) -eq $identity
+                $scrobbleIdentityComparer.Equals((Get-LFMScrobbleIdentity -Scrobble $_), $identity)
             })
 
             if ($duplicates.Count -eq 0) {

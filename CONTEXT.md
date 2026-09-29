@@ -103,7 +103,10 @@ accounts playing the same Track in the same second are two Scrobbles, and Last.f
 for them separately. Identity paired with fingerprint is why the queue refuses to queue one
 Pending Scrobble twice, and how a Flush removes the ones Last.fm has accounted for. A
 position in the Scrobble Queue is not an identity; the queue is rewritten on every Queue
-Update.
+Update. Two spellings of the same name are one identity: names are normalised to a single
+composition, and identities are then compared code point for code point, ignoring case,
+wherever they are compared. That comparison is one rule kept in one place, so the queue and
+the Flush cannot disagree about which Pending Scrobbles are the same Scrobble.
 _Avoid_: key, index, position, scrobble id
 
 **Scrobble Queue**:
