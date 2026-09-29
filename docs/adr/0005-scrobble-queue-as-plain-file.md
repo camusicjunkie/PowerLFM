@@ -20,9 +20,12 @@ session cannot act as two users doesn't carry across a reconfiguration.
 
 - Listening history sits on disk in the clear. Anyone who can read the user's profile can
   read what they played offline.
-- A `Version` field gates every read and write. An unrecognised version refuses both and lets
-  the scrobble throw, because being locked out of queueing is recoverable and a mangled queue
-  of plays recorded nowhere else is not.
+- A `Version` field gates every read. An unrecognised version refuses the read and lets the
+  scrobble throw, because being locked out of queueing is recoverable and a mangled queue of
+  plays recorded nowhere else is not. The gate needs to sit on only one side: every Queue
+  Update reads under its hold before it writes, so a queue this module cannot understand is
+  refused before a write is ever reached, and a write stamps the current version rather than
+  asking the caller which one to honour.
 - Writes go through an exclusive lock on a sidecar file and a temp-file-plus-rename, so
   concurrent sessions and interrupted writes cannot corrupt the queue. That sequence lives in
   one private function (`Update-LFMScrobbleQueue`) rather than at each write site: a caller

@@ -6,10 +6,11 @@ function Export-LFMScrobbleQueue {
         [psobject] $Queue
     )
 
-    if ($Queue.Version -ne $scrobbleQueueVersion) {
-        throw ($localizedData.errorScrobbleQueueVersion -f (Get-LFMScrobbleQueuePath), $Queue.Version)
-    }
-
+    # Only the Pending Scrobbles are read off the queue handed over: the version is this
+    # module's to stamp, not the caller's to choose. The gate on an unrecognised version is
+    # on the read side, where one can actually arrive - Import refuses or migrates a foreign
+    # version before any write is reached (ADR-0006), so a queue this module does not
+    # understand is never written over blindly.
     $path = Get-LFMScrobbleQueuePath
     $directory = Split-Path -Path $path -Parent
     if (-not (Test-Path -LiteralPath $directory)) {

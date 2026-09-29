@@ -83,12 +83,28 @@ Describe 'Export-LFMScrobbleQueue: Unit' -Tag Unit {
         Test-Path -LiteralPath "$queuePath.tmp" | Should -BeFalse
     }
 
-    It 'Refuses to write a queue with an unrecognised version' {
-        {
-            InModuleScope @module {
-                Mock Get-LFMScrobbleQueuePath { $script:testQueuePath }
-                Export-LFMScrobbleQueue -Queue ([pscustomobject] @{ Version = 99; Scrobbles = @() })
-            }
-        } | Should -Throw '*unrecognised version (99)*'
+    It 'Stamps the current version whatever version the caller handed over' {
+        InModuleScope @module {
+            Mock Get-LFMScrobbleQueuePath { $script:testQueuePath }
+            Export-LFMScrobbleQueue -Queue ([pscustomobject] @{ Version = 99; Scrobbles = @() })
+        }
+
+        $written = Get-Content -LiteralPath $queuePath -Raw | ConvertFrom-Json
+        $written.Version | Should -Be (InModuleScope @module { $scrobbleQueueVersion })
+    }
+
+    It 'Writes a queue handed over without a version at all' {
+        InModuleScope @module {
+            Mock Get-LFMScrobbleQueuePath { $script:testQueuePath }
+            Export-LFMScrobbleQueue -Queue ([pscustomobject] @{
+                Scrobbles = @(
+                    [pscustomobject] @{ Artist = 'Opeth'; Track = 'Windowpane'; Timestamp = 1790596800 }
+                )
+            })
+        }
+
+        $written = Get-Content -LiteralPath $queuePath -Raw | ConvertFrom-Json
+        $written.Version | Should -Be (InModuleScope @module { $scrobbleQueueVersion })
+        @($written.Scrobbles).Count | Should -Be 1
     }
 }

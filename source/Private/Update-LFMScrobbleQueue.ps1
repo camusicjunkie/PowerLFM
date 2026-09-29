@@ -61,16 +61,13 @@ function Update-LFMScrobbleQueue {
     try {
         $queue = Import-LFMScrobbleQueue
 
-        # Version never reaches the change. Import has already migrated the queue forward
-        # and Export stamps the current version on the way out, so a change carrying the
-        # field could only ever hand back what it was given.
+        # Version reaches neither the change nor the write. Import has already migrated the
+        # queue forward and Export stamps the current version on the way out, so a change
+        # carrying the field could only ever hand back what it was given.
         $save = {
             param ($Scrobbles)
 
-            Export-LFMScrobbleQueue -Queue ([pscustomobject] @{
-                Version   = $scrobbleQueueVersion
-                Scrobbles = @($Scrobbles)
-            })
+            Export-LFMScrobbleQueue -Queue ([pscustomobject] @{ Scrobbles = @($Scrobbles) })
         }
 
         $null = & $Change @($queue.Scrobbles) $save
