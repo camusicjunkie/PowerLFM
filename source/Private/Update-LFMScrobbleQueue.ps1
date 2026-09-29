@@ -40,7 +40,7 @@ function Update-LFMScrobbleQueue {
     )
 
     if ($null -eq $Change) {
-        throw [Management.Automation.ParameterBindingException]::new('Update-LFMScrobbleQueue requires a -Change.')
+        throw [Management.Automation.ParameterBindingException]::new($localizedData.errorScrobbleQueueNoChange)
     }
 
     # The whole read-modify-write, in one place. ADR-0005 requires the exclusive hold and

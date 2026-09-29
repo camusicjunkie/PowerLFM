@@ -20,6 +20,7 @@ ConvertFrom-StringData @'
     errorScrobbleQueueMigrationEmpty = The migration returned no queue.
     errorScrobbleQueueNoConfiguration = No configuration is loaded, so the scrobble queue cannot record which account a scrobble belongs to. Run Get-LFMConfiguration.
     errorScrobbleQueueResponse = Last.fm returned {1} results for {0} submitted scrobbles.
+    errorScrobbleQueueNoChange = A scrobble queue update requires a change to make.
     warningScrobbleQueued = Last.fm could not be reached. {0} - {1} has been added to the scrobble queue.
     warningScrobbleAlreadyQueued = Last.fm could not be reached. {0} - {1} is already in the scrobble queue.
     warningScrobbleQueueLarge = The scrobble queue holds {0} pending scrobbles. Run Send-LFMScrobbleQueue to flush them.

@@ -21,10 +21,10 @@ function Send-LFMScrobbleQueue {
         # credentials is left alone: submitting it would write it to someone else's
         # listening history.
         $mine = @($Scrobbles.Where({ $_.SessionKeyFingerprint -eq $fingerprint }))
-        $foreign = @($Scrobbles).Count - $mine.Count
+        $foreignCount = @($Scrobbles).Count - $mine.Count
 
-        if ($foreign -gt 0) {
-            Write-Warning ($localizedData.warningScrobbleQueueForeign -f $foreign)
+        if ($foreignCount -gt 0) {
+            Write-Warning ($localizedData.warningScrobbleQueueForeign -f $foreignCount)
         }
 
         if ($mine.Count -eq 0) { return }
