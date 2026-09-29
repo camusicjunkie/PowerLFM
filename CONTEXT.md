@@ -97,10 +97,13 @@ _Avoid_: cached scrobble, offline scrobble, queued track
 
 **Scrobble Identity**:
 What makes one Scrobble a different Scrobble from another: the Artist, the Track and the
-moment. Two Pending Scrobbles sharing all three are the same Scrobble: it is why the
-Scrobble Queue refuses to queue one twice, and how a Flush removes the ones Last.fm has
-accounted for. A position in the Scrobble Queue is not an identity; the queue is rewritten
-on every Queue Update.
+moment. It says nothing about whose play it is, so the Scrobble Queue never compares one
+identity to another without comparing the Session Key Fingerprint alongside it: two
+accounts playing the same Track in the same second are two Scrobbles, and Last.fm accounts
+for them separately. Identity paired with fingerprint is why the queue refuses to queue one
+Pending Scrobble twice, and how a Flush removes the ones Last.fm has accounted for. A
+position in the Scrobble Queue is not an identity; the queue is rewritten on every Queue
+Update.
 _Avoid_: key, index, position, scrobble id
 
 **Scrobble Queue**:

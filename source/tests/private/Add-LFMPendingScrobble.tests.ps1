@@ -104,6 +104,23 @@ Describe 'Add-LFMPendingScrobble: Unit' -Tag Unit {
             @($queue.Scrobbles).Count | Should -Be 1
         }
 
+        It 'Queues the same artist, track and timestamp again for another account' {
+            InModuleScope @module -Parameters @{ Timestamp = $timestamp } {
+                param ($Timestamp)
+                Mock Get-LFMScrobbleQueuePath { $script:testQueuePath }
+                Mock Get-LFMSessionKeyFingerprint { 'FINGERPRINT' }
+                $null = Add-LFMPendingScrobble -Artist 'Opeth' -Track 'Windowpane' -Timestamp $Timestamp -WarningAction SilentlyContinue
+
+                Mock Get-LFMSessionKeyFingerprint { 'OTHER' }
+                $null = Add-LFMPendingScrobble -Artist 'Opeth' -Track 'Windowpane' -Timestamp $Timestamp -WarningAction SilentlyContinue
+            }
+
+            $queue = Get-Content -LiteralPath $queuePath -Raw | ConvertFrom-Json
+            @($queue.Scrobbles).Count | Should -Be 2
+            $queue.Scrobbles[0].SessionKeyFingerprint | Should -Be 'FINGERPRINT'
+            $queue.Scrobbles[1].SessionKeyFingerprint | Should -Be 'OTHER'
+        }
+
         It 'Says it queued nothing when the scrobble was queued already' {
             $warnings = InModuleScope @module -Parameters @{ Timestamp = $timestamp } {
                 param ($Timestamp)

@@ -45,10 +45,17 @@ function Add-LFMPendingScrobble {
         $result = Update-LFMScrobbleQueue -Change {
             param ($Scrobbles, $Save)
 
-            # A second entry with the same Scrobble Identity is the same play, so it is
-            # dropped rather than queued twice.
+            # A second entry with the same Scrobble Identity under the same fingerprint is
+            # the same play, so it is dropped rather than queued twice. The fingerprint is
+            # checked as well because an entry captured under other credentials is a
+            # different account's play, however identical it looks - Last.fm accounts for
+            # the two separately, and a Flush under these credentials would leave that one
+            # queued and this one recorded nowhere. Scoped the way the Flush scopes its own.
             $identity = Get-LFMScrobbleIdentity -Scrobble $entry
-            $duplicates = $Scrobbles.Where({ (Get-LFMScrobbleIdentity -Scrobble $_) -eq $identity })
+            $duplicates = $Scrobbles.Where({
+                $_.SessionKeyFingerprint -eq $entry.SessionKeyFingerprint -and
+                (Get-LFMScrobbleIdentity -Scrobble $_) -eq $identity
+            })
 
             if ($duplicates.Count -eq 0) {
                 & $Save @($Scrobbles + $entry)
