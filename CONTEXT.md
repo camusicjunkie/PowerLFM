@@ -96,11 +96,11 @@ accepted, the local record is the only one that exists.
 _Avoid_: cached scrobble, offline scrobble, queued track
 
 **Scrobble Identity**:
-What makes a Scrobble one play rather than another: the Artist, the Track and the moment.
-Two Pending Scrobbles sharing all three are the same play: it is why the Scrobble Queue
-refuses to queue one twice, and how a Flush removes the ones Last.fm has accounted for. A
-position in the Scrobble Queue is not an identity; the queue is rewritten on every Queue
-Update.
+What makes one Scrobble a different Scrobble from another: the Artist, the Track and the
+moment. Two Pending Scrobbles sharing all three are the same Scrobble: it is why the
+Scrobble Queue refuses to queue one twice, and how a Flush removes the ones Last.fm has
+accounted for. A position in the Scrobble Queue is not an identity; the queue is rewritten
+on every Queue Update.
 _Avoid_: key, index, position, scrobble id
 
 **Scrobble Queue**:
@@ -125,7 +125,7 @@ _Avoid_: transaction, write, save, commit (for the whole operation)
 **Flush**:
 Submitting the Pending Scrobbles in the Scrobble Queue to Last.fm and removing the ones it
 accounts for. The single word for this. A Flush is attempted automatically once before a
-run of Scrobbles rather than before each one, so a pipeline of plays flushes at the start
+run of Scrobbles rather than before each one, so a pipeline of them flushes at the start
 and not between every Track, and it can also be run on demand. One Flush is one Queue
 Update, committing after each batch rather than once at the end.
 _Avoid_: drain, sync, replay, retry
