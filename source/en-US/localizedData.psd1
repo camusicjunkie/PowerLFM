@@ -31,6 +31,7 @@ ConvertFrom-StringData @'
     warningScrobbleQueueNotRecorded = Last.fm did not record {0} - {1} at {2} and it is still in the scrobble queue. {3}
     scrobbleQueueTarget = {0} pending scrobbles played between {1} and {2}
     scrobbleQueueEmpty = The scrobble queue is empty.
+    scrobbleQueueAbsent = No scrobble queue was found.
     scrobbleQueueFlushed = {0} pending scrobbles were recorded by Last.fm.
     scrobbleQueueFlushSkipped = The scrobble queue is in use by another session and was not flushed.
     scrobbleQueueFlushFailed = The scrobble queue could not be flushed. {0}

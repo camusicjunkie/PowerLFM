@@ -6,7 +6,7 @@ function Clear-LFMScrobbleQueue {
     param ()
 
     # -SkipIfAbsent so a machine that has never queued anything is not given a queue lock
-    # on its way to being told the queue is empty.
+    # on its way to being told no queue was found.
     $result = Update-LFMScrobbleQueue -SkipIfAbsent -Change {
         param ($Scrobbles, $Save)
 
@@ -29,7 +29,11 @@ function Clear-LFMScrobbleQueue {
     }
 
     switch ($result) {
-        'Absent' { Write-Verbose $localizedData.scrobbleQueueEmpty }
+        # Not "the queue is empty": the test for a queue file is made before the hold is
+        # taken, so all this can honestly report is that it found none. Another session
+        # creating the first Pending Scrobble in between would make the stronger claim a
+        # false one, and a user who trusts it would not run the Clear again.
+        'Absent' { Write-Verbose $localizedData.scrobbleQueueAbsent }
         'Contended' {
             # Warned rather than merely noted, unlike a contended Flush: the user asked for
             # this and confirmed it, so silence would read as a queue that was discarded.

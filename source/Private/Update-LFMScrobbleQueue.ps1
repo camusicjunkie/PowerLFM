@@ -2,9 +2,13 @@ function Update-LFMScrobbleQueue {
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseShouldProcessForStateChangingFunctions", "")]
     # Says what happened rather than whether it worked: 'Updated' if the change ran,
     # 'Contended' if another session holds the queue, 'Absent' if -SkipIfAbsent was given
-    # and there is no queue file. Callers have something different to say for each - an
-    # absent queue is empty, a contended one is somebody else's to write - so a boolean
-    # would collapse two outcomes that are not the same news.
+    # and no queue file was found. Callers have something different to say for each - an
+    # absent queue held nothing to do, a contended one is somebody else's to write - so a
+    # boolean would collapse two outcomes that are not the same news.
+    #
+    # 'Absent' is the one answer that is not made under the hold, so it says only what was
+    # there when it was asked: another session can create the queue immediately afterwards.
+    # Callers report it as a queue that was not found rather than as a queue that is empty.
     #
     # Deliberately a simple function, with no CmdletBinding and no [Parameter()] - either
     # one makes it advanced, and an advanced function brings its own cmdlet runtime. A
@@ -46,6 +50,12 @@ function Update-LFMScrobbleQueue {
     # The whole read-modify-write, in one place. ADR-0005 requires the exclusive hold and
     # the atomic swap; having each write site sequence them itself made that a convention
     # rather than an invariant.
+    #
+    # This test is the one that sits outside the hold, deliberately. Taking the hold first
+    # would be truthful about the instant it reports, at the cost of leaving a queue lock on
+    # every machine that has never queued anything - which is the whole reason -SkipIfAbsent
+    # exists. What the answer cannot support is a claim about the queue's state, so callers
+    # report what was found and don't make one.
     if ($SkipIfAbsent -and -not (Test-Path -LiteralPath (Get-LFMScrobbleQueuePath))) {
         return 'Absent'
     }

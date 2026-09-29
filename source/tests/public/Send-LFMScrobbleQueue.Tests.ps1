@@ -72,6 +72,17 @@ Describe 'Send-LFMScrobbleQueue: Unit' -Tag Unit {
             Should -Invoke @siParams
         }
 
+        It 'Says no queue was found rather than that the queue is empty' {
+            # The test for a queue file is made before the hold, so the report cannot claim
+            # anything about the queue's state - and the Flush and the Clear should not
+            # describe the same answer in two different ways.
+            Mock Test-Path { $false } -ModuleName 'PowerLFM'
+
+            $output = Send-LFMScrobbleQueue -Confirm:$false -Verbose 4>&1
+
+            $output -join "`n" | Should -Match 'No scrobble queue was found'
+        }
+
         It 'Submits nothing when the queue holds no pending scrobbles' {
             Mock Import-LFMScrobbleQueue {
                 [pscustomobject] @{ Version = 1; Scrobbles = @() }

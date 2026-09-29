@@ -5,7 +5,7 @@ function Send-LFMScrobbleQueue {
                    ConfirmImpact = 'Medium')]
     param ()
 
-    # -SkipIfAbsent because the common case is an empty queue on a machine that has never
+    # -SkipIfAbsent because the common case is no queue at all on a machine that has never
     # been offline, and that should not create a thing on disk.
     $result = Update-LFMScrobbleQueue -SkipIfAbsent -Change {
         param ($Scrobbles, $Save)
@@ -114,7 +114,10 @@ function Send-LFMScrobbleQueue {
     }
 
     switch ($result) {
-        'Absent' { Write-Verbose $localizedData.scrobbleQueueEmpty }
+        # Reports what it found rather than the state of a queue it never held. A Flush
+        # losing that race is benign either way - the session that created the queue
+        # flushes it - but the two commands should not describe the same answer differently.
+        'Absent' { Write-Verbose $localizedData.scrobbleQueueAbsent }
         'Contended' {
             # Another session is already flushing the queue. Nothing to report and nothing
             # to do: whatever this one would have sent, that one is sending.

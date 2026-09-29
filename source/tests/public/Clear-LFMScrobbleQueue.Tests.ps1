@@ -107,6 +107,19 @@ Describe 'Clear-LFMScrobbleQueue: Unit' -Tag Unit {
             $output -join "`n" | Should -Match 'Performing the operation "Discarding" on target "1 pending scrobbles".'
         }
 
+        It 'Says no queue was found rather than that the queue is empty' {
+            # The test for a queue file is made before the hold, so the report cannot claim
+            # anything about the queue's state: another session can create one immediately
+            # after, and the user would have been told there was nothing to discard.
+            $output = InModuleScope @module {
+                Mock Get-LFMScrobbleQueuePath { $script:testQueuePath }
+
+                Clear-LFMScrobbleQueue -Confirm:$false -Verbose 4>&1
+            }
+
+            $output -join "`n" | Should -Match 'No scrobble queue was found'
+        }
+
         It 'Discards nothing when -WhatIf is used' {
             InModuleScope @module {
                 Mock Get-LFMScrobbleQueuePath { $script:testQueuePath }
