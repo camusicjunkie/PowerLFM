@@ -143,6 +143,31 @@ Describe 'Import-LFMScrobbleQueue: Unit' -Tag Unit {
         } | Should -Throw '*written by version 99*'
     }
 
+    It 'Gives up rather than reporting an empty queue when the file never comes free' {
+        # A read that lands while a Queue Update is swapping the file in waits and tries
+        # again, because the queue is there directly afterwards. A file held open for
+        # longer than that is not a swap in flight, and answering "nothing is pending"
+        # would be the one wrong answer: the pending scrobbles are still there.
+        Set-Content -LiteralPath $queuePath -Value (@{ Version = 1; Scrobbles = @() } | ConvertTo-Json)
+        $held = [IO.File]::Open($queuePath, 'Open', 'ReadWrite', 'None')
+
+        try {
+            $caught = try {
+                InModuleScope @module {
+                    Mock Get-LFMScrobbleQueuePath { $script:testQueuePath }
+                    Import-LFMScrobbleQueue
+                }
+                $null
+            }
+            catch { $_ }
+
+            $caught | Should -Not -BeNullOrEmpty
+            # Thrown from a .NET call, so the reason is one exception further in.
+            $caught.Exception.InnerException | Should -BeOfType [IO.IOException]
+        }
+        finally { $held.Dispose() }
+    }
+
     It 'Names the queue file when it refuses to read it' {
         $json = @{ Version = 99; Scrobbles = @() } | ConvertTo-Json -Depth 5
         Set-Content -LiteralPath $queuePath -Value $json
