@@ -154,6 +154,37 @@ Describe 'Set-LFMTrackScrobble: Unit' -Tag Unit {
             Should -Invoke @siParams
         }
 
+        It 'Attempts one flush for a run of scrobbles rather than one for each' {
+            # The flush sits in begin, so a pipeline of plays flushes at the start and not
+            # between every track. Asserting the three scrobbles as well, because one
+            # flush is only the right answer if all three of them happened.
+            $plays = @(
+                [pscustomobject] @{ Artist = 'Artist'; Track = 'One'; Timestamp = $dateTime }
+                [pscustomobject] @{ Artist = 'Artist'; Track = 'Two'; Timestamp = $dateTime }
+                [pscustomobject] @{ Artist = 'Artist'; Track = 'Three'; Timestamp = $dateTime }
+            )
+
+            $plays | Set-LFMTrackScrobble
+
+            $siParams = @{
+                CommandName = 'Send-LFMScrobbleQueue'
+                ModuleName  = 'PowerLFM'
+                Exactly     = $true
+                Times       = 1
+                Scope       = 'It'
+            }
+            Should -Invoke @siParams
+
+            $siParams = @{
+                CommandName = 'Invoke-LFMApiUri'
+                ModuleName  = 'PowerLFM'
+                Exactly     = $true
+                Times       = 3
+                Scope       = 'It'
+            }
+            Should -Invoke @siParams
+        }
+
         It 'Should queue the scrobble when Last.fm could not be reached' {
             Mock Invoke-LFMApiUri { throw $networkError } -ModuleName 'PowerLFM'
             Mock Add-LFMPendingScrobble {
