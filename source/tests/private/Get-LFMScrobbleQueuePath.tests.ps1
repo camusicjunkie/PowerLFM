@@ -17,6 +17,29 @@ Describe 'Get-LFMScrobbleQueuePath: Unit' -Tag Unit {
         $result | Should -BeLike "$env:LOCALAPPDATA*"
     }
 
+    It 'Resolves under the home directory off Windows' -Skip:($PSVersionTable.PSVersion.Major -lt 6 -or $IsWindows) {
+        $result = InModuleScope @module { Get-LFMScrobbleQueuePath }
+
+        $result | Should -BeLike (Join-Path -Path $env:HOME -ChildPath '.local/share*')
+    }
+
+    It 'Follows the home the session was given rather than the one it started with' -Skip:($PSVersionTable.PSVersion.Major -lt 6 -or $IsWindows) {
+        # $HOME is read-only and fixed when the session starts, so a path resolved through
+        # it cannot be pointed anywhere - not by a caller, and not by a test. Reading the
+        # environment is what lets a process be told where its home is, which is how the
+        # concurrency tests give a child a queue of its own instead of writing into the
+        # queue the user is keeping.
+        $restore = $env:HOME
+
+        try {
+            $env:HOME = '/tmp/powerlfm-test-home'
+            $result = InModuleScope @module { Get-LFMScrobbleQueuePath }
+
+            $result | Should -BeLike '/tmp/powerlfm-test-home*'
+        }
+        finally { $env:HOME = $restore }
+    }
+
     It 'Returns the same path every time it is asked' {
         $first = InModuleScope @module { Get-LFMScrobbleQueuePath }
         $second = InModuleScope @module { Get-LFMScrobbleQueuePath }
