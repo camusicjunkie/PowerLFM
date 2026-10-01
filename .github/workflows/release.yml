@@ -1,10 +1,10 @@
 name: Release
 
-# Publishing used to hang off AppVeyor's on_success hook, which fired on every
-# main build and then decided for itself whether the newest tag matched the
-# built version. Tag pushes are the actual trigger, so key the workflow on them
-# directly and keep only the guard that catches a tag disagreeing with the
-# version GitVersion derives.
+# A tag push is the trigger, because a tag push is the actual event: publishing is
+# keyed on it directly rather than on a main build that then has to decide for
+# itself whether the newest tag matches what it built. The only thing left to guard
+# is a tag disagreeing with the version GitVersion derives, which the last step
+# checks.
 on:
   push:
     tags: ['v*']
