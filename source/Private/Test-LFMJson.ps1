@@ -6,15 +6,18 @@ function Test-LFMJson {
     )
 
     process {
-        $result = $true
-
+        # Answers "is this a JSON object", not "is this valid JSON". The one caller
+        # reads properties off the result, so an array or a bare scalar is no more
+        # use to it than a string that never parsed.
+        #
+        # Spelled out rather than as [pscustomobject], which is an accelerator for
+        # PSObject and so matches every parsed value, scalars included.
         try {
-            $null = [Newtonsoft.Json.Linq.JObject]::Parse($Json)
+            $parsed = ConvertFrom-Json -InputObject $Json -ErrorAction Stop
+            Write-Output ($parsed -is [System.Management.Automation.PSCustomObject])
         }
         catch {
-            $result = $false
+            Write-Output $false
         }
-
-        Write-Output $result
     }
 }

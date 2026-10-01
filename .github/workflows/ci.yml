@@ -129,21 +129,10 @@ jobs:
         run: |
           Import-Module Pester -MinimumVersion 6.0.0 -Force
 
-          # The manifest cannot be imported here. It requires the newtonsoft.json package
-          # module, whose own loader reaches for "$PSScriptRoot\libs\Newtonsoft.Json.dll"
-          # - a backslash, which is a filename rather than a path separator on Linux. The
-          # assembly beside it is portable; only that module's loader is not.
-          #
-          # So the assembly is loaded directly and the built root module is imported
-          # instead of the manifest, which is what pulls RequiredModules in. The Windows
-          # job still imports the manifest the way a user would.
-          $assembly = Get-ChildItem -Path ./build/modules/newtonsoft.json -Recurse -Filter 'Newtonsoft.Json.dll' |
-              Select-Object -First 1
-          if (-not $assembly) { throw 'Found no Newtonsoft.Json.dll to load' }
-          Add-Type -Path $assembly.FullName
-
-          $rootModule = Get-Item ./build/PowerLFM/*/PowerLFM.psm1
-          Import-Module $rootModule -Force -Global
+          # The manifest, the way a user loads it, rather than the root module behind
+          # it: importing it here is what proves the module is importable off Windows.
+          $manifest = Get-Item ./build/PowerLFM/*/PowerLFM.psd1
+          Import-Module $manifest -Force -Global
 
           # Every test file that names a scrobble: the queue, its lock, the identity, the
           # migrations, and the commands that read and write it.
