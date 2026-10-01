@@ -51,8 +51,7 @@ PowerShellVersion = '5.1'
 # ProcessorArchitecture = ''
 
 # Modules that must be imported into the global environment prior to importing this module
-RequiredModules = @('newtonsoft.json',
-    'Microsoft.PowerShell.SecretManagement',
+RequiredModules = @('Microsoft.PowerShell.SecretManagement',
     'Microsoft.PowerShell.SecretStore'
 )
 
