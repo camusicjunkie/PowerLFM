@@ -230,7 +230,37 @@ switch ($Work) {
         # it to, so parent and child are talking about the same file without the parent
         # having to be told where the child put it.
         $queueRoot = Join-Path -Path $TestDrive -ChildPath ([guid]::NewGuid())
-        $queuePath = Join-Path -Path $queueRoot -ChildPath 'PowerLFM/ScrobbleQueue.json'
+
+        # Where the child will put its queue, worked out by asking the module rather than
+        # by spelling the layout out here: the root is LOCALAPPDATA on Windows and HOME
+        # everywhere else, and the path underneath it differs too. Spelling it out meant
+        # the parent watched a file on Windows and the wrong one on Linux - where the
+        # tests that only needed the two to meet then passed without them ever meeting.
+        $queuePath = InModuleScope @module -Parameters @{ Root = $queueRoot } {
+            param ($Root)
+
+            $restore = @{
+                LOCALAPPDATA = $env:LOCALAPPDATA
+                HOME         = $env:HOME
+            }
+
+            try {
+                $env:LOCALAPPDATA = $Root
+                $env:HOME = $Root
+                Get-LFMScrobbleQueuePath
+            }
+            finally {
+                foreach ($name in $restore.Keys) {
+                    if ($null -eq $restore[$name]) {
+                        Remove-Item -Path "env:$name" -ErrorAction SilentlyContinue
+                    }
+                    else {
+                        Set-Item -Path "env:$name" -Value $restore[$name]
+                    }
+                }
+            }
+        }
+
         $lockPath = "$queuePath.lock"
         $barriers = Join-Path -Path $queueRoot -ChildPath 'barriers'
         $null = New-Item -Path $barriers -ItemType Directory -Force
