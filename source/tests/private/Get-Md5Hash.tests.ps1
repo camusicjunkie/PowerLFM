@@ -1,4 +1,4 @@
-Describe 'Test-LFMJson: Unit' -Tag Unit {
+Describe 'Get-Md5Hash: Unit' -Tag Unit {
     BeforeAll {
         $module = @{ ModuleName = 'PowerLFM' }
     }
