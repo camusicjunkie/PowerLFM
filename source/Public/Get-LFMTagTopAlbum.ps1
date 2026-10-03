@@ -14,41 +14,22 @@ function Get-LFMTagTopAlbum {
         [int] $Page
     )
 
-    begin {
-        $apiParams = @{
-            'method' = 'tag.getTopAlbums'
-            'api_key' = $script:LFMConfig.ApiKey
-            'format' = 'json'
-        }
-    }
     process {
-        $noCommonParams = Remove-CommonParameter $PSBoundParameters
-        $convertedParams = ConvertTo-LFMParameter $noCommonParams
+        $irm = Invoke-LFMApiMethod -Method 'tag.getTopAlbums' -Parameter $PSBoundParameters
 
-        $query = New-LFMApiQuery ($convertedParams + $apiParams)
-        $apiUrl = "$baseUrl/?$query"
-    }
-    end {
-        try {
-            $irm = Invoke-LFMApiUri -Uri $apiUrl
-
-            foreach ($album in $irm.Albums.Album) {
-                $albumInfo = [pscustomobject] @{
-                    'PSTypeName' = 'PowerLFM.Tag.TopAlbums'
-                    'Album' = $album.Name
-                    'AlbumId' = $album.Mbid
-                    'AlbumUrl' = [uri] $album.Url
-                    'Artist' = $album.Artist.Name
-                    'ArtistId' = $album.Artist.Mbid
-                    'ArtistUrl' = [uri] $album.Artist.Url
-                    'Rank' = [int] $album.'@attr'.Rank
-                }
-
-                Write-Output $albumInfo
+        foreach ($album in $irm.Albums.Album) {
+            $albumInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.Tag.TopAlbums'
+                'Album' = $album.Name
+                'AlbumId' = $album.Mbid
+                'AlbumUrl' = [uri] $album.Url
+                'Artist' = $album.Artist.Name
+                'ArtistId' = $album.Artist.Mbid
+                'ArtistUrl' = [uri] $album.Artist.Url
+                'Rank' = [int] $album.'@attr'.Rank
             }
-        }
-        catch {
-            throw $_
+
+            Write-Output $albumInfo
         }
     }
 }

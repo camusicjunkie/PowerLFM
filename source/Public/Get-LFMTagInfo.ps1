@@ -13,37 +13,18 @@ function Get-LFMTagInfo {
         [string] $Language
     )
 
-    begin {
-        $apiParams = @{
-            'method' = 'tag.getInfo'
-            'api_key' = $script:LFMConfig.ApiKey
-            'format' = 'json'
-        }
-    }
     process {
-        $noCommonParams = Remove-CommonParameter $PSBoundParameters
-        $convertedParams = ConvertTo-LFMParameter $noCommonParams
+        $irm = Invoke-LFMApiMethod -Method 'tag.getInfo' -Parameter $PSBoundParameters
 
-        $query = New-LFMApiQuery ($convertedParams + $apiParams)
-        $apiUrl = "$baseUrl/?$query"
-    }
-    end {
-        try {
-            $irm = Invoke-LFMApiUri -Uri $apiUrl
-
-            $tagInfo = [pscustomobject] @{
-                'PSTypeName' = 'PowerLFM.Tag.Info'
-                'Tag' = $irm.Tag.Name
-                'Url' = [uri] "http://www.last.fm/tag/$Tag" -replace ' ', '+'
-                'Reach' = [int] $irm.Tag.Reach
-                'TotalTags' = [int] $irm.Tag.Total
-                'Summary' = $irm.Tag.Wiki.Summary
-            }
-
-            Write-Output $tagInfo
+        $tagInfo = [pscustomobject] @{
+            'PSTypeName' = 'PowerLFM.Tag.Info'
+            'Tag' = $irm.Tag.Name
+            'Url' = [uri] "http://www.last.fm/tag/$Tag" -replace ' ', '+'
+            'Reach' = [int] $irm.Tag.Reach
+            'TotalTags' = [int] $irm.Tag.Total
+            'Summary' = $irm.Tag.Wiki.Summary
         }
-        catch {
-            throw $_
-        }
+
+        Write-Output $tagInfo
     }
 }

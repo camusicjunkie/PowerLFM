@@ -11,20 +11,8 @@ function Get-LFMChartTopArtist {
         [int] $Page
     )
 
-    $apiParams = @{
-        'method' = 'chart.getTopArtists'
-        'api_key' = $script:LFMConfig.ApiKey
-        'format' = 'json'
-    }
-
-    $noCommonParams = Remove-CommonParameter $PSBoundParameters
-    $convertedParams = ConvertTo-LFMParameter $noCommonParams
-
-    $query = New-LFMApiQuery ($convertedParams + $apiParams)
-    $apiUrl = "$baseUrl/?$query"
-
-    try {
-        $irm = Invoke-LFMApiUri -Uri $apiUrl
+    process {
+        $irm = Invoke-LFMApiMethod -Method 'chart.getTopArtists' -Parameter $PSBoundParameters
 
         foreach ($artist in $irm.Artists.Artist) {
             $artistInfo = [pscustomobject] @{
@@ -38,8 +26,5 @@ function Get-LFMChartTopArtist {
 
             Write-Output $artistInfo
         }
-    }
-    catch {
-        throw $_
     }
 }

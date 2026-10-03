@@ -11,20 +11,8 @@ function Get-LFMChartTopTrack {
         [int] $Page
     )
 
-    $apiParams = @{
-        'method' = 'chart.getTopTracks'
-        'api_key' = $script:LFMConfig.ApiKey
-        'format' = 'json'
-    }
-
-    $noCommonParams = Remove-CommonParameter $PSBoundParameters
-    $convertedParams = ConvertTo-LFMParameter $noCommonParams
-
-    $query = New-LFMApiQuery ($convertedParams + $apiParams)
-    $apiUrl = "$baseUrl/?$query"
-
-    try {
-        $irm = Invoke-LFMApiUri -Uri $apiUrl
+    process {
+        $irm = Invoke-LFMApiMethod -Method 'chart.getTopTracks' -Parameter $PSBoundParameters
 
         foreach ($track in $irm.Tracks.Track) {
             $trackInfo = [pscustomobject] @{
@@ -42,8 +30,5 @@ function Get-LFMChartTopTrack {
 
             Write-Output $trackInfo
         }
-    }
-    catch {
-        throw $_
     }
 }

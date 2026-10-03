@@ -5,37 +5,18 @@ function Get-LFMTagTopTag {
     [OutputType('PowerLFM.Tag.TopTags')]
     param ()
 
-    begin {
-        $apiParams = @{
-            'method' = 'tag.getTopTags'
-            'api_key' = $script:LFMConfig.ApiKey
-            'format' = 'json'
-        }
-    }
     process {
-        $noCommonParams = Remove-CommonParameter $PSBoundParameters
-        $convertedParams = ConvertTo-LFMParameter $noCommonParams
+        $irm = Invoke-LFMApiMethod -Method 'tag.getTopTags' -Parameter $PSBoundParameters
 
-        $query = New-LFMApiQuery ($convertedParams + $apiParams)
-        $apiUrl = "$baseUrl/?$query"
-    }
-    end {
-        try {
-            $irm = Invoke-LFMApiUri -Uri $apiUrl
-
-            foreach ($tag in $irm.TopTags.Tag) {
-                $tagInfo = [pscustomobject] @{
-                    'PSTypeName' = 'PowerLFM.Tag.TopTags'
-                    'Tag' = $tag.Name
-                    'Count' = [int] $tag.Count
-                    'Reach' = [int] $tag.Reach
-                }
-
-                Write-Output $tagInfo
+        foreach ($tag in $irm.TopTags.Tag) {
+            $tagInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.Tag.TopTags'
+                'Tag' = $tag.Name
+                'Count' = [int] $tag.Count
+                'Reach' = [int] $tag.Reach
             }
-        }
-        catch {
-            throw $_
+
+            Write-Output $tagInfo
         }
     }
 }
