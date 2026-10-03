@@ -2,18 +2,33 @@
 Describe 'Get-LFMAlbumTag: Unit' -Tag Unit {
 
     BeforeAll {
+        . $PSScriptRoot\..\RequestRecorder.ps1
+
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMAlbumTag'.AlbumTag
 
-        Mock Remove-CommonParameter {
-            [hashtable] @{
-                Album  = 'Album'
-                Artist = 'Artist'
+        $module = @{ ModuleName = 'PowerLFM' }
+
+        $originalConfig = InModuleScope @module { $script:LFMConfig }
+
+        InModuleScope @module {
+            $script:LFMConfig = [pscustomobject] @{
+                ApiKey       = 'ApiKeyValue'
+                SessionKey   = 'SessionKeyValue'
+                SharedSecret = 'SharedSecretValue'
             }
-        } -ModuleName 'PowerLFM'
-        Mock ConvertTo-LFMParameter -ModuleName 'PowerLFM'
-        Mock New-LFMApiQuery -ModuleName 'PowerLFM'
-        Mock Invoke-LFMApiUri { $contextMock } -ModuleName 'PowerLFM'
+        }
+    }
+
+    AfterAll {
+        InModuleScope @module -Parameters @{ Config = $originalConfig } {
+            param ($Config)
+            $script:LFMConfig = $Config
+        }
+    }
+
+    BeforeEach {
+        Register-LFMFakeRestMethod -Response $contextMock
     }
 
     Context 'Input' {
@@ -23,49 +38,61 @@ Describe 'Get-LFMAlbumTag: Unit' -Tag Unit {
         }
     }
 
-    Context 'Execution' {
+    Context 'Request' {
 
-        BeforeAll {
-            Get-LFMAlbumTag -Album Album -Artist Artist
+        It 'Sends album.getTags as an unsigned GET' {
+            $null = Get-LFMAlbumTag -Album 'Blackwater Park' -Artist 'Opeth'
+
+            $request = Get-LFMRecordedRequest
+            $request.Method | Should -Be 'album.getTags'
+            $request.HttpMethod | Should -Be 'Get'
+            $request.Parameters.ContainsKey('api_sig') | Should -BeFalse
+            $request.Parameters.ContainsKey('sk') | Should -BeFalse
         }
 
-        It 'Should remove common parameters from bound parameters' {
-            $siParams = @{
-                CommandName = 'Remove-CommonParameter'
-                ModuleName  = 'PowerLFM'
-                Scope       = 'Context'
-                Exactly     = $true
-                Times       = 1
-            }
-            Should -Invoke @siParams
+        It 'Sends the album and artist' {
+            $null = Get-LFMAlbumTag -Album 'Blackwater Park' -Artist 'Opeth'
+
+            $request = Get-LFMRecordedRequest
+            $request.Parameters['album'] | Should -Be 'Blackwater Park'
+            $request.Parameters['artist'] | Should -Be 'Opeth'
         }
 
-        It 'Should convert parameters to format API expects after signing' {
-            $siParams = @{
-                CommandName = 'ConvertTo-LFMParameter'
-                ModuleName  = 'PowerLFM'
-                Scope       = 'Context'
-                Exactly     = $true
-                Times       = 1
-            }
-            Should -Invoke @siParams
+        It 'Sends the id as mbid' {
+            $id = New-Guid
+            $null = Get-LFMAlbumTag -Id $id
+
+            (Get-LFMRecordedRequest).Parameters['mbid'] | Should -Be $id.ToString()
         }
 
-        It 'Should take hashtable and build a query for a uri' {
-            $siParams = @{
-                CommandName = 'New-LFMApiQuery'
-                ModuleName  = 'PowerLFM'
-                Scope       = 'Context'
-                Exactly     = $true
-                Times       = 1
-            }
-            Should -Invoke @siParams
+        It 'Sends the user name as user' {
+            $null = Get-LFMAlbumTag -Album 'Blackwater Park' -Artist 'Opeth' -UserName 'camusicjunkie'
+
+            (Get-LFMRecordedRequest).Parameters['user'] | Should -Be 'camusicjunkie'
+        }
+
+        It 'Sends autocorrect as 1' {
+            $null = Get-LFMAlbumTag -Album 'Blackwater Park' -Artist 'Opeth' -AutoCorrect
+
+            (Get-LFMRecordedRequest).Parameters['autocorrect'] | Should -Be '1'
+        }
+
+        It 'Sends one request per piped object' {
+            $null = @(
+                [pscustomobject] @{ Album = 'Album1'; Artist = 'Artist1' }
+                [pscustomobject] @{ Album = 'Album2'; Artist = 'Artist2' }
+            ) | Get-LFMAlbumTag
+
+            $requests = @(Get-LFMRecordedRequest)
+            $requests.Count | Should -Be 2
+            $requests[1].Parameters['album'] | Should -Be 'Album2'
         }
     }
 
     Context 'Output' {
 
         BeforeAll {
+            Register-LFMFakeRestMethod -Response $contextMock
             $output = Get-LFMAlbumTag -Album Album -Artist Artist
         }
 
@@ -86,25 +113,10 @@ Describe 'Get-LFMAlbumTag: Unit' -Tag Unit {
             $output.Tags | Should -HaveCount 2
         }
 
-        It 'Should call the correct Last.fm get method' {
-            Get-LFMAlbumTag -Album Album -Artist Artist
-
-            $siParams = @{
-                CommandName     = 'Invoke-LFMApiUri'
-                ModuleName      = 'PowerLFM'
-                Exactly         = $true
-                Times           = 1
-                ParameterFilter = {
-                    $Uri -like "$baseUrl*"
-                }
-            }
-            Should -Invoke @siParams
-        }
-
         It 'Should throw when an error is returned in the response' {
-            Mock Invoke-LFMApiUri { throw 'Error' } -ModuleName 'PowerLFM'
+            Register-LFMFakeRestMethod -Response ([pscustomobject] @{ error = 6; message = 'Not found' })
 
-            { Get-LFMAlbumTag -Album Album -Artist Artist } | Should -Throw 'Error'
+            { Get-LFMAlbumTag -Album Album -Artist Artist } | Should -Throw '*Not found*'
         }
     }
 }

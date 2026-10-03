@@ -16,38 +16,19 @@ function Search-LFMArtist {
         [int] $Page
     )
 
-    begin {
-        $apiParams = @{
-            'method' = 'artist.search'
-            'api_key' = $script:LFMConfig.ApiKey
-            'format' = 'json'
-        }
-    }
     process {
-        $noCommonParams = Remove-CommonParameter $PSBoundParameters
-        $convertedParams = ConvertTo-LFMParameter $noCommonParams
+        $irm = Invoke-LFMApiMethod -Method 'artist.search' -Parameter $PSBoundParameters
 
-        $query = New-LFMApiQuery ($convertedParams + $apiParams)
-        $apiUrl = "$baseUrl/?$query"
-    }
-    end {
-        try {
-            $irm = Invoke-LFMApiUri -Uri $apiUrl
-
-            foreach ($match in $irm.Results.ArtistMatches.Artist) {
-                $matchInfo = [pscustomobject] @{
-                    'PSTypeName' = 'PowerLFM.Artist.Search'
-                    'Artist' = $match.Name
-                    'Id' = $match.Mbid
-                    'Listeners' = [int] $match.Listeners
-                    'Url' = [uri] $match.Url
-                }
-
-                Write-Output $matchInfo
+        foreach ($match in $irm.Results.ArtistMatches.Artist) {
+            $matchInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.Artist.Search'
+                'Artist' = $match.Name
+                'Id' = $match.Mbid
+                'Listeners' = [int] $match.Listeners
+                'Url' = [uri] $match.Url
             }
-        }
-        catch {
-            throw $_
+
+            Write-Output $matchInfo
         }
     }
 }

@@ -10,36 +10,17 @@ function Get-LFMArtistCorrection {
         [string] $Artist
     )
 
-    begin {
-        $apiParams = @{
-            'method' = 'artist.getCorrection'
-            'api_key' = $script:LFMConfig.ApiKey
-            'format' = 'json'
-        }
-    }
     process {
-        $noCommonParams = Remove-CommonParameter $PSBoundParameters
-        $convertedParams = ConvertTo-LFMParameter $noCommonParams
+        $irm = Invoke-LFMApiMethod -Method 'artist.getCorrection' -Parameter $PSBoundParameters
 
-        $query = New-LFMApiQuery ($convertedParams + $apiParams)
-        $apiUrl = "$baseUrl/?$query"
-    }
-    end {
-        try {
-            $irm = Invoke-LFMApiUri -Uri $apiUrl
-
-            $correction = $irm.Corrections.Correction.Artist
-            $correctedArtistInfo = [pscustomobject] @{
-                'PSTypeName' = 'PowerLFM.Artist.Correction'
-                'Artist' = $correction.Name
-                'Id' = $correction.Mbid
-                'Url' = [uri] $correction.Url
-            }
-
-            Write-Output $correctedArtistInfo
+        $correction = $irm.Corrections.Correction.Artist
+        $correctedArtistInfo = [pscustomobject] @{
+            'PSTypeName' = 'PowerLFM.Artist.Correction'
+            'Artist' = $correction.Name
+            'Id' = $correction.Mbid
+            'Url' = [uri] $correction.Url
         }
-        catch {
-            throw $_
-        }
+
+        Write-Output $correctedArtistInfo
     }
 }

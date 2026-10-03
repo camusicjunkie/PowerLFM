@@ -2,18 +2,33 @@
 Describe 'Get-LFMTrackCorrection: Unit' -Tag Unit {
 
     BeforeAll {
+        . $PSScriptRoot\..\RequestRecorder.ps1
+
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMTrackCorrection'.TrackCorrection
 
-        Mock Remove-CommonParameter {
-            [hashtable] @{
-                Track  = 'Track'
-                Artist = 'Artist'
+        $module = @{ ModuleName = 'PowerLFM' }
+
+        $originalConfig = InModuleScope @module { $script:LFMConfig }
+
+        InModuleScope @module {
+            $script:LFMConfig = [pscustomobject] @{
+                ApiKey       = 'ApiKeyValue'
+                SessionKey   = 'SessionKeyValue'
+                SharedSecret = 'SharedSecretValue'
             }
-        } -ModuleName 'PowerLFM'
-        Mock ConvertTo-LFMParameter -ModuleName 'PowerLFM'
-        Mock New-LFMApiQuery -ModuleName 'PowerLFM'
-        Mock Invoke-LFMApiUri { $contextMock } -ModuleName 'PowerLFM'
+        }
+    }
+
+    AfterAll {
+        InModuleScope @module -Parameters @{ Config = $originalConfig } {
+            param ($Config)
+            $script:LFMConfig = $Config
+        }
+    }
+
+    BeforeEach {
+        Register-LFMFakeRestMethod -Response $contextMock
     }
 
     Context 'Input' {
@@ -23,49 +38,42 @@ Describe 'Get-LFMTrackCorrection: Unit' -Tag Unit {
         }
     }
 
-    Context 'Execution' {
+    Context 'Request' {
 
-        BeforeAll {
-            Get-LFMTrackCorrection -Track Track -Artist Artist
+        It 'Sends track.getCorrection as an unsigned GET' {
+            $null = Get-LFMTrackCorrection -Track 'Windowpane' -Artist 'Opeth'
+
+            $request = Get-LFMRecordedRequest
+            $request.Method | Should -Be 'track.getCorrection'
+            $request.HttpMethod | Should -Be 'Get'
+            $request.Parameters.ContainsKey('api_sig') | Should -BeFalse
+            $request.Parameters.ContainsKey('sk') | Should -BeFalse
         }
 
-        It 'Should remove common parameters from bound parameters' {
-            $siParams = @{
-                CommandName = 'Remove-CommonParameter'
-                ModuleName  = 'PowerLFM'
-                Scope       = 'Context'
-                Exactly     = $true
-                Times       = 1
-            }
-            Should -Invoke @siParams
+        It 'Sends the track and artist' {
+            $null = Get-LFMTrackCorrection -Track 'Windowpane' -Artist 'Opeth'
+
+            $request = Get-LFMRecordedRequest
+            $request.Parameters['track'] | Should -Be 'Windowpane'
+            $request.Parameters['artist'] | Should -Be 'Opeth'
         }
 
-        It 'Should convert parameters to format API expects after signing' {
-            $siParams = @{
-                CommandName = 'ConvertTo-LFMParameter'
-                ModuleName  = 'PowerLFM'
-                Scope       = 'Context'
-                Exactly     = $true
-                Times       = 1
-            }
-            Should -Invoke @siParams
-        }
+        It 'Sends one request per piped object' {
+            $null = @(
+                [pscustomobject] @{ Track = 'Track1'; Artist = 'Artist1' }
+                [pscustomobject] @{ Track = 'Track2'; Artist = 'Artist2' }
+            ) | Get-LFMTrackCorrection
 
-        It 'Should take hashtable and build a query for a uri' {
-            $siParams = @{
-                CommandName = 'New-LFMApiQuery'
-                ModuleName  = 'PowerLFM'
-                Scope       = 'Context'
-                Exactly     = $true
-                Times       = 1
-            }
-            Should -Invoke @siParams
+            $requests = @(Get-LFMRecordedRequest)
+            $requests.Count | Should -Be 2
+            $requests[1].Parameters['track'] | Should -Be 'Track2'
         }
     }
 
     Context 'Output' {
 
         BeforeAll {
+            Register-LFMFakeRestMethod -Response $contextMock
             $output = Get-LFMTrackCorrection -Track Track -Artist Artist
         }
 
@@ -93,24 +101,10 @@ Describe 'Get-LFMTrackCorrection: Unit' -Tag Unit {
             $output.Track | Should -HaveCount 1
         }
 
-        It 'Should call the correct Last.fm get method' {
-            $siParams = @{
-                CommandName     = 'Invoke-LFMApiUri'
-                ModuleName      = 'PowerLFM'
-                Scope           = 'Context'
-                Exactly         = $true
-                Times           = 1
-                ParameterFilter = {
-                    $Uri -like "$baseUrl*"
-                }
-            }
-            Should -Invoke @siParams
-        }
-
         It 'Should throw when an error is returned in the response' {
-            Mock Invoke-LFMApiUri { throw 'Error' } -ModuleName 'PowerLFM'
+            Register-LFMFakeRestMethod -Response ([pscustomobject] @{ error = 6; message = 'Not found' })
 
-            { Get-LFMTrackCorrection -Track Track -Artist Artist } | Should -Throw 'Error'
+            { Get-LFMTrackCorrection -Track Track -Artist Artist } | Should -Throw '*Not found*'
         }
     }
 }

@@ -2,17 +2,33 @@
 Describe 'Search-LFMAlbum: Unit' -Tag Unit {
 
     BeforeAll {
+        . $PSScriptRoot\..\RequestRecorder.ps1
+
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Search-LFMAlbum'.Album
 
-        Mock Remove-CommonParameter {
-            [hashtable] @{
-                Album = 'Album'
+        $module = @{ ModuleName = 'PowerLFM' }
+
+        $originalConfig = InModuleScope @module { $script:LFMConfig }
+
+        InModuleScope @module {
+            $script:LFMConfig = [pscustomobject] @{
+                ApiKey       = 'ApiKeyValue'
+                SessionKey   = 'SessionKeyValue'
+                SharedSecret = 'SharedSecretValue'
             }
-        } -ModuleName 'PowerLFM'
-        Mock ConvertTo-LFMParameter -ModuleName 'PowerLFM'
-        Mock New-LFMApiQuery -ModuleName 'PowerLFM'
-        Mock Invoke-LFMApiUri { $contextMock } -ModuleName 'PowerLFM'
+        }
+    }
+
+    AfterAll {
+        InModuleScope @module -Parameters @{ Config = $originalConfig } {
+            param ($Config)
+            $script:LFMConfig = $Config
+        }
+    }
+
+    BeforeEach {
+        Register-LFMFakeRestMethod -Response $contextMock
     }
 
     Context 'Input' {
@@ -30,49 +46,49 @@ Describe 'Search-LFMAlbum: Unit' -Tag Unit {
         }
     }
 
-    Context 'Execution' {
+    Context 'Request' {
 
-        BeforeAll {
-            Search-LFMAlbum -Album Album
+        It 'Sends album.search as an unsigned GET' {
+            $null = Search-LFMAlbum -Album 'Blackwater Park'
+
+            $request = Get-LFMRecordedRequest
+            $request.Method | Should -Be 'album.search'
+            $request.HttpMethod | Should -Be 'Get'
+            $request.Parameters.ContainsKey('api_sig') | Should -BeFalse
+            $request.Parameters.ContainsKey('sk') | Should -BeFalse
         }
 
-        It 'Should remove common parameters from bound parameters' {
-            $siParams = @{
-                CommandName = 'Remove-CommonParameter'
-                ModuleName  = 'PowerLFM'
-                Scope       = 'Context'
-                Exactly     = $true
-                Times       = 1
-            }
-            Should -Invoke @siParams
+        It 'Sends the album' {
+            $null = Search-LFMAlbum -Album 'Blackwater Park'
+
+            $request = Get-LFMRecordedRequest
+            $request.Parameters['album'] | Should -Be 'Blackwater Park'
         }
 
-        It 'Should convert parameters to format API expects after signing' {
-            $siParams = @{
-                CommandName = 'ConvertTo-LFMParameter'
-                ModuleName  = 'PowerLFM'
-                Scope       = 'Context'
-                Exactly     = $true
-                Times       = 1
-            }
-            Should -Invoke @siParams
+        It 'Sends the limit and page' {
+            $null = Search-LFMAlbum -Album 'Blackwater Park' -Limit 5 -Page 2
+
+            $request = Get-LFMRecordedRequest
+            $request.Parameters['limit'] | Should -Be '5'
+            $request.Parameters['page'] | Should -Be '2'
         }
 
-        It 'Should take hashtable and build a query for a uri' {
-            $siParams = @{
-                CommandName = 'New-LFMApiQuery'
-                ModuleName  = 'PowerLFM'
-                Scope       = 'Context'
-                Exactly     = $true
-                Times       = 1
-            }
-            Should -Invoke @siParams
+        It 'Sends one request per piped object' {
+            $null = @(
+                [pscustomobject] @{ Album = 'Album1' }
+                [pscustomobject] @{ Album = 'Album2' }
+            ) | Search-LFMAlbum
+
+            $requests = @(Get-LFMRecordedRequest)
+            $requests.Count | Should -Be 2
+            $requests[1].Parameters['album'] | Should -Be 'Album2'
         }
     }
 
     Context 'Output' {
 
         BeforeAll {
+            Register-LFMFakeRestMethod -Response $contextMock
             $output = Search-LFMAlbum -Album Album
         }
 
@@ -100,24 +116,10 @@ Describe 'Search-LFMAlbum: Unit' -Tag Unit {
             $output.Album | Should -HaveCount 2
         }
 
-        It 'Should call the correct Last.fm get method' {
-            $siParams = @{
-                CommandName     = 'Invoke-LFMApiUri'
-                ModuleName      = 'PowerLFM'
-                Scope           = 'Context'
-                Exactly         = $true
-                Times           = 1
-                ParameterFilter = {
-                    $Uri -like "$baseUrl*"
-                }
-            }
-            Should -Invoke @siParams
-        }
-
         It 'Should throw when an error is returned in the response' {
-            Mock Invoke-LFMApiUri { throw 'Error' } -ModuleName 'PowerLFM'
+            Register-LFMFakeRestMethod -Response ([pscustomobject] @{ error = 6; message = 'Not found' })
 
-            { Search-LFMAlbum -Album Album } | Should -Throw 'Error'
+            { Search-LFMAlbum -Album Album } | Should -Throw '*Not found*'
         }
     }
 }
