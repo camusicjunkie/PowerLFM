@@ -26,38 +26,18 @@ function Get-LFMUserPersonalTag {
         [int] $Page
     )
 
-    begin {
-        $apiParams = @{
-            'method' = 'user.getPersonalTags'
-            'api_key' = $script:LFMConfig.ApiKey
-            'sk' = $script:LFMConfig.SessionKey
-            'format' = 'json'
-        }
-    }
     process {
-        $noCommonParams = Remove-CommonParameter $PSBoundParameters
-        $convertedParams = ConvertTo-LFMParameter $noCommonParams
+        $irm = Invoke-LFMApiMethod -Method 'user.getPersonalTags' -Parameter $PSBoundParameters
 
-        $query = New-LFMApiQuery ($convertedParams + $apiParams)
-        $apiUrl = "$baseUrl/?$query"
-    }
-    end {
-        try {
-            $irm = Invoke-LFMApiUri -Uri $apiUrl
-
-            foreach ($userTag in $irm.Taggings.Artists.Artist) {
-                $userTagInfo = [pscustomobject] @{
-                    'PSTypeName' = 'PowerLFM.User.PersonalTag'
-                    'Artist' = $userTag.Name
-                    'Id' = $userTag.Mbid
-                    'Url' = [uri] $userTag.Url
-                }
-
-                Write-Output $userTagInfo
+        foreach ($userTag in $irm.Taggings.Artists.Artist) {
+            $userTagInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.User.PersonalTag'
+                'Artist' = $userTag.Name
+                'Id' = $userTag.Mbid
+                'Url' = [uri] $userTag.Url
             }
-        }
-        catch {
-            throw $_
+
+            Write-Output $userTagInfo
         }
     }
 }

@@ -15,42 +15,22 @@ function Get-LFMUserFriend {
         [int] $Page
     )
 
-    begin {
-        $apiParams = @{
-            'method' = 'user.getFriends'
-            'api_key' = $script:LFMConfig.ApiKey
-            'sk' = $script:LFMConfig.SessionKey
-            'format' = 'json'
-        }
-    }
     process {
-        $noCommonParams = Remove-CommonParameter $PSBoundParameters
-        $convertedParams = ConvertTo-LFMParameter $noCommonParams
+        $irm = Invoke-LFMApiMethod -Method 'user.getFriends' -Parameter $PSBoundParameters
 
-        $query = New-LFMApiQuery ($convertedParams + $apiParams)
-        $apiUrl = "$baseUrl/?$query"
-    }
-    end {
-        try {
-            $irm = Invoke-LFMApiUri -Uri $apiUrl
-
-            foreach ($friend in $irm.Friends.User) {
-                $userInfo = @{
-                    'PSTypeName' = 'PowerLFM.User.Info'
-                    'UserName' = $friend.Name
-                    'RealName' = $friend.RealName
-                    'Url' = [uri] $friend.Url
-                    'Country' = $friend.Country
-                    'Registered' = ConvertFrom-UnixTime -UnixTime $friend.Registered.UnixTime -Local
-                    'PlayLists' = [int] $friend.PlayLists
-                }
-
-                $userInfo = [pscustomobject] $userInfo
-                Write-Output $userInfo
+        foreach ($friend in $irm.Friends.User) {
+            $userInfo = @{
+                'PSTypeName' = 'PowerLFM.User.Info'
+                'UserName' = $friend.Name
+                'RealName' = $friend.RealName
+                'Url' = [uri] $friend.Url
+                'Country' = $friend.Country
+                'Registered' = ConvertFrom-UnixTime -UnixTime $friend.Registered.UnixTime -Local
+                'PlayLists' = [int] $friend.PlayLists
             }
-        }
-        catch {
-            throw $_
+
+            $userInfo = [pscustomobject] $userInfo
+            Write-Output $userInfo
         }
     }
 }

@@ -9,40 +9,20 @@ function Get-LFMUserInfo {
         [string] $UserName
     )
 
-    begin {
-        $apiParams = @{
-            'method' = 'user.getInfo'
-            'api_key' = $script:LFMConfig.ApiKey
-            'sk' = $script:LFMConfig.SessionKey
-            'format' = 'json'
-        }
-    }
     process {
-        $noCommonParams = Remove-CommonParameter $PSBoundParameters
-        $convertedParams = ConvertTo-LFMParameter $noCommonParams
+        $irm = Invoke-LFMApiMethod -Method 'user.getInfo' -Parameter $PSBoundParameters
 
-        $query = New-LFMApiQuery ($convertedParams + $apiParams)
-        $apiUrl = "$baseUrl/?$query"
-    }
-    end {
-        try {
-            $irm = Invoke-LFMApiUri -Uri $apiUrl
-
-            $userInfo = [pscustomobject] @{
-                'PSTypeName' = 'PowerLFM.User.Info'
-                'UserName' = $irm.User.Name
-                'RealName' = $irm.User.RealName
-                'Url' = [uri] $irm.User.Url
-                'Country' = $irm.User.Country
-                'Registered' = ConvertFrom-UnixTime -UnixTime $irm.User.Registered.UnixTime -Local
-                'PlayCount' = [int] $irm.User.PlayCount
-                'PlayLists' = [int] $irm.User.PlayLists
-            }
-
-            Write-Output $userInfo
+        $userInfo = [pscustomobject] @{
+            'PSTypeName' = 'PowerLFM.User.Info'
+            'UserName' = $irm.User.Name
+            'RealName' = $irm.User.RealName
+            'Url' = [uri] $irm.User.Url
+            'Country' = $irm.User.Country
+            'Registered' = ConvertFrom-UnixTime -UnixTime $irm.User.Registered.UnixTime -Local
+            'PlayCount' = [int] $irm.User.PlayCount
+            'PlayLists' = [int] $irm.User.PlayLists
         }
-        catch {
-            throw $_
-        }
+
+        Write-Output $userInfo
     }
 }

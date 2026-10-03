@@ -32,7 +32,7 @@ New-Variable -Name scrobbleQueueWarningThreshold -Value 1000
 # The Last.fm name for each command parameter. A Method can override one through Rename.
 New-Variable -Name lfmParameterName -Value @{
     Album = 'album'; Artist = 'artist'; AutoCorrect = 'autocorrect'; City = 'location'
-    Country = 'country'; Duration = 'duration'; EndDate = 'to'; Id = 'mbid'
+    Country = 'country'; Duration = 'duration'; EndDate = 'to'; Extended = 'extended'; Id = 'mbid'
     Language = 'lang'; Limit = 'limit'; Page = 'page'; StartDate = 'from'; Tag = 'tag'
     TagType = 'taggingtype'; TimePeriod = 'period'; Timestamp = 'timestamp'
     Token = 'token'; Track = 'track'; TrackNumber = 'trackNumber'; UserName = 'user'
