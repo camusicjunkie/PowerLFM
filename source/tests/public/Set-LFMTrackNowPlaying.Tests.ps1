@@ -1,21 +1,33 @@
-
 Describe 'Set-LFMTrackNowPlaying: Unit' -Tag Unit {
 
     BeforeAll {
+        . $PSScriptRoot\..\RequestRecorder.ps1
+
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Set-LFMTrackNowPlaying'.TrackNowPlaying
 
-        Mock Remove-CommonParameter {
-            [hashtable] @{
-                Track  = 'Track'
-                Artist = 'Artist'
+        $module = @{ ModuleName = 'PowerLFM' }
+
+        $originalConfig = InModuleScope @module { $script:LFMConfig }
+
+        InModuleScope @module {
+            $script:LFMConfig = [pscustomobject] @{
+                ApiKey       = 'ApiKeyValue'
+                SessionKey   = 'SessionKeyValue'
+                SharedSecret = 'SharedSecretValue'
             }
-        } -ModuleName 'PowerLFM'
-        Mock ConvertTo-LFMParameter -ModuleName 'PowerLFM'
-        Mock Get-LFMSignature -ModuleName 'PowerLFM'
-        Mock New-LFMApiQuery -ModuleName 'PowerLFM'
-        Mock Invoke-LFMApiUri -ModuleName 'PowerLFM'
-        Mock Get-LFMIgnoredMessage { @{ Code = 0 } } -ModuleName 'PowerLFM'
+        }
+    }
+
+    AfterAll {
+        InModuleScope @module -Parameters @{ Config = $originalConfig } {
+            param ($Config)
+            $script:LFMConfig = $Config
+        }
+    }
+
+    BeforeEach {
+        Register-LFMFakeRestMethod -Response $contextMock
     }
 
     Context 'Input' {
@@ -29,118 +41,73 @@ Describe 'Set-LFMTrackNowPlaying: Unit' -Tag Unit {
         }
     }
 
-    Context 'Execution' {
+    Context 'Request' {
 
-        BeforeAll {
-            Set-LFMTrackNowPlaying -Artist Artist -Track Track
+        It 'Sends track.updateNowPlaying as a signed POST' {
+            Set-LFMTrackNowPlaying -Artist 'Opeth' -Track 'Windowpane'
+
+            $request = Get-LFMRecordedRequest
+            $request.Method | Should -Be 'track.updateNowPlaying'
+            $request.HttpMethod | Should -Be 'Post'
+            $request.Parameters['sk'] | Should -Be 'SessionKeyValue'
+            $request.Parameters['api_sig'] | Should -Match '^[0-9A-F]{32}$'
         }
 
-        It 'Should remove common parameters from bound parameters' {
-            $siParams = @{
-                CommandName = 'Remove-CommonParameter'
-                ModuleName  = 'PowerLFM'
-                Scope       = 'Context'
-                Exactly     = $true
-                Times       = 1
+        It 'Sends the track under Last.fm names' {
+            $npParams = @{
+                Artist   = 'Opeth'
+                Track    = 'Windowpane'
+                Album    = 'Damnation'
+                Id       = '12345678-1234-1234-1234-123456789012'
+                Duration = 469
             }
-            Should -Invoke @siParams
-        }
+            Set-LFMTrackNowPlaying @npParams -PassThru
 
-        It 'Should create a signature from the parameters passed in' {
-            $siParams = @{
-                CommandName     = 'Get-LFMSignature'
-                ModuleName      = 'PowerLFM'
-                Scope           = 'Context'
-                Exactly         = $true
-                Times           = 1
-                ParameterFilter = {
-                    $Artist -eq 'Artist' -and
-                    $Track -eq 'Track' -and
-                    $Method -eq 'track.updateNowPlaying'
-                }
-            }
-            Should -Invoke @siParams
-        }
-
-        It 'Should convert parameters to format API expects after signing' {
-            $siParams = @{
-                CommandName = 'ConvertTo-LFMParameter'
-                ModuleName  = 'PowerLFM'
-                Scope       = 'Context'
-                Exactly     = $true
-                Times       = 1
-            }
-            Should -Invoke @siParams
-        }
-
-        It 'Should take hashtable and build a query for a uri' {
-            $siParams = @{
-                CommandName = 'New-LFMApiQuery'
-                ModuleName  = 'PowerLFM'
-                Scope       = 'Context'
-                Exactly     = $true
-                Times       = 1
-            }
-            Should -Invoke @siParams
-        }
-
-        It 'Should check to see if the response has not been filtered' {
-            $siParams = @{
-                CommandName     = 'Get-LFMIgnoredMessage'
-                ModuleName      = 'PowerLFM'
-                Scope           = 'Context'
-                Exactly         = $true
-                Times           = 1
-                ParameterFilter = {
-                    $Code -eq 0
-                }
-            }
-            Should -Invoke @siParams
+            $request = Get-LFMRecordedRequest
+            $request.Parameters['artist'] | Should -BeExactly 'Opeth'
+            $request.Parameters['track'] | Should -BeExactly 'Windowpane'
+            $request.Parameters['album'] | Should -BeExactly 'Damnation'
+            $request.Parameters['mbid'] | Should -Be '12345678-1234-1234-1234-123456789012'
+            $request.Parameters['duration'] | Should -Be '469'
+            $request.Parameters.Keys | Should -Not -Contain 'passthru'
         }
     }
 
     Context 'Output' {
 
-        It 'Should call the correct Last.fm post method' {
-            Set-LFMTrackNowPlaying -Track Track -Artist Artist
-
-            $siParams = @{
-                CommandName     = 'Invoke-LFMApiUri'
-                ModuleName      = 'PowerLFM'
-                Exactly         = $true
-                Times           = 1
-                ParameterFilter = {
-                    $Method -eq 'Post' -and
-                    $Uri -like "$baseUrl*"
-                }
-            }
-            Should -Invoke @siParams
+        It 'Should send proper output when -Whatif is used' {
+            $output = Set-LFMTrackNowPlaying -Artist Artist -Track Track -Verbose 4>&1 | Out-String
+            $output | Should -Match 'Performing the operation "Setting track to now playing" on target "Track: Track".'
         }
 
-        It 'Should send proper output when -Whatif is used' {
-            $output = Set-LFMTrackNowPlaying -Artist Artist -Track Track -Verbose 4>&1
-            $output[0] | Should -Match 'Performing the operation "Setting track to now playing" on target "Track: Track".'
+        It 'Never shows the Shared Secret or the Session Key when verbose' {
+            $output = Set-LFMTrackNowPlaying -Artist 'Opeth' -Track 'Windowpane' -Verbose *>&1 | Out-String
+
+            $output | Should -Not -Match 'SharedSecretValue'
+            $output | Should -Not -Match 'SessionKeyValue'
         }
 
         It 'Should output an object when -PassThru is used' {
-            Mock Invoke-LFMApiUri { $contextMock } -ModuleName 'PowerLFM'
-
             $output = Set-LFMTrackNowPlaying -Artist Artist -Track Track -PassThru
             $output.Artist | Should -Be $contextMock.NowPlaying.Artist.'#text'
             $output.Album | Should -Be $contextMock.NowPlaying.Album.'#text'
             $output.Track | Should -Be $contextMock.NowPlaying.Track.'#text'
         }
 
-        It 'Should throw when ignored message code is 1' {
-            Mock Get-LFMIgnoredMessage { @{ Code = 1; Message = 'Filtered message' } } -ModuleName 'PowerLFM'
+        It 'Should throw when Last.fm ignored the update' {
+            $ignored = [pscustomobject] @{
+                nowplaying = [pscustomobject] @{ ignoredMessage = [pscustomobject] @{ code = 2; '#text' = '' } }
+            }
+            Register-LFMFakeRestMethod -Response $ignored
 
-            { Set-LFMTrackNowPlaying -Artist Artist -Track Track } | Should -Throw 'Request has been filtered because of bad meta data. Filtered message.'
+            { Set-LFMTrackNowPlaying -Artist Artist -Track Track } |
+                Should -Throw 'Request has been filtered because of bad meta data. Filtered track.'
         }
 
         It 'Should throw when an error is returned in the response' {
-            Mock Invoke-LFMApiUri { throw 'Error' } -ModuleName 'PowerLFM'
+            Register-LFMFakeRestMethod -Response ([pscustomobject] @{ error = 6; message = 'Track not found' })
 
-            { Set-LFMTrackNowPlaying -Track Track -Artist Artist } | Should -Throw 'Error'
+            { Set-LFMTrackNowPlaying -Track Track -Artist Artist } | Should -Throw '*Track not found*'
         }
     }
 }

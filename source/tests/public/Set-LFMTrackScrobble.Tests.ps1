@@ -1,23 +1,39 @@
-
 Describe 'Set-LFMTrackScrobble: Unit' -Tag Unit {
 
     BeforeAll {
-        $script:dateTime = New-MockObject -Type 'datetime'
+        . $PSScriptRoot\..\RequestRecorder.ps1
 
-        Mock Remove-CommonParameter {
-            [hashtable] @{
-                Artist    = 'Artist'
-                Track     = 'Track'
-                Timestamp = $dateTime
+        $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
+        $contextMock = $mocks.'Set-LFMTrackScrobble'.TrackScrobble
+
+        $module = @{ ModuleName = 'PowerLFM' }
+
+        $originalConfig = InModuleScope @module { $script:LFMConfig }
+
+        InModuleScope @module {
+            $script:LFMConfig = [pscustomobject] @{
+                ApiKey       = 'ApiKeyValue'
+                SessionKey   = 'SessionKeyValue'
+                SharedSecret = 'SharedSecretValue'
             }
-        } -ModuleName 'PowerLFM'
-        Mock ConvertTo-LFMParameter -ModuleName 'PowerLFM'
-        Mock Get-LFMSignature -ModuleName 'PowerLFM'
-        Mock New-LFMApiQuery -ModuleName 'PowerLFM'
-        Mock Invoke-LFMApiUri -ModuleName 'PowerLFM'
-        Mock Get-LFMIgnoredMessage { @{ Code = 0 } } -ModuleName 'PowerLFM'
+        }
+
+        # 1790596800 in Unix time.
+        $script:dateTime = [datetime]::new(2026, 9, 28, 12, 0, 0, [DateTimeKind]::Utc)
+
         Mock Send-LFMScrobbleQueue -ModuleName 'PowerLFM'
         Mock Add-LFMPendingScrobble -ModuleName 'PowerLFM'
+    }
+
+    AfterAll {
+        InModuleScope @module -Parameters @{ Config = $originalConfig } {
+            param ($Config)
+            $script:LFMConfig = $Config
+        }
+    }
+
+    BeforeEach {
+        Register-LFMFakeRestMethod -Response $contextMock
     }
 
     Context 'Input' {
@@ -30,115 +46,92 @@ Describe 'Set-LFMTrackScrobble: Unit' -Tag Unit {
         }
     }
 
-    Context 'Execution' {
+    Context 'Request' {
 
-        BeforeAll {
-            Set-LFMTrackScrobble -Artist Artist -Track Track -Timestamp $dateTime
+        It 'Sends track.scrobble as a signed POST' {
+            Set-LFMTrackScrobble -Artist 'Opeth' -Track 'Windowpane' -Timestamp $dateTime
+
+            $request = Get-LFMRecordedRequest
+            $request.Method | Should -Be 'track.scrobble'
+            $request.HttpMethod | Should -Be 'Post'
+            $request.Parameters['sk'] | Should -Be 'SessionKeyValue'
+            $request.Parameters['api_sig'] | Should -Match '^[0-9A-F]{32}$'
         }
 
-        It 'Should remove common parameters from bound parameters' {
-            $siParams = @{
-                CommandName = 'Remove-CommonParameter'
-                ModuleName  = 'PowerLFM'
-                Scope       = 'Context'
-                Exactly     = $true
-                Times       = 1
+        It 'Sends the play under Last.fm names' {
+            $sfParams = @{
+                Artist      = 'Opeth'
+                Track       = 'Windowpane'
+                Timestamp   = $dateTime
+                Album       = 'Damnation'
+                Id          = '12345678-1234-1234-1234-123456789012'
+                TrackNumber = 3
+                Duration    = 469
             }
-            Should -Invoke @siParams
+            Set-LFMTrackScrobble @sfParams
+
+            $request = Get-LFMRecordedRequest
+            $request.Parameters['artist'] | Should -BeExactly 'Opeth'
+            $request.Parameters['track'] | Should -BeExactly 'Windowpane'
+            $request.Parameters['timestamp'] | Should -Be '1790596800'
+            $request.Parameters['album'] | Should -BeExactly 'Damnation'
+            $request.Parameters['mbid'] | Should -Be '12345678-1234-1234-1234-123456789012'
+            $request.Parameters['trackNumber'] | Should -Be '3'
+            $request.Parameters['duration'] | Should -Be '469'
         }
 
-        It 'Should create a signature from the parameters passed in' {
-            $siParams = @{
-                CommandName     = 'Get-LFMSignature'
-                ModuleName      = 'PowerLFM'
-                Scope           = 'Context'
-                Exactly         = $true
-                Times           = 1
-                ParameterFilter = {
-                    $Artist -eq 'Artist' -and
-                    $Track -eq 'Track' -and
-                    $Timestamp -eq $dateTime -and
-                    $Method -eq 'track.scrobble'
-                }
-            }
-            Should -Invoke @siParams
-        }
+        It 'Leaves PassThru off the request' {
+            Set-LFMTrackScrobble -Artist 'Opeth' -Track 'Windowpane' -Timestamp $dateTime -PassThru
 
-        It 'Should convert parameters to format API expects after signing' {
-            $siParams = @{
-                CommandName = 'ConvertTo-LFMParameter'
-                ModuleName  = 'PowerLFM'
-                Scope       = 'Context'
-                Exactly     = $true
-                Times       = 1
-            }
-            Should -Invoke @siParams
-        }
-
-        It 'Should take hashtable and build a query for a uri' {
-            $siParams = @{
-                CommandName = 'New-LFMApiQuery'
-                ModuleName  = 'PowerLFM'
-                Scope       = 'Context'
-                Exactly     = $true
-                Times       = 1
-            }
-            Should -Invoke @siParams
-        }
-
-        It 'Should check to see if the response has not been filtered' {
-            $siParams = @{
-                CommandName     = 'Get-LFMIgnoredMessage'
-                ModuleName      = 'PowerLFM'
-                Scope           = 'Context'
-                Exactly         = $true
-                Times           = 1
-                ParameterFilter = {
-                    $Code -eq 0
-                }
-            }
-            Should -Invoke @siParams
+            (Get-LFMRecordedRequest).Parameters.Keys | Should -Not -Contain 'passthru'
         }
     }
 
     Context 'Output' {
 
         It 'Should send proper output when -Whatif is used' {
-            $output = Set-LFMTrackScrobble -Artist Artist -Track Track -Timestamp $dateTime -Verbose 4>&1
+            $output = Set-LFMTrackScrobble -Artist Artist -Track Track -Timestamp $dateTime -Verbose 4>&1 | Out-String
             $output | Should -Match 'Performing the operation "Setting track to now playing" on target "Track: Track".'
         }
 
-        It 'Should output an object when -PassThru is used' {
-            Mock Invoke-LFMApiUri { $contextMock } -ModuleName 'PowerLFM'
+        It 'Never shows the Shared Secret or the Session Key when verbose' {
+            $output = Set-LFMTrackScrobble -Artist 'Opeth' -Track 'Windowpane' -Timestamp $dateTime -Verbose *>&1 | Out-String
 
+            $output | Should -Not -Match 'SharedSecretValue'
+            $output | Should -Not -Match 'SessionKeyValue'
+        }
+
+        It 'Should output an object when -PassThru is used' {
             $output = Set-LFMTrackScrobble -Artist Artist -Track Track -Timestamp $dateTime -PassThru
             $output.Artist | Should -Be $contextMock.Scrobbles.Scrobble.Artist.'#text'
             $output.Album | Should -Be $contextMock.Scrobbles.Scrobble.Album.'#text'
             $output.Track | Should -Be $contextMock.Scrobbles.Scrobble.Track.'#text'
         }
 
-        It 'Should throw when ignored message code is 1' {
-            Mock Get-LFMIgnoredMessage { @{ Code = 1; Message = 'Filtered message' } } -ModuleName 'PowerLFM'
+        It 'Should throw when Last.fm ignored the scrobble' {
+            $ignored = [pscustomobject] @{
+                scrobbles = [pscustomobject] @{
+                    scrobble = [pscustomobject] @{ ignoredMessage = [pscustomobject] @{ code = 1; '#text' = '' } }
+                }
+            }
+            Register-LFMFakeRestMethod -Response $ignored
 
-            { Set-LFMTrackScrobble -Artist Artist -Track Track -Timestamp $dateTime } | Should -Throw 'Request has been filtered because of bad meta data. Filtered message.'
+            { Set-LFMTrackScrobble -Artist Artist -Track Track -Timestamp $dateTime } |
+                Should -Throw 'Request has been filtered because of bad meta data. Filtered artist.'
         }
 
         It 'Should throw when an error is returned in the response' {
-            Mock Invoke-LFMApiUri { throw 'Error' } -ModuleName 'PowerLFM'
+            Register-LFMFakeRestMethod -Response ([pscustomobject] @{ error = 6; message = 'Track not found' })
 
-            { Set-LFMTrackScrobble -Artist Artist -Track Track -Timestamp $dateTime } | Should -Throw 'Error'
+            { Set-LFMTrackScrobble -Artist Artist -Track Track -Timestamp $dateTime } | Should -Throw '*Track not found*'
         }
     }
 
     Context 'Scrobble queue' {
 
         BeforeAll {
-            $script:networkError = [System.Management.Automation.ErrorRecord]::new(
-                [Exception]::new('Last.fm could not be reached.'),
-                'PowerLFM.NetworkUnavailable',
-                'ConnectionError',
-                $null
-            )
+            # Thrown with no response behind it, as when Last.fm cannot be reached.
+            $script:unreachable = { throw [System.Net.WebException]::new('No route to host') }
         }
 
         It 'Should attempt to flush the queue before submitting' {
@@ -175,18 +168,11 @@ Describe 'Set-LFMTrackScrobble: Unit' -Tag Unit {
             }
             Should -Invoke @siParams
 
-            $siParams = @{
-                CommandName = 'Invoke-LFMApiUri'
-                ModuleName  = 'PowerLFM'
-                Exactly     = $true
-                Times       = 3
-                Scope       = 'It'
-            }
-            Should -Invoke @siParams
+            @(Get-LFMRecordedRequest).Count | Should -Be 3
         }
 
         It 'Should queue the scrobble when Last.fm could not be reached' {
-            Mock Invoke-LFMApiUri { throw $networkError } -ModuleName 'PowerLFM'
+            Mock Invoke-RestMethod $unreachable -ModuleName 'PowerLFM'
             Mock Add-LFMPendingScrobble {
                 [pscustomobject] @{ PSTypeName = 'PowerLFM.Track.PendingScrobble'; Track = 'Track' }
             } -ModuleName 'PowerLFM'
@@ -209,7 +195,7 @@ Describe 'Set-LFMTrackScrobble: Unit' -Tag Unit {
         }
 
         It 'Should output a pending scrobble when queued with -PassThru' {
-            Mock Invoke-LFMApiUri { throw $networkError } -ModuleName 'PowerLFM'
+            Mock Invoke-RestMethod $unreachable -ModuleName 'PowerLFM'
             Mock Add-LFMPendingScrobble {
                 [pscustomobject] @{ PSTypeName = 'PowerLFM.Track.PendingScrobble'; Track = 'Track' }
             } -ModuleName 'PowerLFM'
@@ -220,7 +206,7 @@ Describe 'Set-LFMTrackScrobble: Unit' -Tag Unit {
         }
 
         It 'Should not queue the scrobble when Last.fm returned an error' {
-            Mock Invoke-LFMApiUri { throw 'Error' } -ModuleName 'PowerLFM'
+            Register-LFMFakeRestMethod -Response ([pscustomobject] @{ error = 6; message = 'Track not found' })
 
             { Set-LFMTrackScrobble -Artist Artist -Track Track -Timestamp $dateTime } | Should -Throw
 
@@ -235,11 +221,11 @@ Describe 'Set-LFMTrackScrobble: Unit' -Tag Unit {
         }
 
         It 'Should throw the original failure when the scrobble could not be queued' {
-            Mock Invoke-LFMApiUri { throw $networkError } -ModuleName 'PowerLFM'
+            Mock Invoke-RestMethod $unreachable -ModuleName 'PowerLFM'
             Mock Add-LFMPendingScrobble { } -ModuleName 'PowerLFM'
 
             { Set-LFMTrackScrobble -Artist Artist -Track Track -Timestamp $dateTime } |
-                Should -Throw 'Last.fm could not be reached.'
+                Should -Throw 'Last.fm could not be reached.*'
         }
     }
 }

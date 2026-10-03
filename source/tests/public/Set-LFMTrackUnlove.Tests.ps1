@@ -1,18 +1,30 @@
-
 Describe 'Set-LFMTrackUnlove: Unit' -Tag Unit {
 
     BeforeAll {
-        Mock Remove-CommonParameter {
-            [hashtable] @{
-                Artist = 'Artist'
-                Track  = 'Track'
+        . $PSScriptRoot\..\RequestRecorder.ps1
+
+        $module = @{ ModuleName = 'PowerLFM' }
+
+        $originalConfig = InModuleScope @module { $script:LFMConfig }
+
+        InModuleScope @module {
+            $script:LFMConfig = [pscustomobject] @{
+                ApiKey       = 'ApiKeyValue'
+                SessionKey   = 'SessionKeyValue'
+                SharedSecret = 'SharedSecretValue'
             }
-        } -ModuleName 'PowerLFM'
-        Mock ConvertTo-LFMParameter -ModuleName 'PowerLFM'
-        Mock Get-LFMSignature -ModuleName 'PowerLFM'
-        Mock New-LFMApiQuery -ModuleName 'PowerLFM'
-        Mock Invoke-LFMApiUri -ModuleName 'PowerLFM'
-        Mock Get-LFMIgnoredMessage { @{ Code = 0 } } -ModuleName 'PowerLFM'
+        }
+    }
+
+    AfterAll {
+        InModuleScope @module -Parameters @{ Config = $originalConfig } {
+            param ($Config)
+            $script:LFMConfig = $Config
+        }
+    }
+
+    BeforeEach {
+        Register-LFMFakeRestMethod
     }
 
     Context 'Input' {
@@ -26,89 +38,51 @@ Describe 'Set-LFMTrackUnlove: Unit' -Tag Unit {
         }
     }
 
-    Context 'Execution' {
+    Context 'Request' {
 
-        BeforeAll {
-            Set-LFMTrackUnlove -Artist Artist -Track Track -Confirm:$false
+        It 'Sends track.unlove as a signed POST' {
+            Set-LFMTrackUnlove -Artist 'Opeth' -Track 'Windowpane' -Confirm:$false
+
+            $request = Get-LFMRecordedRequest
+            $request.Method | Should -Be 'track.unlove'
+            $request.HttpMethod | Should -Be 'Post'
+            $request.Parameters['sk'] | Should -Be 'SessionKeyValue'
+            $request.Parameters['api_sig'] | Should -Match '^[0-9A-F]{32}$'
         }
 
-        It 'Should remove common parameters from bound parameters' {
-            $siParams = @{
-                CommandName = 'Remove-CommonParameter'
-                ModuleName  = 'PowerLFM'
-                Scope       = 'Context'
-                Exactly     = $true
-                Times       = 1
-            }
-            Should -Invoke @siParams
+        It 'Sends the parameters under Last.fm names' {
+            Set-LFMTrackUnlove -Artist 'Opeth' -Track 'Windowpane' -Confirm:$false
+
+            $request = Get-LFMRecordedRequest
+            $request.Parameters['artist'] | Should -BeExactly 'Opeth'
+            $request.Parameters['track'] | Should -BeExactly 'Windowpane'
         }
 
-        It 'Should create a signature from the parameters passed in' {
-            $siParams = @{
-                CommandName     = 'Get-LFMSignature'
-                ModuleName      = 'PowerLFM'
-                Scope           = 'Context'
-                Exactly         = $true
-                Times           = 1
-                ParameterFilter = {
-                    $Artist -eq 'Artist' -and
-                    $Track -eq 'Track' -and
-                    $Method -eq 'track.unlove'
-                }
-            }
-            Should -Invoke @siParams
-        }
+        It 'Sends nothing with -WhatIf' {
+            Set-LFMTrackUnlove -Artist 'Opeth' -Track 'Windowpane' -WhatIf
 
-        It 'Should convert parameters to format API expects after signing' {
-            $siParams = @{
-                CommandName = 'ConvertTo-LFMParameter'
-                ModuleName  = 'PowerLFM'
-                Scope       = 'Context'
-                Exactly     = $true
-                Times       = 1
-            }
-            Should -Invoke @siParams
-        }
-
-        It 'Should take hashtable and build a query for a uri' {
-            $siParams = @{
-                CommandName = 'New-LFMApiQuery'
-                ModuleName  = 'PowerLFM'
-                Scope       = 'Context'
-                Exactly     = $true
-                Times       = 1
-            }
-            Should -Invoke @siParams
+            Get-LFMRecordedRequest | Should -BeNullOrEmpty
         }
     }
 
     Context 'Output' {
 
-        It 'Should call the correct Last.fm post method' {
-            Set-LFMTrackUnlove -Artist Artist -Track Track -Confirm:$false
-
-            $siParams = @{
-                CommandName     = 'Invoke-LFMApiUri'
-                ModuleName      = 'PowerLFM'
-                Exactly         = $true
-                Times           = 1
-                ParameterFilter = {
-                    $Method -eq 'Post' -and
-                    $Uri -like "$baseUrl*"
-                }
-            }
-            Should -Invoke @siParams
+        It 'Should send proper output when -Whatif is used' {
+            $output = Set-LFMTrackUnlove -Artist 'Opeth' -Track 'Windowpane' -Confirm:$false -Verbose 4>&1 | Out-String
+            $output | Should -Match 'Performing the operation "Removing love" on target "Track: Windowpane".'
         }
 
-        It 'Should send proper output when -Whatif is used' {
-            $output = Set-LFMTrackUnlove -Artist Artist -Track Track -Confirm:$false -Verbose 4>&1
-            $output | Should -Match 'Performing the operation "Removing love" on target "Track: Track".'
+        It 'Never shows the Shared Secret or the Session Key when verbose' {
+            $output = Set-LFMTrackUnlove -Artist 'Opeth' -Track 'Windowpane' -Confirm:$false -Verbose *>&1 | Out-String
+
+            $output | Should -Not -Match 'SharedSecretValue'
+            $output | Should -Not -Match 'SessionKeyValue'
         }
 
         It 'Should throw when an error is returned in the response' {
-            Mock Invoke-LFMApiUri { throw 'Error' } -ModuleName 'PowerLFM'
+            Mock Invoke-RestMethod { [pscustomobject] @{ error = 6; message = 'Not found' } } -ModuleName 'PowerLFM'
 
-            { Set-LFMTrackUnlove -Artist Artist -Track Track -Confirm:$false } | Should -Throw 'Error'
+            { Set-LFMTrackUnlove -Artist 'Opeth' -Track 'Windowpane' -Confirm:$false } | Should -Throw '*Not found*'
         }
     }
 }

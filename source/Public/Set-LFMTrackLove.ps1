@@ -15,30 +15,10 @@ function Set-LFMTrackLove {
         [string] $Track
     )
 
-    begin {
-        $apiParams = @{
-            'method' = 'track.love'
-            'api_key' = $script:LFMConfig.ApiKey
-            'sk' = $script:LFMConfig.SessionKey
-        }
-    }
     process {
-        $noCommonParams = Remove-CommonParameter $PSBoundParameters
-        $apiSig = Get-LFMSignature -Method $apiParams.Method @noCommonParams
-        $apiParams['api_sig'] = $apiSig
-
-        $convertedParams = ConvertTo-LFMParameter $noCommonParams
-        $query = New-LFMApiQuery ($convertedParams + $apiParams)
-        $apiUrl = "$baseUrl/?$query"
-
         if ($PSCmdlet.ShouldProcess("Track: $Track", "Adding love")) {
-            try {
-                $irm = Invoke-LFMApiUri -Uri $apiUrl -Method Post
-                if ($irm.Lfm.Status -eq 'ok') {Write-Verbose ($localizedData.trackLoved -f $Track)}
-            }
-            catch {
-                throw $_
-            }
+            $null = Invoke-LFMApiMethod -Method 'track.love' -Parameter $PSBoundParameters
+            Write-Verbose ($localizedData.trackLoved -f $Track)
         }
     }
 }

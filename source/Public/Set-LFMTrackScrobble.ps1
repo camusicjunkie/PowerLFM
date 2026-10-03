@@ -41,13 +41,6 @@ function Set-LFMTrackScrobble {
     )
 
     begin {
-        $apiParams = @{
-            'method' = 'track.scrobble'
-            'api_key' = $script:LFMConfig.ApiKey
-            'sk' = $script:LFMConfig.SessionKey
-            'format' = 'json'
-        }
-
         # A queued scrobble would otherwise sit until the user happened to run
         # Send-LFMScrobbleQueue by hand. Reported, never prompted for, never fatal:
         # the caller asked to scrobble a track, not to flush a queue.
@@ -59,17 +52,9 @@ function Set-LFMTrackScrobble {
         }
     }
     process {
-        $noCommonParams = Remove-CommonParameter $PSBoundParameters
-        $apiSig = Get-LFMSignature -Method $apiParams.Method @noCommonParams
-        $apiParams['api_sig'] = $apiSig
-
-        $convertedParams = ConvertTo-LFMParameter $noCommonParams
-        $query = New-LFMApiQuery ($convertedParams + $apiParams)
-        $apiUrl = "$baseUrl/?$query"
-
         if ($PSCmdlet.ShouldProcess("Track: $Track", "Setting track to now playing")) {
             try {
-                $irm = Invoke-LFMApiUri -Uri $apiUrl -Method Post
+                $irm = Invoke-LFMApiMethod -Method 'track.scrobble' -Parameter $PSBoundParameters
 
                 $code = Get-LFMIgnoredMessage -Code $irm.Scrobbles.Scrobble.IgnoredMessage.Code
                 if ($code.Code -ne 0) {

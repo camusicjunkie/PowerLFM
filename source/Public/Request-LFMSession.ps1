@@ -21,32 +21,14 @@ function Request-LFMSession {
     )
 
     process {
-        $apiParams = @{
-            'method' = 'auth.getSession'
-            'api_key' = $ApiKey
-            'token' = $Token
-            'format' = 'json'
+        $credentials = @{ ApiKey = $ApiKey; SharedSecret = $SharedSecret }
+        $irm = Invoke-LFMApiMethod -Method 'auth.getSession' -Parameter @{ Token = $Token } -Credentials $credentials
+
+        $obj = [pscustomobject] @{
+            'ApiKey' = $ApiKey
+            'SessionKey' = $irm.Session.Key
+            'SharedSecret' = $SharedSecret
         }
-
-        $noCommonParams = Remove-CommonParameter $PSBoundParameters
-        $apiSig = Get-LFMSignature -Method $apiParams.Method @noCommonParams
-        $apiParams.Add('api_sig', $apiSig)
-
-        $query = New-LFMApiQuery $apiParams
-        $apiUrl = "$baseUrl/?$query"
-
-        try {
-            $irm = Invoke-LFMApiUri -Uri $apiUrl
-
-            $obj = [pscustomobject] @{
-                'ApiKey' = $ApiKey
-                'SessionKey' = $irm.Session.Key
-                'SharedSecret' = $SharedSecret
-            }
-            Write-Output $obj
-        }
-        catch {
-            throw $_
-        }
+        Write-Output $obj
     }
 }

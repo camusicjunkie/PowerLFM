@@ -1,19 +1,30 @@
-
 Describe 'Remove-LFMAlbumTag: Unit' -Tag Unit {
 
     BeforeAll {
-        Mock Remove-CommonParameter {
-            [hashtable] @{
-                Album  = 'Album'
-                Artist = 'Artist'
-                Tag    = 'Tag'
+        . $PSScriptRoot\..\RequestRecorder.ps1
+
+        $module = @{ ModuleName = 'PowerLFM' }
+
+        $originalConfig = InModuleScope @module { $script:LFMConfig }
+
+        InModuleScope @module {
+            $script:LFMConfig = [pscustomobject] @{
+                ApiKey       = 'ApiKeyValue'
+                SessionKey   = 'SessionKeyValue'
+                SharedSecret = 'SharedSecretValue'
             }
-        } -ModuleName 'PowerLFM'
-        Mock ConvertTo-LFMParameter -ModuleName 'PowerLFM'
-        Mock Get-LFMSignature -ModuleName 'PowerLFM'
-        Mock New-LFMApiQuery -ModuleName 'PowerLFM'
-        Mock Invoke-LFMApiUri -ModuleName 'PowerLFM'
-        Mock Get-LFMIgnoredMessage { @{ Code = 0 } } -ModuleName 'PowerLFM'
+        }
+    }
+
+    AfterAll {
+        InModuleScope @module -Parameters @{ Config = $originalConfig } {
+            param ($Config)
+            $script:LFMConfig = $Config
+        }
+    }
+
+    BeforeEach {
+        Register-LFMFakeRestMethod
     }
 
     Context 'Input' {
@@ -27,90 +38,52 @@ Describe 'Remove-LFMAlbumTag: Unit' -Tag Unit {
         }
     }
 
-    Context 'Execution' {
+    Context 'Request' {
 
-        BeforeAll {
-            Remove-LFMAlbumTag -Album Album -Artist Artist -Tag Tag -Confirm:$false
+        It 'Sends album.removeTag as a signed POST' {
+            Remove-LFMAlbumTag -Album 'Damnation' -Artist 'Opeth' -Tag 'prog' -Confirm:$false
+
+            $request = Get-LFMRecordedRequest
+            $request.Method | Should -Be 'album.removeTag'
+            $request.HttpMethod | Should -Be 'Post'
+            $request.Parameters['sk'] | Should -Be 'SessionKeyValue'
+            $request.Parameters['api_sig'] | Should -Match '^[0-9A-F]{32}$'
         }
 
-        It 'Should remove common parameters from bound parameters' {
-            $siParams = @{
-                CommandName = 'Remove-CommonParameter'
-                ModuleName  = 'PowerLFM'
-                Scope       = 'Context'
-                Exactly     = $true
-                Times       = 1
-            }
-            Should -Invoke @siParams
+        It 'Sends the parameters under Last.fm names' {
+            Remove-LFMAlbumTag -Album 'Damnation' -Artist 'Opeth' -Tag 'prog' -Confirm:$false
+
+            $request = Get-LFMRecordedRequest
+            $request.Parameters['album'] | Should -BeExactly 'Damnation'
+            $request.Parameters['artist'] | Should -BeExactly 'Opeth'
+            $request.Parameters['tag'] | Should -BeExactly 'prog'
         }
 
-        It 'Should create a signature from the parameters passed in' {
-            $siParams = @{
-                CommandName     = 'Get-LFMSignature'
-                ModuleName      = 'PowerLFM'
-                Scope           = 'Context'
-                Exactly         = $true
-                Times           = 1
-                ParameterFilter = {
-                    $Album -eq 'Album' -and
-                    $Artist -eq 'Artist' -and
-                    $Tag -eq 'Tag' -and
-                    $Method -eq 'album.removeTag'
-                }
-            }
-            Should -Invoke @siParams
-        }
+        It 'Sends nothing with -WhatIf' {
+            Remove-LFMAlbumTag -Album 'Damnation' -Artist 'Opeth' -Tag 'prog' -WhatIf
 
-        It 'Should convert parameters to format API expects after signing' {
-            $siParams = @{
-                CommandName = 'ConvertTo-LFMParameter'
-                ModuleName  = 'PowerLFM'
-                Scope       = 'Context'
-                Exactly     = $true
-                Times       = 1
-            }
-            Should -Invoke @siParams
-        }
-
-        It 'Should take hashtable and build a query for a uri' {
-            $siParams = @{
-                CommandName = 'New-LFMApiQuery'
-                ModuleName  = 'PowerLFM'
-                Scope       = 'Context'
-                Exactly     = $true
-                Times       = 1
-            }
-            Should -Invoke @siParams
+            Get-LFMRecordedRequest | Should -BeNullOrEmpty
         }
     }
 
     Context 'Output' {
 
-        It 'Should call the correct Last.fm post method' {
-            Remove-LFMAlbumTag -Album Album -Artist Artist -Tag Tag -Confirm:$false
-
-            $siParams = @{
-                CommandName     = 'Invoke-LFMApiUri'
-                ModuleName      = 'PowerLFM'
-                Exactly         = $true
-                Times           = 1
-                ParameterFilter = {
-                    $Method -eq 'Post' -and
-                    $Uri -like "$baseUrl*"
-                }
-            }
-            Should -Invoke @siParams
+        It 'Should send proper output when -Whatif is used' {
+            $output = Remove-LFMAlbumTag -Album 'Damnation' -Artist 'Opeth' -Tag 'prog' -Confirm:$false -Verbose 4>&1 | Out-String
+            $output | Should -Match 'Performing the operation "Removing album tag: prog" on target "Album: Damnation".'
         }
 
-        It 'Should send proper output when -Whatif is used' {
-            $output = Remove-LFMAlbumTag -Album Album -Artist Artist -Tag Tag -Confirm:$false -Verbose 4>&1
-            $output | Should -Match 'Performing the operation "Removing album tag: Tag" on target "Album: Album".'
+        It 'Never shows the Shared Secret or the Session Key when verbose' {
+            $output = Remove-LFMAlbumTag -Album 'Damnation' -Artist 'Opeth' -Tag 'prog' -Confirm:$false -Verbose *>&1 | Out-String
+
+            $output | Should -Not -Match 'SharedSecretValue'
+            $output | Should -Not -Match 'SessionKeyValue'
         }
 
         It 'Should throw when an error is returned in the response' {
-            Mock Invoke-LFMApiUri { throw 'Error' } -ModuleName 'PowerLFM'
+            Mock Invoke-RestMethod { [pscustomobject] @{ error = 6; message = 'Not found' } } -ModuleName 'PowerLFM'
 
-            { Remove-LFMAlbumTag -Album Album -Artist Artist -Tag Tag -Confirm:$false } | Should -Throw 'Error'
+            { Remove-LFMAlbumTag -Album 'Damnation' -Artist 'Opeth' -Tag 'prog' -Confirm:$false } | Should -Throw '*Not found*'
         }
     }
 }

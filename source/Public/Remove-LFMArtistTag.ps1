@@ -15,30 +15,10 @@ function Remove-LFMArtistTag {
         [string] $Tag
     )
 
-    begin {
-        $apiParams = @{
-            'method' = 'artist.removeTag'
-            'api_key' = $script:LFMConfig.ApiKey
-            'sk' = $script:LFMConfig.SessionKey
-        }
-    }
     process {
-        $noCommonParams = Remove-CommonParameter $PSBoundParameters
-        $apiSig = Get-LFMSignature -Method $apiParams.Method @noCommonParams
-        $apiParams['api_sig'] = $apiSig
-
-        $convertedParams = ConvertTo-LFMParameter $noCommonParams
-        $query = New-LFMApiQuery ($convertedParams + $apiParams)
-        $apiUrl = "$baseUrl/?$query"
-
         if ($PSCmdlet.ShouldProcess("Artist: $Artist", "Removing artist tag: $Tag")) {
-            try {
-                $irm = Invoke-LFMApiUri -Uri $apiUrl -Method Post
-                if ($irm.Lfm.Status -eq 'ok') {Write-Verbose ($localizedData.tagRemoved -f $Tag)}
-            }
-            catch {
-                throw $_
-            }
+            $null = Invoke-LFMApiMethod -Method 'artist.removeTag' -Parameter $PSBoundParameters
+            Write-Verbose ($localizedData.tagRemoved -f $Tag)
         }
     }
 }

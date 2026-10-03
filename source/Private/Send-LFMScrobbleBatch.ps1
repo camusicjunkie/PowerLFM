@@ -6,34 +6,21 @@ function Send-LFMScrobbleBatch {
         [psobject[]] $Scrobble
     )
 
-    # track.scrobble takes up to 50 plays in one call through array notation, which
-    # neither Get-LFMSignature nor ConvertTo-LFMParameter can express: both map one
-    # PowerShell parameter to one API parameter.
-    $batchParams = @{ }
-    for ($index = 0; $index -lt $Scrobble.Count; $index++) {
-        $batchParams["artist[$index]"] = $Scrobble[$index].Artist
-        $batchParams["track[$index]"] = $Scrobble[$index].Track
-        $batchParams["timestamp[$index]"] = $Scrobble[$index].Timestamp
-
-        if ($Scrobble[$index].Album) { $batchParams["album[$index]"] = $Scrobble[$index].Album }
-        if ($Scrobble[$index].TrackNumber) { $batchParams["trackNumber[$index]"] = $Scrobble[$index].TrackNumber }
-        if ($Scrobble[$index].Duration) { $batchParams["duration[$index]"] = $Scrobble[$index].Duration }
-        if ($Scrobble[$index].Id) { $batchParams["mbid[$index]"] = $Scrobble[$index].Id }
+    # track.scrobble takes up to 50 plays in one call. Invoke-LFMApiMethod numbers them
+    # with Last.fm's name[i] notation; each play carries only the details it has.
+    $batch = foreach ($play in $Scrobble) {
+        $parameters = @{
+            Artist    = $play.Artist
+            Track     = $play.Track
+            Timestamp = $play.Timestamp
+        }
+        foreach ($optional in 'Album', 'TrackNumber', 'Duration', 'Id') {
+            if ($play.$optional) { $parameters[$optional] = $play.$optional }
+        }
+        $parameters
     }
 
-    $signedParams = $batchParams + @{
-        'method'  = 'track.scrobble'
-        'api_key' = $script:LFMConfig.ApiKey
-        'sk'      = $script:LFMConfig.SessionKey
-    }
-
-    $signature = New-LFMApiQuery -InputObject $signedParams -Signature
-    $apiSig = Get-Md5Hash -String "$signature$($script:LFMConfig.SharedSecret)"
-
-    $query = New-LFMApiQuery -InputObject ($signedParams + @{ 'format' = 'json'; 'api_sig' = $apiSig })
-    $apiUrl = "$baseUrl/?$query"
-
-    $irm = Invoke-LFMApiUri -Uri $apiUrl -Method Post
+    $irm = Invoke-LFMApiMethod -Method 'track.scrobble' -Batch $batch
 
     Write-Output @($irm.Scrobbles.Scrobble)
 }
