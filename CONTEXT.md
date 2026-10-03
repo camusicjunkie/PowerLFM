@@ -43,6 +43,12 @@ A hash over a request's parameters and the Shared Secret, proving the request ca
 application that holds the secret. Required on every write and on the authorization exchange.
 _Avoid_: api_sig, request hash
 
+**Method**:
+A named Last.fm operation, such as track.love or user.getTopArtists. Every Method is
+either a read or a write, and every write requires a Signature. Whether a request reads or
+writes is decided by its Method, never by the PowerShell verb of the command that makes it.
+_Avoid_: endpoint, API call, verb
+
 ### Catalog
 
 **Artist**:
