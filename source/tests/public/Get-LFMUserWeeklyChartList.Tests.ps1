@@ -2,16 +2,35 @@
 Describe 'Get-LFMUserWeeklyChartList: Unit' -Tag Unit {
 
     BeforeAll {
+        . $PSScriptRoot\..\RequestRecorder.ps1
+
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMUserWeeklyChartList'.UserWeeklyChartList
 
-        Mock Remove-CommonParameter {
-            [hashtable] @{ }
-        } -ModuleName 'PowerLFM'
-        Mock ConvertTo-LFMParameter -ModuleName 'PowerLFM'
-        Mock New-LFMApiQuery -ModuleName 'PowerLFM'
-        Mock Invoke-LFMApiUri { $contextMock } -ModuleName 'PowerLFM'
+        $module = @{ ModuleName = 'PowerLFM' }
+
+        $originalConfig = InModuleScope @module { $script:LFMConfig }
+
+        InModuleScope @module {
+            $script:LFMConfig = [pscustomobject] @{
+                ApiKey       = 'ApiKeyValue'
+                SessionKey   = 'SessionKeyValue'
+                SharedSecret = 'SharedSecretValue'
+            }
+        }
+
         Mock ConvertFrom-UnixTime -ModuleName 'PowerLFM'
+    }
+
+    AfterAll {
+        InModuleScope @module -Parameters @{ Config = $originalConfig } {
+            param ($Config)
+            $script:LFMConfig = $Config
+        }
+    }
+
+    BeforeEach {
+        Register-LFMFakeRestMethod -Response $contextMock
     }
 
     Context 'Input' {
@@ -21,64 +40,41 @@ Describe 'Get-LFMUserWeeklyChartList: Unit' -Tag Unit {
         }
     }
 
-    Context 'Execution' {
+    Context 'Request' {
 
-        BeforeAll {
-            Get-LFMUserWeeklyChartList
+        It 'Sends user.getWeeklyChartList as an unsigned GET' {
+            $null = Get-LFMUserWeeklyChartList -UserName 'camusicjunkie'
+
+            $request = Get-LFMRecordedRequest
+            $request.Method | Should -Be 'user.getWeeklyChartList'
+            $request.HttpMethod | Should -Be 'Get'
+            $request.Parameters.ContainsKey('api_sig') | Should -BeFalse
+            $request.Parameters.ContainsKey('sk') | Should -BeFalse
         }
 
-        It 'Should remove common parameters from bound parameters' {
-            $siParams = @{
-                CommandName = 'Remove-CommonParameter'
-                ModuleName  = 'PowerLFM'
-                Scope       = 'Context'
-                Exactly     = $true
-                Times       = 1
-            }
-            Should -Invoke @siParams
+        It 'Sends the username as user' {
+            $null = Get-LFMUserWeeklyChartList -UserName 'camusicjunkie'
+
+            (Get-LFMRecordedRequest).Parameters['user'] | Should -Be 'camusicjunkie'
         }
 
-        It 'Should convert parameters to format API expects after signing' {
-            $siParams = @{
-                CommandName = 'ConvertTo-LFMParameter'
-                ModuleName  = 'PowerLFM'
-                Scope       = 'Context'
-                Exactly     = $true
-                Times       = 1
-            }
-            Should -Invoke @siParams
-        }
+        It 'Sends one request per piped object' {
+            $null = @(
+                [pscustomobject] @{ UserName = 'User1' }
+                [pscustomobject] @{ UserName = 'User2' }
+            ) | Get-LFMUserWeeklyChartList
 
-        It 'Should take hashtable and build a query for a uri' {
-            $siParams = @{
-                CommandName = 'New-LFMApiQuery'
-                ModuleName  = 'PowerLFM'
-                Scope       = 'Context'
-                Exactly     = $true
-                Times       = 1
-            }
-            Should -Invoke @siParams
+            $requests = @(Get-LFMRecordedRequest)
+            $requests.Count | Should -Be 2
+            $requests[1].Parameters['user'] | Should -Be 'User2'
         }
     }
 
     Context 'Output' {
 
         BeforeAll {
+            Register-LFMFakeRestMethod -Response $contextMock
             Get-LFMUserWeeklyChartList
-        }
-
-        It 'Should call the correct Last.fm get method' {
-            $siParams = @{
-                CommandName     = 'Invoke-LFMApiUri'
-                ModuleName      = 'PowerLFM'
-                Scope           = 'Context'
-                Exactly         = $true
-                Times           = 1
-                ParameterFilter = {
-                    $Uri -like "$baseUrl*"
-                }
-            }
-            Should -Invoke @siParams
         }
 
         It 'Should convert the date from unix time to the local time' {
@@ -98,9 +94,9 @@ Describe 'Get-LFMUserWeeklyChartList: Unit' -Tag Unit {
         }
 
         It 'Should throw when an error is returned in the response' {
-            Mock Invoke-LFMApiUri { throw 'Error' } -ModuleName 'PowerLFM'
+            Register-LFMFakeRestMethod -Response ([pscustomobject] @{ error = 6; message = 'Not found' })
 
-            { Get-LFMUserWeeklyChartList } | Should -Throw 'Error'
+            { Get-LFMUserWeeklyChartList } | Should -Throw '*Not found*'
         }
     }
 }

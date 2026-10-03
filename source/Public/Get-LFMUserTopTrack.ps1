@@ -20,42 +20,22 @@ function Get-LFMUserTopTrack {
         [int] $Page
     )
 
-    begin {
-        $apiParams = @{
-            'method' = 'user.getTopTracks'
-            'api_key' = $script:LFMConfig.ApiKey
-            'sk' = $script:LFMConfig.SessionKey
-            'format' = 'json'
-        }
-    }
     process {
-        $noCommonParams = Remove-CommonParameter $PSBoundParameters
-        $convertedParams = ConvertTo-LFMParameter $noCommonParams
+        $irm = Invoke-LFMApiMethod -Method 'user.getTopTracks' -Parameter $PSBoundParameters
 
-        $query = New-LFMApiQuery ($convertedParams + $apiParams)
-        $apiUrl = "$baseUrl/?$query"
-    }
-    end {
-        try {
-            $irm = Invoke-LFMApiUri -Uri $apiUrl
-
-            foreach ($track in $irm.TopTracks.Track) {
-                $trackInfo = [pscustomobject] @{
-                    'PSTypeName' = 'PowerLFM.User.TopTrack'
-                    'Track' = $track.Name
-                    'PlayCount' = [int] $track.PlayCount
-                    'TrackUrl' = [uri] $track.Url
-                    'TrackId' = $track.Mbid
-                    'Artist' = $track.Artist.Name
-                    'ArtistUrl' = [uri] $track.Artist.Url
-                    'ArtistId' = $track.Artist.Mbid
-                }
-
-                Write-Output $trackInfo
+        foreach ($track in $irm.TopTracks.Track) {
+            $trackInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.User.TopTrack'
+                'Track' = $track.Name
+                'PlayCount' = [int] $track.PlayCount
+                'TrackUrl' = [uri] $track.Url
+                'TrackId' = $track.Mbid
+                'Artist' = $track.Artist.Name
+                'ArtistUrl' = [uri] $track.Artist.Url
+                'ArtistId' = $track.Artist.Mbid
             }
-        }
-        catch {
-            throw $_
+
+            Write-Output $trackInfo
         }
     }
 }

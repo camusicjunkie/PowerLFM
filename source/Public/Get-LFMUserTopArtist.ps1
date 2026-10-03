@@ -20,39 +20,19 @@ function Get-LFMUserTopArtist {
         [int] $Page
     )
 
-    begin {
-        $apiParams = @{
-            'method' = 'user.getTopArtists'
-            'api_key' = $script:LFMConfig.ApiKey
-            'sk' = $script:LFMConfig.SessionKey
-            'format' = 'json'
-        }
-    }
     process {
-        $noCommonParams = Remove-CommonParameter $PSBoundParameters
-        $convertedParams = ConvertTo-LFMParameter $noCommonParams
+        $irm = Invoke-LFMApiMethod -Method 'user.getTopArtists' -Parameter $PSBoundParameters
 
-        $query = New-LFMApiQuery ($convertedParams + $apiParams)
-        $apiUrl = "$baseUrl/?$query"
-    }
-    end {
-        try {
-            $irm = Invoke-LFMApiUri -Uri $apiUrl
-
-            foreach ($artist in $irm.TopArtists.Artist) {
-                $artistInfo = [pscustomobject] @{
-                    'PSTypeName' = 'PowerLFM.User.Artist'
-                    'Artist' = $artist.Name
-                    'PlayCount' = [int] $artist.PlayCount
-                    'Url' = [uri] $artist.Url
-                    'Id' = $artist.Mbid
-                }
-
-                Write-Output $artistInfo
+        foreach ($artist in $irm.TopArtists.Artist) {
+            $artistInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.User.Artist'
+                'Artist' = $artist.Name
+                'PlayCount' = [int] $artist.PlayCount
+                'Url' = [uri] $artist.Url
+                'Id' = $artist.Mbid
             }
-        }
-        catch {
-            throw $_
+
+            Write-Output $artistInfo
         }
     }
 }

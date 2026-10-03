@@ -15,41 +15,21 @@ function Get-LFMUserWeeklyArtistChart {
         [string] $UserName
     )
 
-    begin {
-        $apiParams = @{
-            'method' = 'user.getWeeklyArtistChart'
-            'api_key' = $script:LFMConfig.ApiKey
-            'sk' = $script:LFMConfig.SessionKey
-            'format' = 'json'
-        }
-    }
     process {
-        $noCommonParams = Remove-CommonParameter $PSBoundParameters
-        $convertedParams = ConvertTo-LFMParameter $noCommonParams
+        $irm = Invoke-LFMApiMethod -Method 'user.getWeeklyArtistChart' -Parameter $PSBoundParameters
 
-        $query = New-LFMApiQuery ($convertedParams + $apiParams)
-        $apiUrl = "$baseUrl/?$query"
-    }
-    end {
-        try {
-            $irm = Invoke-LFMApiUri -Uri $apiUrl
-
-            foreach ($artist in $irm.WeeklyArtistChart.Artist) {
-                $artistInfo = [pscustomobject] @{
-                    'PSTypeName' = 'PowerLFM.User.WeeklyArtistChart'
-                    'Artist' = $artist.Name
-                    'Url' = [uri] $artist.Url
-                    'Id' = $artist.Mbid
-                    'PlayCount' = [int] $artist.PlayCount
-                    'StartDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyArtistChart.'@attr'.From -Local
-                    'EndDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyArtistChart.'@attr'.To -Local
-                }
-
-                Write-Output $artistInfo
+        foreach ($artist in $irm.WeeklyArtistChart.Artist) {
+            $artistInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.User.WeeklyArtistChart'
+                'Artist' = $artist.Name
+                'Url' = [uri] $artist.Url
+                'Id' = $artist.Mbid
+                'PlayCount' = [int] $artist.PlayCount
+                'StartDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyArtistChart.'@attr'.From -Local
+                'EndDate' = ConvertFrom-UnixTime -UnixTime $irm.WeeklyArtistChart.'@attr'.To -Local
             }
-        }
-        catch {
-            throw $_
+
+            Write-Output $artistInfo
         }
     }
 }
