@@ -2,17 +2,33 @@
 Describe 'Get-LFMTagInfo: Unit' -Tag Unit {
 
     BeforeAll {
+        . $PSScriptRoot\..\RequestRecorder.ps1
+
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Get-LFMTagInfo'.TagInfo
 
-        Mock Remove-CommonParameter {
-            [hashtable] @{
-                Tag = 'Tag'
+        $module = @{ ModuleName = 'PowerLFM' }
+
+        $originalConfig = InModuleScope @module { $script:LFMConfig }
+
+        InModuleScope @module {
+            $script:LFMConfig = [pscustomobject] @{
+                ApiKey       = 'ApiKeyValue'
+                SessionKey   = 'SessionKeyValue'
+                SharedSecret = 'SharedSecretValue'
             }
-        } -ModuleName 'PowerLFM'
-        Mock ConvertTo-LFMParameter -ModuleName 'PowerLFM'
-        Mock New-LFMApiQuery -ModuleName 'PowerLFM'
-        Mock Invoke-LFMApiUri { $contextMock } -ModuleName 'PowerLFM'
+        }
+    }
+
+    AfterAll {
+        InModuleScope @module -Parameters @{ Config = $originalConfig } {
+            param ($Config)
+            $script:LFMConfig = $Config
+        }
+    }
+
+    BeforeEach {
+        Register-LFMFakeRestMethod -Response $contextMock
     }
 
     Context 'Input' {
@@ -22,49 +38,46 @@ Describe 'Get-LFMTagInfo: Unit' -Tag Unit {
         }
     }
 
-    Context 'Execution' {
+    Context 'Request' {
 
-        BeforeAll {
-            Get-LFMTagInfo -Tag Tag
+        It 'Sends tag.getInfo as an unsigned GET' {
+            $null = Get-LFMTagInfo -Tag 'Black Metal'
+
+            $request = Get-LFMRecordedRequest
+            $request.Method | Should -Be 'tag.getInfo'
+            $request.HttpMethod | Should -Be 'Get'
+            $request.Parameters.ContainsKey('api_sig') | Should -BeFalse
+            $request.Parameters.ContainsKey('sk') | Should -BeFalse
         }
 
-        It 'Should remove common parameters from bound parameters' {
-            $siParams = @{
-                CommandName = 'Remove-CommonParameter'
-                ModuleName  = 'PowerLFM'
-                Scope       = 'Context'
-                Exactly     = $true
-                Times       = 1
-            }
-            Should -Invoke @siParams
+        It 'Sends the tag as tag' {
+            $null = Get-LFMTagInfo -Tag 'Black Metal'
+
+            (Get-LFMRecordedRequest).Parameters['tag'] | Should -Be 'Black Metal'
         }
 
-        It 'Should convert parameters to format API expects after signing' {
-            $siParams = @{
-                CommandName = 'ConvertTo-LFMParameter'
-                ModuleName  = 'PowerLFM'
-                Scope       = 'Context'
-                Exactly     = $true
-                Times       = 1
-            }
-            Should -Invoke @siParams
+        It 'Sends the language as lang' {
+            $null = Get-LFMTagInfo -Tag 'Black Metal' -Language 'en'
+
+            (Get-LFMRecordedRequest).Parameters['lang'] | Should -Be 'en'
         }
 
-        It 'Should take hashtable and build a query for a uri' {
-            $siParams = @{
-                CommandName = 'New-LFMApiQuery'
-                ModuleName  = 'PowerLFM'
-                Scope       = 'Context'
-                Exactly     = $true
-                Times       = 1
-            }
-            Should -Invoke @siParams
+        It 'Sends one request per piped object' {
+            $null = @(
+                [pscustomobject] @{ Tag = 'Tag1' }
+                [pscustomobject] @{ Tag = 'Tag2' }
+            ) | Get-LFMTagInfo
+
+            $requests = @(Get-LFMRecordedRequest)
+            $requests.Count | Should -Be 2
+            $requests[1].Parameters['tag'] | Should -Be 'Tag2'
         }
     }
 
     Context 'Output' {
 
         BeforeAll {
+            Register-LFMFakeRestMethod -Response $contextMock
             $output = Get-LFMTagInfo -Tag Tag
         }
 
@@ -89,24 +102,10 @@ Describe 'Get-LFMTagInfo: Unit' -Tag Unit {
             $output.Tag | Should -HaveCount 1
         }
 
-        It 'Should call the correct Last.fm get method' {
-            $siParams = @{
-                CommandName     = 'Invoke-LFMApiUri'
-                ModuleName      = 'PowerLFM'
-                Scope           = 'Context'
-                Exactly         = $true
-                Times           = 1
-                ParameterFilter = {
-                    $Uri -like "$baseUrl*"
-                }
-            }
-            Should -Invoke @siParams
-        }
-
         It 'Should throw when an error is returned in the response' {
-            Mock Invoke-LFMApiUri { throw 'Error' } -ModuleName 'PowerLFM'
+            Register-LFMFakeRestMethod -Response ([pscustomobject] @{ error = 6; message = 'Not found' })
 
-            { Get-LFMTagInfo -Tag Tag } | Should -Throw 'Error'
+            { Get-LFMTagInfo -Tag Tag } | Should -Throw '*Not found*'
         }
     }
 }

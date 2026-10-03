@@ -10,39 +10,20 @@ function Get-LFMTagWeeklyChartList {
         [string] $Tag
     )
 
-    begin {
-        $apiParams = @{
-            'method' = 'tag.getWeeklyChartList'
-            'api_key' = $script:LFMConfig.ApiKey
-            'format' = 'json'
-        }
-    }
     process {
-        $noCommonParams = Remove-CommonParameter $PSBoundParameters
-        $convertedParams = ConvertTo-LFMParameter $noCommonParams
+        $irm = Invoke-LFMApiMethod -Method 'tag.getWeeklyChartList' -Parameter $PSBoundParameters
 
-        $query = New-LFMApiQuery ($convertedParams + $apiParams)
-        $apiUrl = "$baseUrl/?$query"
-    }
-    end {
-        try {
-            $irm = Invoke-LFMApiUri -Uri $apiUrl
+        $chartList = $irm.WeeklyChartList.Chart.GetEnumerator() |
+            Sort-Object {$_.From} -Descending
 
-            $chartList = $irm.WeeklyChartList.Chart.GetEnumerator() |
-                Sort-Object {$_.From} -Descending
-
-            foreach ($chart in $chartList) {
-                $chartInfo = [pscustomobject] @{
-                    'PSTypeName' = 'PowerLFM.Tag.WeeklyChartList'
-                    'StartDate' = $chart.From | ConvertFrom-UnixTime -Local
-                    'EndDate' = $chart.To | ConvertFrom-UnixTime -Local
-                }
-
-                Write-Output $chartInfo
+        foreach ($chart in $chartList) {
+            $chartInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.Tag.WeeklyChartList'
+                'StartDate' = $chart.From | ConvertFrom-UnixTime -Local
+                'EndDate' = $chart.To | ConvertFrom-UnixTime -Local
             }
-        }
-        catch {
-            throw $_
+
+            Write-Output $chartInfo
         }
     }
 }

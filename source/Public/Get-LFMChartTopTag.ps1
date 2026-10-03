@@ -11,20 +11,8 @@ function Get-LFMChartTopTag {
         [int] $Page
     )
 
-    $apiParams = @{
-        'method' = 'chart.getTopTags'
-        'api_key' = $script:LFMConfig.ApiKey
-        'format' = 'json'
-    }
-
-    $noCommonParams = Remove-CommonParameter $PSBoundParameters
-    $convertedParams = ConvertTo-LFMParameter $noCommonParams
-
-    $query = New-LFMApiQuery ($convertedParams + $apiParams)
-    $apiUrl = "$baseUrl/?$query"
-
-    try {
-        $irm = Invoke-LFMApiUri -Uri $apiUrl
+    process {
+        $irm = Invoke-LFMApiMethod -Method 'chart.getTopTags' -Parameter $PSBoundParameters
 
         foreach ($tag in $irm.Tags.Tag) {
             $tagInfo = [pscustomobject] @{
@@ -37,8 +25,5 @@ function Get-LFMChartTopTag {
 
             Write-Output $tagInfo
         }
-    }
-    catch {
-        throw $_
     }
 }

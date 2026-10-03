@@ -14,38 +14,19 @@ function Get-LFMTagTopArtist {
         [int] $Page
     )
 
-    begin {
-        $apiParams = @{
-            'method' = 'tag.getTopArtists'
-            'api_key' = $script:LFMConfig.ApiKey
-            'format' = 'json'
-        }
-    }
     process {
-        $noCommonParams = Remove-CommonParameter $PSBoundParameters
-        $convertedParams = ConvertTo-LFMParameter $noCommonParams
+        $irm = Invoke-LFMApiMethod -Method 'tag.getTopArtists' -Parameter $PSBoundParameters
 
-        $query = New-LFMApiQuery ($convertedParams + $apiParams)
-        $apiUrl = "$baseUrl/?$query"
-    }
-    end {
-        try {
-            $irm = Invoke-LFMApiUri -Uri $apiUrl
-
-            foreach ($artist in $irm.TopArtists.Artist) {
-                $artistInfo = [pscustomobject] @{
-                    'PSTypeName' = 'PowerLFM.Tag.TopArtists'
-                    'Artist' = $artist.Name
-                    'ArtistId' = $artist.Mbid
-                    'ArtistUrl' = [uri] $artist.Url
-                    'Rank' = [int] $artist.'@attr'.Rank
-                }
-
-                Write-Output $artistInfo
+        foreach ($artist in $irm.TopArtists.Artist) {
+            $artistInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.Tag.TopArtists'
+                'Artist' = $artist.Name
+                'ArtistId' = $artist.Mbid
+                'ArtistUrl' = [uri] $artist.Url
+                'Rank' = [int] $artist.'@attr'.Rank
             }
-        }
-        catch {
-            throw $_
+
+            Write-Output $artistInfo
         }
     }
 }
