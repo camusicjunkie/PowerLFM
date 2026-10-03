@@ -29,41 +29,23 @@ function Get-LFMTrackSimilar {
         [switch] $AutoCorrect
     )
 
-    begin {
-        $apiParams = @{
-            'method' = 'track.getSimilar'
-            'api_key' = $script:LFMConfig.ApiKey
-            'limit' = $Limit
-            'format' = 'json'
-        }
-    }
     process {
-        $noCommonParams = Remove-CommonParameter $PSBoundParameters
-        $convertedParams = ConvertTo-LFMParameter $noCommonParams
+        # A default is not a bound parameter, so the request would go without it.
+        $PSBoundParameters['Limit'] = $Limit
+        $irm = Invoke-LFMApiMethod -Method 'track.getSimilar' -Parameter $PSBoundParameters
 
-        $query = New-LFMApiQuery ($convertedParams + $apiParams)
-        $apiUrl = "$baseUrl/?$query"
-    }
-    end {
-        try {
-            $irm = Invoke-LFMApiUri -Uri $apiUrl
-
-            foreach ($similar in $irm.SimilarTracks.Track) {
-                $similarInfo = [pscustomobject] @{
-                    'PSTypeName' = 'PowerLFM.Track.Similar'
-                    'Track' = $similar.Name
-                    'Artist' = $similar.Artist.Name
-                    'Id' = $similar.Mbid
-                    'PlayCount' = [int] $similar.PlayCount
-                    'Url' = [uri] $similar.Url
-                    'Match' = [math]::Round($similar.Match, 2)
-                }
-
-                Write-Output $similarInfo
+        foreach ($similar in $irm.SimilarTracks.Track) {
+            $similarInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.Track.Similar'
+                'Track' = $similar.Name
+                'Artist' = $similar.Artist.Name
+                'Id' = $similar.Mbid
+                'PlayCount' = [int] $similar.PlayCount
+                'Url' = [uri] $similar.Url
+                'Match' = [math]::Round($similar.Match, 2)
             }
-        }
-        catch {
-            throw $_
+
+            Write-Output $similarInfo
         }
     }
 }

@@ -26,38 +26,19 @@ function Get-LFMArtistTopAlbum {
         [switch] $AutoCorrect
     )
 
-    begin {
-        $apiParams = @{
-            'method' = 'artist.getTopAlbums'
-            'api_key' = $script:LFMConfig.ApiKey
-            'format' = 'json'
-        }
-    }
     process {
-        $noCommonParams = Remove-CommonParameter $PSBoundParameters
-        $convertedParams = ConvertTo-LFMParameter $noCommonParams
+        $irm = Invoke-LFMApiMethod -Method 'artist.getTopAlbums' -Parameter $PSBoundParameters
 
-        $query = New-LFMApiQuery ($convertedParams + $apiParams)
-        $apiUrl = "$baseUrl/?$query"
-    }
-    end {
-        try {
-            $irm = Invoke-LFMApiUri -Uri $apiUrl
-
-            foreach ($album in $irm.TopAlbums.Album) {
-                $albumInfo = [pscustomobject] @{
-                    'PSTypeName' = 'PowerLFM.Artist.Album'
-                    'Album' = $album.Name
-                    'Id' = $album.Mbid
-                    'Url' = [uri]$album.Url
-                    'PlayCount' = [int] $album.PlayCount
-                }
-
-                Write-Output $albumInfo
+        foreach ($album in $irm.TopAlbums.Album) {
+            $albumInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.Artist.Album'
+                'Album' = $album.Name
+                'Id' = $album.Mbid
+                'Url' = [uri]$album.Url
+                'PlayCount' = [int] $album.PlayCount
             }
-        }
-        catch {
-            throw $_
+
+            Write-Output $albumInfo
         }
     }
 }

@@ -22,38 +22,19 @@ function Get-LFMArtistSimilar {
         [switch] $AutoCorrect
     )
 
-    begin {
-        $apiParams = @{
-            'method' = 'artist.getSimilar'
-            'api_key' = $script:LFMConfig.ApiKey
-            'format' = 'json'
-        }
-    }
     process {
-        $noCommonParams = Remove-CommonParameter $PSBoundParameters
-        $convertedParams = ConvertTo-LFMParameter $noCommonParams
+        $irm = Invoke-LFMApiMethod -Method 'artist.getSimilar' -Parameter $PSBoundParameters
 
-        $query = New-LFMApiQuery ($convertedParams + $apiParams)
-        $apiUrl = "$baseUrl/?$query"
-    }
-    end {
-        try {
-            $irm = Invoke-LFMApiUri -Uri $apiUrl
-
-            foreach ($similar in $irm.SimilarArtists.Artist) {
-                $similarInfo = [pscustomobject] @{
-                    'PSTypeName' = 'PowerLFM.Artist.Similar'
-                    'Artist' = $similar.Name
-                    'Id' = $similar.Mbid
-                    'Url' = [uri] $similar.Url
-                    'Match' = [math]::Round($similar.Match, 2)
-                }
-
-                Write-Output $similarInfo
+        foreach ($similar in $irm.SimilarArtists.Artist) {
+            $similarInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.Artist.Similar'
+                'Artist' = $similar.Name
+                'Id' = $similar.Mbid
+                'Url' = [uri] $similar.Url
+                'Match' = [math]::Round($similar.Match, 2)
             }
-        }
-        catch {
-            throw $_
+
+            Write-Output $similarInfo
         }
     }
 }

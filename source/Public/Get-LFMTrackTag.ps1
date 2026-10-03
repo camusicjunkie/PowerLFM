@@ -29,37 +29,17 @@ function Get-LFMTrackTag {
         [switch] $AutoCorrect
     )
 
-    begin {
-        $apiParams = @{
-            'method' = 'track.getTags'
-            'api_key' = $script:LFMConfig.ApiKey
-            'sk' = $script:LFMConfig.SessionKey
-            'format' = 'json'
-        }
-    }
     process {
-        $noCommonParams = Remove-CommonParameter $PSBoundParameters
-        $convertedParams = ConvertTo-LFMParameter $noCommonParams
+        $irm = Invoke-LFMApiMethod -Method 'track.getTags' -Parameter $PSBoundParameters
 
-        $query = New-LFMApiQuery ($convertedParams + $apiParams)
-        $apiUrl = "$baseUrl/?$query"
-    }
-    end {
-        try {
-            $irm = Invoke-LFMApiUri -Uri $apiUrl
-
-            foreach ($tag in $irm.Tags.Tag) {
-                $tagInfo = [pscustomobject] @{
-                    'PSTypeName' = 'PowerLFM.Track.Tag'
-                    'Tag' = $tag.Name
-                    'Url' = [uri] $tag.Url
-                }
-
-                Write-Output $tagInfo
+        foreach ($tag in $irm.Tags.Tag) {
+            $tagInfo = [pscustomobject] @{
+                'PSTypeName' = 'PowerLFM.Track.Tag'
+                'Tag' = $tag.Name
+                'Url' = [uri] $tag.Url
             }
-        }
-        catch {
-            throw $_
+
+            Write-Output $tagInfo
         }
     }
 }
