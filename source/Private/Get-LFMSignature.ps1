@@ -1,50 +1,21 @@
 function Get-LFMSignature {
+    [CmdletBinding()]
     [OutputType('System.String')]
     param (
+        # The finished parameters, already under Last.fm's names.
         [Parameter(Mandatory)]
-        [ValidateSet('album.addTags','album.removeTag',
-                     'artist.addTags','artist.removeTag',
-                     'auth.getToken','auth.getSession',
-                     'track.addTags','track.removeTag',
-                     'track.love','track.unlove',
-                     'track.updateNowPlaying', 'track.scrobble')]
-        [string] $Method,
+        [hashtable] $Parameter,
 
-        [string] $Album,
-        [string] $Artist,
-        [string[]] $Tag,
-        [string] $Track,
-        [datetime] $Timestamp,
-        [int] $TrackNumber,
-        [int] $Duration,
-        [guid] $Id,
-        [switch] $Passthru,
-        [string] $ApiKey,
-        [string] $SharedSecret,
-        [string] $Token
+        [Parameter(Mandatory)]
+        [string] $SharedSecret
     )
 
-    $sigParams = @{
-        'method' = $Method
-        'api_key' = $script:LFMConfig.ApiKey
-        'sk' = $script:LFMConfig.SessionKey
-    }
+    # Ordinal, not culture-aware: Last.fm sorts parameter names bytewise, and a
+    # batched scrobble's names carry brackets, which a culture-aware sort weights
+    # differently from the server would.
+    $names = [string[]] $Parameter.Keys
+    [array]::Sort($names, [StringComparer]::Ordinal)
 
-    $convertedParams = ConvertTo-LFMParameter $PSBoundParameters
-
-    if ($PSBoundParameters.ContainsKey('ApiKey')) {
-        $sigParams.Remove('api_key')
-        $sigParams.Remove('sk')
-
-        $query = New-LFMApiQuery ($convertedParams + $sigParams) -Signature
-
-        Get-Md5Hash -String "$query$($SharedSecret)"
-        Write-Verbose "$query$($SharedSecret)"
-    }
-    else {
-        $query = New-LFMApiQuery ($convertedParams + $sigParams) -Signature
-
-        Get-Md5Hash -String "$query$($script:LFMConfig.SharedSecret)"
-        Write-Verbose "$query$($script:LFMConfig.SharedSecret)"
-    }
+    $signed = -join $names.ForEach({ "$_$($Parameter[$_])" })
+    Get-Md5Hash -String "$signed$SharedSecret"
 }

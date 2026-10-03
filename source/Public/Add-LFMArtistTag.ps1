@@ -14,30 +14,10 @@ function Add-LFMArtistTag {
         [string[]] $Tag
     )
 
-    begin {
-        $apiParams = @{
-            'method' = 'artist.addTags'
-            'api_key' = $script:LFMConfig.ApiKey
-            'sk' = $script:LFMConfig.SessionKey
-        }
-    }
     process {
-        $noCommonParams = Remove-CommonParameter $PSBoundParameters
-        $apiSig = Get-LFMSignature -Method $apiParams.Method @noCommonParams
-        $apiParams['api_sig'] = $apiSig
-
-        $convertedParams = ConvertTo-LFMParameter $noCommonParams
-        $query = New-LFMApiQuery ($convertedParams + $apiParams)
-        $apiUrl = "$baseUrl/?$query"
-
         if ($PSCmdlet.ShouldProcess("Artist: $Artist", "Adding artist tag: $Tag")) {
-            try {
-                $irm = Invoke-LFMApiUri -Uri $apiUrl -Method Post
-                if ($irm.Lfm.Status -eq 'ok') {Write-Verbose ($localizedData.tagAdded -f $Tag)}
-            }
-            catch {
-                throw $_
-            }
+            $null = Invoke-LFMApiMethod -Method 'artist.addTags' -Parameter $PSBoundParameters
+            Write-Verbose ($localizedData.tagAdded -f $Tag)
         }
     }
 }

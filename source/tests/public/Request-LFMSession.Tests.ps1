@@ -1,20 +1,27 @@
-
 Describe 'Request-LFMSession: Unit' -Tag Unit {
 
     BeforeAll {
+        . $PSScriptRoot\..\RequestRecorder.ps1
+
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Request-LFMSession'.Session
 
-        Mock Remove-CommonParameter {
-            [hashtable] @{
-                ApiKey       = 'ApiKey'
-                Token        = 'Token'
-                SharedSecret = 'SharedSecret'
-            }
-        } -ModuleName 'PowerLFM'
-        Mock Get-LFMSignature -ModuleName 'PowerLFM'
-        Mock New-LFMApiQuery -ModuleName 'PowerLFM'
-        Mock Invoke-LFMApiUri { $contextMock } -ModuleName 'PowerLFM'
+        $module = @{ ModuleName = 'PowerLFM' }
+
+        # The authorization exchange runs before any Configuration exists.
+        $originalConfig = InModuleScope @module { $script:LFMConfig }
+        InModuleScope @module { $script:LFMConfig = $null }
+    }
+
+    AfterAll {
+        InModuleScope @module -Parameters @{ Config = $originalConfig } {
+            param ($Config)
+            $script:LFMConfig = $Config
+        }
+    }
+
+    BeforeEach {
+        Register-LFMFakeRestMethod -Response $contextMock
     }
 
     Context 'Input' {
@@ -32,60 +39,39 @@ Describe 'Request-LFMSession: Unit' -Tag Unit {
         }
     }
 
-    Context 'Execution' {
+    Context 'Request' {
 
-        BeforeAll {
-            Request-LFMSession -ApiKey 'ApiKey' -Token 'Token' -SharedSecret 'SharedSecret'
+        BeforeEach {
+            $null = Request-LFMSession -ApiKey 'AppKey' -Token 'TokenValue' -SharedSecret 'AppSecret'
+            $request = Get-LFMRecordedRequest
         }
 
-        It 'Should remove common parameters from bound parameters' {
-            $siParams = @{
-                CommandName = 'Remove-CommonParameter'
-                ModuleName  = 'PowerLFM'
-                Scope       = 'Context'
-                Exactly     = $true
-                Times       = 1
-            }
-            Should -Invoke @siParams
+        It 'Sends auth.getSession as a signed GET without a Session Key' {
+            $request.Method | Should -Be 'auth.getSession'
+            $request.HttpMethod | Should -Be 'Get'
+            $request.Parameters['api_sig'] | Should -Match '^[0-9A-F]{32}$'
+            $request.Parameters.ContainsKey('sk') | Should -BeFalse
         }
 
-        It 'Should create a signature' {
-            $siParams = @{
-                CommandName     = 'Get-LFMSignature'
-                ModuleName      = 'PowerLFM'
-                Scope           = 'Context'
-                Exactly         = $true
-                Times           = 1
-                ParameterFilter = {
-                    $ApiKey -eq 'ApiKey' -and
-                    $Token -eq 'Token' -and
-                    $SharedSecret -eq 'SharedSecret' -and
-                    $Method -eq 'auth.getSession'
-                }
-            }
-            Should -Invoke @siParams
-        }
-
-        It 'Should take hashtable and build a query for a uri' {
-            $siParams = @{
-                CommandName = 'New-LFMApiQuery'
-                ModuleName  = 'PowerLFM'
-                Scope       = 'Context'
-                Exactly     = $true
-                Times       = 1
-            }
-            Should -Invoke @siParams
+        It 'Sends the API Key and the Token and never the Shared Secret' {
+            $request.Parameters['api_key'] | Should -Be 'AppKey'
+            $request.Parameters['token'] | Should -Be 'TokenValue'
+            $request.Uri | Should -Not -Match 'AppSecret'
         }
     }
 
     Context 'Output' {
 
-        BeforeAll {
-            $output = Request-LFMSession -ApiKey 'ApiKey' -Token 'Token' -SharedSecret 'SharedSecret'
+        It 'Should return the correct session key' {
+            $output = Request-LFMSession -ApiKey 'AppKey' -Token 'TokenValue' -SharedSecret 'AppSecret'
+            $output.SessionKey | Should -Be $contextMock.Session.Key
         }
 
-        It 'Should return the correct session key' {
-            $output.SessionKey | Should -Be $contextMock.Session.Key
+        It 'Never shows the Shared Secret when verbose' {
+            $output = Request-LFMSession -ApiKey 'AppKey' -Token 'TokenValue' -SharedSecret 'AppSecret' -Verbose 4>&1 |
+                Where-Object { $_ -is [System.Management.Automation.VerboseRecord] } | Out-String
+
+            $output | Should -Not -Match 'AppSecret'
         }
     }
 }

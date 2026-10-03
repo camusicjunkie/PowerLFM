@@ -1181,5 +1181,32 @@
     "Lfm": {
       "status": "ok"
     }
+  },
+  {
+    "Set-LFMTrackScrobble": {
+      "TrackScrobble": {
+        "scrobbles": {
+          "scrobble": {
+            "artist": {
+              "#text": "Artist"
+            },
+            "album": {
+              "#text": "Album"
+            },
+            "track": {
+              "#text": "Track"
+            },
+            "ignoredMessage": {
+              "code": "0",
+              "#text": ""
+            }
+          },
+          "@attr": {
+            "accepted": 1,
+            "ignored": 0
+          }
+        }
+      }
+    }
   }
 ]

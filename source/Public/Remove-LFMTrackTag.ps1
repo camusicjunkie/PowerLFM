@@ -20,30 +20,10 @@ function Remove-LFMTrackTag {
         [string] $Tag
     )
 
-    begin {
-        $apiParams = @{
-            'method' = 'track.removeTag'
-            'api_key' = $script:LFMConfig.ApiKey
-            'sk' = $script:LFMConfig.SessionKey
-        }
-    }
     process {
-        $noCommonParams = Remove-CommonParameter $PSBoundParameters
-        $apiSig = Get-LFMSignature -Method $apiParams.Method @noCommonParams
-        $apiParams['api_sig'] = $apiSig
-
-        $convertedParams = ConvertTo-LFMParameter $noCommonParams
-        $query = New-LFMApiQuery ($convertedParams + $apiParams)
-        $apiUrl = "$baseUrl/?$query"
-
         if ($PSCmdlet.ShouldProcess("Track: $Track", "Removing track tag: $Tag")) {
-            try {
-                $irm = Invoke-LFMApiUri -Uri $apiUrl -Method Post
-                if ($irm.Lfm.Status -eq 'ok') {Write-Verbose ($localizedData.tagRemoved -f $Tag)}
-            }
-            catch {
-                throw $_
-            }
+            $null = Invoke-LFMApiMethod -Method 'track.removeTag' -Parameter $PSBoundParameters
+            Write-Verbose ($localizedData.tagRemoved -f $Tag)
         }
     }
 }

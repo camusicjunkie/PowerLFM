@@ -1,20 +1,29 @@
-
 Describe 'Request-LFMToken: Unit' -Tag Unit {
 
     BeforeAll {
+        . $PSScriptRoot\..\RequestRecorder.ps1
+
         $mocks = Get-Content -Path $PSScriptRoot\..\config\mocks.json | ConvertFrom-Json
         $contextMock = $mocks.'Request-LFMToken'.Token
 
-        Mock Remove-CommonParameter {
-            [hashtable] @{
-                ApiKey       = 'ApiKey'
-                SharedSecret = 'SharedSecret'
-            }
-        } -ModuleName 'PowerLFM'
-        Mock Get-LFMSignature -ModuleName 'PowerLFM'
-        Mock New-LFMApiQuery -ModuleName 'PowerLFM'
+        $module = @{ ModuleName = 'PowerLFM' }
+
+        # The authorization exchange runs before any Configuration exists.
+        $originalConfig = InModuleScope @module { $script:LFMConfig }
+        InModuleScope @module { $script:LFMConfig = $null }
+
         Mock Show-LFMAuthWindow -ModuleName 'PowerLFM'
-        Mock Invoke-LFMApiUri { $contextMock } -ModuleName 'PowerLFM'
+    }
+
+    AfterAll {
+        InModuleScope @module -Parameters @{ Config = $originalConfig } {
+            param ($Config)
+            $script:LFMConfig = $Config
+        }
+    }
+
+    BeforeEach {
+        Register-LFMFakeRestMethod -Response $contextMock
     }
 
     Context 'Input' {
@@ -28,59 +37,38 @@ Describe 'Request-LFMToken: Unit' -Tag Unit {
         }
     }
 
-    Context 'Execution' {
+    Context 'Request' {
 
-        BeforeAll {
-            Request-LFMToken -ApiKey 'ApiKey' -SharedSecret 'SharedSecret'
+        BeforeEach {
+            $null = Request-LFMToken -ApiKey 'AppKey' -SharedSecret 'AppSecret'
+            $request = Get-LFMRecordedRequest
         }
 
-        It 'Should remove common parameters from bound parameters' {
-            $siParams = @{
-                CommandName = 'Remove-CommonParameter'
-                ModuleName  = 'PowerLFM'
-                Scope       = 'Context'
-                Exactly     = $true
-                Times       = 1
-            }
-            Should -Invoke @siParams
+        It 'Sends auth.getToken as a signed GET without a Session Key' {
+            $request.Method | Should -Be 'auth.getToken'
+            $request.HttpMethod | Should -Be 'Get'
+            $request.Parameters['api_sig'] | Should -Match '^[0-9A-F]{32}$'
+            $request.Parameters.ContainsKey('sk') | Should -BeFalse
         }
 
-        It 'Should create a signature' {
-            $siParams = @{
-                CommandName     = 'Get-LFMSignature'
-                ModuleName      = 'PowerLFM'
-                Scope           = 'Context'
-                Exactly         = $true
-                Times           = 1
-                ParameterFilter = {
-                    $ApiKey -eq 'ApiKey' -and
-                    $SharedSecret -eq 'SharedSecret' -and
-                    $Method -eq 'auth.getToken'
-                }
-            }
-            Should -Invoke @siParams
-        }
-
-        It 'Should take hashtable and build a query for a uri' {
-            $siParams = @{
-                CommandName = 'New-LFMApiQuery'
-                ModuleName  = 'PowerLFM'
-                Scope       = 'Context'
-                Exactly     = $true
-                Times       = 1
-            }
-            Should -Invoke @siParams
+        It 'Sends the API Key it was given and never the Shared Secret' {
+            $request.Parameters['api_key'] | Should -Be 'AppKey'
+            $request.Uri | Should -Not -Match 'AppSecret'
         }
     }
 
     Context 'Output' {
 
-        BeforeAll {
-            $output = Request-LFMToken -ApiKey 'ApiKey' -SharedSecret 'SharedSecret'
+        It 'Should return the correct token value' {
+            $output = Request-LFMToken -ApiKey 'AppKey' -SharedSecret 'AppSecret'
+            $output.Token | Should -Be $contextMock.Token
         }
 
-        It 'Should return the correct token value' {
-            $output.Token | Should -Be $contextMock.Token
+        It 'Never shows the Shared Secret when verbose' {
+            $output = Request-LFMToken -ApiKey 'AppKey' -SharedSecret 'AppSecret' -Verbose 4>&1 |
+                Where-Object { $_ -is [System.Management.Automation.VerboseRecord] } | Out-String
+
+            $output | Should -Not -Match 'AppSecret'
         }
     }
 }
