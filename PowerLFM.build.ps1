@@ -5,6 +5,10 @@ param(
     [string[]]
     $Tag,
 
+    # Test files or folders for QuickTest; all of source\tests when not given
+    [string[]]
+    $TestPath,
+
     [string]
     $NuGetApiKey
 )
@@ -76,6 +80,31 @@ Task Test {
     $configuration.TestResult.Enabled = $true
     $configuration.TestResult.OutputPath = "$PSScriptRoot\build\testResults.xml"
     $configuration.Output.Verbosity = 'Detailed'
+    if ($null -ne $Tag) { $configuration.Filter.Tag = $Tag }
+
+    $testResults = Invoke-Pester -Configuration $configuration
+
+    Equals $testResults.FailedCount 0
+}
+
+# Synopsis: Build at version 0.0.0 without GitVersion, for local test runs
+Task DevBuild {
+    # A second version beside an earlier build would make the module path below ambiguous
+    if (Test-Path "$PSScriptRoot\build\PowerLFM") {
+        Remove-Item "$PSScriptRoot\build\PowerLFM" -Recurse -Force
+    }
+    Build-Module -Path "$PSScriptRoot\source\build.psd1" -Version '0.0.0'
+}
+
+# Synopsis: Build, then run the given tests without coverage
+Task QuickTest DevBuild, {
+    Import-Module -Name Pester -MinimumVersion 6.0.0 -Force
+    Import-Module -Name "$PSScriptRoot\build\PowerLFM\0.0.0\PowerLFM.psd1" -Force -Global
+
+    $configuration = New-PesterConfiguration
+    $configuration.Run.Path = if ($TestPath) { $TestPath } else { "$PSScriptRoot\source\tests\" }
+    $configuration.Run.Passthru = $true
+    $configuration.Output.Verbosity = 'Normal'
     if ($null -ne $Tag) { $configuration.Filter.Tag = $Tag }
 
     $testResults = Invoke-Pester -Configuration $configuration
