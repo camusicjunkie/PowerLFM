@@ -10,4 +10,4 @@ Single-context: one `CONTEXT.md` + `docs/adr/` at the repo root. See `docs/agent
 
 ### Running tests
 
-`./build.ps1 -Task QuickTest -TestPath <file or folder>` builds the module at 0.0.0 and runs those tests without coverage; omit `-TestPath` for the whole suite.
+`./build.ps1 -Task QuickTest -TestPath <file or folder>` builds the module at 0.0.0 and runs those tests without coverage; omit `-TestPath` for the whole suite. `-Task Analyze` lints the source. CI runs `Analyze`, `Build` and `Test`.

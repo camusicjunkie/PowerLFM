@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param(
-    [ValidateSet('.', 'Build', 'DevBuild', 'Test', 'QuickTest', 'Clean', 'GenerateExternalHelp', 'Publish', 'Noop')]
+    [ValidateSet('.', 'Analyze', 'Build', 'DevBuild', 'Test', 'QuickTest', 'Clean', 'GenerateExternalHelp', 'Publish', 'Noop')]
     [string[]] $Task = '.',
 
     # Test files or folders for QuickTest

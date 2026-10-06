@@ -9,12 +9,14 @@ function ConvertFrom-UnixTime {
         [switch] $Local
     )
 
-    $time = [DateTimeOffset]::FromUnixTimeSeconds($UnixTime)
+    process {
+        $time = [DateTimeOffset]::FromUnixTimeSeconds($UnixTime)
 
-    if ($PSBoundParameters.ContainsKey('Local')) {
-        $time.LocalDateTime
-    }
-    else {
-        $time.UtcDateTime
+        if ($PSBoundParameters.ContainsKey('Local')) {
+            $time.LocalDateTime
+        }
+        else {
+            $time.UtcDateTime
+        }
     }
 }

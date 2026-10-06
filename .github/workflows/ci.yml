@@ -68,6 +68,10 @@ jobs:
           "PSModulePath=$env:GITHUB_WORKSPACE\build\modules;$env:PSModulePath" |
               Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
+      - name: Analyze
+        shell: powershell
+        run: .\build.ps1 -Task Analyze
+
       - name: Build
         shell: powershell
         run: .\build.ps1 -Task Build
