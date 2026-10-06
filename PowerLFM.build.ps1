@@ -10,10 +10,6 @@ param(
 )
 
 Enter-Build {
-    git config --global user.email '33888807+camusicjunkie@users.noreply.github.com'
-    git config --global user.name 'John Steele'
-    git config --global credential.helper store
-
     $script:OS = (Get-CimInstance -ClassName Win32_OperatingSystem).Caption
     $script:OSVersion = (Get-CimInstance -ClassName Win32_OperatingSystem).Version
 
