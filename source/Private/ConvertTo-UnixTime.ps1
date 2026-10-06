@@ -7,10 +7,12 @@ function ConvertTo-UnixTime {
         [datetime] $Date
     )
 
-    if ($Date.Kind -eq 'Local') {
-        ([DateTimeOffset] $Date).ToUniversalTime().ToUnixTimeSeconds()
-    }
-    else {
-        ([DateTimeOffset] $Date).ToUnixTimeSeconds()
+    process {
+        if ($Date.Kind -eq 'Local') {
+            ([DateTimeOffset] $Date).ToUniversalTime().ToUnixTimeSeconds()
+        }
+        else {
+            ([DateTimeOffset] $Date).ToUnixTimeSeconds()
+        }
     }
 }

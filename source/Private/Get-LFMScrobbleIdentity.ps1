@@ -1,4 +1,6 @@
 function Get-LFMScrobbleIdentity {
+    # The empty catch is deliberate: a name that cannot be normalised is kept as found
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingEmptyCatchBlock", "")]
     [CmdletBinding()]
     [OutputType('System.String')]
     param (

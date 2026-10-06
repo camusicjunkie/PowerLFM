@@ -32,7 +32,7 @@ Enter-Build {
 }
 
 # Synopsis: Default task
-Task . Clean, Build, Test
+Task . Clean, Analyze, Build, Test
 
 # Synopsis: Get the next build version
 Task GetNextVersion {
@@ -110,6 +110,19 @@ Task QuickTest DevBuild, {
     $testResults = Invoke-Pester -Configuration $configuration
 
     Equals $testResults.FailedCount 0
+}
+
+# Synopsis: Lint the module source with PSScriptAnalyzer
+Task Analyze {
+    # The tests are left out: Pester's BeforeAll scoping reads as unused variables
+    $findings = foreach ($path in 'Private', 'Public', 'prefix.ps1') {
+        Invoke-ScriptAnalyzer -Path "$PSScriptRoot\source\$path" -Recurse -Severity Warning, Error
+    }
+
+    if ($findings) {
+        $findings | Format-Table RuleName, ScriptName, Line, Message -AutoSize -Wrap | Out-String -Width 200
+        throw "PSScriptAnalyzer found $(@($findings).Count) issue(s)."
+    }
 }
 
 # Synopsis: Generate external help for each public function
