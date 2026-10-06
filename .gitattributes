@@ -1,0 +1,2 @@
+# Git stores every text file with LF and checks it out in the platform's own line endings
+* text=auto
