@@ -5,5 +5,15 @@ function Open-LFMBrowser {
         [uri] $Url
     )
 
-    Start-Process -FilePath $Url.AbsoluteUri
+    $target = $Url.AbsoluteUri
+
+    if ($IsMacOS) {
+        Start-Process -FilePath 'open' -ArgumentList $target
+    }
+    elseif ($IsLinux) {
+        Start-Process -FilePath 'xdg-open' -ArgumentList $target
+    }
+    else {
+        Start-Process -FilePath $target
+    }
 }

@@ -5,9 +5,9 @@ Key, and a SecretStore vault holding the three Credentials (`LFMApiKey`, `LFMSes
 `LFMSharedSecret`). See [ADR 0001](adr/0001-secretstore-for-credentials.md) for why the
 Credentials live in a vault and not a file.
 
-**Platform:** PowerShell 7 on Windows. Step 5 opens your default browser to approve the
-application. If no browser can be opened or the page cannot call back to PowerShell,
-it prints the address and waits for you to press Enter.
+**Platform:** PowerShell 7 on Windows, macOS or Linux. Step 5 opens your default browser to
+approve the application. If no browser can be opened or the page cannot call back to
+PowerShell (headless, SSH), it prints the address and waits for you to press Enter.
 
 ## 1. Install the prerequisites
 
