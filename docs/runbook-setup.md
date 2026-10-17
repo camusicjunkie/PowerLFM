@@ -5,8 +5,9 @@ Key, and a SecretStore vault holding the three Credentials (`LFMApiKey`, `LFMSes
 `LFMSharedSecret`). See [ADR 0001](adr/0001-secretstore-for-credentials.md) for why the
 Credentials live in a vault and not a file.
 
-**Platform:** Windows with PowerShell 7. Step 4 opens a Windows Forms browser window, so it
-does not work on Linux or macOS yet. Cross-platform auth is tracked separately.
+**Platform:** PowerShell 7 on Windows, macOS or Linux. Step 5 opens your default browser to
+approve the application. If no browser can be opened or the page cannot call back to
+PowerShell (headless, SSH), it prints the address and waits for you to press Enter.
 
 ## 1. Install the prerequisites
 
@@ -106,8 +107,8 @@ If `Get-LFMUserInfo` returns your profile, setup is done. Each new PowerShell se
 | Symptom | Cause and fix |
 | --- | --- |
 | Prompted for the vault password, or `Get-Secret` fails in a script | The vault is locked. Run `Unlock-SecretStore` first (step 3). |
-| `Request-LFMSession` errors about the token | The Token expired (60 minutes) or was never approved. Run `Request-LFMToken` again and approve in the window. |
-| Browser window shows an error or never closes | Close it, then re-run step 5. Confirm you are on Windows. |
+| `Request-LFMSession` errors about the token | The Token expired (60 minutes) or was never approved. Run `Request-LFMToken` again and approve in the browser. |
+| Browser does not open, or PowerShell keeps waiting after you approve | Open the address PowerShell printed yourself, approve, then press Enter. If it still fails, re-run step 5. |
 | Secrets not found although you stored them | The vault name differs from `Microsoft.PowerShell.SecretStore`. Check `Get-SecretVault` (step 2). |
 | Writes (love, scrobble, tag) fail with a signature error | The Shared Secret stored is wrong. Re-run step 5 and accept the overwrite prompts. |
 

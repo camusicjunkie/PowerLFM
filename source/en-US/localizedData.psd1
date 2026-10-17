@@ -45,4 +45,9 @@ ConvertFrom-StringData @'
     configInSession = LFMConfig is loaded in to the session
     tokenRequest = Requesting token from {0}
     tokenAuthorizing = Authorizing application with requested token on account
+    authListenerUnavailable = Could not start a loopback listener, falling back to a prompt. {0}
+    authBrowserFailed = Could not open a browser. Open this address yourself: {0}
+    authCallbackPage = PowerLFM is authorized. You can close this tab and return to PowerShell.
+    authTimedOut = No approval was seen within {0} seconds.
+    authPressEnter = Approve the application in your browser, then press Enter
 '@

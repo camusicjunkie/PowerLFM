@@ -12,7 +12,7 @@ Describe 'Request-LFMToken: Unit' -Tag Unit {
         $originalConfig = InModuleScope @module { $script:LFMConfig }
         InModuleScope @module { $script:LFMConfig = $null }
 
-        Mock Show-LFMAuthWindow -ModuleName 'PowerLFM'
+        Mock Wait-LFMAuthorization -ModuleName 'PowerLFM'
     }
 
     AfterAll {

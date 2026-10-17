@@ -19,7 +19,7 @@ function Request-LFMToken {
     $token = (Invoke-LFMApiMethod -Method 'auth.getToken' -Credentials $credentials).Token
 
     Write-Verbose ($localizedData.tokenAuthorizing)
-    Show-LFMAuthWindow -Url "http://www.last.fm/api/auth/?api_key=$ApiKey&token=$token"
+    Wait-LFMAuthorization -ApiKey $ApiKey -Token $token
 
     $obj = [pscustomobject] @{
         'ApiKey' = $ApiKey
