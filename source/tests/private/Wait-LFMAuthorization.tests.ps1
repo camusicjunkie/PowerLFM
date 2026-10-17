@@ -10,7 +10,7 @@ Describe 'Wait-LFMAuthorization: Unit' -Tag Unit {
             # Stands in for the user approving in the browser: Last.fm redirects to cb.
             Mock Open-LFMBrowser -ModuleName 'PowerLFM' {
                 $cb = [uri]::UnescapeDataString(($Url.Query -split '&cb=')[1])
-                $null = [System.Net.Http.HttpClient]::new().GetAsync("$cb`?token=abc")
+                $null = [System.Net.WebRequest]::Create("$cb`?token=abc").GetResponseAsync()
             }
             Mock Read-Host -ModuleName 'PowerLFM'
         }
