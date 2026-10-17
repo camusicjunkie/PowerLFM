@@ -8,6 +8,8 @@ All the API documentation can be found [here](https://www.last.fm/api/intro).
 
 ## How to use PowerLFM
 
+First time? Follow the [setup runbook](docs/runbook-setup.md) for the Last.fm API account and SecretStore vault. The steps below are the short version.
+
 * Sign up for an account [here](https://www.last.fm/api/account/create) to receive an API key and shared secret for this module.
 
 * These will be used to generate a token which will be used to create a session key.
